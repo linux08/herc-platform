@@ -21,7 +21,7 @@ const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
 const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
 
-export default class SupplyChainSideChoice extends Component {
+export default class SupplyChainTX extends Component {
 
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
@@ -60,7 +60,7 @@ export default class SupplyChainSideChoice extends Component {
 
     }
 testOnPress = () => {
-    this.props.navigation.navigate('SupplyChainTX')
+    console.log("this will be navigation!");
 }
 
 

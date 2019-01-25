@@ -39,8 +39,8 @@ export default class SupplyChainSplash extends Component {
         TesterAssets.map((x, i) => {
             console.log(x, i)
             assetList.push(
-                <TouchableHighlight onPress={this.onPressTest(x.Name)}>
-                    <AssetCard key={i} asset={x} />
+                <TouchableHighlight key={i} onPress={this.onPressTest(x.Name)}>
+                    <AssetCard  asset={x} />
                 </TouchableHighlight>
             )
         })
@@ -52,7 +52,7 @@ export default class SupplyChainSplash extends Component {
     onPressTest = (assetName) => {
 
         console.log("I got Pressed!")
-        this.props.navigation.navigate('SupplyChainSideChoice',{ headerName: assetName });
+        // this.props.navigation.navigate('SupplyChainSideChoice',{ headerName: assetName });
     }
 
     showCamModal = () => {
@@ -89,7 +89,7 @@ export default class SupplyChainSplash extends Component {
     render() {
 
         console.log(TesterAssets, "testerAssets")
-        // let AssList = this.renderAssets();
+        let assetList = this.renderAssets();
         return (
 
             <View style={styles.baseContainer}>
@@ -104,7 +104,7 @@ export default class SupplyChainSplash extends Component {
 
                     <AddAssetButton onPress={this.onPressTest} />
 
-                    {this.renderAssets()}
+                    {assetList}
 
                     <Text>Hello</Text>
 

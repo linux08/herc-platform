@@ -5,6 +5,7 @@ import Header from "../components/Headers/Header";
 
 import SupplyChainSplash from "../screens/Testing/SupplyChainSplash";
 import SupplyChainSideChoice from "../screens/Testing/SupplyChainSideChoice";
+import SupplyChainTx from "../screens/Testing/SupplyChainTX_V1";
 
 const SupplyChainNavigator = createStackNavigator(
     {
@@ -17,7 +18,16 @@ const SupplyChainNavigator = createStackNavigator(
             navigationOptions: ({ navigation }) => ({
                 header: <Header headerTitle={"Asset Name"} navigation={navigation} />
             })
+        },
+        SupplyChainTx: {
+            screen: SupplyChainTx,
+            navigationOptions: ({ navigation }) => ({
+                header: <Header headerTitle={"Asset Name"} navigation={navigation} />
+            })
+
         }
+
+
 
     },
     {
