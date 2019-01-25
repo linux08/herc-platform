@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ColorConstants from "../assets/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
 
-// props =  buttonName
+// props =  buttonName, onPress
 export function BigYellowButton(props) {
     return (
 
@@ -286,6 +286,19 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
 
+    },
+    registerButton: {
+        height: heightPercentageToDP(((40 / height) * 100).toString()),
+        width: widthPercentageToDP('90'),
+        backgroundColor: ColorConstants.MainGold,
+        borderRadius: 8,
+        margin: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+        marginTop: 10,
+        alignSelf: 'center'
+        // marginTop: heightPercentageToDP('20')
     },
 
     // width: (width * .9),

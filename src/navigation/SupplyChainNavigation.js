@@ -21,9 +21,11 @@ const SupplyChainNavigator = createStackNavigator(
 
     },
     {
-        initialRouteName: 'SupplyChainSideChoice',
+        initialRouteName: 'SupplyChainSplash',
         headerMode: 'none',
-
+        // navigationOptions: ({ navigation }) => ({
+        //     header: <Header headerTitle={"Asset Name"} navigation={navigation} />
+        // })
     }
 
 

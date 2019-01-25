@@ -4,7 +4,7 @@ import {
     View,
     StatusBar,
     Image,
-    TouchableHighlight,
+    TouchableWithoutFeedback,
     Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -15,11 +15,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import {
-    HercTextInputWithLabel,
-    BasePasswordInput,
-    HercTextFieldWithLabel,
-    HercTextInput,
-    HercTextField
+    BigYellowButton
 } from "../../components/SharedComponents";
 const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
 const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
@@ -48,7 +44,8 @@ export default class SupplyChainSideChoice extends Component {
 
         console.log("orig Pressed!")
         this.setState({
-            checkOrig: !this.state.checkOrig
+            checkOrig: !this.state.checkOrig,
+            checkRecip: false
         })
 
     }
@@ -57,41 +54,15 @@ export default class SupplyChainSideChoice extends Component {
 
         console.log("recip Pressed!")
         this.setState({
-            checkRecip: !this.state.checkRecip,
+            checkRecip: true,
+            checkOrig: !this.state.checkOrig,
         })
 
     }
+testOnPress = () => {
+    console.log("this will be navigation!");
+}
 
-    // changeModal1 = () => {
-    //     console.log(this.state.showModal1, "showmodal1");
-    //     this.setState({
-    //         showModal1: !this.state.showModal1
-    //     })
-    //     console.log(this.state.showModal1, "showmodal1after");
-    // }
-
-    // changeModal2 = () => {
-    //     console.log(this.state.showModal2, "showmodal2");
-    //     this.setState({
-    //         showModal2: !this.state.showModal2
-    //     })
-    //     console.log(this.state.showModal2, "showmodal2after");
-    // }
-
-
-    // pwChange = (pwChar) => {
-    //     console.log(pwChar, 'incompoTest Passing functions')
-    //     this.setState({
-    //         Password: pwChar
-    //     });
-    // }
-
-    // localOnChange = (inputValue, name) => {
-    //     console.log('inputValue', inputValue, "changing metric text", name);
-    //     this.setState({
-    //         [name]: inputValue
-    //     })
-    // }
 
     render() {
         let { height, width } = Dimensions.get('window');
@@ -99,7 +70,7 @@ export default class SupplyChainSideChoice extends Component {
 
         return (
 
-            <View style={[styles.baseContainer, { marginTop: 50 }]}>
+            <View style={styles.baseContainer}>
                 <StatusBar
                     barStyle={'light-content'}
                     translucent={true}
@@ -112,28 +83,35 @@ export default class SupplyChainSideChoice extends Component {
                     <Text style={localStyles.labelTitle}>Where are you along the Supply Chain?</Text>
 
                     <View style={localStyles.choiceContainer}>
-
-                        <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkOrig ? ColorConstants.MainGold : ColorConstants.MainGray }]}>
-                            {this.state.checkOrig && <View style={localStyles.checkBoxContainer}>
-                                <Icon name={'check'} size={18} color={'white'} />
+                        <View style={localStyles.choiceSelection}>
+                            <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkOrig ? ColorConstants.MainGold : ColorConstants.ElementBG }]}>
+                                {this.state.checkOrig && <View style={localStyles.checkBoxContainer}>
+                                    <Icon name={'check'} size={18} color={'white'} />
+                                </View>
+                                }
+                                <TouchableWithoutFeedback onPress={this.onPressOrig}>
+                                    <Image source={OrigImage} style={localStyles.choiceImage} />
+                                </TouchableWithoutFeedback>
                             </View>
-                            }
-                            <TouchableHighlight onPress={this.onPressOrig}>
-                                <Image source={OrigImage} style={localStyles.choiceImage} />
-                            </TouchableHighlight>
+                            <Text style={[localStyles.labelTitle,{fontWeight: 'normal'}]}>Originator</Text>
                         </View>
-                        <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkRecip ? ColorConstants.MainGold : ColorConstants.MainGray }]}>alStyles.checkBoxContainer}>
-                        {this.state.checkRecip && <View style={localStyles.checkBoxContainer}>
-                                <Icon name={'check'} size={18} color={'white'} />
+                        <View style={localStyles.choiceSelection}>
+                            <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkRecip ? ColorConstants.MainGold : ColorConstants.ElementBG }]}>
+                                {this.state.checkRecip && <View style={localStyles.checkBoxContainer}>
+                                    <Icon name={'check'} size={18} color={'white'} />
+                                </View>
+                                }
+                                <TouchableWithoutFeedback onPress={this.onPressRecip}>
+                                    <Image source={RecipImage} style={localStyles.choiceImage} />
+                                </TouchableWithoutFeedback>
                             </View>
-                            }
-                            <TouchableHighlight onPress={this.onPressRecip}>
-                                <Image source={RecipImage} style={localStyles.choiceImage} />
-                            </TouchableHighlight>
+                            <Text style={[localStyles.labelTitle,{fontWeight: 'normal'}]}>Recipient</Text>
                         </View>
 
                     </View>
-
+                    <View style={localStyles.pageBottom}>
+                        <BigYellowButton buttonName={"Next"} onPress={this.testOnPress} />
+                    </View>
 
                 </View>
             </View>
@@ -143,10 +121,19 @@ export default class SupplyChainSideChoice extends Component {
 
 const localStyles = StyleSheet.create({
 
+
+    pageBottom: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center'
+    },
+
     choiceContainer: {
         flexDirection: 'row',
-        // backgroundColor: ColorConstants.MainGray,
-        backgroundColor: 'blue',
+        backgroundColor: ColorConstants.MainGray,
+        // backgroundColor: 'blue',
         padding: 10,
         // paddingTop: 30,
         alignItems: 'center',
@@ -154,6 +141,14 @@ const localStyles = StyleSheet.create({
         width: '100%',
         height: heightPercentageToDP('30')
 
+    },
+
+    choiceSelection: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: ColorConstants.MainGray,
+        height:  widthPercentageToDP(((150 / width) * 100).toString())
     },
 
     choiceImageContainer: {
@@ -166,11 +161,12 @@ const localStyles = StyleSheet.create({
         borderRadius: 50,
         // backgroundColor: ColorConstants.MainGray,
         justifyContent: 'center',
-        margin: 15
+        margin: 15,
+        marginTop: 0
     },
 
     checkBoxContainer: {
-        alignSelf: 'flex-start',
+        alignSelf: 'flex-end',
         justifyContent: 'center',
         marginLeft: 0,
         marginRight: 0,
