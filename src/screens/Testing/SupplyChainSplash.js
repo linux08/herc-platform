@@ -33,26 +33,27 @@ export default class SupplyChainSplash extends Component {
     }
 
 
+
+    onPressTest = (assetName) => {
+
+        console.log(assetName, "I got Pressed!")
+        this.props.navigation.navigate('SupplyChainSideChoice', { headerName: assetName });
+    }
+
     renderAssets = () => {
 
         let assetList = []
         TesterAssets.map((x, i) => {
             console.log(x, i)
             assetList.push(
-                <TouchableHighlight key={i} onPress={this.onPressTest(x.Name)}>
-                    <AssetCard  asset={x} />
+                <TouchableHighlight key={i} onPress={() => this.onPressTest(x.Name)}>
+                    <AssetCard asset={x} />
                 </TouchableHighlight>
             )
         })
 
         console.log(assetList.length, "in renderAssets func");
         return assetList;
-    }
-
-    onPressTest = (assetName) => {
-
-        console.log("I got Pressed!")
-        // this.props.navigation.navigate('SupplyChainSideChoice',{ headerName: assetName });
     }
 
     showCamModal = () => {

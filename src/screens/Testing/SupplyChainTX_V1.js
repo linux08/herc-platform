@@ -14,15 +14,21 @@ const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
+import Header from "../../components/Headers/Header";
+import { TransInfoCard, TransactionComponent } from "../../components/SupplyChainComponents";
+
 import {
     BigYellowButton
 } from "../../components/SharedComponents";
-const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
-const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
+
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
 
 export default class SupplyChainTX extends Component {
-
+    navigationOptions = ({ navigation }) => {
+        return {
+            header: <Header headerName={'Asset Name'} navigation={navigation} />
+        }
+    }
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
         super(props);
@@ -40,33 +46,14 @@ export default class SupplyChainTX extends Component {
 
 
 
-    onPressOrig = () => {
 
-        console.log("orig Pressed!")
-        this.setState({
-            checkOrig: !this.state.checkOrig,
-            checkRecip: false
-        })
-
+    testOnPress = () => {
+        console.log("this will be Transaction Start!");
     }
 
-    onPressRecip = () => {
-
-        console.log("recip Pressed!")
-        this.setState({
-            checkRecip: true,
-            checkOrig: !this.state.checkOrig,
-        })
-
-    }
-testOnPress = () => {
-    console.log("this will be navigation!");
-}
 
 
     render() {
-        let { height, width } = Dimensions.get('window');
-
 
         return (
 
@@ -75,45 +62,24 @@ testOnPress = () => {
                     barStyle={'light-content'}
                     translucent={true}
                     backgroundColor='transparent'
-
                 />
-
+                <Header headerName={'Asset Name'} navigation={this.props.navigation} />
                 <View style={styles.bodyContainer}>
+                    <TransInfoCard transSide={'Originator'} hercId={'42'} />
 
-                    <Text style={localStyles.labelTitle}>Where are you along the Supply Chain?</Text>
+                    <View style={localStyles.transactionComponentListContainer}>
 
-                    <View style={localStyles.choiceContainer}>
-                        <View style={localStyles.choiceSelection}>
-                            <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkOrig ? ColorConstants.MainGold : ColorConstants.ElementBG }]}>
-                                {this.state.checkOrig && <View style={localStyles.checkBoxContainer}>
-                                    <Icon name={'check'} size={18} color={'white'} />
-                                </View>
-                                }
-                                <TouchableWithoutFeedback onPress={this.onPressOrig}>
-                                    <Image source={OrigImage} style={localStyles.choiceImage} />
-                                </TouchableWithoutFeedback>
-                            </View>
-                            <Text style={[localStyles.labelTitle,{fontWeight: 'normal'}]}>Originator</Text>
-                        </View>
-                        <View style={localStyles.choiceSelection}>
-                            <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkRecip ? ColorConstants.MainGold : ColorConstants.ElementBG }]}>
-                                {this.state.checkRecip && <View style={localStyles.checkBoxContainer}>
-                                    <Icon name={'check'} size={18} color={'white'} />
-                                </View>
-                                }
-                                <TouchableWithoutFeedback onPress={this.onPressRecip}>
-                                    <Image source={RecipImage} style={localStyles.choiceImage} />
-                                </TouchableWithoutFeedback>
-                            </View>
-                            <Text style={[localStyles.labelTitle,{fontWeight: 'normal'}]}>Recipient</Text>
-                        </View>
+                        <TransactionComponent iconName='camera' componentName={"Add Photo"} />
+                        <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
+                        <TransactionComponent iconName='pencil' componentName={"Choose EDI-T Sets"} />
+                        <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Next"} onPress={this.testOnPress} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
                     </View>
-
                 </View>
+
             </View>
         )
     }
@@ -121,137 +87,39 @@ testOnPress = () => {
 
 const localStyles = StyleSheet.create({
 
+    textBold: {
+        fontSize: 14,
+        color: ColorConstants.MainSubGray,
+        marginLeft: 3,
+        fontWeight: 'bold',
+    },
+
+    textNormal: {
+        fontSize: 14,
+        color: ColorConstants.MainSubGray,
+        marginLeft: 3,
+        fontWeight: 'normal',
+    },
+    transactionComponentListContainer: {
+        width: '100%',
+        height: heightPercentageToDP('50'),
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'blue',
+        margin: 5
+    },
 
     pageBottom: {
-        flex: 1,
+        height: '20%',
+        backgroundColor: 'yellow',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        alignContent: 'center'
-    },
-
-    choiceContainer: {
-        flexDirection: 'row',
-        backgroundColor: ColorConstants.MainGray,
-        // backgroundColor: 'blue',
-        padding: 10,
-        // paddingTop: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: heightPercentageToDP('30')
-
-    },
-
-    choiceSelection: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: ColorConstants.MainGray,
-        height:  widthPercentageToDP(((150 / width) * 100).toString())
-    },
-
-    choiceImageContainer: {
-
-        flex: 0,
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: widthPercentageToDP(((100 / width) * 100).toString()),
-        height: heightPercentageToDP(((100 / height) * 100).toString()),
-        borderRadius: 50,
-        // backgroundColor: ColorConstants.MainGray,
-        justifyContent: 'center',
-        margin: 15,
-        marginTop: 0
-    },
-
-    checkBoxContainer: {
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        marginLeft: 0,
-        marginRight: 0,
-        marginTop: 0,
-        marginBottom: 0,
-        backgroundColor: 'black',
-        borderRadius: 9,
-
-        // height: widthPercentageToDP('5'),
-        // width: heightPercentageToDP('5'),
-
-    },
-    // checkOrig: {
-    //     display: this.state.checkOrig
-    // },
-    // checkRecip: {
-    //     display: this.state.checkRecip
-    // },
-
-    choiceImage: {
-        resizeMode: 'contain',
-        height: 50,
-        width: 50,
-        alignSelf: 'center'
-    },
-    labelTitle: {
-        fontSize: 18,
-        color: ColorConstants.MainBlue,
-        margin: 5,
-        fontWeight: 'bold'
+        alignContent: 'center',
+        alignSelf: 'flex-start'
     },
 
 
-    activityIndicatorWrapper: {
-        backgroundColor: '#FFFFFF',
-        height: 100,
-        width: 100,
-        borderRadius: 7,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-    },
 
-    modalButton: {
-        margin: 10,
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 2,
-        borderWidth: 2,
-    },
-    wordsText: {
-        textAlign: 'center',
-    },
-    closeButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '80%',
-    },
-    closeButton: {
-        padding: 15
-    },
-
-    container: {
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-        // backgroundColor: ColorConstants.MainBlue,
-        backgroundColor: ColorConstants.MainGray,
-        alignItems: "center",
-        justifyContent: "flex-start",
-        // marginTop: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
-    },
-
-    menuTitle: {
-        color: ColorConstants.MainBlue,
-        fontSize: 26,
-        margin: 5,
-
-    },
-    passwordInputContainer: {
-
-        justifyContent: 'flex-start',
-        backgroundColor: ColorConstants.ElementBG
-    }
 
 })

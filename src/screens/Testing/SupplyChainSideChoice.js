@@ -60,7 +60,8 @@ export default class SupplyChainSideChoice extends Component {
 
     }
 testOnPress = () => {
-    this.props.navigation.navigate('SupplyChainTX')
+    console.log('pressed on testpress')
+    this.props.navigation.navigate('SupplyChainTx')
 }
 
 
@@ -110,7 +111,7 @@ testOnPress = () => {
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Next"} onPress={this.testOnPress} />
+                        <BigYellowButton buttonName={"Next"} onPress={() => this.testOnPress()} />
                     </View>
 
                 </View>

@@ -14,10 +14,6 @@ const bgImage = require("../../assets/main-bg.png")
 
 
 
-/// Still stuck with header going back, it's there, just can't seem to put my finger on it
-
-
-{/* <Icon.Button /> for use once it's wired up */ }
  class Header extends Component {
     constructor(props) {
         super(props);
@@ -44,7 +40,7 @@ const bgImage = require("../../assets/main-bg.png")
                                 color={ColorConstants.MainGold}
                             />
                         </View>
-                        <Text style={styles.headerText}>{this.props.headerTitle}</Text>
+                        <Text style={styles.headerText}>{this.props.headerName}</Text>
                         <View style={styles.sideHeaders}>
                             <Icon onPress={() => this.props.navigation.navigate("settings")}
                                 style={[styles.iconButton, { marginRight: 20 }]}
