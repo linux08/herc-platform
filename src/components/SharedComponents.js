@@ -5,9 +5,10 @@ import {
     TextInput,
     Text,
     TouchableHighlight,
-    Image
+    Image,
+    Dimensions
 } from 'react-native';
-
+const { height, width } = Dimensions.get('window');
 const hercpngIcon = require('../assets/icons/hercIcon.png');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ColorConstants from "../assets/ColorConstants";
@@ -27,10 +28,10 @@ export function CostDisplay(props) {
 
     return (
         <View style={[localStyles.textFieldContainer, { backgroundColor: ColorConstants.MainBlue }]}>
-            <Text style={localStyles.textLabel}>Amount</Text>
+            <Text style={localStyles.labelText}>Amount</Text>
 
             <View style={localStyles.flexRow}>
-                <Text style={[localStyles.textFieldText, { color: 'white'}]}>{props.amount}</Text>
+                <Text style={[localStyles.costFieldAmount, { color: 'white'}]}>{props.amount}</Text>
                 <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />
             </View>
         </View>
@@ -62,7 +63,7 @@ export class HercTextFieldWithLabel extends Component {
         return (
 
             <View style={localStyles.textFieldContainer}>
-                <Text style={localStyles.textLabel}>{this.props.label}</Text>
+                <Text style={localStyles.labelText}>{this.props.label}</Text>
                 <Text style={localStyles.textField}>{this.props.text}</Text>
             </View>
         )
@@ -98,14 +99,15 @@ export class HercTextInputWithLabel extends Component {
     render() {
         return (
 
-            <View style={[localStyles.textFieldContainer, { paddingTop: 9 }]}>
+            <View style={[localStyles.textFieldContainer, { paddingTop: 10, paddingBottom: 2 }]}>
 
-                <Text style={localStyles.textLabel}>{this.props.label}</Text>
+                <Text style={localStyles.labelText}>{this.props.label}</Text>
                 <TextInput
                     name={this.props.name}
                     placeholder={this.props.placeholder}
                     localOnChange={this.props.localOnChange}
                     style={localStyles.labeledTextInput}
+
                 />
             </View>
         )
@@ -131,10 +133,10 @@ export class BasePasswordInput extends Component {
 
     render() {
         return (
-            <View style={[localStyles.textFieldContainer, { paddingTop: 9 }]}>
-                <Text style={localStyles.textLabel}>Asset Password</Text>
-                <View style={localStyles.RegisterAssetInputPasswordContainer}>
-
+            <View style={[localStyles.textFieldContainer, { paddingTop: 10, paddingBottom: 2 }]}>
+                <Text style={localStyles.labelText}>{this.props.label}</Text>
+                <View style={localStyles.PasswordInputContainer}>
+{/* localStyles.passwordTextInput */}
                     <TextInput style={localStyles.passwordTextInput}
                         placeholder={this.props.placeholder}
                         placeholder-text-color={ColorConstants.MainBlue}
@@ -161,6 +163,73 @@ export class BasePasswordInput extends Component {
 }
 
 const localStyles = StyleSheet.create({
+    textField: {
+        color: ColorConstants.MainBlue,
+        width: '100%',
+        marginLeft: 0,
+        marginRight: 0,
+        // fontSize: 14,
+        paddingLeft: 5,
+        textAlign: 'left',
+        fontSize: 17,
+        borderRadius: 8,
+        // height: heightPercentageToDP('4.95'),
+        paddingBottom:0
+    },
+    costFieldAmount: {
+        color: ColorConstants.MainBlue,
+        marginRight: 5,
+        paddingLeft: 5,
+        textAlign: 'left',
+        fontSize: 20,
+    },
+    textFieldContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        width:  widthPercentageToDP('90'),
+        maxHeight: heightPercentageToDP(((50 / height) * 100).toString()),
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        backgroundColor: ColorConstants.ElementBG,
+        margin: 5,
+        paddingLeft: 5,
+        borderRadius: 6,
+        
+    },
+    labeledTextInput: {
+        color: ColorConstants.MainBlue,
+        width: '100%',
+        borderRadius: 8,
+        backgroundColor: ColorConstants.ElementBG,
+        margin: 0,
+        fontSize: 17,
+       
+    },
+    labelText: {
+        fontSize: 12,
+        color: ColorConstants.MainSubGray,
+        marginLeft: 3,
+        fontWeight: 'normal',
+    },
+
+    PasswordInputContainer: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        backgroundColor: ColorConstants.MainGray,
+        borderRadius: 6,
+        margin: 0,
+        paddingRight: 10
+
+    },
+    passwordTextInput: {
+        borderRadius: 0,
+        backgroundColor: ColorConstants.ElementBG,
+        margin: 0,
+        flex: 1,
+        fontSize: 17,
+        alignSelf: 'center'
+    },
+
     costDisplay: {
         height: 40,
         width: widthPercentageToDP('90'),
@@ -177,12 +246,12 @@ const localStyles = StyleSheet.create({
     eyeballContainer: {
         justifyContent: 'center',
         backgroundColor: ColorConstants.ElementBG,
+        paddingBottom: 10
         // height: heightPercentageToDP('6'),
     },
 
     eyeBallButton: {
         backgroundColor: ColorConstants.ElementBG,
-        borderRadius: 8,
     },
 
     registerButton: {
@@ -233,16 +302,7 @@ const localStyles = StyleSheet.create({
 
     },
 
-    RegisterAssetInputPasswordContainer: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        backgroundColor: ColorConstants.MainGray,
-        width: widthPercentageToDP('90'),
-        height: heightPercentageToDP('4'),
-        borderRadius: 8,
-        margin: 5
-
-    },
+  
     // textInput: {
     //     borderRadius: 8,
     //     // backgroundColor: ColorConstants.MainGray,
@@ -269,69 +329,13 @@ const localStyles = StyleSheet.create({
         paddingLeft: 5,
         borderRadius: 8
     },
-    textField: {
-        color: ColorConstants.MainBlue,
-        width: '100%',
-        marginLeft: 0,
-        marginRight: 0,
-        // fontSize: 14,
-        paddingLeft: 5,
-        textAlign: 'left',
-        fontSize: 17,
-        borderRadius: 8,
-        height: heightPercentageToDP('4.95'),
-        paddingBottom:0
-    },
-    textFieldText: {
-        color: ColorConstants.MainBlue,
-        marginRight: 5,
-        paddingLeft: 5,
-        textAlign: 'left',
-        fontSize: 17,
-    },
-    textFieldContainer: {
-        flex: 0,
-        width: widthPercentageToDP('90'),
-        height: heightPercentageToDP('6'),
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        backgroundColor: ColorConstants.ElementBG,
-        margin: 5,
-        paddingLeft: 5,
-        borderRadius: 8,
-        paddingBottom: 10
-        // backgroundColor: ColorConstants.MainSubCrownBlue
-    },
+   
 
 
-    labeledTextInput: {
-        color: ColorConstants.MainBlue,
-        width: '100%',
-        borderRadius: 8,
-        backgroundColor: ColorConstants.ElementBG,
-        margin: 0,
-        fontSize: 17,
-        height: heightPercentageToDP('5.5')
-    },
-    passwordTextInput: {
-        width: widthPercentageToDP('90'),
-        height: heightPercentageToDP('5.5'),
-        borderRadius: 0,
-        backgroundColor: ColorConstants.ElementBG,
-        margin: 0,
-        flex: 1,
-        fontSize: 17,
-        alignSelf: 'center'
-    },
+   
+   
 
-
-    textLabel: {
-        fontSize: 12,
-        color: ColorConstants.MainSubGray,
-        marginLeft: 3,
-        fontWeight: 'normal',
-        marginTop: 10
-    },
+   
     buttonLabel: {
         fontSize: 12,
         color: ColorConstants.MainBlue,

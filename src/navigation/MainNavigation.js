@@ -131,7 +131,7 @@ const MainNavigator = createStackNavigator({
     DocumentQRScanner: { screen: DocumentQRScanner },
 
 }, {
-        initialRouteName: 'RegAssetNav',
+        initialRouteName: 'SupplyChainNav',
         headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
         //     header: <Header headerTitle={'Supply Chain'} navigation={navigation} />

@@ -14,7 +14,13 @@ const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-
+import { 
+    HercTextInputWithLabel,
+    BasePasswordInput,
+    HercTextFieldWithLabel,
+    HercTextInput,
+    HercTextField
+} from "../../components/SharedComponents";
 const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
 const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
@@ -81,14 +87,20 @@ export default class SupplyChainSideChoice extends Component {
         console.log(height, width);
         return (
 
-            <View style={styles.baseContainer}>
+            <View style={[styles.baseContainer,{marginTop: 50}]}>
                 <StatusBar
                     barStyle={'light-content'}
                     translucent={true}
                     backgroundColor='transparent'
 
                 />
-                <View style={styles.bodyContainer}>
+                
+                <HercTextField text={'TextField'} />
+                <HercTextFieldWithLabel label={"test label"} text={"testtext"} />
+                <HercTextInput placeholder={'TestPlaceHolder'} />
+                <HercTextInputWithLabel placeholder={"placeholder with Label"} label={"label for Input"} />
+                <BasePasswordInput pwChange={this.onPressTest} label={'TestPWLabel'} placeholder={'testlabeledPlaceholderPW'} />
+                {/* <View style={styles.bodyContainer}>
                     <Text style={localStyles.labelTitle}>Where are you along the Supply Chain?</Text>
                     <View style={localStyles.choiceContainer}>
                         <View style={localStyles.checkBoxContainer}>
@@ -106,9 +118,11 @@ export default class SupplyChainSideChoice extends Component {
                     <TouchableHighlight onPress={this.onPressTest} style={localStyles.choiceImageContainer}>
                         <Image source={RecipImage} style={localStyles.choiceImage} />
                     </TouchableHighlight>
-                </View>
+                </View> */}
 
-            </View>
+
+
+            {/* </View> */}
             </View >
         )
     }
