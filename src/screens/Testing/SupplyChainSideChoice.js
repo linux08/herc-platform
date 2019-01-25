@@ -14,7 +14,7 @@ const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import { 
+import {
     HercTextInputWithLabel,
     BasePasswordInput,
     HercTextFieldWithLabel,
@@ -33,7 +33,9 @@ export default class SupplyChainSideChoice extends Component {
         console.log("componentTest")
         this.state = {
             checkOrig: false,
-            checkRecip: false
+            checkRecip: false,
+            recip: false,
+            orig: false
         }
 
         // this.localOnChange = this.localOnChange.bind(this);
@@ -42,10 +44,22 @@ export default class SupplyChainSideChoice extends Component {
 
 
 
-    onPressTest = () => {
+    onPressOrig = () => {
 
-        console.log("I got Pressed!")
-        this.props.navigation.navigate('RegAsset2');
+        console.log("orig Pressed!")
+        this.setState({
+            checkOrig: !this.state.checkOrig
+        })
+
+    }
+
+    onPressRecip = () => {
+
+        console.log("recip Pressed!")
+        this.setState({
+            checkRecip: !this.state.checkRecip,
+        })
+
     }
 
     // changeModal1 = () => {
@@ -82,48 +96,47 @@ export default class SupplyChainSideChoice extends Component {
     render() {
         let { height, width } = Dimensions.get('window');
 
-        console.log(widthPercentageToDP("2"), "2%", heightPercentageToDP(2), '2%');
-        console.log(Dimensions.get('window'), "dimensions window", Dimensions.get('screen'), "dimensions screen");
-        console.log(height, width);
+
         return (
 
-            <View style={[styles.baseContainer,{marginTop: 50}]}>
+            <View style={[styles.baseContainer, { marginTop: 50 }]}>
                 <StatusBar
                     barStyle={'light-content'}
                     translucent={true}
                     backgroundColor='transparent'
 
                 />
-                
-                <HercTextField text={'TextField'} />
-                <HercTextFieldWithLabel label={"test label"} text={"testtext"} />
-                <HercTextInput placeholder={'TestPlaceHolder'} />
-                <HercTextInputWithLabel placeholder={"placeholder with Label"} label={"label for Input"} />
-                <BasePasswordInput pwChange={this.onPressTest} label={'TestPWLabel'} placeholder={'testlabeledPlaceholderPW'} />
-                {/* <View style={styles.bodyContainer}>
+
+                <View style={styles.bodyContainer}>
+
                     <Text style={localStyles.labelTitle}>Where are you along the Supply Chain?</Text>
+
                     <View style={localStyles.choiceContainer}>
-                        <View style={localStyles.checkBoxContainer}>
-                            <Icon name={'check'} color={'white'} />
+
+                        <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkOrig ? ColorConstants.MainGold : ColorConstants.MainGray }]}>
+                            {this.state.checkOrig && <View style={localStyles.checkBoxContainer}>
+                                <Icon name={'check'} size={18} color={'white'} />
+                            </View>
+                            }
+                            <TouchableHighlight onPress={this.onPressOrig}>
+                                <Image source={OrigImage} style={localStyles.choiceImage} />
+                            </TouchableHighlight>
+                        </View>
+                        <View style={[localStyles.choiceImageContainer, { backgroundColor: this.state.checkRecip ? ColorConstants.MainGold : ColorConstants.MainGray }]}>alStyles.checkBoxContainer}>
+                        {this.state.checkRecip && <View style={localStyles.checkBoxContainer}>
+                                <Icon name={'check'} size={18} color={'white'} />
+                            </View>
+                            }
+                            <TouchableHighlight onPress={this.onPressRecip}>
+                                <Image source={RecipImage} style={localStyles.choiceImage} />
+                            </TouchableHighlight>
                         </View>
 
-                        <TouchableHighlight onPress={this.onPressTest} style={localStyles.choiceImageContainer}>
-                            <Image source={OrigImage} style={localStyles.choiceImage} />
-                        </TouchableHighlight>
                     </View>
-                   <View>
-                    <View style={localStyles.checkBoxContainer}>
-                        <Icon name={'check'} color={'white'} />
-                    </View>
-                    <TouchableHighlight onPress={this.onPressTest} style={localStyles.choiceImageContainer}>
-                        <Image source={RecipImage} style={localStyles.choiceImage} />
-                    </TouchableHighlight>
-                </View> */}
 
 
-
-            {/* </View> */}
-            </View >
+                </View>
+            </View>
         )
     }
 }
@@ -136,7 +149,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: 'blue',
         padding: 10,
         // paddingTop: 30,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
         height: heightPercentageToDP('30')
@@ -146,24 +159,25 @@ const localStyles = StyleSheet.create({
     choiceImageContainer: {
 
         flex: 0,
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         width: widthPercentageToDP(((100 / width) * 100).toString()),
         height: heightPercentageToDP(((100 / height) * 100).toString()),
         borderRadius: 50,
-        backgroundColor: ColorConstants.MainGold,
+        // backgroundColor: ColorConstants.MainGray,
         justifyContent: 'center',
         margin: 15
     },
 
     checkBoxContainer: {
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         justifyContent: 'center',
         marginLeft: 0,
         marginRight: 0,
         marginTop: 0,
         marginBottom: 0,
-        backgroundColor: 'black'
+        backgroundColor: 'black',
+        borderRadius: 9,
 
         // height: widthPercentageToDP('5'),
         // width: heightPercentageToDP('5'),
