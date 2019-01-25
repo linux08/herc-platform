@@ -218,7 +218,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: ColorConstants.MainGray,
         borderRadius: 6,
         margin: 0,
-        paddingRight: 10
+        // paddingRight: 10
 
     },
     passwordTextInput: {
@@ -231,7 +231,7 @@ const localStyles = StyleSheet.create({
     },
 
     costDisplay: {
-        height: 40,
+        height: heightPercentageToDP(((40 / height) * 100).toString()),
         width: widthPercentageToDP('90'),
         backgroundColor: ColorConstants.MainBlue,
         borderRadius: 8,
@@ -252,72 +252,12 @@ const localStyles = StyleSheet.create({
 
     eyeBallButton: {
         backgroundColor: ColorConstants.ElementBG,
+        marginRight: -1,
+        // marginLeft: 10
+        borderRadius: 0
     },
 
-    registerButton: {
-        height: 40,
-        width: widthPercentageToDP('90'),
-        backgroundColor: ColorConstants.MainGold,
-        borderRadius: 8,
-        margin: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 5,
-        marginTop: 10,
-        alignSelf: 'center'
-        // marginTop: heightPercentageToDP('20')
-    },
-    addMetricButton: {
-        height: heightPercentageToDP('4'),
-        width: widthPercentageToDP('90'),
-        backgroundColor: ColorConstants.ElementBG,
-        borderRadius: 8,
-        margin: 5,
-        marginTop: 20,
-        marginBottom: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingRight: '10%',
-        paddingLeft: '10%'
-    },
-
-    addPhotoButton: {
-        height: heightPercentageToDP('8'),
-        width: widthPercentageToDP('80'),
-        backgroundColor: ColorConstants.ElementBG,
-        borderRadius: 8,
-        margin: 5,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingRight: '10%',
-        paddingLeft: '10%'
-    },
-
-    cameraIconContainer: {
-        backgroundColor: ColorConstants.ElementBG,
-        borderRadius: 8,
-        // marginLeft: '15%'
-
-    },
-
-  
-    // textInput: {
-    //     borderRadius: 8,
-    //     // backgroundColor: ColorConstants.MainGray,
-    //     backgroundColor: ColorConstants.ElementBG,
-    //     marginTop: 0,
-    //     marginBottom: 0,
-    //     paddingLeft: 5,
-    //     textAlign: 'left',
-    //     marginLeft: 0,
-    //     marginRight: 0,
-    //     fontSize: 17,
-    //     height: 40,
-    //     width: '100%'
-    //     // alignSelf: 'center'
-    // },
+    
     textInputContainer: {
         flex: 0,
         width: widthPercentageToDP('90'),
@@ -331,11 +271,6 @@ const localStyles = StyleSheet.create({
     },
    
 
-
-   
-   
-
-   
     buttonLabel: {
         fontSize: 12,
         color: ColorConstants.MainBlue,

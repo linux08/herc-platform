@@ -5,7 +5,7 @@ import {
     Text,
     View,
     StatusBar,
-   ScrollView
+    ScrollView
 } from 'react-native';
 
 import styles from "../../assets/styles";
@@ -13,13 +13,12 @@ import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 const buildingPic = require("../../assets/83MaidenLn.jpg")
 import { AssetCard } from "../../components/AssetCard";
+import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
     BasePasswordInput,
     HercTextFieldWithLabel,
-    RegisterButton,
     CostDisplay
-
-} from '../../components/RegisterAssetComponents/RegisterAssetInputs';
+} from '../../components/SharedComponents';
 
 
 export default class RegAsset_2_Draft_1 extends Component {
@@ -99,8 +98,8 @@ export default class RegAsset_2_Draft_1 extends Component {
                 />
 
                 <View style={styles.bodyContainer}>
-                        <AssetCard asset={asset} />
-                        <BasePasswordInput value={this.state.Password} />
+                    <AssetCard asset={asset} />
+                    <BasePasswordInput label={"Asset Password"} value={this.state.Password} />
                     <ScrollView>
                         {metricList}
                     </ScrollView>
