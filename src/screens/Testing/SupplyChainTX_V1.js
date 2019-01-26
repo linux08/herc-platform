@@ -8,7 +8,7 @@ import {
     Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Modal from 'react-native-modal';
+import CameraModal from '../../assets/modals/CameraSourceModal';
 import modalStyles from "../../assets/modals/ModalStyles";
 const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
@@ -36,16 +36,24 @@ export default class SupplyChainTX extends Component {
         this.state = {
             checkOrig: false,
             checkRecip: false,
-            recip: false,
-            orig: false
+           camerModalVisibility: false
         }
 
         // this.localOnChange = this.localOnChange.bind(this);
         // this.pwChange = this.pwChange.bind(this);
     }
 
+    showCameraModal = () => {
+        console.log("show the camera modal");
+        this.setState({
+            camerModalVisibility: !this.state.camerModalVisibility
+        })
 
+    }
 
+    goToMetrics = () => {
+        
+    }
 
     testOnPress = () => {
         console.log("this will be Transaction Start!");
@@ -69,7 +77,7 @@ export default class SupplyChainTX extends Component {
 
                     <View style={localStyles.transactionComponentListContainer}>
 
-                        <TransactionComponent iconName='camera' componentName={"Add Photo"} />
+                        <TransactionComponent onPress={() => this.showCameraModal()} iconName='camera' componentName={"Add Photo"} />
                         <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
                         <TransactionComponent iconName='pencil' componentName={"Choose EDI-T Sets"} />
                         <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
@@ -80,6 +88,7 @@ export default class SupplyChainTX extends Component {
                     </View>
                 </View>
 
+                {/* <CameraModal visibility={this.state.camerModalVisibility} /> */}
             </View>
         )
     }

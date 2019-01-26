@@ -7,7 +7,8 @@ import SupplyChainSplash from "../screens/Testing/SupplyChainSplash";
 import SupplyChainSideChoice from "../screens/Testing/SupplyChainSideChoice";
 import SupplyChainTx from "../screens/Testing/SupplyChainTX_V1";
 import Camera from "../screens/Camera";
-import MetricInput from  "../screens/MetricInput";
+import SupplyChainMetrics from  "../screens/Testing/SupplyChainMetrics";
+
 const SupplyChainNavigator = createStackNavigator(
     {
         SupplyChainSplash: {
@@ -26,13 +27,20 @@ const SupplyChainNavigator = createStackNavigator(
                 header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
             })
 
+        },
+        SupplyChainMetrics: {
+            screen: SupplyChainMetrics,
+            navigationOptions: ({ navigation }) => ({
+                header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
+            })
+
         }
 
 
 
     },
     {
-        initialRouteName: 'SupplyChainTx',
+        initialRouteName: 'SupplyChainMetrics',
         headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
         //     header: <Header headerTitle={"Asset Name"} navigation={navigation} />

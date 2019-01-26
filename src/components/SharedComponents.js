@@ -71,6 +71,8 @@ export class HercTextFieldWithLabel extends Component {
 
 }
 
+// Trying to have the inputs accept a function for "onChangeText" to change the local state from where it is called
+
 
 export class HercTextInput extends Component {
     constructor(props) {

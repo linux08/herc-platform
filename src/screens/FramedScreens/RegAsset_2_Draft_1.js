@@ -44,10 +44,6 @@ export default class RegAsset_2_Draft_1 extends Component {
                 metric13: "Rent Bumps",
                 metric14: "Tenant expenses",
 
-
-
-
-
             }
         }
 

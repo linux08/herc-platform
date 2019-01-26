@@ -35,6 +35,7 @@ export function TransactionComponent(props) {
                 style={localStyles.cameraIconContainer}
                 color={ColorConstants.MainBlue}
                 name={props.iconName}
+                onPress={props.onPress}
             >
             </Icon>
             <Text style={localStyles.buttonLabel}>{props.componentName}</Text>
