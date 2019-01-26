@@ -87,7 +87,8 @@ export class HercTextInput extends Component {
                     placeholder-text-color={ColorConstants.MainSubGray}
                     underlineColorAndroid='transparent'
                     onChangeText={(inputVal) => this.props.localOnChange(inputVal, name)}
-
+                    multiline={false}
+                    scrollEnabled={false}
                 />
             </View>
         )
@@ -99,6 +100,8 @@ export class HercTextInputWithLabel extends Component {
         super(props);
     }
     render() {
+        console.log(this.props.name, "textInputWithLabel, lookingfor localOnChange")
+        let name = this.props.name;
         return (
 
             <View style={[localStyles.textFieldContainer, { paddingTop: 10, paddingBottom: 2 }]}>
@@ -107,9 +110,11 @@ export class HercTextInputWithLabel extends Component {
                 <TextInput
                     name={this.props.name}
                     placeholder={this.props.placeholder}
-                    localOnChange={this.props.localOnChange}
+                    onChangeText={(change) => this.props.localOnChange(change, name)}
                     style={localStyles.labeledTextInput}
-
+                    underlineColorAndroid='transparent'
+                    multiline={false}
+                    scrollEnabled={false}
                 />
             </View>
         )
@@ -186,7 +191,6 @@ const localStyles = StyleSheet.create({
         fontSize: 20,
     },
     textFieldContainer: {
-        flex: 1,
         flexDirection: 'column',
         width:  widthPercentageToDP('90'),
         maxHeight: heightPercentageToDP(((50 / height) * 100).toString()),
@@ -227,7 +231,7 @@ const localStyles = StyleSheet.create({
         borderRadius: 0,
         backgroundColor: ColorConstants.ElementBG,
         margin: 0,
-        flex: 1,
+        // flex: 1,
         fontSize: 17,
         alignSelf: 'center'
     },
@@ -261,7 +265,7 @@ const localStyles = StyleSheet.create({
 
     
     textInputContainer: {
-        flex: 0,
+        // flex: 0,
         width: widthPercentageToDP('90'),
         height: heightPercentageToDP('6'),
         justifyContent: 'center',

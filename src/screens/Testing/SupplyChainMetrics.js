@@ -1,10 +1,9 @@
 import {
-    StyleSheet,
     Text,
     View,
     StatusBar,
-    Image,
-    TouchableWithoutFeedback,
+    ScrollView,
+    StyleSheet,
     Dimensions
 } from 'react-native';
 
@@ -45,6 +44,7 @@ export default class SupplyChainMetrics extends Component {
     };
 
     onMetricUpdate = (change, metricName) => {
+        console.log(change, metricName, "trying to do the thing")
         this.setState({
             [metricName]: change
         })
@@ -63,7 +63,7 @@ export default class SupplyChainMetrics extends Component {
                     label={coreProps[x]}
                     placeholder={coreProps[x]}
                     name={coreProps[x]}
-                    localOnchange={this.onMetricUpdate}
+                    localOnChange={this.onMetricUpdate}
                 />
             )
         })
@@ -81,9 +81,17 @@ export default class SupplyChainMetrics extends Component {
                 />
                 <Header headerName={'Asset Name'} navigation={this.props.navigation} />
                 <View style={styles.bodyContainer}>
-
-                    {this.renderMetrics(assets[0].CoreProps)}
-
+                    <HercTextInputWithLabel
+                        label={"didchange"}
+                        placeholder={"testPlaceHolder"}
+                        name={'testName'}
+                        localOnchange={this.onMetricUpdate}
+                    />
+                    <View style={localStyles.centralBody}>
+                        <ScrollView>
+                            {this.renderMetrics(assets[0].CoreProps)}
+                        </ScrollView>
+                    </View>
                     <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
                 </View>
             </View>
@@ -91,3 +99,14 @@ export default class SupplyChainMetrics extends Component {
     };
 
 }
+
+const localStyles = StyleSheet.create({
+
+    centralBody: {
+
+        height: "60%",
+        width: '100%',
+        marginTop: 10,
+        marginBottom: 10
+    }
+})
