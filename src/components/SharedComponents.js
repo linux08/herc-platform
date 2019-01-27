@@ -19,7 +19,7 @@ export function BigYellowButton(props) {
     return (
 
         <TouchableHighlight onPress={props.onPress} style={localStyles.registerButton}>
-            <Text style={localStyles.buttonLabel}>{props.buttonName}</Text>
+            <Text style={[localStyles.buttonLabel,{color: 'white'}]}>{props.buttonName}</Text>
         </TouchableHighlight>
     )
 }
@@ -279,7 +279,7 @@ const localStyles = StyleSheet.create({
 
     buttonLabel: {
         fontSize: 12,
-        color: ColorConstants.MainBlue,
+        color: ColorConstants.MainSubGray,
         margin: 5,
         // marginLeft: '15%',
         alignSelf: 'center'
@@ -303,6 +303,8 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 5,
         marginTop: 10,
+        marginRight: 20,
+        marginLeft: 20,
         alignSelf: 'center'
         // marginTop: heightPercentageToDP('20')
     },

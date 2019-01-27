@@ -88,7 +88,7 @@ export default class SupplyChainTX extends Component {
                     </View>
                 </View>
 
-                {/* <CameraModal visibility={this.state.camerModalVisibility} /> */}
+                <CameraModal visibility={this.state.camerModalVisibility} />
             </View>
         )
     }
@@ -114,18 +114,19 @@ const localStyles = StyleSheet.create({
         height: heightPercentageToDP('50'),
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'blue',
-        margin: 5
+        backgroundColor: ColorConstants.MainGray,
+        // margin: 5
     },
 
     pageBottom: {
         height: '20%',
-        backgroundColor: 'yellow',
+        backgroundColor: ColorConstants.MainGray,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         alignContent: 'center',
-        alignSelf: 'flex-start'
+        alignSelf: 'center',
+        padding: 20,
     },
 
 

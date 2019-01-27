@@ -15,7 +15,7 @@ import assets from "../../components/TesterAssets";
 import Header from "../../components/Headers/Header";
 
 // import Header from "../../components/Headers/Header";
-// import { TransInfoCard, TransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard } from "../../components/SupplyChainComponents";
 
 import {
     BigYellowButton, // props =  buttonName, onPress
@@ -28,7 +28,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responis
 export default class SupplyChainMetrics extends Component {
     navigationOptions = ({ navigation }) => {
         return {
-            header: <Header headerName={'Asset Name'} navigation={navigation} />
+            header: <Header headerName={'Transaction Metrics'} navigation={navigation} />
         }
     };
 
@@ -80,7 +80,10 @@ export default class SupplyChainMetrics extends Component {
                     backgroundColor='transparent'
                 />
                 <Header headerName={'Asset Name'} navigation={this.props.navigation} />
+              
                 <View style={styles.bodyContainer}>
+              
+                <TransInfoCard transSide={'Originator'} hercId={'42'} />
                     <HercTextInputWithLabel
                         label={"didchange"}
                         placeholder={"testPlaceHolder"}
@@ -88,7 +91,7 @@ export default class SupplyChainMetrics extends Component {
                         localOnchange={this.onMetricUpdate}
                     />
                     <View style={localStyles.centralBody}>
-                        <ScrollView>
+                        <ScrollView contentContainerStyle={localStyles.scrollView}>
                             {this.renderMetrics(assets[0].CoreProps)}
                         </ScrollView>
                     </View>
@@ -101,7 +104,10 @@ export default class SupplyChainMetrics extends Component {
 }
 
 const localStyles = StyleSheet.create({
-
+    scrollView: {
+        width: '100%',
+        justifyContent: 'center'
+    },
     centralBody: {
 
         height: "60%",

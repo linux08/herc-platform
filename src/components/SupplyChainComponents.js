@@ -19,7 +19,7 @@ export function TransInfoCard(props) {
         <View style={localStyles.transInfoCard}>
             <Text style={localStyles.textBold}>{props.transSide}</Text>
             <View style={localStyles.flexEndRow}>
-                <Text style={[localStyles.textNormal, { fontSize: 12 }]}>HERC ID</Text>
+                <Text style={[localStyles.textNormal, { fontSize: 12, marginRight: 10 }]}>HERC ID</Text>
                 <Text style={[localStyles.textBold]}>{props.hercId}</Text>
             </View>
         </View>
@@ -30,15 +30,15 @@ export function TransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-
+            <View style={localStyles.iconSquare}>
             <Icon
-                style={localStyles.cameraIconContainer}
-                color={ColorConstants.MainBlue}
+                style={localStyles.componentIcon}
                 name={props.iconName}
                 onPress={props.onPress}
             >
             </Icon>
-            <Text style={localStyles.buttonLabel}>{props.componentName}</Text>
+            </View>
+            <Text style={localStyles.textNormal}>{props.componentName}</Text>
         </View>
 
 
@@ -56,8 +56,8 @@ const localStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingRight: 5,
-        paddingLeft: 5,
+        paddingRight: 10,
+        paddingLeft: 10,
     },
 
     textBold: {
@@ -69,13 +69,13 @@ const localStyles = StyleSheet.create({
 
     textNormal: {
         fontSize: 14,
-        color: ColorConstants.MainSubGray,
+        color: ColorConstants.MainBlue,
         marginLeft: 3,
         fontWeight: 'normal',
     },
    
     transactionComponentContainer: {
-        height: '22%',
+        height: '23%',
         width: '100%',
         backgroundColor: ColorConstants.ElementBG,
         borderRadius: 4,
@@ -86,7 +86,26 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
     },
+    componentIcon: {
+        fontSize: 25,
+        color: ColorConstants.MainBlue
+    },
 
+    iconSquare:{
+        height: '125%',
+        width: '25%',
+        backgroundColor: ColorConstants.MainGray, 
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
+        marginRight: 20
+    },
+    transactionComponentText: {
+        fontSize: 14,
+        color: ColorConstants.MainSubGray,
+        marginLeft: 3,
+        fontWeight: 'normal',
+    },
     flexEndRow: {
         flexDirection: 'row',
         justifyContent: 'flex-end',

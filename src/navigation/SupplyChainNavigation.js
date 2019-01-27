@@ -40,7 +40,7 @@ const SupplyChainNavigator = createStackNavigator(
 
     },
     {
-        initialRouteName: 'SupplyChainMetrics',
+        initialRouteName: 'SupplyChainTx',
         headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
         //     header: <Header headerTitle={"Asset Name"} navigation={navigation} />

@@ -2,21 +2,40 @@ import {
     StyleSheet,
     Text,
     View,
-    Component
 } from 'react-native';
+import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
 
-export function CameraSourceModal (visibility) {
-    
-   
-        let visible = visibility;
+export default class CameraSourceModal extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            visibility: false
+        }
+    }
+
+    componentDidMount() {
+        let canWeSeeIt = this.props.visibility;
+        console.log(canWeSeeIt);
+        this.setState({ visibility: canWeSeeIt });
+
+    }
+
+    closeModal = () => {
+        this.setState({
+            visibility: false
+        })
+    }
+    render() {
+        let visible = this.props.visibility;
+        console.log(visible, 'visibile')
         return (
             <Modal
 
                 backdropColor={'rgba(0,0,0,0.5)'}
-                isVisible={visible}
+                isVisible={this.state.visibility}
                 onRequestClose={() => { console.log("modal closed") }}
             >
                 <View style={modalStyles.modalLower}>
@@ -32,7 +51,7 @@ export function CameraSourceModal (visibility) {
                                         name="camera"
                                         size={20}
                                         color="black"
-                                    onPress={() => visibile = !visibile}
+                                        onPress={() => this.closeModal()}
                                     >
                                     </Icon>
                                 </View>
@@ -46,7 +65,7 @@ export function CameraSourceModal (visibility) {
                                         size={20}
                                         containerStyle={modalStyles.iconButton}
                                         color="black"
-                                        onPress={() => visibile = !visibile}
+                                        onPress={(() => this.closeModal()}
                                     >
                                     </Icon>
                                 </View>
@@ -58,4 +77,4 @@ export function CameraSourceModal (visibility) {
             </Modal>
         );
     }
-
+}
