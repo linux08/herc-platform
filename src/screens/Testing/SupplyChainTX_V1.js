@@ -38,7 +38,7 @@ export default class SupplyChainTX extends Component {
             checkRecip: false,
            camerModalVisibility: false
         }
-
+        this.showCameraModal = this.showCameraModal.bind(this);
         // this.localOnChange = this.localOnChange.bind(this);
         // this.pwChange = this.pwChange.bind(this);
     }
@@ -88,7 +88,7 @@ export default class SupplyChainTX extends Component {
                     </View>
                 </View>
 
-                <CameraModal visibility={this.state.camerModalVisibility} />
+                <CameraModal visibility={this.state.camerModalVisibility} changeModal={this.showCameraModal} />
             </View>
         )
     }

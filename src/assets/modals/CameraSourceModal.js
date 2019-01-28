@@ -16,18 +16,18 @@ export default class CameraSourceModal extends Component {
         }
     }
 
-    componentDidMount() {
-        let canWeSeeIt = this.props.visibility;
-        console.log(canWeSeeIt);
-        this.setState({ visibility: canWeSeeIt });
+    // componentDidMount() {
+    //     let canWeSeeIt = this.props.visibility;
+    //     console.log(canWeSeeIt, "in the modal");
+    //     this.setState({ visibility: canWeSeeIt });
 
-    }
+    // }
 
-    closeModal = () => {
-        this.setState({
-            visibility: false
-        })
-    }
+    // closeModal = () => {
+    //     this.setState({
+    //         visibility: false
+    //     })
+    // }
     render() {
         let visible = this.props.visibility;
         console.log(visible, 'visibile')
@@ -35,7 +35,7 @@ export default class CameraSourceModal extends Component {
             <Modal
 
                 backdropColor={'rgba(0,0,0,0.5)'}
-                isVisible={this.state.visibility}
+                isVisible={this.props.visibility}
                 onRequestClose={() => { console.log("modal closed") }}
             >
                 <View style={modalStyles.modalLower}>
@@ -51,7 +51,7 @@ export default class CameraSourceModal extends Component {
                                         name="camera"
                                         size={20}
                                         color="black"
-                                        onPress={() => this.closeModal()}
+                                        onPress={this.props.changeModal}
                                     >
                                     </Icon>
                                 </View>
@@ -65,7 +65,7 @@ export default class CameraSourceModal extends Component {
                                         size={20}
                                         containerStyle={modalStyles.iconButton}
                                         color="black"
-                                        onPress={(() => this.closeModal()}
+                                        onPress={this.props.changeModal}
                                     >
                                     </Icon>
                                 </View>
