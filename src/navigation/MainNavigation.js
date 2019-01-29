@@ -11,7 +11,6 @@ import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
 
 
-import RegAssetNavigator from "./RegisterAssetNavigation";
 
 // import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
 // import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
@@ -23,7 +22,7 @@ import Camera from "../screens/Camera";
 import Confirm from "../screens/Confirm";
 import NewAssetLanding from "../screens/NewAssetLanding";
 import DocUp from "../screens/DocUp";
-import EdiT from "../screens/Edi-T";
+// import EdiT from "../screens/Edi-T";
 import ImageUpload from "../screens/ImageUpload";
 import Hipr from "../screens/Hipr";
 import HiprTransactions from "../screens/HiprTransactions";
@@ -34,10 +33,12 @@ import MenuOptions from "../screens/MenuOptions";
 import NewAssetConfirm from "../screens/NewAssetConfirm";
 import HiprLanding from "../screens/HiprLanding";
 import TrackAssetOptions from "../screens/TrackAssetOptions";
+
 import SupplyChainAssetList from "../screens/SupplyChainAssetList";
 import SupplyChainTxRx from "../screens/SupplyChainTxRx";
 import SupplyChainReview from "../screens/SupplyChainReview";
 import NewAssetForm from "../screens/NewAssetForm";
+
 import TrackAssetList from "../screens/TrackAssetList";
 import TxSwiperContainer from "../screens/TxSwiperContainer";
 import TxSwiper from "../components/TxSwiper";
@@ -52,9 +53,9 @@ import DocumentQRScanner from "../screens/DocumentQRScanner";
 import TestSplash from "../screens/Testing/TestSplash"
 
 import Header from "../components/Headers/Header";
-import ColorConstants from "../assets/ColorConstants";
 
-
+import RegAssetNavigator from "./RegisterAssetNavigation";
+import SupplyChainNav from "./SupplyChainNavigation";
 
 
 const MainNavigator = createStackNavigator({
@@ -72,13 +73,13 @@ const MainNavigator = createStackNavigator({
         })
        
     },
-    // RegAsset2: {
-    //     screen: RegAsset2,
-    //     navigationOptions: ({ navigation }) => ({
-    //         header: <Header headerTitle={"Register Asset2"} navigation={navigation} />
-    //     })
+    SupplyChainNav: {
+        screen: SupplyChainNav,
+        navigationOptions: ({ navigation }) => ({
+            header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
+        })
        
-    // },
+    },
     // RegAssetSplashTest: {
     //     screen: RegAssetSplashTest,
     //     navigationOptions: ({ navigation }) => ({
@@ -114,7 +115,7 @@ const MainNavigator = createStackNavigator({
     ImageUpload: { screen: ImageUpload },
     Camera: { screen: Camera },
     DocUp: { screen: DocUp },
-    EdiT: { screen: EdiT },
+    // EdiT: { screen: EdiT },
     MetricInput: { screen: MetricInput },
     Confirm: { screen: Confirm },
 
@@ -130,10 +131,10 @@ const MainNavigator = createStackNavigator({
     DocumentQRScanner: { screen: DocumentQRScanner },
 
 }, {
-        initialRouteName: 'TestSplash',
-        headerMode: 'screen',
+        initialRouteName: 'SupplyChainNav',
+        headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
-        //     header: <Header headerTitle={'Welcome'} navigation={navigation} />
+        //     header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
         // })
      
     })

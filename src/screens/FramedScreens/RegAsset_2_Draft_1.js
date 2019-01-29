@@ -5,23 +5,20 @@ import {
     Text,
     View,
     StatusBar,
-    Modal,
-    TouchableHighlight,
-    Image
+    ScrollView
 } from 'react-native';
 
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-const hercRound = require("../../assets/hercLogoBreak.png")
+const buildingPic = require("../../assets/83MaidenLn.jpg")
 import { AssetCard } from "../../components/AssetCard";
+import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
     BasePasswordInput,
     HercTextFieldWithLabel,
-    RegisterButton,
     CostDisplay
-
-} from '../../components/RegisterAssetComponents/RegisterAssetInputs';
+} from '../../components/SharedComponents';
 
 
 export default class RegAsset_2_Draft_1 extends Component {
@@ -31,13 +28,21 @@ export default class RegAsset_2_Draft_1 extends Component {
         console.log("componentTest")
         this.state = {
 
-            passTest: "TesterPassword",
+            Password: "HELMSLEYSPEAR",
             CoreProps: {
-                metric1: "Length",
-                metric2: "Width",
-                metrci3: "Color",
-                metric4: "Number Of Feet",
-                metric5: "Number Of Eyes"
+                metric1: "Tenant Name",
+                metric2: "Landlord Name",
+                metrci3: "Building Name / Address",
+                metric4: "Unit",
+                metric5: "Unit Type",
+                metric6: "Square footage",
+                metric8: "Lease start date",
+                metric9: "Lease commencement date",
+                metric10: "Rent commencement date",
+                metric11: "Lease end date",
+                metric12: "Current rent",
+                metric13: "Rent Bumps",
+                metric14: "Tenant expenses",
 
             }
         }
@@ -73,11 +78,11 @@ export default class RegAsset_2_Draft_1 extends Component {
 
     render() {
         let asset = {
-            Logo: hercRound,
-            Name: "Tester Asset",
+            Logo: buildingPic,
+            Name: "83 Maiden Lane",
             HercId: '42'
         }
-console.log(this.props.navigation, 'where are the params')
+        console.log(this.props.navigation, 'where are the params')
         let metricList = this.renderMetrics();
         return (
             <View style={styles.baseContainer}>
@@ -90,11 +95,10 @@ console.log(this.props.navigation, 'where are the params')
 
                 <View style={styles.bodyContainer}>
                     <AssetCard asset={asset} />
-                    <BasePasswordInput value={this.state.passTest} />
-
-
-                    {metricList}
-
+                    <BasePasswordInput label={"Asset Password"} value={this.state.Password} />
+                    <ScrollView>
+                        {metricList}
+                    </ScrollView>
                     <View style={localStyles.pageBottom}>
                         <CostDisplay amount={'1,000'} />
 
@@ -115,7 +119,7 @@ console.log(this.props.navigation, 'where are the params')
 }
 const localStyles = StyleSheet.create({
     pageBottom: {
-        flex: 1,
+        flex: 0,
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: 20,

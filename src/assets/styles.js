@@ -20,6 +20,7 @@ module.exports = StyleSheet.create({
     backgroundColor: ColorConstants.MainBlue,
     alignItems: "center",
     justifyContent: "flex-start",
+    display: 'flex'
   },
   
   bodyContainer: {

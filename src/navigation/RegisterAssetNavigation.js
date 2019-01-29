@@ -9,35 +9,35 @@ import RegAsset2 from "../screens/FramedScreens/RegAsset_2_Draft_1";
 
 const RegisterAssetNavigator = createStackNavigator(
     {
-        RegAssetSplash1: { 
+        RegAssetSplash1: {
             screen: RegAssetSplash1,
-            // navigationOptions: ({ navigation }) => ({
-            //     header: <Header headerTitle={"Register Asset"} navigation={navigation} />
-            // })
-        
+            navigationOptions: ({ navigation }) => ({
+                header: <Header headerTitle={"Register Asset"} navigation={navigation} />
+            })
+
         },
-        RegAsset1: { 
+        RegAsset1: {
             screen: RegAsset1,
             navigationOptions: ({ navigation }) => ({
                 header: <Header headerTitle={'Register Asset1'} navigation={navigation} />
             })
-            
+
         },
-        RegAsset2: { 
+        RegAsset2: {
             screen: RegAsset2,
             navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={'Register Asset2'} navigation={navigation} />
+                header: <Header headerTitle={'Register Confirm'} navigation={navigation} />
             })
-            
+
         }
     },
-   {
-        initalRouteName: 'RegAssetSplash1',
-        headerMode: 'none',
-       
+    {// when a nested stack navigator, set headerMode: 'none' to disable the passed in header
+        initalRouteName: 'RegAsset2',
+        // headerMode: 'none',
+
     }
 
-    );
+);
 
 
 export default RegisterAssetNavigator;

@@ -13,7 +13,9 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { BasePasswordInput, HercTextInput, HercTextInputWithLabel, AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
+import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
+import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
+
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
 
 export default class RegAsset1 extends Component {
