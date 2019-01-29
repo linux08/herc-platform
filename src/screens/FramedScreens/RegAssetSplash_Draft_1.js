@@ -7,30 +7,29 @@ import {
     Image
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
 import { createStackNavigator } from "react-navigation";
-import Header from "../../components/Headers/Header";
-export default class RegAssetSplashTest extends Component {
+import RegHeader from "../../components/Headers/Header";
 
+export default class RegAssetSplashTest extends Component {
+//  navigationOptions = ({ navigation }) => ({
+//             header: <RegHeader headerTitle={"Register Asset"} params={goBackTo = 'RegAssetSplash1'} navigation={navigation} />
+//         })
 
     constructor(props) {
         super(props);
         console.log(this.props, 'this props in regAssetSplash')
 
     }
-    static navigationOptions = () => ({
-        header: <Header headerTitle={"Register Asset"} />
-    })
 
     onPress = () => {
-        console.log("pressing to go");
+        console.log("pressing to go in RegAssetSplashDraft1");
         // const { navigate } = this.props.navigation;
 
-        this.props.navigation.navigate('ComponentTest');
+        this.props.navigation.navigate('RegAsset1');
     }
     render() {
         const { navigate } = this.props.navigation;

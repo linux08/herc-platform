@@ -5,12 +5,22 @@ import { widthPercentageToDP, heightPercentageToDP } from './responisiveUI';
 
 module.exports = StyleSheet.create({
 
+  pageBottom: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: 20,
+    alignItems: 'center',
+    alignContent: 'center'
+},
+
   baseContainer: {
     height: '100%',
     width: '100%',
     backgroundColor: ColorConstants.MainBlue,
     alignItems: "center",
     justifyContent: "flex-start",
+    display: 'flex'
   },
   
   bodyContainer: {

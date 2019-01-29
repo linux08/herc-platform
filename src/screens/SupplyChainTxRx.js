@@ -12,7 +12,7 @@ import {
   StatusBar,
   TextInput
 } from "react-native";
-import { createStackNavigator } from "react-navigation";
+import { createcreateStackNavigator } from "react-navigation";
 import styles from "../assets/styles";
 import { connect } from "react-redux";
 import { startTrans } from "../actions/AssetActions";

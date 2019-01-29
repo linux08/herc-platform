@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image, ScrollView, TouchableHighlight, Alert } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import styles from '../assets/styles';
 import { connect } from 'react-redux';
 import newOriginator from "../components/buttons/originatorButton.png"; // todo: turn into vector

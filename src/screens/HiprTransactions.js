@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { StyleSheet, Button, Text, TextInput, ScrollView, ActivityIndicator, Modal, View, Image, TouchableHighlight, Alert } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import styles from '../assets/styles';
 import hiprLogo from "../assets/hiprLogo.png";
 

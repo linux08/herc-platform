@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, Image, TouchableHighlight, Alert, ScrollView, YellowBox, Modal, ActivityIndicator, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import styles from '../assets/styles';
 import submit from "./buttons/submit.png"; // todo: turn into vector
 import { sendTrans } from "../actions/AssetActions";

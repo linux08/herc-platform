@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableHighlight, Alert, Platform } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import styles from '../assets/styles';
 // import leaderBrd from '../assets/leaderBrdBtn.png';

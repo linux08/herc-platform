@@ -6,25 +6,23 @@ import {
 } from "react-native";
 import React, { Component } from "react";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import menuIcon from 'react-native-vector-icons/Entypo';
 import styles from "./HeaderStyles";
-import { stackNavigator, withNavigation } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import ColorConstants from "../../assets/ColorConstants";
-import ComponentTest from "../../screens/FramedScreens/RegAsset_1_Draft_1";
 const bgImage = require("../../assets/main-bg.png")
 
 
 
-/// Still stuck with header going back, it's there, just can't seem to put my finger on it
-
-
-{/* <Icon.Button /> for use once it's wired up */ }
  class Header extends Component {
     constructor(props) {
         super(props);
     }
     _goBack = () => {
-        console.log(this.props.navigation, "trying to go back")
-        this.props.navigation.goBack();
+        let navigation = this.props.navigation;
+        // let goBackTo = navigation.params.goBackTo
+        console.log(navigation, "trying to go back")
+        navigation.goBack();
     }
 
 
@@ -42,11 +40,11 @@ const bgImage = require("../../assets/main-bg.png")
                                 color={ColorConstants.MainGold}
                             />
                         </View>
-                        <Text style={styles.headerText}>{this.props.headerTitle}</Text>
+                        <Text style={styles.headerText}>{this.props.headerName}</Text>
                         <View style={styles.sideHeaders}>
                             <Icon onPress={() => this.props.navigation.navigate("settings")}
                                 style={[styles.iconButton, { marginRight: 20 }]}
-                                name='heart'
+                                name='gear'
                                 color={ColorConstants.MainGold}
                             />
                         </View>

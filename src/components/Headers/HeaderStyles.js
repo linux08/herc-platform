@@ -23,7 +23,7 @@ module.exports = StyleSheet.create({
         alignContent: "center",
         alignItems: "center",
         shadowColor: 'transparent',
-        marginTop: 5,
+        // marginTop: 5,
     },
 
     sideHeaders: {

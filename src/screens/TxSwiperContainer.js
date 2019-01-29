@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Platform, TextInput, Text, View, Image, ScrollView, TouchableHighlight, Alert, TouchableNativeFeedback } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Swiper from '../components/TxSwiper';
 import { connect } from "react-redux";
 import styles from '../assets/styles';
