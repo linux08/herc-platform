@@ -4,11 +4,6 @@ import { RNCamera } from 'react-native-camera';
 import { relative } from 'path';
 
 export default class Camera extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: null
-    }
-  }
 
   constructor(props) {
     super(props);
@@ -86,6 +81,7 @@ export default class Camera extends Component {
 
   render() {
     console.log(Object.keys(this.state), "thisStatein Render")
+    
     return (
       <View style={styles.container}>
         {this.state.image ? this.renderImage() : this.renderCamera()}

@@ -33,7 +33,8 @@ export default class CameraSourceModal extends Component {
         console.log(visible, 'visibile')
         return (
             <Modal
-
+            //OnBackdrop will close the modal if clicked on outside of it
+                onBackdropPress={this.props.onBackdropPress}
                 backdropColor={'rgba(0,0,0,0.5)'}
                 isVisible={this.props.visibility}
                 onRequestClose={() => { console.log("modal closed") }}
@@ -51,7 +52,7 @@ export default class CameraSourceModal extends Component {
                                         name="camera"
                                         size={20}
                                         color="black"
-                                        onPress={this.props.changeModal}
+                                        onPress={this.props._renderCamera}
                                     >
                                     </Icon>
                                 </View>
@@ -65,7 +66,7 @@ export default class CameraSourceModal extends Component {
                                         size={20}
                                         containerStyle={modalStyles.iconButton}
                                         color="black"
-                                        onPress={this.props.changeModal}
+                                        onPress={this.props._pickImage}
                                     >
                                     </Icon>
                                 </View>

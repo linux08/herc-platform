@@ -12,74 +12,7 @@ import { addPhoto } from '../actions/AssetActions';
 var ImagePicker = require('react-native-image-picker');
 
 class ImageUpload extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state;
-    let headerStyles = StyleSheet.create({
-      header__container: {
-        display: "flex",
-        height: 80,
-        alignSelf: "center",
-        flex: 1,
-        alignContent: "center",
-        alignItems: "center",
-        marginTop: 40,
-        paddingBottom: 20
-      },
-      header__container__centeredBox: {
-        height: "100%",
-        alignItems: "center",
-        flexDirection: 'row'
-      },
-      header__text__box: {
-        height: "100%",
-        marginBottom: 5,
-        marginLeft: 12,
-      },
-      header__image__box: {
-        height: "100%",
-        borderRadius: 100
-      },
-      assetHeaderLogo: {
-        height: 35,
-        width: 35,
-        borderRadius: 50,
-      },
-      headerText: {
-        fontFamily: "dinPro",
-        fontSize: 26,
-        alignSelf: "center",
-        fontWeight: "bold",
-        color: "black",
-        textAlign: "center",
-        marginTop: 2,
-      },
-    })
 
-    return {
-      headerTitle:
-      <View style={headerStyles.header__container}>
-        <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => navigation.navigate("MenuOptions")}>
-          <View style={headerStyles.header__container__centeredBox}>
-            <View style={headerStyles.header__image__box}>
-              <Image
-                style={headerStyles.assetHeaderLogo}
-                source={{ uri: params.logo }}
-              />
-            </View>
-            <View style={headerStyles.header__text__box}>
-              <Text style={headerStyles.headerText}>{params.name}</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-      </View>,
-
-      headerTitleStyle: {
-        textAlign: 'center',
-        alignSelf: 'center',
-        backgroundColor: '#021227',
-      }
-    }
-  }
   constructor(props){
     super(props)
     this.setImage = this.setImage.bind(this);

@@ -18,7 +18,7 @@ import { createStackNavigator } from "react-navigation";
 
 
 import BlockScanner from "../screens/BlockScanner";
-import Camera from "../screens/Camera";
+import Camera from "../components/Camera";
 import Confirm from "../screens/Confirm";
 import NewAssetLanding from "../screens/NewAssetLanding";
 import DocUp from "../screens/DocUp";

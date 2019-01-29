@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import ColorConstants from "../assets/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
 
+
 export function TransInfoCard(props) {
     return (
         <View style={localStyles.transInfoCard}>
@@ -27,18 +28,27 @@ export function TransInfoCard(props) {
 }
 
 export function TransactionComponent(props) {
+    let bgColor = props.image ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    console.log(props, "transaction component")
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={localStyles.iconSquare}>
-            <Icon
-                style={localStyles.componentIcon}
-                name={props.iconName}
-                onPress={props.onPress}
-            >
-            </Icon>
+            <View style={[localStyles.iconSquare, {backgroundColor: bgColor} ]}>
+                {props.image ?
+                    <Image
+                        style={localStyles.imageSquare}
+                        source={{ uri: props.image }} />
+                    :
+
+                    <Icon
+                        style={localStyles.componentIcon}
+                        name={props.iconName}
+                        onPress={props.onPress}
+                    >
+                    </Icon>
+                }
             </View>
-            <Text style={localStyles.textNormal}>{props.componentName}</Text>
+            <Text style={localStyles.textNormal}>{props.image ? "Change Photo" : props.componentName}</Text>
         </View>
 
 
@@ -73,7 +83,7 @@ const localStyles = StyleSheet.create({
         marginLeft: 3,
         fontWeight: 'normal',
     },
-   
+
     transactionComponentContainer: {
         height: '23%',
         width: '100%',
@@ -90,11 +100,21 @@ const localStyles = StyleSheet.create({
         fontSize: 25,
         color: ColorConstants.MainBlue
     },
+    imageSquare: {
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // margin: 10,
+        // marginRight: 20,
+        resizeMode: 'contain'
 
-    iconSquare:{
+    },
+
+    iconSquare: {
         height: '125%',
         width: '25%',
-        backgroundColor: ColorConstants.MainGray, 
+        backgroundColor: ColorConstants.MainGray,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,

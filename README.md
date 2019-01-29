@@ -2,18 +2,16 @@
 #  UI OverHaul!
 ## I've changed the loading screen to save time styling components. 
 
-##  The way I imagine it working is like this:
-*  We shall consider this branch "Master"
-*  To Build something, create a new branch with your name, Date if you want, and what the branch is for. For instance, to start I will probably do something like ```Stack-SharedComponents``` and in it would be whatever components could be shared accross pages, probably inputs and labels etc. When I was finished I would put in a PR to merge with this branch and have it reviewed. 
-*  Try and keep commits small, maybe a page worth at a time...easier to debug, I'm bad at this, but I will do my best.
+## `1.22.2019 - 1.31.2018`
+###  UI Refactor
+ (🎩 @stefanbemelmans)
+  
+🔨 Improvements
 
-###  Flows are as follows:
+`herc-edge-login`
 
-*  stack: [x] Register, Track, Supply Chain
-*  Mark: Doc Storage, Etherscan, Login
-*  Ahmer:  Wallet, Settings
-
-*  Loose Ends: Validate
+*  fix image map in Register Asset
+*  fix image map in TX  
 
 ## `1.12.2019 - 1.21.2018`
 ### UI Refactor

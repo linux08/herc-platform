@@ -21,7 +21,7 @@ class EDI_T_Sets_Modal extends Component {
     _arrayOfSets = () => {
         console.log("mapping sets begins")
         edits.map((item, idx) => {
-            console.log(item)
+            // console.log(item)
             return (
                 <TouchableHighlight style={{ justifyContent: "center" }} key={idx} onPress={() => this._setEdit(item)}>
                     <View style={localStyles.editField}>

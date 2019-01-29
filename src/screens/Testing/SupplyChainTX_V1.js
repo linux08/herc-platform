@@ -17,6 +17,9 @@ import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
 import { TransInfoCard, TransactionComponent } from "../../components/SupplyChainComponents";
+var ImagePicker = require('react-native-image-picker');
+import Camera from "../../components/Camera";
+
 
 import {
     BigYellowButton
@@ -38,10 +41,14 @@ export default class SupplyChainTX extends Component {
             checkOrig: false,
             checkRecip: false,
             camerModalVisibility: false,
-            editModalVisibility: false
+            editModalVisibility: false,
+            img: {},
+            doc: {}
         }
         this.showCameraModal = this.showCameraModal.bind(this);
         this.showEditModal = this.showEditModal.bind(this);
+        this._pickImage = this._pickImage.bind(this);
+        this._renderCamera = this._renderCamera(this);
         // this.localOnChange = this.localOnChange.bind(this);
         // this.pwChange = this.pwChange.bind(this);
     }
@@ -52,6 +59,33 @@ export default class SupplyChainTX extends Component {
             camerModalVisibility: !this.state.camerModalVisibility
         })
 
+    }
+    _pickImage = () => {
+        console.log("ImageUpload Camera: picking image")
+
+        ImagePicker.launchImageLibrary({}, (response) => {
+
+            if (response.didCancel) {
+                console.log('ImageUpload Camera: User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
+            }
+            else {
+                let source = { uri: response.uri };
+                this.setState({
+                    img: {
+                        image: "data:image/jpg;base64," + response.data,
+                        size: response.fileSize,
+                        uri: source
+                    }
+                });
+                this.showCameraModal();
+            }
+        });
     }
 
     showEditModal = () => {
@@ -65,8 +99,12 @@ export default class SupplyChainTX extends Component {
 
     testOnPress = () => {
         console.log("this will be Transaction Start!");
+        console.log(this.state, 'state here');
     }
 
+    _renderCamera = () => {
+        return <Camera />
+    }
 
 
     render() {
@@ -85,7 +123,7 @@ export default class SupplyChainTX extends Component {
 
                     <View style={localStyles.transactionComponentListContainer}>
 
-                        <TransactionComponent onPress={() => this.showCameraModal()} iconName='camera' componentName={"Add Photo"} />
+                        <TransactionComponent image={this.state.img.image} onPress={() => this.showCameraModal()} iconName='camera' componentName={"Add Photo"} />
                         <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
                         <TransactionComponent onPress={() => this.showEditModal()} iconName='pencil' componentName={"Choose EDI-T Sets"} />
                         <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
@@ -96,7 +134,14 @@ export default class SupplyChainTX extends Component {
                     </View>
                 </View>
 
-                <CameraModal visibility={this.state.camerModalVisibility} changeModal={this.showCameraModal} />
+                <CameraModal
+                    visibility={this.state.camerModalVisibility}
+                    changeModal={this.showCameraModal}
+                    _pickImage={this._pickImage}
+                    _renderCamera={this._renderCamera}
+                />
+
+
                 <EditModal visibility={this.state.editModalVisibility} changeModal={this.showEditModal} />
             </View>
         )
