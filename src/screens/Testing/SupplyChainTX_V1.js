@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CameraModal from '../../assets/modals/CameraSourceModal';
+import EditModal from '../../assets/modals/Edi-T-Modal'
 import modalStyles from "../../assets/modals/ModalStyles";
 const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
@@ -36,9 +37,11 @@ export default class SupplyChainTX extends Component {
         this.state = {
             checkOrig: false,
             checkRecip: false,
-           camerModalVisibility: false
+            camerModalVisibility: false,
+            editModalVisibility: false
         }
         this.showCameraModal = this.showCameraModal.bind(this);
+        this.showEditModal = this.showEditModal.bind(this);
         // this.localOnChange = this.localOnChange.bind(this);
         // this.pwChange = this.pwChange.bind(this);
     }
@@ -51,8 +54,13 @@ export default class SupplyChainTX extends Component {
 
     }
 
-    goToMetrics = () => {
-        
+    showEditModal = () => {
+        console.log('show the edit modal');
+        this.setState({
+            editModalVisibility: !this.state.editModalVisibility
+        })
+
+
     }
 
     testOnPress = () => {
@@ -79,7 +87,7 @@ export default class SupplyChainTX extends Component {
 
                         <TransactionComponent onPress={() => this.showCameraModal()} iconName='camera' componentName={"Add Photo"} />
                         <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
-                        <TransactionComponent iconName='pencil' componentName={"Choose EDI-T Sets"} />
+                        <TransactionComponent onPress={() => this.showEditModal()} iconName='pencil' componentName={"Choose EDI-T Sets"} />
                         <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
 
                     </View>
@@ -89,6 +97,7 @@ export default class SupplyChainTX extends Component {
                 </View>
 
                 <CameraModal visibility={this.state.camerModalVisibility} changeModal={this.showCameraModal} />
+                <EditModal visibility={this.state.editModalVisibility} changeModal={this.showEditModal} />
             </View>
         )
     }
