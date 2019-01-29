@@ -1,6 +1,6 @@
- const edits = [[140, 'Product Registration'], [141, 'Product Service Claim Response'],
+const edits = [[140, 'Product Registration'], [141, 'Product Service Claim Response'],
 [142, 'Product Service Claim'], [143, 'Product Service Notification'], [159, 'Motion Picture Booking Confirmation'], [170, 'Revenue Receipts Statement'],
-[180, 'Return Merchandise Authorization and Notification'],[244, 'Product Source Information'], [249, 'Animal Toxicological Data'],
+[180, 'Return Merchandise Authorization and Notification'], [244, 'Product Source Information'], [249, 'Animal Toxicological Data'],
 [251, 'Pricing Support'], [290, 'Cooperative Advertising Agreements'], [501, 'Vendor Performance Review'], [503, 'Pricing History'],
 [504, 'Clauses and Provisions'], [511, 'Requisition'], [517, 'Material Obligation Validation'], [536, 'Logistics Reassignment'],
 [561, 'Contract Abstract'], [567, 'Contract Completion Status'], [568, 'Contract Payment Management Report'], [620, 'Excavation Communication'],
@@ -24,10 +24,10 @@
 [944, 'Warehouse Stock Transfer Receipt Advice'], [945, 'Warehouse Shipping Advice'], [947, 'Warehouse Inventory Adjustment Advice']];
 
 let arrayOfObjects = edits.map(x => {
-    return ({
-      value: x[0],
-      name: x[1]
-    });
+  return ({
+    value: x[0],
+    name: x[1]
   });
+});
 
 export default arrayOfObjects;

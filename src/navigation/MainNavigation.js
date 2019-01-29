@@ -22,7 +22,7 @@ import Camera from "../screens/Camera";
 import Confirm from "../screens/Confirm";
 import NewAssetLanding from "../screens/NewAssetLanding";
 import DocUp from "../screens/DocUp";
-import EdiT from "../screens/Edi-T";
+// import EdiT from "../screens/Edi-T";
 import ImageUpload from "../screens/ImageUpload";
 import Hipr from "../screens/Hipr";
 import HiprTransactions from "../screens/HiprTransactions";
@@ -115,7 +115,7 @@ const MainNavigator = createStackNavigator({
     ImageUpload: { screen: ImageUpload },
     Camera: { screen: Camera },
     DocUp: { screen: DocUp },
-    EdiT: { screen: EdiT },
+    // EdiT: { screen: EdiT },
     MetricInput: { screen: MetricInput },
     Confirm: { screen: Confirm },
 
