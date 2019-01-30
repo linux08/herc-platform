@@ -22,25 +22,39 @@ export default class Camera extends Component {
   }
 
   takePicture = async () => {
-    console.log("taking");
+    console.log("takingPicture");
     const { params } = this.props.navigation.state;
+    console.log(params, "camera params")
     if (this.camera) {
       //picture orientation bug fix zube card #406
       const options = { base64: true, fixOrientation: true }
       try {
         const data = await this.camera.takePictureAsync(options);
-        // this._getSize(data.base64);
+        console.log(data, 'taken picture info, looking for name')
         let image = Object.assign({}, {
+          name: uri.substring(uri.lastIndexOf('/') + 1, uri.length()),
           uri: data.uri,
           size: this._getSize(data.base64),
           string: "data:image/jpg;base64," + data.base64
         })
-        this.setState({ image })
-
-        params.setPic(this.state.image);
+        console.log(image.name, "image name!!!! i hope")
+        this.setState({
+          image
+        })
+        // Trying to make the camera reusable for the register asset flow,
+        // passing in the route that is calling the camera in params.origRoute
+        // also passing in the function to set the state with the taken image.
         console.log("Camera: afterBase", data.uri, "Camera: size: ", this._getSize(data.base64));
-      } catch (err) { console.log('err: ', err)}
+      } catch (err) { console.log('err: ', err) }
     };
+  }
+
+  acceptPicture = () => {
+    const { params } = this.props.navigation.state;
+    console.log("its a keeper");
+    params.setPic(this.state.image);
+    params.navigation.navigate(params.origRoute)
+
   }
 
   renderCamera() {
@@ -68,20 +82,20 @@ export default class Camera extends Component {
       <View>
         <Image
           source={{ uri: this.state.image.uri }}
-          style={styles.preview}/>
+          style={styles.preview} />
         <Text
           style={styles.cancel}
           onPress={() => this.setState({ image: null })}>Cancel</Text>
         <Text
           style={styles.accept}
-          onPress={() => this.props.navigation.goBack()}>Accept</Text>
+          onPress={this.acceptPicture}>Accept</Text>
       </View>
     );
   }
 
   render() {
     console.log(Object.keys(this.state), "thisStatein Render")
-    
+
     return (
       <View style={styles.container}>
         {this.state.image ? this.renderImage() : this.renderCamera()}
@@ -96,7 +110,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
+    padding: 50
   },
+  
   preview: {
     flex: 1,
     justifyContent: 'flex-end',

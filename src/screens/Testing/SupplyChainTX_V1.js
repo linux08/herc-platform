@@ -10,16 +10,14 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CameraModal from '../../assets/modals/CameraSourceModal';
 import EditModal from '../../assets/modals/Edi-T-Modal'
-import modalStyles from "../../assets/modals/ModalStyles";
-const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, TransactionComponent } from "../../components/SupplyChainComponents";
-var ImagePicker = require('react-native-image-picker');
-import Camera from "../../components/Camera";
+import { TransInfoCard, TransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
 
+var ImagePicker = require('react-native-image-picker');
+const { height, width } = Dimensions.get('window');
 
 import {
     BigYellowButton
@@ -38,8 +36,6 @@ export default class SupplyChainTX extends Component {
         super(props);
         console.log("componentTest")
         this.state = {
-            checkOrig: false,
-            checkRecip: false,
             camerModalVisibility: false,
             editModalVisibility: false,
             img: {},
@@ -48,9 +44,14 @@ export default class SupplyChainTX extends Component {
         this.showCameraModal = this.showCameraModal.bind(this);
         this.showEditModal = this.showEditModal.bind(this);
         this._pickImage = this._pickImage.bind(this);
-        this._renderCamera = this._renderCamera(this);
-        // this.localOnChange = this.localOnChange.bind(this);
-        // this.pwChange = this.pwChange.bind(this);
+
+    }
+
+    setPic = (snappedImg) => {
+        console.log("setting a taken image");
+        this.setState({
+            img: snappedImg
+        })
     }
 
     showCameraModal = () => {
@@ -102,8 +103,14 @@ export default class SupplyChainTX extends Component {
         console.log(this.state, 'state here');
     }
 
-    _renderCamera = () => {
-        return <Camera />
+    // renderCamera(){
+    //     console.log("trying to go to the camera")
+    //     this.props.navigation.navigate("Camera");
+    // }
+
+    _onBackdropPress = () => {
+        this.showCameraModal();
+
     }
 
 
@@ -123,7 +130,12 @@ export default class SupplyChainTX extends Component {
 
                     <View style={localStyles.transactionComponentListContainer}>
 
-                        <TransactionComponent image={this.state.img.image} onPress={() => this.showCameraModal()} iconName='camera' componentName={"Add Photo"} />
+                        <CameraTransactionComponent
+                            image={this.state.img.string}
+                            onPress={() => this.showCameraModal()}
+                            iconName='camera'
+                            componentName={"Add Photo"}
+                        />
                         <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
                         <TransactionComponent onPress={() => this.showEditModal()} iconName='pencil' componentName={"Choose EDI-T Sets"} />
                         <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
@@ -138,7 +150,10 @@ export default class SupplyChainTX extends Component {
                     visibility={this.state.camerModalVisibility}
                     changeModal={this.showCameraModal}
                     _pickImage={this._pickImage}
-                    _renderCamera={this._renderCamera}
+                    setPic={this.setPic}
+                    navigation={this.props.navigation}
+                    routeName={'SupplyChainTx'}
+                    onBackdropPress={this._onBackdropPress}
                 />
 
 

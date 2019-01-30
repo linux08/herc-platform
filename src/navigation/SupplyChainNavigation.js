@@ -3,10 +3,10 @@ import { createStackNavigator } from "react-navigation";
 
 import Header from "../components/Headers/Header";
 
+import Camera from "../screens/Camera";
 import SupplyChainSplash from "../screens/Testing/SupplyChainSplash";
 import SupplyChainSideChoice from "../screens/Testing/SupplyChainSideChoice";
 import SupplyChainTx from "../screens/Testing/SupplyChainTX_V1";
-// import Camera from "../components/Camera";
 import SupplyChainMetrics from  "../screens/Testing/SupplyChainMetrics";
 
 const SupplyChainNavigator = createStackNavigator(
@@ -33,6 +33,13 @@ const SupplyChainNavigator = createStackNavigator(
             navigationOptions: ({ navigation }) => ({
                 header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
             })
+
+        },
+        Camera: {
+            screen: Camera,
+            // navigationOptions: ({ navigation }) => ({
+            //     header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
+            // })
 
         }
 

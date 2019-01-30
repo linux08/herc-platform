@@ -18,7 +18,7 @@ import { createStackNavigator } from "react-navigation";
 
 
 import BlockScanner from "../screens/BlockScanner";
-import Camera from "../components/Camera";
+// import Camera from "../screens/Camera";
 import Confirm from "../screens/Confirm";
 import NewAssetLanding from "../screens/NewAssetLanding";
 import DocUp from "../screens/DocUp";
@@ -113,7 +113,7 @@ const MainNavigator = createStackNavigator({
     SupplyChainTxRx: { screen: SupplyChainTxRx },
     SupplyChainReview: { screen: SupplyChainReview },
     ImageUpload: { screen: ImageUpload },
-    Camera: { screen: Camera },
+    // Camera: { screen: Camera },
     DocUp: { screen: DocUp },
     // EdiT: { screen: EdiT },
     MetricInput: { screen: MetricInput },

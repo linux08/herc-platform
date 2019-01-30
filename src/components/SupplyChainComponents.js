@@ -27,6 +27,34 @@ export function TransInfoCard(props) {
     )
 }
 
+export function CameraTransactionComponent(props) {
+    let bgColor = props.image ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    console.log(props, "transaction component")
+    return (
+
+        <View style={localStyles.transactionComponentContainer}>
+            <View style={[localStyles.iconSquare, {backgroundColor: bgColor} ]}>
+                {props.image ?
+                    <Image
+                        style={localStyles.imageSquare}
+                        source={{ uri: props.image }} />
+                    :
+
+                    <Icon
+                        style={localStyles.componentIcon}
+                        name={props.iconName}
+                        onPress={props.onPress}
+                    >
+                    </Icon>
+                }
+            </View>
+            <Text style={localStyles.textNormal}>{props.componentName}</Text>
+        </View>
+
+
+    )
+}
+
 export function TransactionComponent(props) {
     let bgColor = props.image ? ColorConstants.ElementBG : ColorConstants.MainGray;
     console.log(props, "transaction component")

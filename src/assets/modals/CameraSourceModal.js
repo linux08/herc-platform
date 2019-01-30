@@ -16,24 +16,27 @@ export default class CameraSourceModal extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     let canWeSeeIt = this.props.visibility;
-    //     console.log(canWeSeeIt, "in the modal");
-    //     this.setState({ visibility: canWeSeeIt });
 
-    // }
+    goToCamera = () => {
+        console.log('goingtoCamera')
+        this.props.changeModal(),
 
-    // closeModal = () => {
-    //     this.setState({
-    //         visibility: false
-    //     })
-    // }
+            this.props.navigation.navigate("Camera",
+                {   // Passing in the route to return to after taking a picture 
+                    origRoute: this.props.routeName,
+                    navigation: this.props.navigation,
+                    // sets the taken pic in local state of SupplyChainTX
+                    setPic: this.props.setPic
+                }
+            )
+    }
+
     render() {
         let visible = this.props.visibility;
         console.log(visible, 'visibile')
         return (
             <Modal
-            //OnBackdrop will close the modal if clicked on outside of it
+                //OnBackdrop will close the modal if clicked on outside of it
                 onBackdropPress={this.props.onBackdropPress}
                 backdropColor={'rgba(0,0,0,0.5)'}
                 isVisible={this.props.visibility}
@@ -52,7 +55,7 @@ export default class CameraSourceModal extends Component {
                                         name="camera"
                                         size={20}
                                         color="black"
-                                        onPress={this.props._renderCamera}
+                                        onPress={this.goToCamera}
                                     >
                                     </Icon>
                                 </View>
