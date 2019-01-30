@@ -15,7 +15,8 @@ import {
   Share,
   ActivityIndicator,
   Button,
-  PermissionsAndroid
+  PermissionsAndroid,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
 import Firebase from "../constants/Firebase";
@@ -37,7 +38,9 @@ import { addDocStorage, sendTrans } from "../actions/AssetActions";
 import { TOKEN_ADDRESS } from "../components/settings";
 import { captureRef } from "react-native-view-shot";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import CustomModal from "../components/CustomModal";
+import Modal from 'react-native-modal';
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 console.disableYellowBox = true;
 
 class DocumentStorage extends React.Component {
@@ -48,11 +51,15 @@ class DocumentStorage extends React.Component {
       name: "",
       size: "",
       type: "",
-      content: ""
+      content: "",
     },
+    isVisible: true,
     uploadDoc: null,
     uploadHistory: [],
-    showLoader: true
+    showLoader: true,
+    showCompleteModal: false,
+    showEmptySubmissionModal: false,
+    showFeesModal: false
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -222,7 +229,8 @@ class DocumentStorage extends React.Component {
             let shortenedURL = response.data.url;
             bindedThis.setState(
               {
-                document: { ...this.state.document, downloadURL: shortenedURL }
+                document: { ...this.state.document, downloadURL: shortenedURL },
+                showCompleteModal: true
               },
               () => this._updateHistory()
             );
@@ -335,7 +343,7 @@ class DocumentStorage extends React.Component {
             style={{ backgroundColor: "#cbccd2", marginHorizontal: 10, marginVertical: 5, flexDirection: "row", justifyContent: "space-around", height: 35, alignItems: "center", borderRadius: 2 }}
           >
             {/* <Text style={{ color: "white" }}>{date}</Text> */}
-            <Text style={{ color: "black", fontSize: 14 }}>{filename}</Text>
+            <Text style={{ color: "black", fontSize: 12, width: "50%", height: 18 }}>{filename}</Text>
             <TouchableHighlight
               onPress={() => {
                 this._writeToClipboard(downloadURL);
@@ -402,41 +410,14 @@ class DocumentStorage extends React.Component {
     if (Object.keys(this.state.document)) {
       let total =
         parseFloat(this._getDocPrice()) + parseFloat(this._getBurnPrice());
-      // let total = 0.000032 + ;
-
-      Alert.alert(
-        "Doc Fee: " +
-          this._getDocPrice().toString() +
-          " HERC \nBurn Amount: " +
-          this._getBurnPrice().toString() +
-          " HERC",
-        "Total: " +
-          total.toFixed(6) +
-          " HERC" +
-          "\nETH Gas Cost(est.): " +
-          "0.000223 ETH" +
-          "\nDo you authorize this payment?",
-        [
-          {
-            text: "No",
-            onPress: () => console.log("No Pressed"),
-            style: "cancel"
-          },
-          { text: "Yes", onPress: () => this._checkBalance() }
-        ],
-        { cancelable: false }
-      );
+      this.setState({ showFeesModal: true })
     } else {
-      Alert.alert(
-        "Oh no!",
-        "This is an empty submission",
-        [{ text: "Ok", onPress: () => console.log("OK Pressed") }],
-        { cancelable: true }
-      );
+      this.setState({ showEmptySubmissionModal: true })
     }
   }
 
   async _checkBalance() {
+    this.setState({ showFeesModal: false })
     if (!this.state.balance) {
       return;
     }
@@ -580,6 +561,67 @@ class DocumentStorage extends React.Component {
     }
   };
 
+  _renderModals = () => {
+
+    let total =
+    parseFloat(this._getDocPrice()) + parseFloat(this._getBurnPrice());
+    
+      return (
+        <View>
+        <Modal onBackButtonPress={() => { this.setState({ showCompleteModal: false })}}
+        isVisible={this.state.showCompleteModal} >
+          <View style={localStyles.modalBackground}>
+          <SimpleIcon style={localStyles.pad10} name='check' size={48} color='#95c260' />
+              <Text style={[localStyles.pad10, localStyles.contentFont]}>Your file has been uploaded</Text>
+              <View style={[{ flexDirection: 'row', alignSelf: 'flex-end' }, localStyles.pad10]}>
+                  <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this._writeToClipboard(this.state.document.downloadURL) }}>
+                  <Text style={localStyles.dismissAcceptText}>Copy</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this._share() }}>
+                      <Text style={localStyles.dismissAcceptText}>Share</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this.setState({ showCompleteModal: false, document: {} }) }}>
+                      <Text style={localStyles.dismissRejectText}>Cancel</Text>
+                  </TouchableOpacity>
+              </View>
+          </View>
+          </Modal>
+          
+          <Modal onBackButtonPress={() => { this.setState({ showFeesModal: false })}}
+          isVisible={this.state.showFeesModal} >
+            <View style={localStyles.modalBackground}>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}>Doc Fee: {this._getDocPrice().toString()} HERC </Text>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}>Burn Amount: {this._getBurnPrice().toString()} HERC </Text>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}>Total: {total.toFixed(6)} HERC </Text>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}>Gas Cost(est.): 0.000223 ETH</Text>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}>Do you authorize this payment?</Text>
+                <View style={[{ flexDirection: 'row', alignSelf: 'flex-end' }, localStyles.pad10]}>
+                    <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => this._checkBalance()}>
+                    <Text style={localStyles.dismissAcceptText}>Yes</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this.setState({ showFeesModal: false }) }}>
+                        <Text style={localStyles.dismissAcceptText}>No</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            </Modal>
+
+            <Modal onBackButtonPress={() => { this.setState({ showEmptySubmissionModal: false })}}
+          isVisible={this.state.showEmptySubmissionModal} >
+            <View style={localStyles.modalBackground}>
+                <Text style={[localStyles.pad10, localStyles.contentFont]}> This is an empty submission </Text>
+                <View style={[{ flexDirection: 'row', alignSelf: 'flex-end' }, localStyles.pad10]}>
+                    <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this.setState({ showEmptySubmissionModal: false }) }}>
+                        <Text style={localStyles.dismissAcceptText}>OK</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            </Modal>
+
+            </View>
+          )
+  }
+
   render() {
     const fileIcon = (
       <Icon
@@ -600,6 +642,9 @@ class DocumentStorage extends React.Component {
     return (
       <View style={localStyles.containerOriginal}>
         <View style={[localStyles.containerCenter, { flex: 1 }]}>
+        {this._renderModals()}
+
+
           <View style={localStyles.rowContainerSelectDocScanQR}>
             <TouchableHighlight
               onPress={() => this._pickDocument()}
@@ -679,7 +724,7 @@ class DocumentStorage extends React.Component {
             </TouchableHighlight>
           ) : null}
 
-          <View style={{ alignContent: "center", alignItems: "center" }}>
+          {/* <View style={{ alignContent: "center", alignItems: "center" }}>
             <View
               style={{
                 // padding: 10,
@@ -689,8 +734,8 @@ class DocumentStorage extends React.Component {
                 alignItems: "center"
               }}
               collapsable={false}
-            >
-              {this.state.document.downloadURL ? (
+            > */}
+              {/* {this.state.document.downloadURL ? (
                 <View
                   style={{
                     width: 200,
@@ -716,9 +761,9 @@ class DocumentStorage extends React.Component {
                     {this.state.document.name}{" "}
                   </Text>
                 </View>
-              ) : null}
+              ) : null} */}
 
-              {this.state.document.downloadURL ? (
+              {/* {this.state.document.downloadURL ? (
                 <Text
                   style={{
                     color: "silver",
@@ -730,8 +775,8 @@ class DocumentStorage extends React.Component {
                   {this.state.downloadURL}{" "}
                 </Text>
               ) : null}
-            </View>
-            {this.state.document.downloadURL ? (
+            </View> */}
+            {/* {this.state.document.downloadURL ? (
               <View>
                 <TouchableHighlight onPress={this._saveToCameraRollAsync}>
                   <Text
@@ -796,8 +841,8 @@ class DocumentStorage extends React.Component {
                   </Text>
                 </TouchableHighlight>
               </View>
-            ) : null}
-          </View>
+            ) : null} */}
+          {/* </View> */}
 
           {/* {this.state.uploadDoc === true ? null : (
             <View style={{ alignContent: "center" }}>
@@ -825,13 +870,10 @@ class DocumentStorage extends React.Component {
             </View>
           )} */}
 
-          {this.state.uploadDoc === true ? null : (
             <ScrollView
               style={{
                 height: "50%",
                 width: "100%",
-                // borderColor: "red",
-                // borderWidth: 3
               }}
             >
               <View>
@@ -852,27 +894,6 @@ class DocumentStorage extends React.Component {
                 {this._showUploadHistory()}
               </View>
             </ScrollView>
-          )}
-          {/* <View
-            style={{
-              flexDirection: "column",
-              flex: 1,
-              margin: 2,
-              width: "100%",
-              justifyContent: "flex-end",
-              backgroundColor: "#091141"
-            }}
-          > */}
-          {/* <Image
-              source={hercLogo}
-              style={{
-                resizeMode: "center",
-                height: 50,
-                width: "50%",
-                alignSelf: "center"
-              }}
-            /> */}
-          {/* </View> */}
         </View>
       </View>
     );
@@ -1044,8 +1065,37 @@ const localStyles = StyleSheet.create({
     width: 15,
     resizeMode: "contain",
     borderRadius: 15 / 2
-  }
-});
+  },
+  modalBackground: {
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 10,
+},
+pad10: {
+    padding: 5
+},
+headingFont: {
+    fontSize: 18,
+    fontFamily: 'dinPro',
+    color: '#737a9b'
+},
+contentFont: {
+    fontSize: 18,
+    fontFamily: 'dinPro',
+    color: '#000000'
+},
+dismissAcceptText: {
+    color: '#95c260',
+    fontSize: 18,
+},
+dismissRejectText: {
+    color: '#bbbecb',
+    fontSize: 18,
+}})
 
 const mapStateToProps = state => ({
   documentStorage: state.DocumentStorage,
