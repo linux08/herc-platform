@@ -20,7 +20,10 @@ export default class Camera extends Component {
     return (size.length);
 
   }
-
+  
+  // Trying to make the camera reusable for the register asset flow,
+  // passing in the route that is calling the camera in params.origRoute
+  // also passing in the function to set the state with the taken image.
   takePicture = async () => {
     console.log("takingPicture");
     const { params } = this.props.navigation.state;
@@ -32,7 +35,7 @@ export default class Camera extends Component {
         const data = await this.camera.takePictureAsync(options);
         console.log(data, 'taken picture info, looking for name')
         let image = Object.assign({}, {
-          name: uri.substring(uri.lastIndexOf('/') + 1, uri.length()),
+          name: data.uri.substring(data.uri.lastIndexOf('/') + 1, data.uri.length),
           uri: data.uri,
           size: this._getSize(data.base64),
           string: "data:image/jpg;base64," + data.base64
@@ -41,9 +44,6 @@ export default class Camera extends Component {
         this.setState({
           image
         })
-        // Trying to make the camera reusable for the register asset flow,
-        // passing in the route that is calling the camera in params.origRoute
-        // also passing in the function to set the state with the taken image.
         console.log("Camera: afterBase", data.uri, "Camera: size: ", this._getSize(data.base64));
       } catch (err) { console.log('err: ', err) }
     };

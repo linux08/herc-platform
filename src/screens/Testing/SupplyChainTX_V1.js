@@ -16,6 +16,7 @@ import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
 import { TransInfoCard, TransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
 
+
 var ImagePicker = require('react-native-image-picker');
 const { height, width } = Dimensions.get('window');
 
@@ -131,6 +132,7 @@ export default class SupplyChainTX extends Component {
                     <View style={localStyles.transactionComponentListContainer}>
 
                         <CameraTransactionComponent
+                            img={this.state.img}
                             image={this.state.img.string}
                             onPress={() => this.showCameraModal()}
                             iconName='camera'
