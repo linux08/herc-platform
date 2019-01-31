@@ -264,7 +264,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
 
         case ADD_ASSET:
             const newAsset = action.newAsset;
-            console.log('adding asset', newAsset.Name)
+            console.log('Adding Asset: jm ', newAsset.Name)
             return Object.assign({}, state, {
                 ...state,
                 newAsset

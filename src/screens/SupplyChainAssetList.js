@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import { connect } from "react-redux";
-import submit from "../components/buttons/submit.png"; // todo: turn into vector
+// import submit from "../components/buttons/submit.png"; // todo: turn into vector
 import styles from "../assets/styles";
 import create from "../assets/createNewAssetButton.png"; // todo: turn into vector
 import { getAssetDef, selectAsset } from "../actions/AssetActions";
@@ -116,7 +116,7 @@ class SupplyChainAssetList extends Component {
   }
 
   _showPass = asset => {
-    console.log(asset, "asset before pw enter in SupplyChainTxRx");
+    console.log(asset, "asset before pw enter in SupplyChainTxRx: jm");
 
     this.setState({
       showPass: true,
@@ -124,11 +124,21 @@ class SupplyChainAssetList extends Component {
     });
   };
 
-  _onPasswordSubmit = () => {
+  _stagingAsset = async (asset) => {
+    await this.props.selectAsset(asset);
+    await this.props.getAssetDef(asset.hashes.ipfsHash)
+  }
 
+  _onPasswordSubmit = () => {
+    console.log("jm")
     if (this.state.password === this.state.asset.Password) {
-      this._selectAsset(this.state.asset);
+      let asset = this.state.asset
+      this._stagingAsset(asset)
       this._cancelPass();
+
+      const { navigate } = this.props.navigation;
+      navigate('SupplyChainTxRx', { logo: asset.Logo, name: asset.Name });
+
     } else {
       Alert.alert("Password Incorrect");
     }
@@ -140,20 +150,6 @@ class SupplyChainAssetList extends Component {
       password: ""
     });
   };
-
-
-  _selectAsset = asset => {
-    const { navigate } = this.props.navigation;
-    this.props.selectAsset(asset);
-    if (asset.ipfsHash) {
-      this.props.getAssetDef(asset.ipfsHash);
-    }
-    else { this.props.getAssetDef(asset.hashes.ipfsHash) }
-
-
-    navigate('SupplyChainTxRx', { logo: asset.Logo, name: asset.Name });
-
-  }
 
   render() {
 
@@ -200,20 +196,17 @@ class SupplyChainAssetList extends Component {
                   />
                 </View>
                 <View style={localStyles.buttonField}>
-                  <TouchableHighlight onPress={() => this._onPasswordSubmit()}>
-                    <Image
-                      style={[
-                        localStyles.button,
-                        { resizeMode: "cover", alignSelf: "flex-start" }
-                      ]}
-                      source={submit}
-                    />
+                  <TouchableHighlight
+                  style={[localStyles.button, { backgroundColor: 'white' }]}
+                  onPress={() => this._onPasswordSubmit()}
+                  >
+                    <Text>Submit</Text>
                   </TouchableHighlight>
                   <TouchableHighlight
                     style={localStyles.button}
                     onPress={this._cancelPass}
                   >
-                    <Text style={{ fontSize: 18 }}>Cancel</Text>
+                    <Text>Cancel</Text>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -251,14 +244,14 @@ const localStyles = StyleSheet.create({
   menuItemField: {
     display: "flex",
     flexDirection: "row",
-    width: 200,
-    height: 40,
+    width: 250,
+    height: 50,
     backgroundColor: 'white',
     borderRadius: 3,
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",
-    margin: 15,
+    margin: 12,
     paddingLeft: 3,
   },
   assetLogo: {
@@ -317,13 +310,12 @@ const localStyles = StyleSheet.create({
     paddingBottom: 20
   },
   button: {
-    height: 40,
     width: 80,
     borderColor: "black",
     borderWidth: 2,
-    margin: 5,
     padding: 5,
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center",
   }
 
 
