@@ -205,6 +205,7 @@ class DocumentStorage extends React.Component {
   };
 
   _uploadFile = async uri => {
+    this.setState({ percentUpload: 30, showUploadingModal: true, uploadingProgressMessage: "Uploading File" })
     let docName = this.state.document.name;
     let storageRef = firebase.storage().ref();
     let testTextRef = storageRef.child(docName);
@@ -216,9 +217,11 @@ class DocumentStorage extends React.Component {
     const snapshot = await testTextDocRef
       .put(blob)
       .then(snapshot => {
+        this.setState({ percentUpload: 60, showUploadingModal: true })
         return snapshot.ref.getDownloadURL();
       })
       .then(downloadURL => {
+        this.setState({ percentUpload: 90, showUploadingModal: true })
         console.log("***this is the response from firebase***", downloadURL);
         axios
           .post(WEB_SERVER_API_SHORTEN_URL, {
@@ -230,7 +233,10 @@ class DocumentStorage extends React.Component {
             bindedThis.setState(
               {
                 document: { ...this.state.document, downloadURL: shortenedURL },
-                showCompleteModal: true
+                showCompleteModal: true,
+                showUploadingModal: false,
+                uploadingProgressMessage: "",
+                percentUpload: 0
               },
               () => this._updateHistory()
             );
@@ -417,7 +423,7 @@ class DocumentStorage extends React.Component {
   }
 
   async _checkBalance() {
-    this.setState({ showFeesModal: false })
+    this.setState({ showFeesModal: false, showUploadingModal: true, uploadingProgressMessage: "Processing Transaction", percentUpload: 5 })
     if (!this.state.balance) {
       return;
     }
@@ -513,6 +519,7 @@ class DocumentStorage extends React.Component {
   }
 
   _sendTrans() {
+    this.setState({ percentUpload: 10, showUploadingModal: true, uploadingProgressMessage: "Transaction Completed!" })
     this._executeUpload();
   }
 
@@ -617,6 +624,13 @@ class DocumentStorage extends React.Component {
                 </View>
             </View>
             </Modal>
+
+            <CustomModal modalCase="progress" 
+            percent={this.state.percentUpload}
+        closeModal={()=>{this.setState({showUploadingModal:false})}} 
+        isVisible={this.state.showUploadingModal} 
+        content={this.state.uploadingProgressMessage} 
+        dismissRejectText="Close" />
 
             </View>
           )
