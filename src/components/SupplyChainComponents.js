@@ -37,9 +37,10 @@ export function CameraTransactionComponent(props) {
 
         <View style={localStyles.transactionComponentContainer}>
             {props.image ?
-                <Image
-                    style={localStyles.imageSquare}
-                    source={{ uri: props.image }} />
+                <TouchableHighlight onPress={props.onPress} style={localStyles.imageSquare}>
+                    <Image style={{ height: '100%', width: '100%', resizeMode: 'contain' }}
+                        source={{ uri: props.image }} />
+                </TouchableHighlight>
                 :
 
                 <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
@@ -49,22 +50,22 @@ export function CameraTransactionComponent(props) {
                         onPress={props.onPress}
                     >
                     </Icon>
-            </View>
-                    }
+                </View>
+            }
             {props.image ?
                 <View style={localStyles.imageInfo}>
-                <View>
-                    <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.img.name}</Text>
-                    <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.img.size / 1024).toFixed(3)} kb</Text>
+                    <View>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.img.name}</Text>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.img.size / 1024).toFixed(3)} kb</Text>
+                    </View>
+
+                    <View style={localStyles.price}>
+                        <Text style={localStyles.textBold}>{(((props.img.size / 1024) * .00000002) / .4).toFixed(8)}</Text>
+                        <Image source={hercpngIcon} style={localStyles.hercPriceIcon} />
+                    </View>
                 </View>
 
-                <View style={localStyles.price}>
-                    <Text style={localStyles.textBold}>{(((props.img.size / 1024) * .00000002) / .4).toFixed(8)}</Text>
-                    <Image source={hercpngIcon} style={localStyles.hercPriceIcon} />
-                </View>
-            </View>
-
-            :
+                :
                 <Text style={localStyles.textNormal}>{props.componentName}</Text>
             }
 
@@ -179,7 +180,7 @@ const localStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,
-        resizeMode: 'contain',
+        // resizeMode: 'contain',
         borderRadius: 6
 
     },

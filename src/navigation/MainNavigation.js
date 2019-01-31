@@ -50,7 +50,7 @@ import WebViewComponent from "../components/WebViewComponent";
 import DocumentStorage from "../screens/DocumentStorage";
 import DocumentQRScanner from "../screens/DocumentQRScanner";
 
-import TestSplash from "../screens/Testing/TestSplash"
+import TestSplash from "../screens/Testing/TestSplash";
 
 import Header from "../components/Headers/Header";
 

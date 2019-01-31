@@ -4,6 +4,13 @@ import { widthPercentageToDP, heightPercentageToDP } from '../responisiveUI';
 
 module.exports = StyleSheet.create({
 
+    baseModal: {
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        flex: 1
+    },
+
     modalLower: {
         alignItems: 'center',
         flexDirection: 'column',
@@ -19,7 +26,7 @@ module.exports = StyleSheet.create({
         // backgroundColor: 'rgba(0,0,0,0.5)',
         borderRadius: 20
     },
-    
+
     imageSourceContainer: {
         flexDirection: 'column',
         backgroundColor: ColorConstants.MainGray,
@@ -29,7 +36,7 @@ module.exports = StyleSheet.create({
         width: '100%',
         height: '30%',
         borderWidth: 0,
-        borderRadius:  8
+        borderRadius: 8
 
 
     },
@@ -54,7 +61,7 @@ module.exports = StyleSheet.create({
         width: heightPercentageToDP('25'),
     },
 
-   
+
 
     labelTitle: {
         fontSize: 18,
