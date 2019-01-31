@@ -37,7 +37,7 @@ onPress = () => {
                 backgroundColor={'transparent'}
                 />
                 <View style={[localStyles.baseContainer,localStyles.splashTop]}>
-                    <Image source={require('../../assets/hLogo.png')}
+                    <Image source={require('../../assets/hercLogoPillar.png')}
                         style={localStyles.splashImage}
                         resizeMode="contain"
                     />
