@@ -39,7 +39,7 @@ componentDidMount (){}
     let uri = 'https://hipr.one/' + ethereumAddress + '/' + ipfsHash + '/' + ipfsHash
     // let uri = 'https://hipr.one/'
 
-    console.log(uri, 'chance full hipr uri')
+    console.log('Full hipr uri: jm', uri)
     return (
       <WebView
         source={{ uri: uri }}

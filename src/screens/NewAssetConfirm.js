@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Modal, Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableHighlight, Alert, Button, ActivityIndicator, Linking } from 'react-native';
-import submit from "../components/buttons/submit.png"; // todo: turn into vector
+// import submit from "../components/buttons/submit.png"; // todo: turn into vector
 import logo from "../assets/round.png";
 import { connect } from "react-redux";
 import styles from "../assets/styles";
-import hercPillar from "../assets/hLogo.png";
+import hercPillar from "../assets/hercLogoPillar.png";
 import { incHercId, confirmAssetStarted, confirmAssetComplete, settingHeader, settingHeaderError } from "../actions/AssetActions"
 import modalStyle from "../assets/confModalStyles";
-import { TOKEN_ADDRESS } from "../components/settings"
+import { TOKEN_ADDRESS, DEVELOPERS } from "../components/settings"
 import BigNumber from 'bignumber.js';
 import firebase from "../constants/Firebase";
 
@@ -41,7 +41,6 @@ class NewAssetConfirm extends Component {
     }
 
     componentDidMount() {
-        this._getOrgName(this.props.edgeAccount)
         try {
           let balance = new BigNumber(this.props.watchBalance["HERC"])
           this.setState({ balance: balance.times(1e-18).toFixed(6) })
@@ -77,26 +76,6 @@ class NewAssetConfirm extends Component {
         })
     }
 
-
-    _getOrgName(edgeName) {
-        var organization_name;
-
-        var rootRef = firebase.database().ref('idology');
-
-        rootRef.child(edgeName)
-            .child('organizationName')
-            .once('value')
-            .then(snapshot => {
-                organization_name = snapshot.toJSON();
-            }).then(() => {
-
-                console.log(organization_name, 'dddddddddddddddddddddddddddddddd');
-                this.setState({
-                    orgName: organization_name
-                });
-            })
-    }
-
     async uploadImageAsync(uri) {
         const { navigate } = this.props.navigation;
         let newAsset = this.props.newAsset;
@@ -126,11 +105,10 @@ class NewAssetConfirm extends Component {
             hercId: this.props.hercId,
             Name: newAsset.Name,
             Logo: downloadURL,
-            registeredUnder: this.state.orgName,
             Password: newAsset.Password
         }
 
-        console.log(ipfsAsset, fbAsset, "right before the send chance")
+        console.log("Right before sending to send_trans: jm", ipfsAsset, fbAsset)
 
         this.props.settingHeader(fbAsset);
         this.props.confirmAssetStarted(ipfsAsset);
@@ -141,46 +119,78 @@ class NewAssetConfirm extends Component {
       if (this.props.newAsset.Logo) {
           this.uploadImageAsync(this.props.newAsset.Logo.uri)
       } else {
-          this.props.confirmAsset(this.props.newAsset);
-          navigate('MenuOptions');
+        let newAsset = this.props.newAsset;
+        let fbAsset, ipfsAsset;
+
+        ipfsAsset = Object.assign({}, {
+            Name: newAsset.Name,
+            CoreProps: newAsset.CoreProps,
+            hercId: this.props.hercId,
+        });
+
+        fbAsset = {
+            hercId: this.props.hercId,
+            Name: newAsset.Name,
+            // Logo: downloadURL,
+            Password: newAsset.Password
+        }
+
+        console.log("Right before send_trans: jm\n", ipfsAsset, fbAsset)
+
+        this.props.settingHeader(fbAsset);
+        this.props.confirmAssetStarted(ipfsAsset);
+        this.props.incHercId(this.props.hercId);
+
+        // this.props.confirmAssetStarted(this.props.newAsset); // Non-Logo makes malformed assets
+        const { navigate } = this.props.navigation;
+        navigate('MenuOptions');
       }
     }
 
     async _checkBalance(){
-      let price = new BigNumber(1000)
-      let balance = new BigNumber(this.state.balance)
-      let newbalance = balance.minus(price)
-
-      console.log('do you have enough?', newbalance.isPositive())
-
-      if (newbalance.isNegative()){
-        Alert.alert(
-          'Insufficient Funds',
-          'Current Balance:'+ this.state.balance + ' HERC' ,
-          [
-            {text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel'},
-            {text: 'Ok', onPress: () => console.log('OK Pressed')},
-          ],
-          { cancelable: true }
-        )
+      if (DEVELOPERS.includes(this.props.edgeAccount)){
+        // this is a developer
+        console.log("You are a developer. jm")
+        this._sendNewAsset()
       } else {
-        Alert.alert(
-          'You Meet the Minimum Balance!',
-          'Current Balance:'+ this.state.balance + ' HERC \n Do you wish to proceed?' ,
-          [
-            {text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel'},
-            {text: 'Yes, Make an Asset', onPress: () => this._sendNewAsset()},
-          ],
-          { cancelable: false }
-        )
+        // this is a non-developer
+        console.log("You are NOT a developer. jm")
+        let price = new BigNumber(1000)
+        let balance = new BigNumber(this.state.balance)
+        let newbalance = balance.minus(price)
+
+        console.log('do you have enough?', newbalance.isPositive())
+
+        if (newbalance.isNegative()){
+          Alert.alert(
+            'Insufficient Funds',
+            'Current Balance: '+ this.state.balance + ' HERC' ,
+            [
+              {text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel'},
+              {text: 'Ok', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: true }
+          )
+        } else {
+          Alert.alert(
+            'You Meet the Minimum Balance!',
+            'Current Balance:'+ this.state.balance + ' HERC \n Do you wish to proceed?' ,
+            [
+              {text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel'},
+              {text: 'Yes, Make an Asset', onPress: () => this._sendNewAsset()},
+            ],
+            { cancelable: false }
+          )
+        }
       }
     }
+
 
     _onPressSubmit() {
 
         Alert.alert(
           'Minimum Balance Requirement: 1000 HERC',
-          'Current Balance: \n'+ this.state.balance+ ' HERC \n Do you wish to check if your balance meets the minimum requirement?' ,
+          'Current Balance: \n'+ this.state.balance+ ' HERC \nDo you wish to check if your balance meets the minimum requirement?' ,
           [
             {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
             {text: 'Yes', onPress: () => {this._checkBalance()} },
@@ -201,7 +211,7 @@ class NewAssetConfirm extends Component {
         let price = this.state.fctPrice;
         let hercId = this.props.hercId;
         let newAsset = this.props.newAsset;
-        let Logo, Organization, list;
+        let Logo, list;
         let Name = newAsset.Name;
         let password = this.props.newAsset.Password
 
@@ -211,9 +221,6 @@ class NewAssetConfirm extends Component {
         } else {
             Logo = (<Text style={styles.label}>No Image</Text>)
         }
-
-
-        Organization = (<Text style={styles.label}>{this.props.organization}</Text>);
 
         if (newAsset.hasOwnProperty('CoreProps')) {
             list = Object.getOwnPropertyNames(newAsset.CoreProps).map((x, i) => {
@@ -236,7 +243,6 @@ class NewAssetConfirm extends Component {
 
                     <Text style={styles.assetHeaderLabel}>{Name}</Text>
                     {Logo}
-                    <Text style={styles.assetHeaderLabel}>{Organization}</Text>
                     <Text style={styles.assetHeaderLabel}>HercID: {hercId}</Text>
                     <Text style={styles.assetHeaderLabel}>Password: {password}</Text>
                     <ScrollView style={{ paddingRight: 5, alignSelf: "center", width: "100%" }}>
@@ -245,8 +251,10 @@ class NewAssetConfirm extends Component {
 
                     </ScrollView>
 
-                    <TouchableHighlight onPress={() => this._onPressSubmit()}>
-                        <Image source={submit} style={localStyles.imageButtons} />
+                    <TouchableHighlight
+                    style={[localStyles.button, { backgroundColor: 'white' }]}
+                    onPress={this._onPressSubmit}>
+                      <Text>Submit</Text>
                     </TouchableHighlight>
 
                     <View style={localStyles.newAssetFeeContainer}>
@@ -271,7 +279,7 @@ class NewAssetConfirm extends Component {
                             </TouchableHighlight>
                         </View>
                             {!this.props.dataFlags.confirmAssetComplete &&
-                                <Text style={modalStyle.wordsText}>Your Asset Information Is Being Written To The Blockchain</Text>
+                                <Text style={modalStyle.wordsText}>Your Asset Information Is Being Written To The Blockchain. {"\n"}This may take a while. Please be patient. At this point, you cannot cancel the transaction. You may return to Main Menu if you wish.</Text>
                             }
 
                             <View style={modalStyle.activityIndicatorWrapper}>
@@ -309,7 +317,6 @@ const mapStateToProps = (state) => ({
     wallet: state.WalletActReducers.wallet,
     dataFlags: state.AssetReducers.dataFlags,
     watchBalance: state.WalletActReducers.watchBalance,
-    organization: state.WalletActReducers.organizationName
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -423,6 +430,14 @@ const localStyles = StyleSheet.create({
         fontWeight: "600",
         color: "yellow"
     },
+    button: {
+      width: 80,
+      borderColor: "black",
+      borderWidth: 2,
+      padding: 5,
+      justifyContent: "center",
+      alignItems: "center",
+    }
 
 
 })

@@ -97,7 +97,6 @@ class TxSwiperContainer extends Component {
     // }
 
     render() {
-      console.log(this.props.navigation, 'chance txswiper');
       let hashes = this.props.asset.hashes
       let cards = this.state.transactions.map(x => x);
         return (<Swiper navigation={this.props.navigation} cards={cards} hashes={hashes}/>)}

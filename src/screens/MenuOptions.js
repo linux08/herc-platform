@@ -45,7 +45,7 @@ class MenuOptions extends Component {
         this.props.getOrganization();
 
         let alertLatestVersion = this.props.navigation.getParam('alertLatestVersion', 'false')
-        console.log("chance", alertLatestVersion)
+        console.log("alertLatestVersion jm:", alertLatestVersion)
 
         // if alertLatestVersion is true, trigger alert.
         if (alertLatestVersion &&  alertLatestVersion == true) {
@@ -73,12 +73,14 @@ class MenuOptions extends Component {
                             <Image style={localStyles.menuButton} source={registerAsset} />
                         </TouchableHighlight>
                     </View>
-                    <TouchableHighlight style={localStyles.touchableHighlight}
-                    onPress={() => navigate('SupplyChainAssetList')}>
-                        <Image style={localStyles.menuButton} source={supplyChain} />
+                  
+                    <TouchableHighlight disabled={!this.props.assets} style={localStyles.touchableHighlight}
+                    onPress={() => navigate("SupplyChainAssetList")}>
+                      <Image style={localStyles.menuButton} source={supplyChain} />
                     </TouchableHighlight>
 
-                    <TouchableHighlight style={localStyles.touchableHighlight}
+
+                    <TouchableHighlight disabled={!this.props.assets} style={localStyles.touchableHighlight}
                         onPress={() => navigate("TrackAssetList")}>
                         <Image style={localStyles.menuButton} source={track} />
                     </TouchableHighlight>
@@ -110,7 +112,8 @@ class MenuOptions extends Component {
 }
 
 const mapStateToProps = state => ({
-    username: state.AssetReducers.edge_account
+    username: state.AssetReducers.edge_account,
+    assets: state.AssetReducers.assets
 })
 
 const mapDispatchToProps = dispatch => ({

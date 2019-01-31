@@ -62,7 +62,7 @@ export default class WebViewComponent extends Component {
 
   render() {
     let data = this.props.navigation.getParam('data')
-    console.log(data, 'chance data')
+    console.log('Data passed into a WebView Component:', data)
     let url;
     if (data.factomChain){
       url = "https://explorer.factom.com/chains/" + data.factomChain +"/entries/" + data.factomEntry
