@@ -46,7 +46,7 @@ export function CameraTransactionComponent(props) {
                 <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
                     <Icon
                         style={localStyles.componentIcon}
-                        name={props.iconName}
+                        name='camera'
                         onPress={props.onPress}
                     >
                     </Icon>
@@ -66,7 +66,7 @@ export function CameraTransactionComponent(props) {
                 </View>
 
                 :
-                <Text style={localStyles.textNormal}>{props.componentName}</Text>
+                <Text style={localStyles.textNormal}>"Add Photo"</Text>
             }
 
         </View>
@@ -85,17 +85,17 @@ export function EdiTransactionComponent(props) {
             <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
                 <Icon
                     style={[localStyles.componentIcon, { color: iconColor }]}
-                    name={props.iconName}
+                    name='pencil'
                     onPress={props.onPress}
                 >
                 </Icon>
             </View>
-            {props.edi ?
+            {props.edi.name ?
                 <View style={localStyles.transComponentInfo}>
                     <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
                 </View>
                 :
-                <Text style={localStyles.textNormal}>{props.componentName}</Text>
+                <Text style={localStyles.textNormal}>Choose EDI-T Sets</Text>
             }
         </View>
 
@@ -103,28 +103,37 @@ export function EdiTransactionComponent(props) {
     )
 }
 
-export function TransactionComponent(props) {
-    let bgColor = props.image ? ColorConstants.ElementBG : ColorConstants.MainGray;
-    console.log(props, "transaction component")
+export function DocTransactionComponent(props) {
+    let bgColor = props.doc.name ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    let iconColor = props.doc.name ? ColorConstants.MainGold : 'black';
+    console.log(props, "doctransaction component");
     return (
 
         <View style={localStyles.transactionComponentContainer}>
             <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                {props.image ?
-                    <Image
-                        style={localStyles.imageSquare}
-                        source={{ uri: props.image }} />
-                    :
-
-                    <Icon
-                        style={localStyles.componentIcon}
-                        name={props.iconName}
-                        onPress={props.onPress}
-                    >
-                    </Icon>
-                }
+                <Icon
+                    style={[localStyles.componentIcon, { color: iconColor }]}
+                    name='text-document'
+                    onPress={props.onPress}
+                >
+                </Icon>
             </View>
-            <Text style={localStyles.textNormal}>{props.image ? "Change Photo" : props.componentName}</Text>
+            {props.doc.name ?
+                <View style={localStyles.transComponentInfo}>
+                    <View>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.doc.name}</Text>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.doc.size / 1024).toFixed(3)} kb</Text>
+                    </View>
+
+                    <View style={localStyles.price}>
+                        <Text style={localStyles.textBold}>{(((props.doc.size / 1024) * .00000002) / .4).toFixed(8)}</Text>
+                        <Image source={hercpngIcon} style={localStyles.hercPriceIcon} />
+                    </View>
+                </View>
+                :
+                <Text style={localStyles.textNormal}>"Add Documents"</Text>
+            }
+
         </View>
 
 

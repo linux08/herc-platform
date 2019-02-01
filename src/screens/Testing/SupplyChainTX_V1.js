@@ -14,7 +14,10 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, TransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard, TransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+var RNFS = require('react-native-fs')
+import { connect } from 'react-redux';
 
 
 var ImagePicker = require('react-native-image-picker');
@@ -112,6 +115,31 @@ export default class SupplyChainTX extends Component {
         });
     }
 
+    _pickDocument = () => {
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+        }, (error, res) => {
+            //this if(res) allows user to use native android back button to exit docpicker
+            if (res) {
+                if (error) Alert.alert("Something Went Wrong! Error: " + error);
+                // Android
+                RNFS.readFile(res.uri, 'base64')
+                    .then(contents => {
+                        this.setState({
+                            doc: {
+                                uri: res.uri,
+                                name: res.fileName,
+                                size: res.fileSize,
+                                type: res.type,
+                                content: contents
+                            }
+                        });
+                    })
+            }
+        });
+    }
+
+
     setPic = (snappedImg) => {
         console.log("setting a taken image");
         this.setState({
@@ -156,19 +184,20 @@ export default class SupplyChainTX extends Component {
                             img={this.state.img}
                             image={this.state.img.string}
                             onPress={() => this.showCameraModal()}
-                            iconName='camera'
-                            componentName={"Add Photo"}
                         />
+
                         <EdiTransactionComponent
                             onPress={() => this.showEditModal()}
-                            iconName='pencil'
                             componentName={"Choose EDI-T Sets"}
                             edi={this.state.edi}
-
                         />
 
-                        <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
-                        <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
+                        <DocTransactionComponent
+                            doc={this.state.doc}
+                            onPress={this._pickDocument}
+                        />
+                       
+                        {/* <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} /> */}
 
                     </View>
                     <View style={localStyles.pageBottom}>
