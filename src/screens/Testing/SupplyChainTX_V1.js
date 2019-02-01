@@ -48,6 +48,7 @@ export default class SupplyChainTX extends Component {
         this._pickImage = this._pickImage.bind(this);
         this.setEDI = this.setEDI.bind(this);
         this.clearEDI = this.clearEDI.bind(this);
+        this.setPic = this.setPic.bind(this);
     }
 
     clearEDI = () => {
@@ -179,6 +180,7 @@ export default class SupplyChainTX extends Component {
                     visibility={this.state.camerModalVisibility}
                     changeModal={this.showCameraModal}
                     _pickImage={this._pickImage}
+                    setPic={this.setPic}
                     navigation={this.props.navigation}
                     routeName={'SupplyChainTx'}
                     onBackdropPress={this._onBackdropPress}

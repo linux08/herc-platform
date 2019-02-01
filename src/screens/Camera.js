@@ -32,7 +32,7 @@ export default class Camera extends Component {
       const options = {
         base64: true,
         //  fixOrientation: true,
-        pauseAfterCapture: true
+        // pauseAfterCapture: true
       }
       if (params.width) {
         options.width = params.width
@@ -57,9 +57,9 @@ export default class Camera extends Component {
 
   _pressCancel() {
     this.setState({ image: null })
-    if (this.camera) {
-      this.camera.resumePreview()
-    }
+    // if (this.camera) {
+    //   this.camera.resumePreview()
+    // }
   }
   
 
