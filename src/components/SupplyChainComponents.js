@@ -11,7 +11,7 @@ import {
 const { height, width } = Dimensions.get('window');
 import Icon from "react-native-vector-icons/Entypo";
 const hercpngIcon = require('../assets/icons/hercIcon.png');
-
+import { HercTextFieldWithLabel } from "../components/SharedComponents";
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ColorConstants from "../assets/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
@@ -53,7 +53,7 @@ export function CameraTransactionComponent(props) {
                 </View>
             }
             {props.image ?
-                <View style={localStyles.imageInfo}>
+                <View style={localStyles.transComponentInfo}>
                     <View>
                         <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.img.name}</Text>
                         <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.img.size / 1024).toFixed(3)} kb</Text>
@@ -69,6 +69,34 @@ export function CameraTransactionComponent(props) {
                 <Text style={localStyles.textNormal}>{props.componentName}</Text>
             }
 
+        </View>
+
+
+    )
+}
+
+export function EdiTransactionComponent(props) {
+    let bgColor = props.edi.name ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    let iconColor = props.edi.name ? ColorConstants.MainGold : 'black';
+    console.log(props, "edi transaction component")
+    return (
+
+        <View style={localStyles.transactionComponentContainer}>
+            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                <Icon
+                    style={[localStyles.componentIcon, { color: iconColor }]}
+                    name={props.iconName}
+                    onPress={props.onPress}
+                >
+                </Icon>
+            </View>
+            {props.edi ?
+                <View style={localStyles.transComponentInfo}>
+                    <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
+                </View>
+                :
+                <Text style={localStyles.textNormal}>{props.componentName}</Text>
+            }
         </View>
 
 
@@ -117,7 +145,7 @@ const localStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start'
     },
-    imageInfo: {
+    transComponentInfo: {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'blue',

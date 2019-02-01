@@ -12,62 +12,35 @@ class EDI_T_Sets_Modal extends Component {
     constructor(props) {
         super(props);
     }
-    _setEdit = (item) => {
-        console.log('pressedEdit', item)
-        this.props.changeModal();
-
-        // this.props.setSet(item);
-        // this.props.navigation.navigate('SupplyChainReview', { logo: this.props.logo, name: this.props.name });
-    }
-
-    _arrayOfSets = () => {
-        console.log("mapping sets begins")
-        edits.map((item, idx) => {
-            // console.log(item)
-            return (
-                <TouchableHighlight style={{ justifyContent: "center" }} key={idx} onPress={() => this._setEdit(item)}>
-                    <HercTextFieldWithLabel label={item.value} text={item.name} />
-                    {/*                    
-                    <View style={localStyles.editField}>
-                        <Text style={localStyles.editName}>{item.name.trim()}</Text>
-                        <Text style={localStyles.editName}>{item.value}</Text>
-                    </View> */}
-                </TouchableHighlight>
-            )
-        });
-    }
 
     render() {
         let visibility = this.props.visibility;
-        let arrayOfSets = this._arrayOfSets();
+
         return (
             <Modal style={styles.baseModal}
                 backdropColor={'rgba(0,0,0,0.5)'}
+                animationIn={'slideInLeft'}
+                animationOut={'slideOutLeft'}
                 isVisible={visibility}
                 onRequestClose={() => { console.log("modal closed") }}
             >
                 <View style={styles.bodyContainer}>
                     <Text onPress={this.props.changeModal} style={localStyles.editLabel}>EDI-T Sets</Text>
+                    <TouchableHighlight onPress={this.props.clearEDI} style={localStyles.editField}>
+                        <Text style={localStyles.editLabel}>Clear EDIT</Text>
+                    </TouchableHighlight>
                     <FlatList
                         data={edits}
                         renderItem={(item) => {
                             console.log(item, 'edits??');
                             return (
-                                <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this._setEdit(item)}>
-                                  <HercTextFieldWithLabel label={item.item.value} text={item.item.name} />
-                                  
-                                    {/* <View style={localStyles.editField}>
-                                        <Text style={localStyles.editName}>{item.item.name}</Text>
-                                        <Text style={localStyles.editName}>{item.item.value}</Text>
-                                    </View> */}
+                                <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.props.setEDI(item.item)}>
+                                    <HercTextFieldWithLabel label={item.item.value} text={item.item.name} />
                                 </TouchableHighlight>
                             )
                         }}
                     />
-                    {/* <ScrollView style={{ alignSelf: "center", width: "100%" }}> */}
-                    {/* {arrayOfSets} */}
-                    {/* </ScrollView> */}
-                    {/* </FlatList> */}
+
                 </View>
             </Modal>
         );

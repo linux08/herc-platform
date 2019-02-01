@@ -14,7 +14,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, TransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard, TransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
 
 
 var ImagePicker = require('react-native-image-picker');
@@ -40,19 +40,39 @@ export default class SupplyChainTX extends Component {
             camerModalVisibility: false,
             editModalVisibility: false,
             img: {},
-            doc: {}
+            doc: {},
+            edi: {}
         }
         this.showCameraModal = this.showCameraModal.bind(this);
         this.showEditModal = this.showEditModal.bind(this);
         this._pickImage = this._pickImage.bind(this);
+        this.setEDI = this.setEDI.bind(this);
+        this.clearEDI = this.clearEDI.bind(this);
+    }
+
+    clearEDI = () => {
+        console.log("clearing EDI");
+        this.setState({
+            ...this.state,
+            edi: {}
+        })
+    }
+
+    showEditModal = () => {
+        console.log('show the edit modal');
+        this.setState({
+            editModalVisibility: !this.state.editModalVisibility
+        })
+
 
     }
 
-    setPic = (snappedImg) => {
-        console.log("setting a taken image");
+    setEDI = (item) => {
+        console.log("setting the EDI", item);
         this.setState({
-            img: snappedImg
+            edi: item
         })
+        this.showEditModal();
     }
 
     showCameraModal = () => {
@@ -80,6 +100,7 @@ export default class SupplyChainTX extends Component {
                 let source = { uri: response.uri };
                 this.setState({
                     img: {
+                        name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
                         image: "data:image/jpg;base64," + response.data,
                         size: response.fileSize,
                         uri: source
@@ -90,14 +111,13 @@ export default class SupplyChainTX extends Component {
         });
     }
 
-    showEditModal = () => {
-        console.log('show the edit modal');
+    setPic = (snappedImg) => {
+        console.log("setting a taken image");
         this.setState({
-            editModalVisibility: !this.state.editModalVisibility
+            img: snappedImg
         })
-
-
     }
+
 
     testOnPress = () => {
         console.log("this will be Transaction Start!");
@@ -138,8 +158,15 @@ export default class SupplyChainTX extends Component {
                             iconName='camera'
                             componentName={"Add Photo"}
                         />
+                        <EdiTransactionComponent
+                            onPress={() => this.showEditModal()}
+                            iconName='pencil'
+                            componentName={"Choose EDI-T Sets"}
+                            edi={this.state.edi}
+
+                        />
+
                         <TransactionComponent iconName='text-document' componentName={"Add Documents"} />
-                        <TransactionComponent onPress={() => this.showEditModal()} iconName='pencil' componentName={"Choose EDI-T Sets"} />
                         <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} />
 
                     </View>
@@ -152,14 +179,20 @@ export default class SupplyChainTX extends Component {
                     visibility={this.state.camerModalVisibility}
                     changeModal={this.showCameraModal}
                     _pickImage={this._pickImage}
-                    setPic={this.setPic}
                     navigation={this.props.navigation}
                     routeName={'SupplyChainTx'}
                     onBackdropPress={this._onBackdropPress}
                 />
 
+                <EditModal
+                    visibility={this.state.editModalVisibility}
+                    changeModal={this.showEditModal}
+                    setEDI={this.setEDI}
+                    onBackdropPress={this.showEditModal}
+                    clearEDI={this.clearEDI}
+                />
 
-                <EditModal visibility={this.state.editModalVisibility} changeModal={this.showEditModal} />
+
             </View>
         )
     }
