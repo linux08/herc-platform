@@ -139,6 +139,35 @@ export function DocTransactionComponent(props) {
 
     )
 }
+/// rendering the metrics UX
+export function MetricTransactionComponent(props) {
+    let bgColor = props.metrics ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    let iconColor = props.metric ? ColorConstants.MainGold : 'black';
+    console.log(props, "metric transaction component")
+    return (
+
+        <View style={localStyles.transactionComponentContainer}>
+            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                <Icon
+                    style={[localStyles.componentIcon, { color: iconColor }]}
+                    name='clipboard'
+                    onPress={props.onPress}
+                >
+                </Icon>
+            </View>
+            {props.metrics ?
+                <View style={localStyles.transComponentInfo}>
+
+                    <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
+                </View>
+                :
+                <Text style={localStyles.textNormal}>Add Metrcis</Text>
+            }
+        </View>
+
+
+    )
+}
 
 const localStyles = StyleSheet.create({
 
