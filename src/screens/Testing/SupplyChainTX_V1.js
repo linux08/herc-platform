@@ -7,18 +7,19 @@ import {
     TouchableWithoutFeedback,
     Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import CameraModal from '../../assets/modals/CameraSourceModal';
-import EditModal from '../../assets/modals/Edi-T-Modal'
+
+import MetricModal from '../../assets/modals/MetricModal';
+import CameraSourceModal from '../../assets/modals/CameraSourceModal';
+import EditModal from '../../assets/modals/EDI_T_Modal';
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, TransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 import { connect } from 'react-redux';
-
+import assets from "../../components/TesterAssets";
 
 var ImagePicker = require('react-native-image-picker');
 const { height, width } = Dimensions.get('window');
@@ -28,7 +29,15 @@ import {
 } from "../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
-
+const ORIGNAL_STATE = {
+    metricModalVisibility: false,
+    camerModalVisibility: false,
+    editModalVisibility: false,
+    img: {},
+    doc: {},
+    edi: {},
+    metrics: {}
+}
 export default class SupplyChainTX extends Component {
     navigationOptions = ({ navigation }) => {
         return {
@@ -36,58 +45,79 @@ export default class SupplyChainTX extends Component {
         }
     }
     constructor(props) {
-        // console.log(this.props.navigation, "navigation??")
         super(props);
-        console.log("componentTest")
-        this.state = {
-            camerModalVisibility: false,
-            editModalVisibility: false,
-            img: {},
-            doc: {},
-            edi: {}
-        }
+
+        this.state = ORIGNAL_STATE;
+
         this.showCameraModal = this.showCameraModal.bind(this);
         this.showEditModal = this.showEditModal.bind(this);
+        this.showMetricModal = this.showMetricModal.bind(this);
+
         this._pickImage = this._pickImage.bind(this);
-        this.setEDI = this.setEDI.bind(this);
-        this.clearEDI = this.clearEDI.bind(this);
         this.setPic = this.setPic.bind(this);
+        this.setEDI = this.setEDI.bind(this);
+        this.setMetrics = this.setMetrics.bind(this);
+
+        this.clearEDI = this.clearEDI.bind(this);
+        this.clearMetrics = this.clearMetrics.bind(this);
     }
 
-    clearEDI = () => {
-        console.log("clearing EDI");
+    clearAll = () => {
+        this.setState(ORIGNAL_STATE)
+    }
+
+    clearDoc = () => {
         this.setState({
-            ...this.state,
+            doc: {}
+        })
+    }
+
+    clearImage = () => {
+        this.setState({
+            img: {}
+        })
+
+    }
+    clearMetrics = () => {
+        this.setState({
+            metrics: {}
+        })
+    }
+    clearEDI = () => {
+        this.setState({
             edi: {}
         })
     }
 
     showEditModal = () => {
-        console.log('show the edit modal');
         this.setState({
             editModalVisibility: !this.state.editModalVisibility
         })
 
+    }
+
+    showMetricModal = () => {
+        this.setState({
+            metricModalVisibility: !this.state.metricModalVisibility
+        })
+
+    }
+
+    showCameraModal = () => {
+        this.setState({
+            camerModalVisibility: !this.state.camerModalVisibility
+        })
 
     }
 
     setEDI = (item) => {
-        console.log("setting the EDI", item);
         this.setState({
             edi: item
         })
         this.showEditModal();
     }
 
-    showCameraModal = () => {
-        console.log("show the camera modal");
-        this.setState({
-            camerModalVisibility: !this.state.camerModalVisibility
-        })
-
-    }
     _pickImage = () => {
-        console.log("ImageUpload Camera: picking image")
 
         ImagePicker.launchImageLibrary({}, (response) => {
 
@@ -139,7 +169,6 @@ export default class SupplyChainTX extends Component {
         });
     }
 
-
     setPic = (snappedImg) => {
         console.log("setting a taken image");
         this.setState({
@@ -148,15 +177,19 @@ export default class SupplyChainTX extends Component {
     }
 
 
+    setMetrics = (metricName, value) => {
+        this.setState({
+            metrics: {
+                [metricName]: value
+            }
+        })
+    }
+
     testOnPress = () => {
         console.log("this will be Transaction Start!");
         console.log(this.state, 'state here');
     }
 
-    // renderCamera(){
-    //     console.log("trying to go to the camera")
-    //     this.props.navigation.navigate("Camera");
-    // }
 
     _onBackdropPress = () => {
         this.showCameraModal();
@@ -165,7 +198,7 @@ export default class SupplyChainTX extends Component {
 
 
     render() {
-
+        let metrics = assets[0].CoreProps;
         return (
 
             <View style={styles.baseContainer}>
@@ -181,9 +214,9 @@ export default class SupplyChainTX extends Component {
                     <View style={localStyles.transactionComponentListContainer}>
 
                         <CameraTransactionComponent
+                            onPress={() => this.showCameraModal()}
                             img={this.state.img}
                             image={this.state.img.string}
-                            onPress={() => this.showCameraModal()}
                         />
 
                         <EdiTransactionComponent
@@ -193,11 +226,14 @@ export default class SupplyChainTX extends Component {
                         />
 
                         <DocTransactionComponent
-                            doc={this.state.doc}
                             onPress={this._pickDocument}
+                            doc={this.state.doc}
                         />
-                       
-                        {/* <TransactionComponent iconName='clipboard' componentName={"Add Metrics"} /> */}
+
+                        <MetricTransactionComponent
+                            onPress={() => this.showMetricModal()}
+                            iconName='clipboard'
+                        />
 
                     </View>
                     <View style={localStyles.pageBottom}>
@@ -205,7 +241,7 @@ export default class SupplyChainTX extends Component {
                     </View>
                 </View>
 
-                <CameraModal
+                <CameraSourceModal
                     visibility={this.state.camerModalVisibility}
                     changeModal={this.showCameraModal}
                     _pickImage={this._pickImage}
@@ -223,6 +259,13 @@ export default class SupplyChainTX extends Component {
                     clearEDI={this.clearEDI}
                 />
 
+                <MetricModal
+                    visibility={this.state.metricModalVisibility}
+                    metrics={metrics}
+                    clearMetrics={this.clearMetrics}
+                    localOnChange={this.setMetrics}
+                    changeModal={this.showMetricModal}
+                />
 
             </View>
         )

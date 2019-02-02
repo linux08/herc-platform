@@ -2,28 +2,28 @@
 #  UI OverHaul!
 ## I've changed the loading screen to save time styling components. 
 
-## `1.22.2019 - 1.31.2018`
+## `1.12.2019 - 1.31.2018`
 ###  UI Refactor
  (🎩 @stefanbemelmans)
   
 🔨 Improvements
 
 `herc-edge-login`
-
+*  Frame - Wire - Polish 
 *  fix image map in Register Asset
 *  fix image map in TX  
-
-## `1.12.2019 - 1.21.2018`
-### UI Refactor
- (🎩 @stefanbemelmans)
-  
-🔨 Improvements
-
-`herc-edge-login`
-* Established the 3 step Framing, Wiring, Polish process, but maybe should be Framing, Polish, Wiring as polishing will require a lot of   refreshes and having to login each time could be frustrating. 
-
-*  Register Flow minus modals is ready for stage 2
-*  Upgraded Navigation, in the process of separating the navigation stacks
+*  Supply Chain Image Component
+*  EDI Component
+*  Document Component
+*  Metrics Component
+*  EDI Modal
+*  Metrics Modal
+*  All Component States have update/edit/cancel functionality
+*  All Components reactive
+*  Navigation standards finalized
+*  Supply Chain Side Choice Page
+*  Register Flow; Supply Chain Flow; maybe wallet is ready for Wires
+*  Upgraded Navigation, Flows are separated into individual navigation stacks
 *  Converted the SVG icon into a PNG icon
 *  Majority of the Components and buttons are built
 

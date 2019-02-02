@@ -158,10 +158,10 @@ export function MetricTransactionComponent(props) {
             {props.metrics ?
                 <View style={localStyles.transComponentInfo}>
 
-                    <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
+                    <Text style={localStyles.textNormal}>Update Metrics</Text>
                 </View>
                 :
-                <Text style={localStyles.textNormal}>Add Metrcis</Text>
+                <Text style={localStyles.textNormal}>Add Metrics</Text>
             }
         </View>
 
