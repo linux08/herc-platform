@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation';
 import styles from '../assets/styles';
 import submit from "./buttons/submit.png"; // todo: turn into vector
 import { sendTrans } from "../actions/AssetActions";
+import { storeTransactionIds, clearTransactionStore } from "../actions/WalletActActions";
 import fee from "../assets/hercLogoPillar.png";
 import newOriginator from "./buttons/originatorButton.png";// todo: turn into vector
 import newRecipient from "./buttons/recipientButton.png"; // todo: turn into vector
@@ -18,9 +19,9 @@ class SupplyChainTransactionReview extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      loading: false,
       balance: null,
-      hercValue: null
+      hercValue: null,
+      madePayment: false
     };
   }
   componentDidMount = () => {
@@ -30,7 +31,7 @@ class SupplyChainTransactionReview extends Component {
 
     try {
       let balance = new BigNumber(this.props.watchBalance["HERC"]);
-      this.setState({ balance: balance.times(1e-18).toFixed(6) });ac
+      this.setState({ balance: balance.times(1e-18).toFixed(6) });
     } catch (e) {
       if (this.props.wallet.balances["HERC"]) {
         let balance = new BigNumber(this.props.wallet.balances["HERC"]); // if balances:{} this will NaN
@@ -41,6 +42,8 @@ class SupplyChainTransactionReview extends Component {
       }
     }
   };
+
+
 
   _onPressSubmit() {
     if (Object.keys(this.props.transDat).length > 0) {
@@ -88,16 +91,17 @@ class SupplyChainTransactionReview extends Component {
     }
   }
 
-  async _checkBalance() {
+
+  _checkBalance() {
     if (!this.state.balance) {
       return;
     }
     if (DEVELOPERS.includes(this.props.edgeAccount)){
-      // this is a developer
       console.log("You are a developer. jm")
+
+      this._changeModalVisibility(true);
       this._sendTrans()
     } else {
-      // this is a non-developer
       console.log("You are NOT a developer. jm")
       // let docPrice = parseFloat(this._getDocPrice());
       // let imgPrice = parseFloat(this._getImgPrice());
@@ -114,7 +118,7 @@ class SupplyChainTransactionReview extends Component {
       let totalBN = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).plus(this._getNetworkFee());
       let newbalance = balance.minus(totalBN);
 
-      console.log("chance, do you have enough?", newbalance.isPositive());
+      console.log("Do you have enough? jm", newbalance.isPositive());
 
       if (newbalance.isNegative()) {
         Alert.alert(
@@ -131,67 +135,8 @@ class SupplyChainTransactionReview extends Component {
           { cancelable: true }
         );
       } else {
-        this.setState({ modalVisible: true });
-        const burnSpendInfo = {
-          networkFeeOption: "standard",
-          currencyCode: "HERC",
-          metadata: {
-            name: "Transfer From Herc Wallet",
-            category: "Transfer:Wallet:Network Fee"
-          },
-          spendTargets: [
-            {
-              publicAddress: TOKEN_ADDRESS,
-              nativeAmount: networkFeePrepped.toString()
-            }
-          ]
-        };
-        const dataFeeSpendInfo = {
-          networkFeeOption: "standard",
-          currencyCode: "HERC",
-          metadata: {
-            name: "Transfer From Herc Wallet",
-            category: "Transfer:Wallet:Data Fee"
-          },
-          spendTargets: [
-            {
-              publicAddress: "0x1a2a618f83e89efbd9c9c120ab38c1c2ec9c4e76",
-              nativeAmount: docImgFeePrepped.toString()
-            }
-          ]
-        };
-        // catch error for "ErrorInsufficientFunds"
-        // catch error for "ErrorInsufficientFundsMoreEth"
-        let wallet = this.props.wallet;
-        try {
-          let burnTransaction = await wallet.makeSpend(burnSpendInfo);
-          await wallet.signTx(burnTransaction);
-          await wallet.broadcastTx(burnTransaction);
-          await wallet.saveTx(burnTransaction);
-          console.log("Sent burn transaction with ID = " + burnTransaction.txid);
-
-          let dataFeeTransaction = await wallet.makeSpend(dataFeeSpendInfo);
-          await wallet.signTx(dataFeeTransaction);
-          await wallet.broadcastTx(dataFeeTransaction);
-          await wallet.saveTx(dataFeeTransaction);
-          console.log(
-            "Sent dataFee transaction with ID = " + dataFeeTransaction.txid
-          );
-
-          if (burnTransaction.txid && dataFeeTransaction.txid) {
-            this._sendTrans();
-          }
-        } catch (e) {
-          let tempBalance = new BigNumber(this.props.watchBalance["ETH"]);
-          let ethBalance = tempBalance.times(1e-18).toFixed(6);
-          this.setState({ modalVisible: false });
-          Alert.alert(
-            "Insufficient ETH Funds",
-            "Balance: " + ethBalance + " ETH",
-            [{ text: "Ok", onPress: () => console.log("OK Pressed") }],
-            { cancelable: false }
-          );
-        }
+        this._changeModalVisibility(true);
+        this._sendTrans();
       }
     }
   }
@@ -203,18 +148,18 @@ class SupplyChainTransactionReview extends Component {
   };
 
   _sendTrans() {
-    // let docPrice = parseFloat(this._getDocPrice());
-    // let imgPrice = parseFloat(this._getImgPrice());
-    // let networkFee = parseFloat(this._getNetworkFee());
-    // let total = imgPrice + docPrice + networkFee;
-
     let totalBN = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).plus(this._getNetworkFee()).toFixed(18);
-
-    // console.log(docPrice, imgPrice, networkFee, total, "chance price check on send trans");
     console.log(totalBN, "chance price check on send trans")
     // let convertingTotal = new BigNumber(total)
     // let newTotal = convertingTotal.toFixed(6)
-    this.props.sendTrans(totalBN);
+
+    /*
+    send docImgFeePrepped and networkFeePrepped in string
+    */
+    let docImgFeePrepped = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).multipliedBy(1000000000000000000).toFixed(0);
+    let networkFeePrepped = new BigNumber(this._getNetworkFee()).multipliedBy(1000000000000000000).toFixed(0);
+    let sendTransObj = {totalBN: totalBN, dataFee: docImgFeePrepped.toString(), networkFee: networkFeePrepped.toString()}
+    this.props.sendTrans(sendTransObj);
   }
 
   _getNetworkFee = () => {
@@ -358,6 +303,8 @@ class SupplyChainTransactionReview extends Component {
 
   _goToMenu = () => {
     this._changeModalVisibility(false);
+    // clear out TrnasactionStore
+    this.props.clearTransactionStore();
     this.props.navigate("MenuOptions");
   };
 
@@ -384,7 +331,6 @@ class SupplyChainTransactionReview extends Component {
       );
     }
 
-    /// I'm using a smaller location image locally. localStyles.assetLocationLabel
     return (
       <View style={localStyles.SupplyChainTransactionReviewContainer}>
         <Text style={styles.TransactionReview}>Transaction Review</Text>
@@ -437,11 +383,32 @@ class SupplyChainTransactionReview extends Component {
                   color="#091141"
                 />
               </View>
-              {this.props.transDataFlags.confTransComplete && (
+              {this.props.transactionIdStore && (
                 <View>
                   <Text style={modalStyle.wordsText}>
                     Your Transaction Has Completed!
                   </Text>
+
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableHighlight
+                      style={modalStyle.modalButton}
+                      onPress={() => {
+                        Linking.openURL("https://etherscan.io/tx/" + this.props.transactionIdStore.burnTransaction);
+                      }}
+                    >
+                      <Text style={{ margin: 5 }}>View Network TX</Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                      style={modalStyle.modalButton}
+                      onPress={() => {
+                        Linking.openURL("https://etherscan.io/tx/" + this.props.transactionIdStore.dataFeeTransaction);
+                      }}
+                    >
+                      <Text style={{ margin: 5 }}>View Data TX</Text>
+                    </TouchableHighlight>
+                  </View>
+
                   <TouchableHighlight
                     style={modalStyle.modalButton}
                     onPress={() => this._goToMenu()}
@@ -585,11 +552,15 @@ const mapStateToProps = state => ({
   transDat: state.AssetReducers.trans.data,
   transDataFlags: state.AssetReducers.transDataFlags,
   wallet: state.WalletActReducers.wallet,
-  watchBalance: state.WalletActReducers.watchBalance
+  watchBalance: state.WalletActReducers.watchBalance,
+  edgeAccount: state.WalletActReducers.edge_account,
+  transactionIdStore: state.WalletActReducers.transactionIdStore
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendTrans: transPrice => dispatch(sendTrans(transPrice))
+  sendTrans: transPrice => dispatch(sendTrans(transPrice)),
+  storeTransactionIds: transactionIds => dispatch(storeTransactionIds(transactionIds)),
+  clearTransactionStore: () => dispatch(clearTransactionStore())
 });
 
 export default connect(
