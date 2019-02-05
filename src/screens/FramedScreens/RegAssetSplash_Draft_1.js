@@ -10,7 +10,7 @@ import {
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import { createStackNavigator } from "react-navigation";
 import RegHeader from "../../components/Headers/Header";
 

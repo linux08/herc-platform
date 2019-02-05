@@ -14,7 +14,7 @@ import { AddPhotoButton } from "../../components/RegisterAssetComponents/Registe
 import { AddAssetButton } from "../../components/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
 // AssetCard props = Name, Logo, HercId
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 export default class SupplyChainSplash extends Component {
 

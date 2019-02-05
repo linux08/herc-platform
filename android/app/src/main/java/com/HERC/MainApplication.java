@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.peel.react.TcpSocketsModule;
-import com.swmansion.rnscreens.RNScreensPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -50,7 +49,6 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new VectorIconsPackage(),
             new TcpSocketsModule(),
-            new RNScreensPackage(),
             new RandomBytesPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),

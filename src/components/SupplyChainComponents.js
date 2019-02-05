@@ -14,7 +14,7 @@ const hercpngIcon = require('../assets/icons/hercIcon.png');
 import { HercTextFieldWithLabel } from "../components/SharedComponents";
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ColorConstants from "../assets/ColorConstants";
-import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
 
 
 export function TransInfoCard(props) {

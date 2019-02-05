@@ -19,7 +19,7 @@ import {
 } from "../../components/SharedComponents";
 const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
 const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 export default class SupplyChainSideChoice extends Component {
 

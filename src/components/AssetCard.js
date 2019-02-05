@@ -6,7 +6,7 @@ import {
     Image
 } from 'react-native';
 import ColorConstants from "../assets/ColorConstants";
-import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
 
 export function AssetCard(asset) {
     console.log(asset);

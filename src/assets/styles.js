@@ -1,7 +1,7 @@
 "use strict";
 import { StyleSheet, Platform } from "react-native";
 import ColorConstants from "./ColorConstants";
-import { widthPercentageToDP, heightPercentageToDP } from './responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from './responsiveUI';
 
 module.exports = StyleSheet.create({
 

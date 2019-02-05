@@ -23,7 +23,7 @@ import {
 
 } from "../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 export default class SupplyChainMetrics extends Component {
     navigationOptions = ({ navigation }) => {

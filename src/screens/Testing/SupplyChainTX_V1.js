@@ -28,7 +28,7 @@ import {
     BigYellowButton
 } from "../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 const ORIGNAL_STATE = {
     metricModalVisibility: false,
     camerModalVisibility: false,
