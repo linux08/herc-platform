@@ -7,6 +7,7 @@ import styles from "../assets/styles";
 import hercPillar from "../assets/hercLogoPillar.png";
 import { incHercId, confirmAssetStarted, confirmAssetComplete, settingHeader, settingHeaderError } from "../actions/AssetActions"
 import modalStyle from "../assets/confModalStyles";
+// import CustomModal from "../components/CustomModal"
 import { TOKEN_ADDRESS, DEVELOPERS } from "../components/settings"
 import BigNumber from 'bignumber.js';
 import firebase from "../constants/Firebase";
@@ -21,6 +22,9 @@ class NewAssetConfirm extends Component {
             balance: 'madeupBalance',
             transactionId: null
         }
+
+        this._changeModalVisibility = this._changeModalVisibility.bind(this);
+        this._CheckBalance = this._CheckBalance.bind(this);
     }
 
 
@@ -40,43 +44,45 @@ class NewAssetConfirm extends Component {
         }
     }
 
-    componentWillMount() {
-        try {
-          let balance = new BigNumber(this.props.watchBalance["HERC"])
-          this.setState({ balance: balance.times(1e-18).toFixed(6) })
-        } catch(e) {
-          if (this.props.wallet.balances['HERC']) {
-            let balance =  new BigNumber(this.props.wallet.balances['HERC'])
-            this.setState({ balance: balance.times(1e-18).toFixed(6) })
-          }
-          else {
-            let balance =  new BigNumber('0')
-            this.setState({ balance: balance.times(1e-18).toFixed(6) })
-          }
-        }
-        this.setState({
-            hercId: this.props.hercId
-        })
-        // if (this.props.dataFlags.confirmStarted) {
-        //     this.setState({ loading: true })
-        // }
+
+    componentDidMount() {
+        console.log("here in newAssetConfirm", this.props, "that was props, state is next", this.state)
     }
     // componentWillMount() {
-    //     // debugger
-    //     console.log(this.props.dataFlags, "chance repeat")
-    //     if (this.props.dataFlags.confAssetComplete) {
-    //         this.setState({ confirmComplete: true })
-    //         //   this.props.navigation.navigate('MenuOptions')
-    //     }
+    // try {
+    //   let balance = new BigNumber(this.props.watchBalance["HERC"])
+    //   console.log(balance, "balance from watchbalanc...or");
+    //   console.log(this.props, "props", this.state, "this.state");
+    //   this.setState({ balance: balance.times(1e-18).toFixed(6) })
+    // } catch(e) {
+    //   if (this.props.wallet.balances['HERC']) {
+    //     let balance =  new BigNumber(this.props.wallet.balances['HERC'])
+    //     this.setState({ balance: balance.times(1e-18).toFixed(6) })
+    //   }
+    //   else {
+    //     let balance =  new BigNumber('0')
+    //     this.setState({ balance: balance.times(1e-18).toFixed(6) })
+    //   }
+    // }
+    // this.setState({
+    //     hercId: this.props.hercId
+    // })
+    // if (this.props.dataFlags.confirmStarted) {
+    //     this.setState({ loading: true })
+    // }
     // }
 
-    _changeModalVisibility = (visible) => {
+
+    _changeModalVisibility = () => {
         this.setState({
-            modalVisible: visible
+            modalVisible: !this.state.modalVisible
         })
     }
 
-    async uploadImageAsync(uri) {
+
+    // since all the assets require images, I took away the non-Image option
+    uploadImageAsync = async (uri) => {
+        this._changeModalVisibility();
         const { navigate } = this.props.navigation;
         let newAsset = this.props.newAsset;
         const response = await fetch(uri);
@@ -114,99 +120,88 @@ class NewAssetConfirm extends Component {
         this.props.confirmAssetStarted(ipfsAsset);
         this.props.incHercId(this.props.hercId);
     }
-    _sendNewAsset(){
-      this._changeModalVisibility(true);
-      if (this.props.newAsset.Logo) {
-          this.uploadImageAsync(this.props.newAsset.Logo.uri)
-      } else {
-        let newAsset = this.props.newAsset;
-        let fbAsset, ipfsAsset;
 
-        ipfsAsset = Object.assign({}, {
-            Name: newAsset.Name,
-            CoreProps: newAsset.CoreProps,
-            hercId: this.props.hercId,
-        });
+    _CheckBalance() {
 
-        fbAsset = {
-            hercId: this.props.hercId,
-            Name: newAsset.Name,
-            // Logo: downloadURL,
-            Password: newAsset.Password
-        }
-
-        console.log("Right before send_trans: jm\n", ipfsAsset, fbAsset)
-
-        this.props.settingHeader(fbAsset);
-        this.props.confirmAssetStarted(ipfsAsset);
-        this.props.incHercId(this.props.hercId);
-
-        // this.props.confirmAssetStarted(this.props.newAsset); // Non-Logo makes malformed assets
-        const { navigate } = this.props.navigation;
-        navigate('MenuOptions');
-      }
-    }
-
-    async _checkBalance(){
-      if (DEVELOPERS.includes(this.props.edgeAccount)){
-        // this is a developer
-        console.log("You are a developer. jm")
-        this._sendNewAsset()
-      } else {
-        console.log("jm checkbalance()", this.state.balance)
-        debugger;
-        // this is a non-developer
-        console.log("You are NOT a developer. jm")
-        let price = new BigNumber(1000)
-        let balance = new BigNumber(this.state.balance)
-        let newbalance = balance.minus(price)
-
-        console.log('do you have enough?', newbalance.isPositive())
-
-        if (newbalance.isNegative()){
-          Alert.alert(
-            'Insufficient Funds',
-            'Current Balance: '+ this.state.balance + ' HERC' ,
-            [
-              {text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel'},
-              {text: 'Ok', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: true }
-          )
+        console.log("Checking Balances, circumventing dev check")
+        if (DEVELOPERS.includes(this.props.edgeAccount)) {
+            // this is a developer
+            console.log("You are a developer. jm")
+            this.uploadImageAsync(this.props.newAsset.Logo.uri)
+            console.log(this.state, this.props, "not sending the asset")
         } else {
-          Alert.alert(
-            'You Meet the Minimum Balance!',
-            'Current Balance:'+ this.state.balance + ' HERC \n Do you wish to proceed?' ,
-            [
-              {text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel'},
-              {text: 'Yes, Make an Asset', onPress: () => this._sendNewAsset()},
-            ],
-            { cancelable: false }
-          )
+            console.log("jm checkbalance()", this.props.wallet.balances.HERC)
+            debugger;
+            // this is a non-developer
+            console.log("You are NOT a developer. jm")
+            let price = new BigNumber(1000)
+
+            let weibalance = new BigNumber(this.props.wallet.balances.HERC)
+            //  Balance is stored as wei, converting to HERCS for check
+            let convertBalance = weibalance.times(1e-18);
+            // this is the math after converting the user balance to eth from wei
+            let convertMath = convertBalance.minus(price);
+
+            console.log(
+                'do you have enough?', convertMath.isPositive(),
+                "convertBalance" + convertBalance,
+                "convertMath:" + convertMath
+            );
+
+            if (convertMath.isNegative()) {
+                Alert.alert(
+                    'Insufficient Funds',
+                    'Current Balance: ' + convertBalance.toFixed(12) + ' HERC',
+                    [
+                        { text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel' },
+                        { text: 'Ok', onPress: () => console.log('OK Pressed') },
+                    ],
+                    { cancelable: true }
+                )
+            } else {
+                Alert.alert(
+                    'You Meet the Minimum Balance!',
+                    'Current Balance:' + convertBalance.toFixed(12) + ' HERC \n Do you wish to proceed?',
+                    [
+                        { text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel' },
+                        { text: 'Yes, Make an Asset', onPress: () => this.uploadImageAsync() },
+                    ],
+                    { cancelable: false }
+                )
+            }
         }
-      }
     }
 
 
-    _onPressSubmit() {
-        Alert.alert(
-          'Minimum Balance Requirement: 1000 HERC',
-          'Current Balance: \n'+ this.state.balance + ' HERC \nDo you wish to check if your balance meets the minimum requirement?' ,
-          [
-            {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-            {text: 'Yes', onPress: () => {this._checkBalance()} },
-          ],
-          { cancelable: false }
-        )
-    }
+
+
+    PressSubmit = () => {
+
+        console.log("checking balance after button press")
+        console.log(this.props, "wtf is this");
+        // console.log(this.props.wallet.balances);
+        // this._changeModalVisibility();
+        this._CheckBalance();
+        // Alert.alert(
+        //   'Minimum Balance Requirement: 1000 HERC',
+        //   'Current Balance: \n'+ this.props.watchBalance.HERC + ' HERC \nDo you wish to check if your balance meets the minimum requirement?' ,
+        //   [
+        //     {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+        //     {text: 'Yes', onPress: () => {this._checkBalance()} },
+        //   ],
+        //   { cancelable: false }
+        // )
+
+
+    };
 
 
     _goToMenu = () => {
         const { navigate } = this.props.navigation;
-        this._changeModalVisibility(false);
+        this._changeModalVisibility();
         navigate('MenuOptions');
 
-    }
+    };
     render() {
         const { navigate } = this.props.navigation;
         let price = this.state.fctPrice;
@@ -216,23 +211,19 @@ class NewAssetConfirm extends Component {
         let Name = newAsset.Name;
         let password = this.props.newAsset.Password
 
-        if (newAsset.Logo) {
-            Logo = (<Image style={styles.assetHeaderImage} source={{ uri: newAsset.Logo.uri }} />);
-        } else {
-            Logo = (<Text style={styles.label}>No Image</Text>)
-        }
 
-        if (newAsset.hasOwnProperty('CoreProps')) {
-            list = Object.getOwnPropertyNames(newAsset.CoreProps).map((x, i) => {
-                let num = (i + 1);
-                return (
-                    <View key={i} style={localStyles.assetMetricInputField}>
-                        <Text style={localStyles.text}>Metric: {num}</Text>
-                        <Text style={localStyles.input}>{x}</Text>
-                    </View>
-                )
-            })
-        } else { list = (<Text style={styles.label}>No Properties</Text>) }
+        Logo = (<Image style={styles.assetHeaderImage} source={{ uri: newAsset.Logo.uri }} />);
+
+
+        list = Object.getOwnPropertyNames(newAsset.CoreProps).map((x, i) => {
+            let num = (i + 1);
+            return (
+                <View key={i} style={localStyles.assetMetricInputField}>
+                    <Text style={localStyles.text}>Metric: {num}</Text>
+                    <Text style={localStyles.input}>{x}</Text>
+                </View>
+            )
+        })
 
 
 
@@ -252,9 +243,9 @@ class NewAssetConfirm extends Component {
                     </ScrollView>
 
                     <TouchableHighlight
-                    style={[localStyles.button, { backgroundColor: 'white' }]}
-                    onPress={this._onPressSubmit}>
-                      <Text>Submit</Text>
+                        style={[localStyles.button, { backgroundColor: 'white' }]}
+                        onPress={this.PressSubmit}>
+                        <Text>Submit</Text>
                     </TouchableHighlight>
 
                     <View style={localStyles.newAssetFeeContainer}>
@@ -263,21 +254,26 @@ class NewAssetConfirm extends Component {
                     </View>
 
                 </View>
+
+                {/* <CustomModal modalCase="error"
+                    closeModal={this._changeModalVisibility}
+                    isVisible={this.state.modalVisible}
+                    content="Your content here."
+                    dismissRejectText="Close"
+                /> */}
+
                 <Modal
                     transparent={false}
                     animationType={'none'}
                     visible={this.state.modalVisible}
                     onRequestClose={() => { console.log("modal closed") }}
                 >
-                    <View style={modalStyle.container}>
-                        <View style={modalStyle.modalBackground}>
-                        <View style={modalStyle.closeButtonContainer}>
-                            <TouchableHighlight
-                              style={modalStyle.closeButton}
-                              onPress={() => this._changeModalVisibility(false)}>
-                            <Text style={{ margin: 5, fontSize: 30, color: '#00000070'} }>X</Text>
-                            </TouchableHighlight>
-                        </View>
+                 <View style={modalStyle.baseModal}>
+                        <View style={modalStyle.modalCenter}>
+                           <Text 
+                           onPress={this._changeModalVisibility}
+                           style={modalStyle.labelTitle}>Close Modal</Text>
+
                             {!this.props.dataFlags.confirmAssetComplete &&
                                 <Text style={modalStyle.wordsText}>Your Asset Information Is Being Written To The Blockchain. {"\n"}This may take a while. Please be patient. At this point, you cannot cancel the transaction. You may return to Main Menu if you wish.</Text>
                             }
@@ -289,18 +285,18 @@ class NewAssetConfirm extends Component {
 
                             {this.props.dataFlags.confAssetComplete &&
                                 <View>
-                                    <Text style={modalStyle.wordsText}>Your Transaction Has Completed!</Text>
+                                    <Text style={modalStyle.labelTitle}>Your Transaction Has Completed!</Text>
                                     <TouchableHighlight
-                                      style={modalStyle.modalButton}
-                                      onPress={() => this._goToMenu()}>
-                                    <Text style={{ margin: 5} }>Back to Menu</Text>
+                                        style={modalStyle.modalButton}
+                                        onPress={() => this._goToMenu()}>
+                                        <Text style={modalStyle.menuTitle}>Back to Menu</Text>
                                     </TouchableHighlight>
                                 </View>
                             }
 
                         </View>
                     </View>
-                </Modal>
+                </Modal> 
             </View>
 
 
@@ -308,8 +304,8 @@ class NewAssetConfirm extends Component {
         )
     }
 
-
 }
+
 const mapStateToProps = (state) => ({
     newAsset: state.AssetReducers.newAsset,
     hercId: state.AssetReducers.hercId,
@@ -333,7 +329,6 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAssetConfirm);
-
 
 const localStyles = StyleSheet.create({
     headerField: {
@@ -431,12 +426,12 @@ const localStyles = StyleSheet.create({
         color: "yellow"
     },
     button: {
-      width: 80,
-      borderColor: "black",
-      borderWidth: 2,
-      padding: 5,
-      justifyContent: "center",
-      alignItems: "center",
+        width: 80,
+        borderColor: "black",
+        borderWidth: 2,
+        padding: 5,
+        justifyContent: "center",
+        alignItems: "center",
     }
 
 
