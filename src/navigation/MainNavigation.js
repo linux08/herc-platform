@@ -10,36 +10,14 @@ import {
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
 
-
-
-// import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
-// import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
-// import RegAsset2 from "../screens/Testing/RegAsset_2_Draft_1";
-
-
 import BlockScanner from "../screens/BlockScanner";
-// import Camera from "../screens/Camera";
 import Confirm from "../screens/Confirm";
-import NewAssetLanding from "../screens/NewAssetLanding";
-import DocUp from "../screens/DocUp";
-// import EdiT from "../screens/Edi-T";
-import ImageUpload from "../screens/ImageUpload";
+
 import Hipr from "../screens/Hipr";
 import HiprTransactions from "../screens/HiprTransactions";
-import HiprAssets from "../screens/HiprAssets";
-import MetricInput from "../screens/MetricInput";
 import Login from "../screens/Login";
-import MenuOptions from "../screens/MenuOptions";
-import NewAssetConfirm from "../screens/NewAssetConfirm";
+
 import HiprLanding from "../screens/HiprLanding";
-import TrackAssetOptions from "../screens/TrackAssetOptions";
-
-import SupplyChainAssetList from "../screens/SupplyChainAssetList";
-import SupplyChainTxRx from "../screens/SupplyChainTxRx";
-import SupplyChainReview from "../screens/SupplyChainReview";
-import NewAssetForm from "../screens/NewAssetForm";
-
-import TrackAssetList from "../screens/TrackAssetList";
 import TxSwiperContainer from "../screens/TxSwiperContainer";
 import TxSwiper from "../components/TxSwiper";
 import Wallet from "../screens/Wallet";
@@ -56,6 +34,29 @@ import Header from "../components/Headers/Header";
 
 import RegAssetNavigator from "./RegisterAssetNavigation";
 import SupplyChainNav from "./SupplyChainNavigation";
+
+    // import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
+    // import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
+    // import RegAsset2 from "../screens/Testing/RegAsset_2_Draft_1";
+
+
+    // import Camera from "../screens/Camera";
+    // import NewAssetLanding from "../screens/NewAssetLanding";
+    // import DocUp from "../screens/DocUp";
+    // import EdiT from "../screens/Edi-T";
+    // import ImageUpload from "../screens/ImageUpload";
+    // import HiprAssets from "../screens/HiprAssets";
+    // import MetricInput from "../screens/MetricInput";
+    import MenuOptions from "../screens/MenuOptions";
+    // import NewAssetConfirm from "../screens/NewAssetConfirm";
+    // import TrackAssetOptions from "../screens/TrackAssetOptions";
+
+    // import SupplyChainAssetList from "../screens/SupplyChainAssetList";
+    // import SupplyChainTxRx from "../screens/SupplyChainTxRx";
+    // import SupplyChainReview from "../screens/SupplyChainReview";
+    // import NewAssetForm from "../screens/NewAssetForm";
+
+    // import TrackAssetList from "../screens/TrackAssetList";
 
 
 const MainNavigator = createStackNavigator({
@@ -109,10 +110,10 @@ const MainNavigator = createStackNavigator({
     TrackAssetList: { screen: TrackAssetList },
     TrackAssetOptions: { screen: TrackAssetOptions },
 
-    SupplyChainAssetList: { screen: SupplyChainAssetList },
-    SupplyChainTxRx: { screen: SupplyChainTxRx },
-    SupplyChainReview: { screen: SupplyChainReview },
-    ImageUpload: { screen: ImageUpload },
+    // SupplyChainAssetList: { screen: SupplyChainAssetList },
+    // SupplyChainTxRx: { screen: SupplyChainTxRx },
+    // SupplyChainReview: { screen: SupplyChainReview },
+    // ImageUpload: { screen: ImageUpload },
     // Camera: { screen: Camera },
     DocUp: { screen: DocUp },
     // EdiT: { screen: EdiT },
@@ -131,7 +132,7 @@ const MainNavigator = createStackNavigator({
     DocumentQRScanner: { screen: DocumentQRScanner },
 
 }, {
-        initialRouteName: 'SupplyChainNav',
+        initialRouteName: 'Login',
         headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
         //     header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
