@@ -263,40 +263,46 @@ class NewAssetConfirm extends Component {
                 /> */}
 
                 <Modal
-                    transparent={false}
+                    transparent={true}
                     animationType={'none'}
                     visible={this.state.modalVisible}
                     onRequestClose={() => { console.log("modal closed") }}
                 >
-                 <View style={modalStyle.baseModal}>
+                    <View style={modalStyle.baseModal}>
                         <View style={modalStyle.modalCenter}>
-                           <Text 
-                           onPress={this._changeModalVisibility}
-                           style={modalStyle.labelTitle}>Close Modal</Text>
-
+                                <Text
+                                    onPress={this._changeModalVisibility}
+                                    style={modalStyle.labelTitle}>Back To Menu</Text>
+                            }
+                      
                             {!this.props.dataFlags.confirmAssetComplete &&
-                                <Text style={modalStyle.wordsText}>Your Asset Information Is Being Written To The Blockchain. {"\n"}This may take a while. Please be patient. At this point, you cannot cancel the transaction. You may return to Main Menu if you wish.</Text>
+                            <View style={{justifyContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+                                <Text style={modalStyle.copyText}>Your Asset Information Is Being Written To The Blockchain.</Text>
+                                <Text style={modalStyle.copyText}>This may take a while. Please be patient.</Text>
+                                <Text style={modalStyle.copyText}>At this point, you cannot cancel the transaction. You may return to Main Menu if you wish.</Text>
+                            </View>
                             }
 
                             <View style={modalStyle.activityIndicatorWrapper}>
                                 <ActivityIndicator
-                                    animating={this.props.dataFlags.confirmStarted} size="large" color="#091141" />
+                                    animating={this.props.dataFlags.confirmStarted} size="large" color="#7888e5" />
                             </View>
 
-                            {this.props.dataFlags.confAssetComplete &&
-                                <View>
-                                    <Text style={modalStyle.labelTitle}>Your Transaction Has Completed!</Text>
-                                    <TouchableHighlight
-                                        style={modalStyle.modalButton}
-                                        onPress={() => this._goToMenu()}>
-                                        <Text style={modalStyle.menuTitle}>Back to Menu</Text>
-                                    </TouchableHighlight>
-                                </View>
+                            {this.props.dataFlags.confAssetComplete &&  <Text style={modalStyle.labelTitle}>Your Transaction Has Completed!</Text>
+                                
+                                // <View>
+                                //     <Text style={modalStyle.labelTitle}>Your Transaction Has Completed!</Text>
+                                //     <TouchableHighlight
+                                //         style={modalStyle.modalButton}
+                                //         onPress={() => this._goToMenu()}>
+                                //         <Text style={modalStyle.menuTitle}>Back to Menu</Text>
+                                //     </TouchableHighlight>
+                                // </View>
                             }
 
                         </View>
                     </View>
-                </Modal> 
+                </Modal>
             </View>
 
 
