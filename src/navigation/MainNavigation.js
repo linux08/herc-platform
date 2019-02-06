@@ -33,7 +33,7 @@ import TestSplash from "../screens/Testing/TestSplash";
 import Header from "../components/Headers/Header";
 
 import RegAssetNavigator from "./RegisterAssetNavigation";
-import SupplyChainNav from "./SupplyChainNavigation";
+import SupplyChainNavigator from "./SupplyChainNavigation";
 
     // import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
     // import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
@@ -57,7 +57,68 @@ import SupplyChainNav from "./SupplyChainNavigation";
     // import NewAssetForm from "../screens/NewAssetForm";
 
     // import TrackAssetList from "../screens/TrackAssetList";
+    
+    class SideMenuNavigator extends React.Component {
 
+        constructor(props) {
+            super(props);
+    
+            this.toggle = this.toggle.bind(this);
+    
+            this.state = {
+                isOpen: false,
+                selectedItem: 'MenuOptions',
+            }
+    
+        }
+    
+          toggle() {
+            this.setState({
+                isOpen: true,
+            });
+        }
+    
+        updateMenuState(isOpen) {
+            this.setState({ isOpen });
+        }
+    
+        onMenuItemSelected = item =>
+            this.setState({
+                isOpen: false,
+                selectedItem: item,
+            });
+    
+        renderNavigator() {
+            if (this.state.selectedItem === 'MenuOptions')
+                return <MainNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+            else if (this.state.selectedItem === 'NewAssetLanding')
+                return <RegAssetNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+            else if (this.state.selectedItem === 'SupplyChainAssetList')
+                return <SupplyChainNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+            // else if (this.state.selectedItem === 'TrackAssetList')
+            //     return <TrackAssetListNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+            // else if (this.state.selectedItem === 'Wallet')
+            //     return <WalletNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+            // else if (this.state.selectedItem === 'DocumentStorage')
+            //     return <DocumentStorageNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
+    
+        }
+    
+        render() {
+            const menu = <NewMenu navigation={this.props.navigation} onItemSelected={this.onMenuItemSelected} />
+            return (
+                <SideMenu menu={menu} isOpen={this.state.isOpen}
+                    onChange={isOpen => this.updateMenuState(isOpen)}>
+                    {this.renderNavigator()}
+                </SideMenu>
+            );
+        }
+    }
 
 const MainNavigator = createStackNavigator({
     TestSplash: {
@@ -67,20 +128,36 @@ const MainNavigator = createStackNavigator({
         })
        
     },
-    RegAssetNav: {
-        screen: RegAssetNavigator,
-        navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={"Register Asset"} navigation={navigation} />
-        })
+    SideMenuNavigator: {
+        screen: SideMenuNavigator,
+        
+    }
+    // RegAssetNav: {
+    //     screen: RegAssetNavigator,
+    //     navigationOptions: ({ navigation }) => ({
+    //         header: <Header headerTitle={"Register Asset"} navigation={navigation} />
+    //     })
        
-    },
-    SupplyChainNav: {
-        screen: SupplyChainNav,
+    // },
+    // SupplyChainNav: {
+    //     screen: SupplyChainNav,
+    //     navigationOptions: ({ navigation }) => ({
+    //         header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
+    //     })
+    // }
+}
+    , {
+        initialRouteName: 'TestSplash',
+        headerMode: 'none',
         navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
+            header: <Header headerTitle={'Welcome'} navigation={navigation} />
         })
-       
-    },
+     
+    })
+    
+   
+export default MainNavigator;
+
     // RegAssetSplashTest: {
     //     screen: RegAssetSplashTest,
     //     navigationOptions: ({ navigation }) => ({
@@ -93,8 +170,8 @@ const MainNavigator = createStackNavigator({
 
     // },
 
-    Login: { screen: TestSplash },
-    MenuOptions: { screen: MenuOptions },
+    // Login: { screen: TestSplash },
+    // MenuOptions: { screen: MenuOptions },
     // NewAssetLanding: { screen: NewAssetLanding },
     // NewAssetForm: { screen: NewAssetForm },
     // NewAssetConfirm: { screen: NewAssetConfirm },
@@ -131,13 +208,3 @@ const MainNavigator = createStackNavigator({
     // DocumentStorage: { screen: DocumentStorage },
     // DocumentQRScanner: { screen: DocumentQRScanner },
 
-}, {
-        initialRouteName: 'Login',
-        // headerMode: 'none',
-        navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={'Welcome'} navigation={navigation} />
-        })
-     
-    })
-
-export default MainNavigator;
