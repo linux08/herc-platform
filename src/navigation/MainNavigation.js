@@ -133,10 +133,10 @@ const MainNavigator = createStackNavigator({
 
 }, {
         initialRouteName: 'Login',
-        headerMode: 'none',
-        // navigationOptions: ({ navigation }) => ({
-        //     header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
-        // })
+        // headerMode: 'none',
+        navigationOptions: ({ navigation }) => ({
+            header: <Header headerTitle={'Welcome'} navigation={navigation} />
+        })
      
     })
 
