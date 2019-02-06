@@ -42,7 +42,7 @@ const bgImage = require("../../assets/main-bg.png")
                         </View>
                         <Text style={styles.headerText}>{this.props.headerName}</Text>
                         <View style={styles.sideHeaders}>
-                            <Icon onPress={() => this.props.navigation.navigate("settings")}
+                            <Icon onPress={this.props.toggleSideMenu}
                                 style={[styles.iconButton, { marginRight: 20 }]}
                                 name='gear'
                                 color={ColorConstants.MainGold}

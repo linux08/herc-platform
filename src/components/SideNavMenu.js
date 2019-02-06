@@ -8,18 +8,18 @@ import {
     ScrollView,
     Linking
 } from "react-native";
-import { VERSION } from '../components/settings.js'
+import { VERSION } from './settings.js'
 import profileIcon from "../assets/icons/profileIcon.png";
 import { connect } from "react-redux";
 import firebase from '../constants/Firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class NewMenu extends Component {
+class SideMenu extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            accountName: this.props.edge_account
+            // accountName: this.props.edge_account
         }
     }
 
@@ -28,20 +28,20 @@ class NewMenu extends Component {
         console.log(this.props.navigation);
     }
 
-    onLogOut = () => {
-        firebase.auth().signOut().then(function () {
-            // Sign-out successful.
-            console.log("Firebase Sign-out successful.")
-        }).catch(err => {
-            console.log(err)
-            // An error happened.
-        })
+    // onLogOut = () => {
+    //     firebase.auth().signOut().then(function () {
+    //         // Sign-out successful.
+    //         console.log("Firebase Sign-out successful.")
+    //     }).catch(err => {
+    //         console.log(err)
+    //         // An error happened.
+    //     })
 
-        this.props.account.logout(function () {
-            console.log('hooray im out!')
-        })
-        this.props.navigation.navigate('Login');
-    };
+    //     this.props.account.logout(function () {
+    //         console.log('hooray im out!')
+    //     })
+    //     this.props.navigation.navigate('Login');
+    // };
 
 
     render() {
@@ -67,11 +67,11 @@ class NewMenu extends Component {
                             <View style={localStyles.block__bullet}>
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
-                            {/* <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('MenuOptions'); }}>
+                            <View style={localStyles.block__textBlock}>
+                                <TouchableHighlight onPress={() => { this.props.onItemSelected('MainNavigator'); }}>
                                     <Text style={localStyles.title__Text}>Main</Text>
                                 </TouchableHighlight>
-                            </View> */}
+                            </View>
                         </View>
 
                         <View style={localStyles.block}>
@@ -320,4 +320,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(NewMenu);
+)(SideMenu);
