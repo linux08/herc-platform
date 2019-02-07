@@ -24,10 +24,15 @@ const bgImage = require("../../assets/main-bg.png")
         console.log(navigation, "trying to go back")
         navigation.goBack();
     }
-
+    _toggleSideMenu = () => {
+       let toggleSide = this.props.navigation.getScreenProps('toggleSideMenu');
+       console.log('ToggleSide',toggleSide);
+       toggleSide();
+    }
 
     render() {
-        console.log(this.props, "header")
+        // let toggleSideMenu = this.props.screenProps.toggleSideMenu;
+        // let screenProps = this.props.navigation.getScreenProps('toggleSideMenu');
         return (
             <View style={styles.headerCont}>
                 <ImageBackground source={bgImage} style={styles.bgImage}>
@@ -42,7 +47,7 @@ const bgImage = require("../../assets/main-bg.png")
                         </View>
                         <Text style={styles.headerText}>{this.props.headerName}</Text>
                         <View style={styles.sideHeaders}>
-                            <Icon onPress={this.props.toggleSideMenu}
+                            <Icon onPress={() => this._toggleSideMenu}
                                 style={[styles.iconButton, { marginRight: 20 }]}
                                 name='gear'
                                 color={ColorConstants.MainGold}

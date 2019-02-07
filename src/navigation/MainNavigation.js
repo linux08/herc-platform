@@ -59,7 +59,7 @@ import SideMenu from 'react-native-side-menu';
 
 // import TrackAssetList from "../screens/TrackAssetList";
 
-class SideMenuNavigator extends React.Component {
+class SideMenuNavGuts extends React.Component {
 
     constructor(props) {
         super(props);
@@ -74,7 +74,7 @@ class SideMenuNavigator extends React.Component {
 
     }
     toggle = () => {
-        console.log('toggle this')
+        console.log('toggle this, and where am I? this: ', this)
         this.setState({
             isOpen: !this.state.isOpen,
         });
@@ -90,12 +90,14 @@ class SideMenuNavigator extends React.Component {
         });
     }
 
+
+
     renderNavigator = () => {
         if (this.state.selectedItem === 'MainNav')
             return <MainNavigator screenProps={{ toggleSideMenu: this.toggle }} />;
 
         else if (this.state.selectedItem === 'NewAssetLanding')
-            return <RegAssetNavigator screenProps={{ toggleSideMenu: this.toggle }} />;
+            return <RegAssetNavigator screenProps={{ toggleSideMenu:this.toggle }} />;
 
         else if (this.state.selectedItem === 'SupplyChainAssetList')
             return <SupplyChainNavigator screenProps={{ toggleSideMenu: this.toggle }} />;
@@ -112,7 +114,7 @@ class SideMenuNavigator extends React.Component {
     }
 
     render() {
-        const menu = <SideNavMenu navigation={this.props.navigation} onItemSelected={this.onMenuItemSelected} />
+        const menu = <SideNavMenu navigation={this.props} onItemSelected={this.onMenuItemSelected} />
        console.log('Side menu');
         return (
             <SideMenu menu={menu} isOpen={this.state.isOpen}
@@ -123,16 +125,16 @@ class SideMenuNavigator extends React.Component {
     }
 }
 
+
+
 const MainNavigator = createStackNavigator({
     TestSplash: {
         screen: TestSplash,
-        navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={'Welcome'} navigation={navigation} toggleSideMenu={screenProps.toggleSideMenu} />
+        navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'Welcome'} navigation={navigation} />
         })
     },
-    SideMenuNavigator: {
-        screen: SideMenuNavigator,
-    }
+ 
 },
     {
         initialRouteName: 'TestSplash',
@@ -142,6 +144,24 @@ const MainNavigator = createStackNavigator({
         }
     }
 )
+
+const SideMenuNavigator = createStackNavigator({
+
+    SideMenuNav: {
+        screen: SideMenuNavGuts 
+
+
+    },
+
+    Login: {
+        screen: Login
+    }
+},
+{
+    initialRouteName: 'Login',
+    headerMode: 'none',
+
+})
     // RegAssetNav: {
     //     screen: RegAssetNavigator,
     //     navigationOptions: ({ navigation }) => ({

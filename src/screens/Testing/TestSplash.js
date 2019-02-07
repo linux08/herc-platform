@@ -17,13 +17,13 @@ export default class TestSplash extends Component {
 
     constructor(props) {
         super(props);
-        console.log(this.navigation)
+        console.log(this.props, "props, looking for screenprops")
        
     }
 
 onPress = () => {
     console.log("inTestSplash")
-    this.props.navigation.navigate('RegAssetNav')
+    // this.props.navigation.navigate('RegAssetNav')
 }
 
     render() {

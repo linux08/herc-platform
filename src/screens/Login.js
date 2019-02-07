@@ -97,9 +97,9 @@ class Login extends Component {
           this.props.getOrganization();
 
           if (results[1].data && results[1].data == true) {
-            navigate('MenuOptions') // pass in T/F response from /latest/apk
+            navigate('SideMenuNav') // pass in T/F response from /latest/apk
           } else {
-            navigate('MenuOptions', {alertLatestVersion: true})
+            navigate('SideMenuNav', {alertLatestVersion: true})
           }
 
         })
