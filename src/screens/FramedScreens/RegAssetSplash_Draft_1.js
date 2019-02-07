@@ -11,8 +11,6 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
-import { createStackNavigator } from "react-navigation";
-import RegHeader from "../../components/Headers/Header";
 
 export default class RegAssetSplashTest extends Component {
 //  navigationOptions = ({ navigation }) => ({
@@ -36,7 +34,7 @@ export default class RegAssetSplashTest extends Component {
         return (
             <View style={styles.baseContainer}>
                 <View style={[styles.baseContainer, styles.splashTop]}>
-                    <Image source={require('../../assets/register-asset.png')}
+                    <Image source={require('../../assets/RegisterAssetAssets/register-asset.png')}
                         style={styles.splashImage}
                         resizeMode="contain"
                     />
