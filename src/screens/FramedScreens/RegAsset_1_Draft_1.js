@@ -116,6 +116,7 @@ export default class RegAsset1 extends Component {
                 <View style={styles.bodyContainer}>
 
                     <BasePasswordInput
+                        label='Asset Password'
                         placeholder='Asset Password'
                         pwChange={this.pwChange}
                     />
@@ -135,9 +136,9 @@ export default class RegAsset1 extends Component {
                     <AddMetricButton onPress={this.changeModal1} />
 
                     <AddPhotoButton onPress={this.changeModal2} />
-                    <View style={[styles.pageBottom, {justifyContent: 'flex-end'}]}>
-                     <View style={{height: 100, width: 100, backgroundColor: 'blue'}}></View>
-                     
+                    <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
+                        <View style={{ height: 100, width: 100, backgroundColor: 'blue' }}></View>
+
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 

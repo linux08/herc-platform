@@ -25,7 +25,7 @@ export default class CameraSourceModal extends Component {
                 {   // Passing in the route to return to after taking a picture 
                     origRoute: this.props.routeName,
                     navigation: this.props.navigation,
-                    // sets the taken pic in local state of SupplyChainTX
+                    // sets the taken pic in local state of the Parent Component
                     setPic: this.props.setPic
                 }
             )

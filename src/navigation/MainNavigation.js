@@ -83,8 +83,8 @@ const MainNavigator = createStackNavigator({
 },
     {
         initialRouteName: 'TestSplash',
-        headerMode: 'none',
-       
+        headerMode: 'screen',
+    } 
 )
 
 const SideMenuNavigator = createDrawerNavigator(

@@ -32,7 +32,7 @@ const RegisterAssetNavigator = createStackNavigator(
         }
     },
     {// when a nested stack navigator, set headerMode: 'none' to disable the passed in header
-        initalRouteName: 'RegAsset1',
+        initalRouteName: 'RegAssetSplash1',
         headerMode: 'none',
 
     }

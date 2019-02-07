@@ -119,7 +119,7 @@ export default class RegAsset_2_Draft_1 extends Component {
 }
 const localStyles = StyleSheet.create({
     pageBottom: {
-        flex: 0,
+        // flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: 20,

@@ -14,7 +14,9 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
 import { createStackNavigator } from "react-navigation";
 
 export default class TestSplash extends Component {
-
+    navigationOptions = ({ navigation, screenProps }) => ({
+        header: <Header headerTitle={'Welcome'} navigation={navigation} />
+    })
     constructor(props) {
         super(props);
         console.log(this.props, "props, looking for screenprops")

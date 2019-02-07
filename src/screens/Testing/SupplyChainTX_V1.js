@@ -15,7 +15,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents/SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 import { connect } from 'react-redux';

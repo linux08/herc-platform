@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 import { CameraSourceModal } from "../../assets/modals/CameraSourceModal";
 import TesterAssets from "../../components/TesterAssets";
 import { AddPhotoButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
-import { AddAssetButton } from "../../components/SupplyChainComponents.js";
+import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
 // AssetCard props = Name, Logo, HercId
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';

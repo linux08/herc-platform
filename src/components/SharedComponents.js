@@ -193,14 +193,14 @@ const localStyles = StyleSheet.create({
     textFieldContainer: {
         flexDirection: 'column',
         width:  widthPercentageToDP('90'),
-        maxHeight: heightPercentageToDP(((50 / height) * 100).toString()),
+        height: heightPercentageToDP(((50 / height) * 100).toString()),
         justifyContent: 'center',
         alignItems: 'flex-start',
         backgroundColor: ColorConstants.ElementBG,
         margin: 5,
         paddingLeft: 5,
         borderRadius: 6,
-        
+        // height: heightPercentageToDP(((50 / height) * 100).toString()),
     },
     labeledTextInput: {
         color: ColorConstants.MainBlue,
@@ -231,7 +231,7 @@ const localStyles = StyleSheet.create({
         borderRadius: 0,
         backgroundColor: ColorConstants.ElementBG,
         margin: 0,
-        // flex: 1,
+        flex: 1,
         fontSize: 17,
         alignSelf: 'center'
     },

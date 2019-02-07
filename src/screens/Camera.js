@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ActivityIndicator, Modal } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { relative } from 'path';
-import modalStyle from "../assets/confModalStyles";
+import modalStyle from "../components/modals/confModalStyles";
 
 export default class Camera extends Component {
 
