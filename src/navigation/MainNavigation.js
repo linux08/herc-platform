@@ -8,7 +8,7 @@ import {
     View
 } from "react-native";
 import React, { Component } from "react";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from "react-navigation";
 
 import BlockScanner from "../screens/BlockScanner";
 import Confirm from "../screens/Confirm";
@@ -34,7 +34,7 @@ import Header from "../components/Headers/Header";
 import SideNavMenu from "../components/SideNavMenu"
 import RegAssetNavigator from "./RegisterAssetNavigation";
 import SupplyChainNavigator from "./SupplyChainNavigation";
-import SideMenu from 'react-native-side-menu';
+// import SideMenu from 'react-native-side-menu';
 
 // import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
 // import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
@@ -59,122 +59,62 @@ import SideMenu from 'react-native-side-menu';
 
 // import TrackAssetList from "../screens/TrackAssetList";
 
-class SideMenuNavGuts extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.toggle = this.toggle.bind(this);
-
-        this.state = {
-            isOpen: false,
-            selectedItem: 'MainNav'
-
-        }
-
-    }
-    toggle = () => {
-        console.log('toggle this, and where am I? this: ', this)
-        this.setState({
-            isOpen: !this.state.isOpen,
-        });
-    }
-
-    updateMenuState = () => this.toggle();
-
-    onMenuItemSelected = item => {
-        console.log(item, 'selected');
-        this.setState({
-            isOpen: false,
-            selectedItem: item,
-        });
-    }
-
-
-
-    renderNavigator = () => {
-        if (this.state.selectedItem === 'MainNav')
-            return <MainNavigator screenProps={{ toggleSideMenu: this.toggle }} />;
-
-        else if (this.state.selectedItem === 'NewAssetLanding')
-            return <RegAssetNavigator screenProps={{ toggleSideMenu:this.toggle }} />;
-
-        else if (this.state.selectedItem === 'SupplyChainAssetList')
-            return <SupplyChainNavigator screenProps={{ toggleSideMenu: this.toggle }} />;
-
-        // else if (this.state.selectedItem === 'TrackAssetList')
-        //     return <TrackAssetListNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
-
-        // else if (this.state.selectedItem === 'Wallet')
-        //     return <WalletNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
-
-        // else if (this.state.selectedItem === 'DocumentStorage')
-        //     return <DocumentStorageNavigator screenProps={{ toggleSideMenu: this.toggle }} toggleMenu={this._drawerMenuToggle} />;
-
-    }
-
-    render() {
-        const menu = <SideNavMenu navigation={this.props} onItemSelected={this.onMenuItemSelected} />
-       console.log('Side menu');
-        return (
-            <SideMenu menu={menu} isOpen={this.state.isOpen}
-                onChange={isOpen => this.updateMenuState(isOpen)}>
-                {this.renderNavigator()}
-            </SideMenu>
-        );
-    }
-}
 
 
 
 const MainNavigator = createStackNavigator({
     TestSplash: {
         screen: TestSplash,
-        navigationOptions: ({ navigation, screenProps }) => ({
+         navigationOptions: ({ navigation, screenProps }) => ({
             header: <Header headerTitle={'Welcome'} navigation={navigation} />
         })
     },
- 
+    RegAssetNavigator: {
+        screen: RegAssetNavigator,
+        navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'RegAsset'} navigation={navigation} />
+        })
+    },
+    SupplyChainNavigator: {
+        screen: SupplyChainNavigator
+    }
+
 },
     {
         initialRouteName: 'TestSplash',
-        // headerMode: 'none',
-        navigationOptions: {
-            headerVisible: true,
-        }
-    }
+        headerMode: 'none',
+       
 )
 
-const SideMenuNavigator = createStackNavigator({
-
-    SideMenuNav: {
-        screen: SideMenuNavGuts 
-
-
+const SideMenuNavigator = createDrawerNavigator(
+    {
+        MainNavigator: MainNavigator,
     },
+    {
+        contentComponent: SideNavMenu,
+        drawerWidth: 250,
+        drawerPosition: 'left',
+        drawerOpenRoute: 'DrawerOpen',
+        drawerCloseRoute: 'DrawerClose',
+        drawerToggleRoute: 'DrawerToggle',
 
-    Login: {
-        screen: Login
-    }
-},
-{
-    initialRouteName: 'Login',
-    headerMode: 'none',
+    })
 
-})
-    // RegAssetNav: {
-    //     screen: RegAssetNavigator,
-    //     navigationOptions: ({ navigation }) => ({
-    //         header: <Header headerTitle={"Register Asset"} navigation={navigation} />
-    //     })
 
-    // },
-    // SupplyChainNav: {
-    //     screen: SupplyChainNav,
-    //     navigationOptions: ({ navigation }) => ({
-    //         header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
-    //     })
-    // }
+// RegAssetNav: {
+//     screen: RegAssetNavigator,
+//     navigationOptions: ({ navigation }) => ({
+//         header: <Header headerTitle={"Register Asset"} navigation={navigation} />
+//     })
+
+// },
+// SupplyChainNav: {
+//     screen: SupplyChainNav,
+//     navigationOptions: ({ navigation }) => ({
+//         header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
+//     })
+// }
 // }
 // , {
 //     initialRouteName: 'TestSplash',

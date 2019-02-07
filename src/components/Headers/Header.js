@@ -17,6 +17,7 @@ const bgImage = require("../../assets/main-bg.png")
  class Header extends Component {
     constructor(props) {
         super(props);
+        console.log(props, this.state, "header stuff")
     }
     _goBack = () => {
         let navigation = this.props.navigation;
@@ -25,9 +26,9 @@ const bgImage = require("../../assets/main-bg.png")
         navigation.goBack();
     }
     _toggleSideMenu = () => {
-       let toggleSide = this.props.navigation.getScreenProps('toggleSideMenu');
-       console.log('ToggleSide',toggleSide);
-       toggleSide();
+       console.log('ToggleSide');
+
+        this.props.navigation.toggleDrawer();
     }
 
     render() {
@@ -45,9 +46,9 @@ const bgImage = require("../../assets/main-bg.png")
                                 color={ColorConstants.MainGold}
                             />
                         </View>
-                        <Text style={styles.headerText}>{this.props.headerName}</Text>
+                        <Text style={styles.headerText}>{this.props.headerTitle}</Text>
                         <View style={styles.sideHeaders}>
-                            <Icon onPress={() => this._toggleSideMenu}
+                            <Icon onPress={this._toggleSideMenu}
                                 style={[styles.iconButton, { marginRight: 20 }]}
                                 name='gear'
                                 color={ColorConstants.MainGold}

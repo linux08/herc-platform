@@ -22,8 +22,8 @@ export default class TestSplash extends Component {
     }
 
 onPress = () => {
-    console.log("inTestSplash")
-    // this.props.navigation.navigate('RegAssetNav')
+    console.log("inTestSplash", this.props)
+   this.props.navigation.navigate('DrawerToggle')
 }
 
     render() {
@@ -45,7 +45,7 @@ onPress = () => {
                 <View style={[localStyles.baseContainer, localStyles.bodyContainer]}>
                   
 
-                    <Button title='Continue' onPress={this.onPress} />
+                    <Button title='Continue' onPress={() => this.onPress} />
                 </View>
 
           

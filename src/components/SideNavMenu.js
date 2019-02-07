@@ -8,6 +8,7 @@ import {
     ScrollView,
     Linking
 } from "react-native";
+import { NavigationActions } from 'react-navigation';
 import { VERSION } from './settings.js'
 import profileIcon from "../assets/icons/profileIcon.png";
 import { connect } from "react-redux";
@@ -16,16 +17,20 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class SideMenu extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            // accountName: this.props.edge_account
-        }
-    }
-
     componentDidMount() {
         console.log('****SETTINGS.jS *****', VERSION)
         console.log(this.props.navigation);
+        console.log(this.props)
+
+    }
+
+    navigateToScreen = (route) => () => {
+        const navigate = NavigationActions.navigate({
+            routeName: route
+        });
+        this.props.navigation.toggleDrawer();
+        this.props.navigation.dispatch(navigate)
+
     }
 
     // onLogOut = () => {
@@ -55,7 +60,7 @@ class SideMenu extends Component {
                                 <Text style={localStyles.subInfo__Text}>Profile</Text>
                                 <View style={localStyles.profileBlock}>
                                     <Text style={localStyles.subInfo__TextUserName}>
-                                       Hello you
+                                        Hello you
                                         {/* {this.state.accountName} */}
                                     </Text>
                                 </View>
@@ -68,7 +73,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('MainNavigator'); }}>
+                                <TouchableHighlight onPress={this.navigateToScreen('MainNavigator')}>
                                     <Text style={localStyles.title__Text}>Main</Text>
                                 </TouchableHighlight>
                             </View>
@@ -79,7 +84,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('RegAssetNavigator'); }}>
+                                <TouchableHighlight onPress={this.navigateToScreen('RegAssetNavigator')}>
                                     <Text style={localStyles.title__Text}>Register Asset</Text>
                                 </TouchableHighlight>
                             </View>
@@ -90,7 +95,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('SupplyChainNavigator'); }}>
+                                <TouchableHighlight onPress={this.navigateToScreen('SupplyChainNavigator')}>
                                     <Text style={localStyles.title__Text}>Supply Chain</Text>
                                 </TouchableHighlight>
                             </View>
