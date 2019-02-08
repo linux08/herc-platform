@@ -18,15 +18,15 @@ import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../
 import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
- class RegAsset1 extends Component {
+class RegAsset1 extends Component {
 
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
         super(props);
-        console.log("In RegAsset1", props, )
+        console.log("In RegAsset1", props)
         this.state = {
-         
-            showModal2: false,
+
+            showAddMetricModal: false,
             showModal3: false,
             asset: {
                 HercId: 123,
@@ -70,28 +70,13 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
         return metricInputs;
     }
 
-    // onPressTest = () => {
-
-    //     console.log("I got Pressed!")
-    //     this.props.navigation.navigate('RegAsset2');
-    // }
-
-    // showCamSourceModal = () => {
-    //     // console.log(this.state.showCamSourceModal, "showCamSourceModal");
-    //     this.setState({
-    //         showCamSourceModal: !this.state.showCamSourceModal
-    //     })
-    //     // console.log(this.state.showCamSourceModal, "showmodal1after");
-    // }
-
-    // changeModal2 = () => {
-    //     console.log(this.state.showModal2, "showmodal2");
-    //     this.setState({
-    //         showModal2: !this.state.showModal2
-    //     })
-    //     console.log(this.state.showModal2, "showmodal2after");
-    // }
-
+    showAddMetricModal = () => {
+        // console.log(this.state.showAddMetricModal, "showAddMetricModal");
+        this.setState({
+            showAddMetricModal: !this.state.showAddMetricModal
+        })
+        // console.log(this.state.showAddMetricModal, "showmodal1after");
+    }
 
     pwChange = (pwChar) => {
         console.log(pwChar, 'incompoTest Passing functions')
@@ -107,15 +92,42 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
         })
     }
 
-    setPic = (snappedImg) => {
+    setPic = (img) => {
         console.log("setting a taken image");
         this.setState({
-            Logo: snappedImg
+            ...state,
+            asset: {
+                ...state.asset,
+                Logo: snappedImg
+            }
         })
     }
 
+
+    addMetric = () => {
+        let oldCoreProps = this.state.asset.CoreProps;
+        let oldMetLength = Object.keys(oldCoreProps).length;
+        console.log(oldMetLength, "length of coreProps")
+        console.log(oldCoreProps, "oldCoreProps");
+        let newMetricName = "metric" + (oldMetLength+1);
+        
+        let newCoreProps = Object.assign({},oldCoreProps,{
+            ...oldCoreProps,
+            [newMetricName]: ""
+        })
+        console.log(newCoreProps, 'newCoreProps');
+        this.setState({
+            asset: {
+                CoreProps: newCoreProps
+            }
+        })
+    
+
+    }
+
+
     render() {
-console.log(this.state, this.props);
+        console.log(this.state, this.props);
 
         let metricInputs = this.renderInputs();
 
@@ -145,14 +157,14 @@ console.log(this.state, this.props);
 
                     {metricInputs}
 
-                    <AddMetricButton onPress={this.show} />
+                    <AddMetricButton onPress={() => this.addMetric()} />
 
                     <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                    {this.state.asset.Logo &&
-                        <AssetCard asset={this.state.asset} />
-                    }
+                        {this.state.asset.Logo &&
+                            <AssetCard asset={this.state.asset} />
+                        }
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 
@@ -171,7 +183,7 @@ console.log(this.state, this.props);
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal    
+    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal
 });
 
 const mapDispatchToProps = (dispatch) => ({

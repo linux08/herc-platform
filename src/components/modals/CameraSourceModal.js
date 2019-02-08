@@ -9,25 +9,52 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
+var ImagePicker = require('react-native-image-picker');
 
 class CameraSourceModal extends Component {
     constructor(props) {
         super(props);
     }
     goToCamera = () => {
-        // console.log('goingtoCamera', props, this)
-        // this.props.toggleCamSourceModal(false),
+        console.log('goingtoCamera', props, this)
+        this.props.toggleCamSourceModal(false),
 
-            // this.props.navigation.navigate("Camera",
-            //     {   // Passing the route to return to after taking a picture
-            //         // In params 
-            //         origRoute: this.props.routeName,
-            //         navigation: this.props.navigation,
-            //         // sets the taken pic in local state of the Parent Component
-            //         setPic: this.props.setPic
-            //     }
-            // )
+            this.props.navigation.navigate("Camera",
+                {   // Passing the route to return to after taking a picture
+                    // In params 
+                    origRoute: this.props.routeName,
+                    navigation: this.props.navigation,
+                    // sets the taken pic in local state of the Parent Component
+                    setPic: this.props.setPic
+                }
+            )
     }
+    _pickImage = () => {
+
+        ImagePicker.launchImageLibrary({}, (response) => {
+
+            if (response.didCancel) {
+                console.log('ImageUpload Camera: User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
+            }
+            else {
+                let source = { uri: response.uri };
+                let img = {
+                        name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
+                        image: "data:image/jpg;base64," + response.data,
+                        size: response.fileSize,
+                        uri: source
+                    }
+                    this.props.setPic(img);
+                    this.props.toggleCamSourceModal(false);
+                };
+            })
+        };
     
 
     render() {

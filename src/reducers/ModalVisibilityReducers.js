@@ -9,7 +9,6 @@ export default function ModalVisibilityReducers(state = INITIAL_STATE, action) {
     switch (action.type) {
 
         case "toggleCamSourceModal":
-        
             return {
                 showCamSourceModal: action.visible
             }
