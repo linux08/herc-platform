@@ -5,10 +5,12 @@ import AssetReducers from './AssetReducers';
 import TransactionDataReducers from './TransactionDataReducers';
 import WalletActReducers from './WalletActReducers';
 import EDIT from '../constants/Edi-T-Sets';
+import ModalVisibilityReducer from "./ModalVisibilityReducer"
 const rootReducer = combineReducers({
   AssetReducers,
   // Assets,
- // TransactionDataReducers,
+  // TransactionDataReducers,
+  ModalVisibilityReducer,
   Web3Reducers,
   WalletActReducers,
   EDIT

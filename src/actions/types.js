@@ -68,3 +68,6 @@ export const FETCHING_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
 
 export const HANDLE_IMAGE_PICKED = 'handleImagePicked';
 export const GOT_LOGO = 'gotLogo';
+
+///// MODAL VISIBILITY TYPES /////
+export const TOGGLE_CAM_SOURCE_MODAL = 'toggleCamSourceModal';

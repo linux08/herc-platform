@@ -13,7 +13,7 @@ export function AssetCard(asset) {
     return (
         <View style={localStyles.assetCard}>
             <View style={localStyles.assetImageContainer}>
-                <Image source={asset.asset.Logo} style={localStyles.assetImage} />
+    { asset.asset.Logo && <Image source={asset.asset.Logo } style={localStyles.assetImage} /> }
             </View>
 
             <View style={localStyles.cardMain}>

@@ -4,25 +4,31 @@ import {
     View,
 } from 'react-native';
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
 
-export default class CameraSourceModal extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            visibility: false
-        }
-    }
-
+class CameraSourceModal extends Component {
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //         visibility: false
+    //     }
+    // }
+    // componentWillMount() {
+    //     this.setState({
+    //         visibility: this.props.visibility
+    //     })
+    // }
 
     goToCamera = () => {
         console.log('goingtoCamera')
-        this.props.changeModal(),
+        this.props.toggleCamSourceModal(false),
 
             this.props.navigation.navigate("Camera",
-                {   // Passing in the route to return to after taking a picture 
+                {   // Passing the route to return to after taking a picture
+                    // In params 
                     origRoute: this.props.routeName,
                     navigation: this.props.navigation,
                     // sets the taken pic in local state of the Parent Component
@@ -32,14 +38,14 @@ export default class CameraSourceModal extends Component {
     }
 
     render() {
-        let visible = this.props.visibility;
-        console.log(visible, 'visibile')
+       
+       
         return (
             <Modal
                 //OnBackdrop will close the modal if clicked on outside of it
                 onBackdropPress={this.props.onBackdropPress}
                 backdropColor={'rgba(0,0,0,0.5)'}
-                isVisible={this.props.visibility}
+                isVisible={this.props.showCamSourceModal}
                 onRequestClose={() => { console.log("modal closed") }}
             >
                 <View style={modalStyles.modalLower}>
@@ -82,3 +88,13 @@ export default class CameraSourceModal extends Component {
         );
     }
 }
+const mapStateToProps = (state) => ({
+    showCamSourceModal: state.showCamSourceModal
+    
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    toggleCamSourceModal: (show) =>
+        dispatch(toggleCamSourceModal(show))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(CameraSourceModal);

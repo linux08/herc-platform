@@ -6,13 +6,14 @@ import {
     StatusBar,
     Image
 } from 'react-native';
+import { connect } from "react-redux";
 
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class RegAssetSplashTest extends Component {
+class RegAssetSplashTest extends Component {
 //  navigationOptions = ({ navigation }) => ({
 //             header: <RegHeader headerTitle={"Register Asset"} params={goBackTo = 'RegAssetSplash1'} navigation={navigation} />
 //         })
@@ -78,6 +79,9 @@ export default class RegAssetSplashTest extends Component {
     }
 
 }
+
+export default connect(RegAssetSplashTest);
+
 const localStyles = StyleSheet.create({
 
     baseContainer: {

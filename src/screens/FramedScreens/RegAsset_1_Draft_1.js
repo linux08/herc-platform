@@ -6,8 +6,8 @@ import {
     Image,
 } from 'react-native';
 const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
-
-import AssetCard from "../../components/AssetCard";
+import { connect } from "react-redux";
+import { AssetCard } from "../../components/AssetCard";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
@@ -15,15 +15,15 @@ import CameraSourceModal from "../../components/modals/CameraSourceModal"
 import { createStackNavigator } from 'react-navigation';
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
-
+import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class RegAsset1 extends Component {
+ class RegAsset1 extends Component {
 
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
         super(props);
-        console.log("componentTest")
+        console.log("In RegAsset1", props, )
         this.state = {
             showCamSourceModal: false,
             showModal2: false,
@@ -31,7 +31,7 @@ export default class RegAsset1 extends Component {
             asset: {
                 HercId: 123,
                 Name: "",
-                Logo: "",
+                Logo: null,
                 CoreProps: {
                     Metric1: "",
                     Metric2: "",
@@ -45,7 +45,8 @@ export default class RegAsset1 extends Component {
         }
         this.localOnChange = this.localOnChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
-        this.showCamSourceModal = this.showCamSourceModal.bind(this);
+        // this.showCamSourceModal = this.showCamSourceModal.bind(this);
+
     }
 
 
@@ -69,27 +70,27 @@ export default class RegAsset1 extends Component {
         return metricInputs;
     }
 
-    onPressTest = () => {
+    // onPressTest = () => {
 
-        console.log("I got Pressed!")
-        this.props.navigation.navigate('RegAsset2');
-    }
+    //     console.log("I got Pressed!")
+    //     this.props.navigation.navigate('RegAsset2');
+    // }
 
-    showCamSourceModal = () => {
-        // console.log(this.state.showCamSourceModal, "showCamSourceModal");
-        this.setState({
-            showCamSourceModal: !this.state.showCamSourceModal
-        })
-        // console.log(this.state.showCamSourceModal, "showmodal1after");
-    }
+    // showCamSourceModal = () => {
+    //     // console.log(this.state.showCamSourceModal, "showCamSourceModal");
+    //     this.setState({
+    //         showCamSourceModal: !this.state.showCamSourceModal
+    //     })
+    //     // console.log(this.state.showCamSourceModal, "showmodal1after");
+    // }
 
-    changeModal2 = () => {
-        console.log(this.state.showModal2, "showmodal2");
-        this.setState({
-            showModal2: !this.state.showModal2
-        })
-        console.log(this.state.showModal2, "showmodal2after");
-    }
+    // changeModal2 = () => {
+    //     console.log(this.state.showModal2, "showmodal2");
+    //     this.setState({
+    //         showModal2: !this.state.showModal2
+    //     })
+    //     console.log(this.state.showModal2, "showmodal2after");
+    // }
 
 
     pwChange = (pwChar) => {
@@ -103,6 +104,13 @@ export default class RegAsset1 extends Component {
         console.log('inputValue', inputValue, "changing metric text", name);
         this.setState({
             [name]: inputValue
+        })
+    }
+
+    setPic = (snappedImg) => {
+        console.log("setting a taken image");
+        this.setState({
+            Logo: snappedImg
         })
     }
 
@@ -139,12 +147,12 @@ export default class RegAsset1 extends Component {
 
                     <AddMetricButton onPress={this.show} />
 
-                    <AddPhotoButton onPress={this.changeModal2} />
+                    <AddPhotoButton onPress={() => this.props.showCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-
+                    {this.state.asset.Logo &&
                         <AssetCard asset={this.state.asset} />
-
+                    }
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 
@@ -154,114 +162,21 @@ export default class RegAsset1 extends Component {
                 </View>
                 <CameraSourceModal
                     backdropColor={'rgba(0,0,0,0.5)'}
-                    isVisible={this.state.showCamSourceModal}
+                    // visible={this.props.showCamSourceModal}
                     onRequestClose={() => { console.log("modal closed") }}
+                    routeName={'RegAsset1'}
                 />
             </View>
         )
     }
 }
+const mapStateToProps = (state) => ({
+    showCamSourceModal: state
+    
+});
 
-const localStyles = StyleSheet.create({
-
-    imageSourceContainer: {
-        flexDirection: 'row',
-        backgroundColor: ColorConstants.MainGray,
-        padding: 10,
-        paddingTop: 30,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '50%',
-        height: '50%',
-        borderWidth: 0,
-
-
-    },
-
-    sourceIconContainer: {
-        height: '100%',
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: ColorConstants.MainGray
-    },
-
-    iconButton: {
-        alignSelf: 'center',
-        marginLeft: 10,
-        backgroundColor: ColorConstants.MainGray
-        // height: widthPercentageToDP('5'),
-        // width: heightPercentageToDP('5'),
-
-    },
-
-    camSourceIcon: {
-        backgroundColor: ColorConstants.MainGray,
-        justifyContent: 'center',
-        alignSelf: 'center',
-        // height: widthPercentageToDP('10'),
-        // width: heightPercentageToDP('10'),
-
-    },
-
-
-
-    activityIndicatorWrapper: {
-        backgroundColor: '#FFFFFF',
-        height: 100,
-        width: 100,
-        borderRadius: 7,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-    },
-
-    modalButton: {
-        margin: 10,
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 2,
-        borderWidth: 2,
-    },
-    wordsText: {
-        textAlign: 'center',
-    },
-    closeButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '80%',
-    },
-    closeButton: {
-        padding: 15
-    },
-
-    container: {
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-        // backgroundColor: ColorConstants.MainBlue,
-        backgroundColor: ColorConstants.MainGray,
-        alignItems: "center",
-        justifyContent: "flex-start",
-        // marginTop: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20
-    },
-    labelTitle: {
-        fontSize: 18,
-        color: ColorConstants.MainBlue,
-        margin: 5
-    },
-    menuTitle: {
-        color: ColorConstants.MainBlue,
-        fontSize: 26,
-        margin: 5,
-
-    },
-    passwordInputContainer: {
-
-        justifyContent: 'flex-start',
-        backgroundColor: ColorConstants.ElementBG
-    }
-
+const mapDispatchToProps = (dispatch) => ({
+    showCamSourceModal: (show) =>
+        dispatch(toggleCamSourceModal(show))
 })
+export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);

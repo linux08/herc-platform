@@ -7,7 +7,7 @@ import {
     StatusBar,
     ScrollView
 } from 'react-native';
-
+import { connect } from "react-redux";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
@@ -21,7 +21,7 @@ import {
 } from '../../components/SharedComponents';
 
 
-export default class RegAsset_2_Draft_1 extends Component {
+class RegAsset2 extends Component {
 
     constructor(props) {
         super(props);
@@ -117,6 +117,8 @@ export default class RegAsset_2_Draft_1 extends Component {
     }
 
 }
+export default connect(RegAsset2);
+
 const localStyles = StyleSheet.create({
     pageBottom: {
         // flex: 1,

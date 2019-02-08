@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-
+import { connect } from "react-redux";
 import Header from "../components/Headers/Header";
 
-import RegAssetSplash1 from "../screens/FramedScreens/RegAssetSplash_Draft_1";
-import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
+import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
+import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1.js";
 import RegAsset2 from "../screens/FramedScreens/RegAsset_2_Draft_1";
 
 const RegisterAssetNavigator = createStackNavigator(
     {
         RegAssetSplash1: {
-            screen: RegAssetSplash1,
+            screen: RegAssetSplashTest,
             navigationOptions: ({ navigation }) => ({
                 header: <Header headerTitle={"Register Asset"} navigation={navigation} />
             })

@@ -19,8 +19,8 @@ class SideMenu extends Component {
 
     componentDidMount() {
         console.log('****SETTINGS.jS *****', VERSION)
-        console.log(this.props.navigation);
-        console.log(this.props)
+        // console.log(this.props.navigation);
+        // console.log(this.props)
 
     }
 
