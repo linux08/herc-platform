@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Header from "../components/Headers/Header";
 
 import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
-import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1.js";
+import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
 import RegAsset2 from "../screens/FramedScreens/RegAsset_2_Draft_1";
 
 const RegisterAssetNavigator = createStackNavigator(

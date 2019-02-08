@@ -1,16 +1,17 @@
-import TOGGLE_CAM_SOURCE_MODAL from "../actions/ModalVisibilityActions";
+import {toggleCamSourceModal} from "../actions/ModalVisibilityActions";
 
 const INITIAL_STATE = {
     showCamSourceModal: false,
-
 }
 
 export default function ModalVisibilityReducers(state = INITIAL_STATE, action) {
+    console.log(action, "action in modalVizRedux");
     switch (action.type) {
 
-        case TOGGLE_CAM_SOURCE_MODAL:
+        case "toggleCamSourceModal":
+        
             return {
-                showCamSourceModal: action.visibile
+                showCamSourceModal: action.visible
             }
         // case CLEAR_STATE:
         //     return initialState

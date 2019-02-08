@@ -6,45 +6,39 @@ import {
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
 
 class CameraSourceModal extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         visibility: false
-    //     }
-    // }
-    // componentWillMount() {
-    //     this.setState({
-    //         visibility: this.props.visibility
-    //     })
-    // }
-
-    goToCamera = () => {
-        console.log('goingtoCamera')
-        this.props.toggleCamSourceModal(false),
-
-            this.props.navigation.navigate("Camera",
-                {   // Passing the route to return to after taking a picture
-                    // In params 
-                    origRoute: this.props.routeName,
-                    navigation: this.props.navigation,
-                    // sets the taken pic in local state of the Parent Component
-                    setPic: this.props.setPic
-                }
-            )
+    constructor(props) {
+        super(props);
     }
+    goToCamera = () => {
+        // console.log('goingtoCamera', props, this)
+        // this.props.toggleCamSourceModal(false),
+
+            // this.props.navigation.navigate("Camera",
+            //     {   // Passing the route to return to after taking a picture
+            //         // In params 
+            //         origRoute: this.props.routeName,
+            //         navigation: this.props.navigation,
+            //         // sets the taken pic in local state of the Parent Component
+            //         setPic: this.props.setPic
+            //     }
+            // )
+    }
+    
 
     render() {
-       
-       
+        console.log(this.props, 'render in camsource');
+
         return (
             <Modal
                 //OnBackdrop will close the modal if clicked on outside of it
-                onBackdropPress={this.props.onBackdropPress}
+                onBackdropPress={() => this.props.toggleCamSourceModal(false)}
                 backdropColor={'rgba(0,0,0,0.5)'}
+                //  Attached visiblility to the redux state
                 isVisible={this.props.showCamSourceModal}
                 onRequestClose={() => { console.log("modal closed") }}
             >
@@ -89,8 +83,7 @@ class CameraSourceModal extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state.showCamSourceModal
-    
+    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal
 });
 
 const mapDispatchToProps = (dispatch) => ({

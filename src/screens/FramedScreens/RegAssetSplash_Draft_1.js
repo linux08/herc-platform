@@ -80,7 +80,7 @@ class RegAssetSplashTest extends Component {
 
 }
 
-export default connect(RegAssetSplashTest);
+export default connect(null)(RegAssetSplashTest);
 
 const localStyles = StyleSheet.create({
 

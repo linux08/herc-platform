@@ -25,7 +25,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
         super(props);
         console.log("In RegAsset1", props, )
         this.state = {
-            showCamSourceModal: false,
+         
             showModal2: false,
             showModal3: false,
             asset: {
@@ -115,7 +115,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
     }
 
     render() {
-
+console.log(this.state, this.props);
 
         let metricInputs = this.renderInputs();
 
@@ -147,7 +147,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
 
                     <AddMetricButton onPress={this.show} />
 
-                    <AddPhotoButton onPress={() => this.props.showCamSourceModal(true)} />
+                    <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
                     {this.state.asset.Logo &&
@@ -162,7 +162,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
                 </View>
                 <CameraSourceModal
                     backdropColor={'rgba(0,0,0,0.5)'}
-                    // visible={this.props.showCamSourceModal}
+                    visible={this.props.showCamSourceModal}
                     onRequestClose={() => { console.log("modal closed") }}
                     routeName={'RegAsset1'}
                 />
@@ -171,12 +171,11 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state
-    
+    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal    
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    showCamSourceModal: (show) =>
+    toggleCamSourceModal: (show) =>
         dispatch(toggleCamSourceModal(show))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);
