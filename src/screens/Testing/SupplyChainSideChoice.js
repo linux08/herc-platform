@@ -8,8 +8,6 @@ import {
     Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Modal from 'react-native-modal';
-import modalStyles from "../../assets/modals/ModalStyles";
 const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";

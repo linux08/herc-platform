@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, ScrollView, FlatList } from 'react-native';
 import { connect } from "react-redux";
-import styles from '../styles';
-import ColorConstants from '../ColorConstants';
+import styles from '../../assets/styles';
+import ColorConstants from '../../constants/ColorConstants';
 import edits from '../../constants/Edi-T-Sets';
 import Modal from 'react-native-modal';
 import { setSet } from '../../actions/AssetActions';

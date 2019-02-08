@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 import Icon from "react-native-vector-icons/Entypo";
-const hercpngIcon = require('../assets/icons/hercIcon.png');
+const hercpngIcon = require('../../assets/icons/hercIcon.png');
 import { HercTextFieldWithLabel } from "../SharedComponents";
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import ColorConstants from "../../assets/ColorConstants";

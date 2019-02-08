@@ -8,9 +8,9 @@ import {
     Dimensions
 } from 'react-native';
 
-import MetricModal from '../../assets/modals/MetricModal';
-import CameraSourceModal from '../../assets/modals/CameraSourceModal';
-import EditModal from '../../assets/modals/EDI_T_Modal';
+import MetricModal from '../../components/modals/MetricModal';
+import CameraSourceModal from '../../components/modals/CameraSourceModal';
+import EditModal from '../../components/modals/EDI_T_Modal';
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';

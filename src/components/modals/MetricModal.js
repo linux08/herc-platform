@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, ScrollView, FlatList } from 'react-native';
-import styles from '../styles';
-import ColorConstants from '../ColorConstants';
+import styles from '../../assets/styles';
+import ColorConstants from '../../constants/ColorConstants';
 import Modal from 'react-native-modal';
 import { HercTextInputWithLabel } from '../../components/SharedComponents'
 

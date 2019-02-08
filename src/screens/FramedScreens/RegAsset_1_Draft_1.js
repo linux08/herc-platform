@@ -6,12 +6,12 @@ import {
     Image,
 } from 'react-native';
 const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Modal from 'react-native-modal';
-import modalStyles from "../../assets/modals/ModalStyles";
+
+import AssetCard from "../../components/AssetCard";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
+import CameraSourceModal from "../../components/modals/CameraSourceModal"
 import { createStackNavigator } from 'react-navigation';
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
@@ -25,37 +25,44 @@ export default class RegAsset1 extends Component {
         super(props);
         console.log("componentTest")
         this.state = {
-            showModal1: false,
+            showCamSourceModal: false,
             showModal2: false,
             showModal3: false,
-            CoreProps: {
-                Metric1: "",
-                Metric2: "",
-                Metric3: "",
-                Metric4: "",
-                // Metric5: "",
-                // Metric6: "",
+            asset: {
+                HercId: 123,
+                Name: "",
+                Logo: "",
+                CoreProps: {
+                    Metric1: "",
+                    Metric2: "",
+                    Metric3: "",
+                    Metric4: "",
+                    // Metric5: "",
+                    // Metric6: "",
 
+                }
             }
         }
         this.localOnChange = this.localOnChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
+        this.showCamSourceModal = this.showCamSourceModal.bind(this);
     }
 
 
     renderInputs = () => {
-        let coreProps = this.state.CoreProps;
+        let coreProps = this.state.asset.CoreProps;
         let metrics = Object.keys(coreProps);
         let metricInputs = [];
         metrics.map((x) => {
             // let name = x
 
-            metricInputs.push(<HercTextInput
-                key={x}
-                name={x}
-                placeholder={x}
-                localOnChange={this.localOnChange}
-            />
+            metricInputs.push(
+                <HercTextInput
+                    key={x}
+                    name={x}
+                    placeholder={x}
+                    localOnChange={this.localOnChange}
+                />
             )
         })
         console.log(metricInputs);
@@ -68,12 +75,12 @@ export default class RegAsset1 extends Component {
         this.props.navigation.navigate('RegAsset2');
     }
 
-    changeModal1 = () => {
-        console.log(this.state.showModal1, "showmodal1");
+    showCamSourceModal = () => {
+        // console.log(this.state.showCamSourceModal, "showCamSourceModal");
         this.setState({
-            showModal1: !this.state.showModal1
+            showCamSourceModal: !this.state.showCamSourceModal
         })
-        console.log(this.state.showModal1, "showmodal1after");
+        // console.log(this.state.showCamSourceModal, "showmodal1after");
     }
 
     changeModal2 = () => {
@@ -121,8 +128,6 @@ export default class RegAsset1 extends Component {
                         pwChange={this.pwChange}
                     />
 
-
-
                     <HercTextInputWithLabel
                         name='Asset Name'
                         label='Asset Name'
@@ -130,63 +135,29 @@ export default class RegAsset1 extends Component {
                         localOnChange={this.localOnChange}
                     />
 
-
                     {metricInputs}
 
-                    <AddMetricButton onPress={this.changeModal1} />
+                    <AddMetricButton onPress={this.show} />
 
                     <AddPhotoButton onPress={this.changeModal2} />
+
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                        <View style={{ height: 100, width: 100, backgroundColor: 'blue' }}></View>
+
+                        <AssetCard asset={this.state.asset} />
 
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 
                     {/* Modal 1 */}
 
-                    <Modal
-                        backdropColor={'rgba(0,0,0,0.5)'}
-                        isVisible={this.state.showModal1}
-                        onRequestClose={() => { console.log("modal closed") }}
-                    >
-                        <View style={modalStyles.modalLower}>
-                            <View style={modalStyles.imageSourceContainer}>
-                                <Text style={modalStyles.menuTitle}>Choose Image Source</Text>
-
-                                <View style={modalStyles.lowerModalContainer}>
-                                    <View style={modalStyles.sourceIconContainer}>
-
-                                        <View style={modalStyles.camSourceIcon}>
-                                            <Icon
-                                                containerStyle={modalStyles.iconButton}
-                                                name="camera"
-                                                size={20}
-                                                color="black"
-                                                onPress={() => this.changeModal1()}>
-                                            </Icon>
-                                        </View>
-                                        <Text style={modalStyles.labelTitle}>Camera</Text>
-                                    </View>
-
-                                    <View style={modalStyles.sourceIconContainer}>
-                                        <View style={modalStyles.camSourceIcon}>
-                                            <Icon
-                                                name="folder-open"
-                                                size={20}
-                                                containerStyle={modalStyles.iconButton}
-                                                color="black"
-                                                onPress={() => this.changeModal1()}>
-                                            </Icon>
-                                        </View>
-                                        <Text style={modalStyles.labelTitle}>Gallery</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
 
                 </View>
-            </View >
+                <CameraSourceModal
+                    backdropColor={'rgba(0,0,0,0.5)'}
+                    isVisible={this.state.showCamSourceModal}
+                    onRequestClose={() => { console.log("modal closed") }}
+                />
+            </View>
         )
     }
 }
