@@ -12,7 +12,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
-import CameraModal from "../../components/modals/CameraModal";
+// import CameraModal from "../../components/modals/CameraModal";
 import { createStackNavigator } from 'react-navigation';
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
@@ -26,10 +26,6 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-
-            showAddMetricModal: false,
-            showModal3: false,
-            asset: {
                 HercId: 123,
                 Name: "",
                 Logo: null,
@@ -43,16 +39,16 @@ class RegAsset1 extends Component {
 
                 }
             }
+            this.corePropChange = this.corePropChange.bind(this);
+            this.pwChange = this.pwChange.bind(this);
+            this.setPic = this.setPic.bind(this);
         }
-        this.localOnChange = this.localOnChange.bind(this);
-        this.pwChange = this.pwChange.bind(this);
-        // this.showCamSourceModal = this.showCamSourceModal.bind(this);
 
-    }
+    
 
 
     renderInputs = () => {
-        let coreProps = this.state.asset.CoreProps;
+        let coreProps = this.state.CoreProps;
         let metrics = Object.keys(coreProps);
         let metricInputs = [];
         metrics.map((x) => {
@@ -63,7 +59,7 @@ class RegAsset1 extends Component {
                     key={x}
                     name={x}
                     placeholder={x}
-                    localOnChange={this.localOnChange}
+                    localOnChange={this.corePropChange}
                 />
             )
         })
@@ -71,24 +67,32 @@ class RegAsset1 extends Component {
         return metricInputs;
     }
 
-    showAddMetricModal = () => {
-        // console.log(this.state.showAddMetricModal, "showAddMetricModal");
-        this.setState({
-            showAddMetricModal: !this.state.showAddMetricModal
-        })
-        // console.log(this.state.showAddMetricModal, "showmodal1after");
-    }
+    // showAddMetricModal = () => {
+    //     // console.log(this.state.showAddMetricModal, "showAddMetricModal");
+    //     this.setState({
+    //         showAddMetricModal: !this.state.showAddMetricModal
+    //     })
+    //     // console.log(this.state.showAddMetricModal, "showmodal1after");
+    // }
 
     pwChange = (pwChar) => {
         console.log(pwChar, 'incompoTest Passing functions')
         this.setState({
+            ...this.state,
             Password: pwChar
         });
     }
 
-    localOnChange = (inputValue, name) => {
+    assetNameChange = (nameEdits) => {
+        this.setState({
+            Name: nameEdits
+        })
+    }
+
+    corePropChange = (inputValue, name) => {
         console.log('inputValue', inputValue, "changing metric text", name);
         this.setState({
+          ...this.state,
             [name]: inputValue
         })
     }
@@ -96,11 +100,8 @@ class RegAsset1 extends Component {
     setPic = (img) => {
         console.log("setting a taken image");
         this.setState({
-            ...state,
-            asset: {
-                ...state.asset,
-                Logo: img
-            }
+           ...this.state,
+                Logo: img.imageString
         })
     }
 
@@ -153,7 +154,7 @@ class RegAsset1 extends Component {
                         name='Asset Name'
                         label='Asset Name'
                         placeholder='Asset Name'
-                        localOnChange={this.localOnChange}
+                        localOnChange={this.assetNameChange}
                     />
 
                     {metricInputs}
@@ -163,9 +164,8 @@ class RegAsset1 extends Component {
                     <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                        {this.state.asset.Logo &&
-                            <AssetCard asset={this.state.asset} />
-                        }
+                         <AssetCard asset={this.state} />
+                        
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 
@@ -181,23 +181,17 @@ class RegAsset1 extends Component {
                     routeName={'RegAsset1'}
                     setPic={this.setPic}
                 />
-                <CameraModal
-                    visible={this.props.showCameraModal}
-                    setPic={this.setPic}
-                />
+               
             </View>
         )
     }
 }
 const mapStateToProps = (state) => ({
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
-    showCameraModal: state.ModalVisibilityReducers.showCameraModal
 });
 
 const mapDispatchToProps = (dispatch) => ({
     toggleCamSourceModal: (show) =>
         dispatch(toggleCamSourceModal(show)),
-    toggleCameraModal: (show) =>
-        dispatch(toggleCameraModal(show))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);

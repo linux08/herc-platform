@@ -17,12 +17,35 @@ class CameraSourceModal extends Component {
         super(props);
     }
     goToCamera = () => {
-        console.log('goingtoCamera')
-        this.props.toggleCameraModal(true);
         this.props.toggleCamSourceModal(false);
+        const options = {
+            base64: true,
+        }
+        ImagePicker.launchCamera(options,(response) => {
+
+            if (response.didCancel) {
+                console.log('ImageUpload Camera: User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
+            }
+            else {
+                let img = {
+                    name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
+                    imageString: "data:image/jpg;base64," + response.data,
+                    size: response.fileSize,
+                    uri: response.uri
+                }
+                this.props.setPic(img);
+            };
+        })
     }
 
     _pickImage = () => {
+        this.props.toggleCamSourceModal(false);
 
         ImagePicker.launchImageLibrary({}, (response) => {
 
@@ -38,12 +61,11 @@ class CameraSourceModal extends Component {
             else {
                 let img = {
                     name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
-                    image: "data:image/jpg;base64," + response.data,
+                    imageString: "data:image/jpg;base64," + response.data,
                     size: response.fileSize,
                     uri: response.uri
                 }
                 this.props.setPic(img);
-                this.props.toggleCamSourceModal(false);
             };
         })
     };
@@ -88,7 +110,7 @@ class CameraSourceModal extends Component {
                                         size={20}
                                         containerStyle={modalStyles.iconButton}
                                         color="black"
-                                        onPress={this.props._pickImage}
+                                        onPress={this._pickImage}
                                     >
                                     </Icon>
                                 </View>
