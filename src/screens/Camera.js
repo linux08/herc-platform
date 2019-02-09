@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ActivityIndicator, Modal } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { relative } from 'path';
-import modalStyle from "../components/modals/confModalStyles";
 
 export default class Camera extends Component {
 
@@ -42,9 +41,9 @@ export default class Camera extends Component {
         console.log(data, 'taken picture info, looking for name')
         let image = Object.assign({}, {
           name: data.uri.substring(data.uri.lastIndexOf('/') + 1, data.uri.length),
-          uri: data.uri,
+          image: "data:image/jpg;base64," + data.base64,
           size: this._getSize(data.base64),
-          string: "data:image/jpg;base64," + data.base64
+          uri: data.uri,
         })
         console.log(image.name, "image name!!!! i hope")
         this.setState({

@@ -3,6 +3,14 @@ import ColorConstants from "../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 module.exports = StyleSheet.create({
+    cameraModal: {
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: widthPercentageToDP('95'),
+        height: heightPercentageToDP('95'),
+        backgroundColor: 'black',
+    },
 
     baseModal: {
         alignItems: 'center',

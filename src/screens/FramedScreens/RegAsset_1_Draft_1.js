@@ -11,11 +11,12 @@ import { AssetCard } from "../../components/AssetCard";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import CameraSourceModal from "../../components/modals/CameraSourceModal"
+import CameraSourceModal from "../../components/modals/CameraSourceModal";
+import CameraModal from "../../components/modals/CameraModal";
 import { createStackNavigator } from 'react-navigation';
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
-import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
+import { toggleCamSourceModal, toggleCameraModal } from "../../actions/ModalVisibilityActions";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class RegAsset1 extends Component {
@@ -98,32 +99,32 @@ class RegAsset1 extends Component {
             ...state,
             asset: {
                 ...state.asset,
-                Logo: snappedImg
+                Logo: img
             }
         })
     }
 
 
-    addMetric = () => {
-        let oldCoreProps = this.state.asset.CoreProps;
-        let oldMetLength = Object.keys(oldCoreProps).length;
-        console.log(oldMetLength, "length of coreProps")
-        console.log(oldCoreProps, "oldCoreProps");
-        let newMetricName = "metric" + (oldMetLength+1);
-        
-        let newCoreProps = Object.assign({},oldCoreProps,{
-            ...oldCoreProps,
-            [newMetricName]: ""
-        })
-        console.log(newCoreProps, 'newCoreProps');
-        this.setState({
-            asset: {
-                CoreProps: newCoreProps
-            }
-        })
-    
+    // addMetric = () => {
+    //     let oldCoreProps = this.state.asset.CoreProps;
+    //     let oldMetLength = Object.keys(oldCoreProps).length;
+    //     console.log(oldMetLength, "length of coreProps")
+    //     console.log(oldCoreProps, "oldCoreProps");
+    //     let newMetricName = "metric" + (oldMetLength + 1);
 
-    }
+    //     let newCoreProps = Object.assign({}, oldCoreProps, {
+    //         ...oldCoreProps,
+    //         [newMetricName]: ""
+    //     })
+    //     console.log(newCoreProps, 'newCoreProps');
+    //     this.setState({
+    //         asset: {
+    //             CoreProps: newCoreProps
+    //         }
+    //     })
+
+
+    // }
 
 
     render() {
@@ -172,22 +173,31 @@ class RegAsset1 extends Component {
 
 
                 </View>
+
                 <CameraSourceModal
                     backdropColor={'rgba(0,0,0,0.5)'}
                     visible={this.props.showCamSourceModal}
                     onRequestClose={() => { console.log("modal closed") }}
                     routeName={'RegAsset1'}
+                    setPic={this.setPic}
+                />
+                <CameraModal
+                    visible={this.props.showCameraModal}
+                    setPic={this.setPic}
                 />
             </View>
         )
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal
+    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
+    showCameraModal: state.ModalVisibilityReducers.showCameraModal
 });
 
 const mapDispatchToProps = (dispatch) => ({
     toggleCamSourceModal: (show) =>
-        dispatch(toggleCamSourceModal(show))
+        dispatch(toggleCamSourceModal(show)),
+    toggleCameraModal: (show) =>
+        dispatch(toggleCameraModal(show))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);

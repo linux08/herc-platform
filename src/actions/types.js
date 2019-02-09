@@ -71,3 +71,4 @@ export const GOT_LOGO = 'gotLogo';
 
 ///// MODAL VISIBILITY TYPES /////
 export const TOGGLE_CAM_SOURCE_MODAL = 'toggleCamSourceModal';
+export const TOGGLE_CAMERA_MODAL = 'toggleCameraModal';

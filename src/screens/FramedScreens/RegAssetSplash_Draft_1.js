@@ -14,19 +14,13 @@ import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class RegAssetSplashTest extends Component {
-//  navigationOptions = ({ navigation }) => ({
-//             header: <RegHeader headerTitle={"Register Asset"} params={goBackTo = 'RegAssetSplash1'} navigation={navigation} />
-//         })
-
     constructor(props) {
         super(props);
         console.log(this.props, 'this props in regAssetSplash')
-
     }
 
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
-        // const { navigate } = this.props.navigation;
 
         this.props.navigation.navigate('RegAsset1');
     }
@@ -52,35 +46,13 @@ class RegAssetSplashTest extends Component {
 
                     <Button title='Continue' onPress={this.onPress}>ContinueButton</Button>
                 </View>
-
-                {/* //     <Icon.Button name="eye" backgroundColor="#3b5998" onPress={() => console.log("eyeball press")}>
-
-            //     </Icon.Button>
-            //     <View style={styles.modalBackground}>
-            //         <View style={styles.activityIndicatorWrapper}>
-            //             <Text>Modal1</Text>
-            //         </View>
-            //     </View>
-
-            //     <Icon name='eye' size={18} color={ColorConstants.MainGold} />
-            //     <RegisterAssetInput dims={this.Dims} placeholder={'hello'} />
-
-            //     <View style={localStyles.PasswordInputContainer}>
-            //         <Text style={styles.passwordInputlabel}>MainGray!!!!</Text>
-            //         <RegisterAssetPassword placeholder='SecondplaceholderTest' onChange={this.onChange} />
-
-            //     </View>
-
-            //     <Icon.Button name="eye" backgroundColor="#3b5998" onPress={() => console.log("eyeball press")}>
-            //     </Icon.Button> */}
-
             </View>
         )
     }
 
 }
 
-export default connect(null)(RegAssetSplashTest);
+export default RegAssetSplashTest;
 
 const localStyles = StyleSheet.create({
 
