@@ -35,6 +35,8 @@ export default class CustomModal extends Component {
         super(props);
         this.state = {
             addField: '',
+            timer: null,
+            counter: 0
         }
     }
 
@@ -69,7 +71,7 @@ export default class CustomModal extends Component {
         else if (this.props.modalCase === 'error') {
             return (
                 <View style={localStyles.modalBackground}>
-                    <Image source={require('../assets/icons/exclamationIcon.png')} style={{ height: 64, width: 64 }} />
+                    <Image source={require('../../assets/icons/exclamationIcon.png')} style={{ height: 64, width: 64 }} />
                     <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
                     <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>
                         <Text style={localStyles.dismissRejectText}>{this.state.dismissRejectText}</Text>
@@ -92,18 +94,19 @@ export default class CustomModal extends Component {
                 </View>)
         }
         else if (this.props.modalCase === 'progress') {
+            console.log(this.props, "in custom modal")
             return (
                 <View style={localStyles.modalBackground}>
                     <ProgressCircle
                         style={localStyles.pad10}
-                        percent={this.state.percent}
+                        percent={this.props.percent}
                         radius={48}
                         borderWidth={8}
                         color="#95c260"
                         shadowColor="#999"
                         bgColor="#fff"
                     >
-                        <Text style={{ fontSize: 18, color: '#bbbecb'}}>{this.state.percent}%</Text>
+                        <Text style={{ fontSize: 18, color: '#bbbecb' }}>{this.state.percent}%</Text>
                     </ProgressCircle>
                     <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
                     <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>

@@ -11,46 +11,93 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
-import { createStackNavigator } from "react-navigation";
-
+import CustomModal from "../../components/modals/CustomModal";
 export default class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
         header: <Header headerTitle={'Welcome'} navigation={navigation} />
     })
     constructor(props) {
         super(props);
-        console.log(this.props, "props, looking for screenprops")
-       
+        this.state = {
+            modalIsVisible: false,
+            timer: null,
+            counter: 0
+
+        }
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
-onPress = () => {
-    console.log("inTestSplash", this.props)
-   this.props.navigation.navigate('DrawerToggle')
-}
+
+    // componentDidMount = () => {
+    //     let timer = setInterval(this.tick, 1000);
+    //     this.setState({ timer });
+    // }
+
+    componentWillUnmount = () => {
+        this.clearInterval(this.state.timer);
+    }
+
+    tick = () => {
+        this.setState({
+            counter: this.state.counter + 1
+        });
+    }
+
+    closeModal = (seeit) => {
+        this.setState({
+            modalIsVisible: seeit
+        })
+    }
+
+    toggleModal = () => {
+        console.log("inTestSplash", this.props);
+        let timer = setInterval(this.tick, 1000);
+        //     this.setState({ timer });
+        this.setState({
+            modalIsVisible: !this.state.modalIsVisible,
+            timer
+        })
+
+    }
+
+    // startTimer = () => {
+    //     time
+    // }
 
     render() {
-        const { navigate } = this.props.navigation;
+        let percent = this.state.counter % 3;
+        console.log(percent, "state at render");
         return (
             <View style={localStyles.baseContainer}>
                 <StatusBar
                     // hidden={true}
-                barStyle={'light-content'}
-                translucent={true}
-                backgroundColor={'transparent'}
+                    barStyle={'light-content'}
+                    translucent={true}
+                    backgroundColor={'transparent'}
                 />
-                <View style={[localStyles.baseContainer,localStyles.splashTop]}>
+                <View style={[localStyles.baseContainer, localStyles.splashTop]}>
                     <Image source={require('../../assets/hercLogoPillar.png')}
                         style={localStyles.splashImage}
                         resizeMode="contain"
                     />
+                    <Button onPress={this.toggleModal} title={"toggleMOdal"} />
+
                 </View>
                 <View style={[localStyles.baseContainer, localStyles.bodyContainer]}>
-                  
 
-                    <Button title='Continue' onPress={() => this.onPress} />
+
+                    <Button title='Continue' onPress={() => this.toggleModal()} />
                 </View>
 
-          
+                <CustomModal
+                    heading={"Your thing is Happening"}
+                    content={this.state.content}
+                    modalCase="progress"
+                    isVisible={this.state.modalIsVisible}
+                    onBackdropPress={this.toggleModal}
+                    percent={percent}
+                    closeModal={this.closeModal}
+                />
             </View>
         )
     }

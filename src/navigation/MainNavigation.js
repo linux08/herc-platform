@@ -82,7 +82,7 @@ const MainNavigator = createStackNavigator({
 
 },
     {
-        initialRouteName: 'RegAssetNavigator',
+        initialRouteName: 'TestSplash',
         headerMode: 'screen',
     } 
 )
