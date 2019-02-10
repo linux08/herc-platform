@@ -45,9 +45,9 @@ import {
   WEB_SERVER_API_IPFS_ADD,
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
-  WEB_SERVER_API_STORJ_UPLOAD,
+  WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
   WEB_SERVER_API_CSV,
-  WEB_SERVER_API_UPLOAD_DOCUMENT
+  WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT
 } from "../components/settings"
 
 export function clearState() {
@@ -400,13 +400,13 @@ export function sendTrans(sendTransObj) {
       if (data[key].image) {
         var base64 = data[key].image
         var dataObject = Object.assign({}, { key: key }, { data: encodeURIComponent(base64) })
-        promiseArray.push(axios.post(WEB_SERVER_API_STORJ_UPLOAD, JSON.stringify(dataObject))
+        promiseArray.push(axios.post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
           .then(response => { return response }) // {key: 'images', hash: 'QmU1D1eAeSLC5Dt4wVRR'}
           .catch(error => { console.log(error) }))
       } else if (data[key].content) {
         let contentTypeName = {"content": encodeURIComponent(data[key].content), "type": data[key].type, "name": data[key].name}
         var dataObject = Object.assign({}, { "key": key }, { "data": contentTypeName })
-        promiseArray.push(axios.post(WEB_SERVER_API_UPLOAD_DOCUMENT, JSON.stringify(dataObject))
+        promiseArray.push(axios.post(WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT, JSON.stringify(dataObject))
           .then(response => { return response })
           .catch(error => { console.log(error) }))
       } else if (Object.keys(data[key]).length != 0 && data[key].constructor === Object) {
