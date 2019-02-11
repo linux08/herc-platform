@@ -1,24 +1,21 @@
 import {
-    StyleSheet,
-    Text,
+    ScrollView,
     View,
     StatusBar,
-    Image,
+    Alert,
 } from 'react-native';
 const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
-import { connect } from "react-redux";
-import { AssetCard } from "../../components/AssetCard";
-import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import styles from "../../assets/styles";
+import { addAsset } from "../../actions/RegisterAssetActions"
+import { AssetCard } from "../../components/AssetCard";
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
-// import CameraModal from "../../components/modals/CameraModal";
-import { createStackNavigator } from 'react-navigation';
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
-import { toggleCamSourceModal, toggleCameraModal } from "../../actions/ModalVisibilityActions";
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 
+// import ColorConstants from "../../assets/ColorConstants";
 class RegAsset1 extends Component {
 
     constructor(props) {
@@ -26,48 +23,71 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-                HercId: 123,
-                Name: "",
-                Logo: null,
-                CoreProps: {
-                    Metric1: "",
-                    Metric2: "",
-                    Metric3: "",
-                    Metric4: "",
-                    // Metric5: "",
-                    // Metric6: "",
+            // showAddMetricModal: false,
+            // HercId: 123,
+            Name: "",
+            Logo: null,
+            CoreProps: {
+                Metric1: "",
+                // Metric2: "",
+                // Metric3: "",
+                // Metric4: "",
+                // Metric5: "",
+                // Metric6: "",
 
-                }
             }
-            this.corePropChange = this.corePropChange.bind(this);
-            this.pwChange = this.pwChange.bind(this);
-            this.setPic = this.setPic.bind(this);
         }
+        this.corePropChange = this.corePropChange.bind(this);
+        this.pwChange = this.pwChange.bind(this);
+        this.setPic = this.setPic.bind(this);
+        // this.toggleAddMetricModal = this.toggleAddMetricModal.bind(this);
+    }
 
-    
+    componentWillMount = () => {
 
+        this.setState({
+            hercId: this.props.hercId
+        })
+    }
 
     renderInputs = () => {
-        let coreProps = this.state.CoreProps;
-        let metrics = Object.keys(coreProps);
-        let metricInputs = [];
-        metrics.map((x) => {
-            // let name = x
 
-            metricInputs.push(
-                <HercTextInput
-                    key={x}
-                    name={x}
-                    placeholder={x}
-                    localOnChange={this.corePropChange}
-                />
-            )
+        let metrics = Object.keys(this.state.CoreProps);
+        let metricInputs = [];
+
+        //  Trying to get the FIRST input to have a red placeholder 
+        metrics.map((x, idx) => {
+            // let name = x
+            idx === 0 ?
+                metricInputs.push(
+                    <HercTextInputWithLabel
+                        key={idx}
+                        name={x}
+                        label={"Metric " + (idx + 1)}
+                        placeholder={'Required'}
+                        placeholderTextColor="crimson"
+                        localOnChange={this.corePropChange}
+                    />
+                )
+                :
+                metricInputs.push(
+                    <HercTextInputWithLabel
+                        label={"Metric " + (idx + 1)}
+                        key={x}
+                        name={x}
+                        placeholder={x}
+                        localOnChange={this.corePropChange}
+                    />
+                )
+
+
         })
         console.log(metricInputs);
         return metricInputs;
     }
-
-    // showAddMetricModal = () => {
+    // Gonna get back to this
+    //
+    // toggleAddMetricModal = () => {
     //     // console.log(this.state.showAddMetricModal, "showAddMetricModal");
     //     this.setState({
     //         showAddMetricModal: !this.state.showAddMetricModal
@@ -75,10 +95,12 @@ class RegAsset1 extends Component {
     //     // console.log(this.state.showAddMetricModal, "showmodal1after");
     // }
 
+
+    //  Functions to pass to the components for value changes
     pwChange = (pwChar) => {
         console.log(pwChar, 'incompoTest Passing functions')
         this.setState({
-            ...this.state,
+
             Password: pwChar
         });
     }
@@ -90,44 +112,53 @@ class RegAsset1 extends Component {
     }
 
     corePropChange = (inputValue, name) => {
-        console.log('inputValue', inputValue, "changing metric text", name);
+        console.log('inputValue', inputValue, "changing coreprop text", name);
         this.setState({
-          ...this.state,
+            ...this.state,
             [name]: inputValue
         })
     }
 
+
+    // same function for both gallery and camera
     setPic = (img) => {
-        console.log("setting a taken image");
+        console.log("setting image, same message for gallery or camera");
         this.setState({
-           ...this.state,
-                Logo: img.imageString
+            ...this.state,
+            Logo: img.imageString,
+            LogoUri: img.uri
         })
     }
+    // the function for now to pass the newAsset to Redux State and navigate to confirm.
+    onPressTest = () => {
+        console.log(this.state, "this state after Reg PRess");
+        this.props.addAsset(this.state);
+        this.props.navigation.navigate("RegAsset2");
+    }
 
+    // function to add metric, am considering implementing the modal, but this 
+    // seems to work 
 
-    // addMetric = () => {
-    //     let oldCoreProps = this.state.asset.CoreProps;
-    //     let oldMetLength = Object.keys(oldCoreProps).length;
-    //     console.log(oldMetLength, "length of coreProps")
-    //     console.log(oldCoreProps, "oldCoreProps");
-    //     let newMetricName = "metric" + (oldMetLength + 1);
+    addMetric = () => {
+        let newMetricNumber = Object.keys(this.state.CoreProps).length + 1;
+        console.log("CoreProps Length: ", newMetricNumber)
+        if (newMetricNumber === 16) {
+            Alert("NO More CoreProps");
+        } else {
+            let newMetricName = "Metric" + newMetricNumber;
 
-    //     let newCoreProps = Object.assign({}, oldCoreProps, {
-    //         ...oldCoreProps,
-    //         [newMetricName]: ""
-    //     })
-    //     console.log(newCoreProps, 'newCoreProps');
-    //     this.setState({
-    //         asset: {
-    //             CoreProps: newCoreProps
-    //         }
-    //     })
+            let newCoreProps = Object.assign({}, this.state.CoreProps, {
+                ...this.state.CoreProps,
+                [newMetricName]: ""
+            })
+            console.log(newCoreProps, 'newCoreProps');
+            this.setState({
+                CoreProps: newCoreProps
+            })
+            this.renderInputs();
+        }
 
-
-    // }
-
-
+    }
     render() {
         console.log(this.state, this.props);
 
@@ -144,28 +175,30 @@ class RegAsset1 extends Component {
                 />
                 <View style={styles.bodyContainer}>
 
-                    <BasePasswordInput
-                        label='Asset Password'
-                        placeholder='Asset Password'
-                        pwChange={this.pwChange}
-                    />
-
                     <HercTextInputWithLabel
                         name='Asset Name'
                         label='Asset Name'
-                        placeholder='Asset Name'
+                        placeholder='Required'
                         localOnChange={this.assetNameChange}
+                        placeholderTextColor="crimson"
+                    />
+                    <BasePasswordInput
+                        label='Asset Password'
+                        placeholder='Required'
+                        pwChange={this.pwChange}
+                        placeholderTextColor="crimson"
                     />
 
-                    {metricInputs}
-
+                    <ScrollView style={{ alignSelf: "center", width: "103%", maxHeight: '40%' }}>
+                        {metricInputs}
+                    </ScrollView>
                     <AddMetricButton onPress={() => this.addMetric()} />
 
                     <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                         <AssetCard asset={this.state} />
-                        
+                        <AssetCard asset={this.state} />
+
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
 
@@ -181,16 +214,27 @@ class RegAsset1 extends Component {
                     routeName={'RegAsset1'}
                     setPic={this.setPic}
                 />
-               
+
+                {/* <CustomModal
+                    heading={"Your thing is Happening"}
+                    content={this.state.content}
+                    modalCase="add"
+                    isVisible={this.state.showAddMetricModal}
+                    onBackdropPress={this.toggleAddMetricModal}
+                    closeModal={this.toggleAddMetricModal}
+                /> */}
             </View>
         )
     }
 }
 const mapStateToProps = (state) => ({
+    hercId: state.AssetReducers.hercId,
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    addAsset: (newAsset) => dispatch(addAsset(newAsset)),
+    // getHercId: () => dispatch(getHercId()),
     toggleCamSourceModal: (show) =>
         dispatch(toggleCamSourceModal(show)),
 })

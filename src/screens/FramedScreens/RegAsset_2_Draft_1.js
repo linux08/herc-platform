@@ -27,27 +27,27 @@ class RegAsset2 extends Component {
         super(props);
         console.log("componentTest")
         this.state = {
-
-            Password: "HELMSLEYSPEAR",
-            CoreProps: {
-                metric1: "Tenant Name",
-                metric2: "Landlord Name",
-                metrci3: "Building Name / Address",
-                metric4: "Unit",
-                metric5: "Unit Type",
-                metric6: "Square footage",
-                metric8: "Lease start date",
-                metric9: "Lease commencement date",
-                metric10: "Rent commencement date",
-                metric11: "Lease end date",
-                metric12: "Current rent",
-                metric13: "Rent Bumps",
-                metric14: "Tenant expenses",
+            modalVisible: false,
+            // Password: "HELMSLEYSPEAR",
+            // CoreProps: {
+            //     metric1: "Tenant Name",
+            //     metric2: "Landlord Name",
+            //     metrci3: "Building Name / Address",
+            //     metric4: "Unit",
+            //     metric5: "Unit Type",
+            //     metric6: "Square footage",
+            //     metric8: "Lease start date",
+            //     metric9: "Lease commencement date",
+            //     metric10: "Rent commencement date",
+            //     metric11: "Lease end date",
+            //     metric12: "Current rent",
+            //     metric13: "Rent Bumps",
+            //     metric14: "Tenant expenses",
 
             }
         }
 
-    }
+    
     onPress = () => {
         this.props.navigation.navigate.goBack()
     }
@@ -94,7 +94,7 @@ class RegAsset2 extends Component {
                 />
 
                 <View style={styles.bodyContainer}>
-                    <AssetCard asset={asset} />
+                    {/* <AssetCard asset={asset} /> */}
                     <BasePasswordInput label={"Asset Password"} value={this.state.Password} />
                     <ScrollView>
                         {metricList}
@@ -117,7 +117,28 @@ class RegAsset2 extends Component {
     }
 
 }
-export default connect(RegAsset2);
+
+const mapStateToProps = (state) => ({
+    newAsset: state.AssetReducers.newAsset,
+    // hercId: state.AssetReducers.hercId,
+    edgeAccount: state.WalletActReducers.edge_account,
+    // wallet: state.WalletActReducers.wallet,
+    dataFlags: state.AssetReducers.dataFlags,
+    // watchBalance: state.WalletActReducers.watchBalance,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    settingHeader: (fbHead) => {
+        dispatch(settingHeader(fbHead))
+    },
+    confirmAssetStarted: (asset) =>
+        dispatch(confirmAssetStarted(asset)),
+    confirmAssetComplete: () =>
+        dispatch(confirmAssetComplete()),
+   
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegAsset2);
 
 const localStyles = StyleSheet.create({
     pageBottom: {

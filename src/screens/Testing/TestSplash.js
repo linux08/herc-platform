@@ -24,7 +24,7 @@ export default class TestSplash extends Component {
             counter: 0
 
         }
-        this.toggleModal = this.toggleModal.bind(this);
+        // this.toggleModal = this.toggleModal.bind(this);
     }
 
 
@@ -33,15 +33,15 @@ export default class TestSplash extends Component {
     //     this.setState({ timer });
     // }
 
-    componentWillUnmount = () => {
-        this.clearInterval(this.state.timer);
-    }
+    // componentWillUnmount = () => {
+    //     this.clearInterval(this.state.timer);
+    // }
 
-    tick = () => {
-        this.setState({
-            counter: this.state.counter + 1
-        });
-    }
+    // tick = () => {
+    //     this.setState({
+    //         counter: this.state.counter + 1
+    //     });
+    // }
 
     closeModal = (seeit) => {
         this.setState({
@@ -49,24 +49,24 @@ export default class TestSplash extends Component {
         })
     }
 
-    toggleModal = () => {
-        console.log("inTestSplash", this.props);
-        let timer = setInterval(this.tick, 1000);
-        //     this.setState({ timer });
-        this.setState({
-            modalIsVisible: !this.state.modalIsVisible,
-            timer
-        })
+    // toggleModal = () => {
+    //     console.log("inTestSplash", this.props);
+    //     let timer = setInterval(this.tick, 1000);
+    //     //     this.setState({ timer });
+    //     this.setState({
+    //         modalIsVisible: !this.state.modalIsVisible,
+    //         timer
+    //     })
 
-    }
+    // }
 
     // startTimer = () => {
     //     time
     // }
 
     render() {
-        let percent = this.state.counter % 3;
-        console.log(percent, "state at render");
+        // let percent = this.state.counter % 3;
+        // console.log(percent, "state at render");
         return (
             <View style={localStyles.baseContainer}>
                 <StatusBar
@@ -80,16 +80,15 @@ export default class TestSplash extends Component {
                         style={localStyles.splashImage}
                         resizeMode="contain"
                     />
-                    <Button onPress={this.toggleModal} title={"toggleMOdal"} />
 
                 </View>
                 <View style={[localStyles.baseContainer, localStyles.bodyContainer]}>
 
 
-                    <Button title='Continue' onPress={() => this.toggleModal()} />
+                    <Button title='Continue' onPress={() => this.props.navigation.navigate('RegAsset1')} />
                 </View>
 
-                <CustomModal
+                {/* <CustomModal
                     heading={"Your thing is Happening"}
                     content={this.state.content}
                     modalCase="progress"
@@ -97,7 +96,7 @@ export default class TestSplash extends Component {
                     onBackdropPress={this.toggleModal}
                     percent={percent}
                     closeModal={this.closeModal}
-                />
+                /> */}
             </View>
         )
     }

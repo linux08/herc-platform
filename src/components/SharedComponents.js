@@ -150,7 +150,7 @@ export class BasePasswordInput extends Component {
                         underlineColorAndroid='transparent'
                         secureTextEntry={this.state.hidePass}
                         onChangeText={pass => this.props.pwChange(pass)}
-                        value={this.props.value || ""}
+                        // value={this.props.value || ""}
                     />
                     <View style={localStyles.eyeballContainer}>
                         <Icon.Button
