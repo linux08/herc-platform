@@ -3,10 +3,10 @@ import {
   SETTING_HEADER,
   SETTING_HEADER_COMPLETE,
   SETTING_HEADER_ERROR,
-  CONFIRM_STARTED,
   REG_ASSET_T0_IPFS,
   REG_IPFS_COMPLETE,
   REG_ASSET_IPFS_TO_FACTOM,
+  REG_ASSET_FACTOM_COPLETE,
   CONFIRM_ASSET_COMPLETE,
   INC_HERC_ID,
 } from './registerAssetActiontypes';
@@ -74,7 +74,7 @@ export async function settingAssetHeaderInFirebase(assetHeader) {
     dispatch(SETTING_HEADER_COMPLETE);
     regAssetToIpfs(ipfsAsset);
 
-    dispatch(INC_HERC_ID(newAsset.hercId))
+    dispatch(incHercId(newAsset.hercId))
 
   }
 }
@@ -107,14 +107,21 @@ export function regAssetToIpfs(assetForIPFS) {
         console.log("1/3 ipfsHash: ", response)
         ipfsHash = response.data.hash;
         regAssetIpfsToFactom(ipfsHash);
-        dispatch(REG_IPFS_COMPLETE)
-        dispatch(REG_ASSET_IPFS_TO_FACTOM)
+        dispatch(regIpfsComplete(ipfsHash))
         // return ipfsHash
       }).catch(error => dispatch(ipfsError(error)))
 
     console.log(maybething, "if we get this far..what is this...hashes from ipfs?");
 
   }
+}
+
+export function regIpfsComplete(hash) {
+  return {
+    type: REG_IPFS_COMPLETE,
+    ipfsHash: hash
+  }
+
 }
 
 export function regAssetIpfsToFactom(ipfsHash) {
@@ -129,34 +136,41 @@ export function regAssetIpfsToFactom(ipfsHash) {
         var chainId = response.data
         hashesForFirebase.chainId = chainId;
         hashesForFirebase.ipfsHash = ipfsHash;
+        dispatch(REG_ASSET_FACTOM_COMPLETE(chainId))
         console.log(hashesForFirebase, "hash check")
         hashesToFirebase(hashesForFirebase);
       }).catch(error => dispatch(factomError(error)))
 
   }
 }
-  export function hashesToFirebase(hashes) {
-    let dataObject = Object.assign({}, {
-      chainId: hashes.chainId,
-      ipfsHash: hashes.ipfsHash,
-      organizationName: 'H3RCUL3S'
-    }) // organizationName hard-coded for 0.9.5 in preparation for igvc.eth platform
+export function hashesToFirebase(hashes) {
+  let dataObject = Object.assign({}, {
+    chainId: hashes.chainId,
+    ipfsHash: hashes.ipfsHash,
+    organizationName: 'H3RCUL3S'
+  }) // organizationName hard-coded for 0.9.5 in preparation for igvc.eth platform
 
-    console.log("3/3 going into firebase: ", dataObject)
-    rootRef.child('assets').child(asset.Name).child('hashes').set(dataObject);
+  console.log("3/3 going into firebase: ", dataObject)
+  rootRef.child('assets').child(asset.Name).child('hashes').set(dataObject);
 
-    dispatch(CONFIRM_ASSET_COMPLETE);
+  dispatch(CONFIRM_ASSET_COMPLETE);
 
-    // Charge them now? make the payment?
-    store.dispatch(getAssets());
+  // Charge them now? make the payment?
+  store.dispatch(getAssets());
+}
+
+
+export function regFactomComplete(hash) {
+  return {
+    type: REG_IPFS_COMPLETE,
+    ipfsHash: hash
   }
 
+}
 
-
-
-  export function confirmAssetComplete() {
-    return {
-      type: CONFIRM_ASSET_COMPLETE
-    }
+export function confirmAssetComplete() {
+  return {
+    type: CONFIRM_ASSET_COMPLETE
   }
+}
 

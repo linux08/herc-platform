@@ -9,8 +9,9 @@ export const REG_ASSET_T0_IPFS = 'regAssetToIpfs';
 export const REG_IPFS_COMPLETE = 'regIpfsComplete';
 export const IPFS_ERROR = 'ipfsError';
 export const REG_ASSET_IPFS_TO_FACTOM = 'regAssetIpfsToFactom';
-export const CONFIRM_ASSET_COMPLETE = 'confirmAssetComplete';
 export const REG_ASSET_FACTOM_COMPLETE = 'regAssetFactomComplete';
 export const FACTOM_ERROR = 'factomError';
 
+export const FIREBASE_HASHES_WRITTEN = 'firebaseHashesWritten';
 
+export const CONFIRM_ASSET_COMPLETE = 'confirmAssetComplete';
