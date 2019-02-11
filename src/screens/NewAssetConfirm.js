@@ -120,7 +120,7 @@ class NewAssetConfirm extends Component {
         this.props.confirmAssetStarted(ipfsAsset);
         this.props.incHercId(this.props.hercId);
     }
-
+// moving the check balance part to RegAssetSplash
     _CheckBalance() {
 
         console.log("Checking Balances, circumventing dev check")

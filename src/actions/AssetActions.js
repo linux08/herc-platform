@@ -77,15 +77,15 @@ export function gotHercId(hercId) {
   };
 }
 
-export function incHercId(hercid) {
-  console.log(hercid, "hercid");
-  let hercIdplus1 = parseInt(hercid) + 1;
-  console.log(hercIdplus1, 'incHercId Action: transformed hopefully plus one')
-  return {
-    type: INC_HERC_ID,
-    hercIdplus1
-  };
-}
+// export function incHercId(hercid) {
+//   console.log(hercid, "hercid");
+//   let hercIdplus1 = parseInt(hercid) + 1;
+//   console.log(hercIdplus1, 'incHercId Action: transformed hopefully plus one')
+//   return {
+//     type: INC_HERC_ID,
+//     hercIdplus1
+//   };
+// }
 
 
 
