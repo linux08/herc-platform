@@ -1,4 +1,5 @@
 import {
+    GETTING_HERC_ID,
     GOT_HERC_ID,
     ADD_ASSET,
     SETTING_HEADER,
@@ -15,6 +16,8 @@ import {
 } from '../actions/registerAssetActionTypes';
 
 const INITIAL_STATE = {
+    hercId: {},
+       
     confirmStarted: false,
     headerComplete: false,
 
@@ -31,19 +34,25 @@ const INITIAL_STATE = {
     percentage: 0
 }
 
-
-
-
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
-console.log(action, "in regReducers")
+    console.log(action, "in regReducers")
     switch (action.type) {
+        case GETTING_HERC_ID:
+            return Object.assign({}, state.hercId, {
+                ...state,
+                hercId:{
+                    status: 'getting'
+                }
+            })
 
         case GOT_HERC_ID:
-        console.log("gotHercIDreducers", action)
+            console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
             return Object.assign({}, state, {
                 ...state,
-               hercId: hercId
+                hercId: hercId
+                
+
             })
 
         case INC_HERC_ID:

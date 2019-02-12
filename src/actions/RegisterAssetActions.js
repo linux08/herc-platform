@@ -10,7 +10,8 @@ import {
   REG_ASSET_FACTOM_COMPLETE,
   CONFIRM_ASSET_COMPLETE,
   INC_HERC_ID,
-  CLEAR_STATE
+  CLEAR_STATE,
+  GETTING_HERC_ID
 } from './registerAssetActionTypes';
 
 import firebase from "../constants/Firebase";
@@ -22,17 +23,22 @@ const assetRef = rootRef.child("assets");
 
 export function getHercId() {
   console.log('getting hercID');
-  return dispatch => {
-    let hercId;
-    rootRef
-      .child("hercID")
-      .once("value")
-      .then(snapshot => {
-        hercId = snapshot.toJSON();
-      })
-      .then(() => dispatch(gotHercId(hercId)));
-  };
+  grabHercId();
+  return {
+    type: GETTING_HERC_ID
+  }
 }
+
+async function grabHercId() {
+
+  const snapshot = await rootRef
+    .child("hercID")
+    .once("value");
+  console.log(snapshot.toJSON(), "snapshot to json");
+
+  store.dispatch(gotHercId(snapshot.toJSON()));
+}
+
 
 export function gotHercId(hercId) {
   console.log('GotHercId: ', hercId)

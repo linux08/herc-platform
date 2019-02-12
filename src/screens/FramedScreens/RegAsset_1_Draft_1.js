@@ -44,10 +44,16 @@ class RegAsset1 extends Component {
     }
 
     componentWillMount = () => {
+        console.log(this.props, "regAsset1 Props Will mount")
+      
+    }
 
+    componentDidMount =() => {
         this.setState({
+            ...this.state,
             hercId: this.props.hercId
         })
+        console.log(this.props, "props regasset1 didmount")
     }
 
     renderInputs = () => {
@@ -234,7 +240,7 @@ class RegAsset1 extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    hercId: state.AssetReducers.hercId,
+    hercId: state.RegisterAssetReducers.hercId,
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
 
 });

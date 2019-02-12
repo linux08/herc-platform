@@ -10,9 +10,12 @@ import {
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
-export default class TestSplash extends Component {
+import { getHercId } from '../../actions/RegisterAssetActions';
+
+class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
         header: <Header headerTitle={'Welcome'} navigation={navigation} />
     })
@@ -20,18 +23,16 @@ export default class TestSplash extends Component {
         super(props);
         this.state = {
             modalIsVisible: false,
-            timer: null,
-            counter: 0
 
         }
         // this.toggleModal = this.toggleModal.bind(this);
     }
 
 
-    // componentDidMount = () => {
-    //     let timer = setInterval(this.tick, 1000);
-    //     this.setState({ timer });
-    // }
+    componentDidMount = () => {
+        console.log("function??")
+        this.props.getHercId();
+    }
 
     // componentWillUnmount = () => {
     //     this.clearInterval(this.state.timer);
@@ -102,6 +103,12 @@ export default class TestSplash extends Component {
     }
 
 }
+
+const mapDispatchToProps = (dispatch ) => ({
+    getHercId: () => dispatch(getHercId())
+})
+export default connect(null, mapDispatchToProps)(TestSplash); 
+
 const localStyles = StyleSheet.create({
 
     baseContainer: {

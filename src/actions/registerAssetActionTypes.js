@@ -1,4 +1,4 @@
-export const GET_HERC_ID = 'getHercId';
+export const GETTING_HERC_ID = 'gettingHercId';
 export const GOT_HERC_ID = 'gotHercId';
 export const INC_HERC_ID = 'incHercId';
 
