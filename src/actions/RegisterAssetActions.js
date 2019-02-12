@@ -1,4 +1,5 @@
 import {
+  GOT_HERC_ID,
   ADD_ASSET,
   SETTING_HEADER,
   SETTING_HEADER_COMPLETE,
@@ -19,6 +20,36 @@ import axios from 'axios';
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 
+export function getHercId() {
+  console.log('getting hercID');
+  return dispatch => {
+    let hercId;
+    rootRef
+      .child("hercID")
+      .once("value")
+      .then(snapshot => {
+        hercId = snapshot.toJSON();
+      })
+      .then(() => dispatch(gotHercId(hercId)));
+  };
+}
+
+export function gotHercId(hercId) {
+  console.log('GotHercId: ', hercId)
+  return {
+    type: GOT_HERC_ID,
+    hercId: hercId
+  };
+}
+
+incHercId = () => {
+  let hercIdPlus1 = (store.getState().AssetReducers.hercId + 1);
+  rootRef.child("hercID").set(hercIdPlus1);
+  return {
+    type: INC_HERC_ID,
+    hercId: hercIdPlus1
+  }
+}
 
 // Adding the new, yet to be confirmed, Asset to redux, will map on Confirm
 export function addAsset(newTempAsset) {
@@ -129,8 +160,6 @@ export function settingHeaderError(error) {
 
 
 export async function regAssetToIpfs(assetForIPFS) {
-  store.dispatch(REG_ASSET_T0_IPFS);
-
   let ipfsHash;
   let asset = assetForIPFS;
   let username = store.getState().WalletActReducers.edge_account
@@ -199,13 +228,7 @@ export function hashesToFirebase(hashes) {
   store.dispatch(getAssets());
 };
 
-incHercId = () => {
-  let hercIdPlus1 = (store.getState().AssetReducers.hercId + 1);
-  return {
-    type: INC_HERC_ID,
-    hercIdPlus1
-  }
-}
+
 
 export function regFactomComplete(hash) {
   return {

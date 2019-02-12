@@ -1,5 +1,5 @@
 import {
-  ADD_ASSET,
+  // ADD_ASSET,
   ADD_DOC,
   ADD_METRICS,
   ADD_PHOTO,
@@ -10,11 +10,11 @@ import {
   IPFS_ERROR,
   GOT_FACT,
   FACTOM_ERROR,
-  CONFIRM_ASSET_COMPLETE,
+  // CONFIRM_ASSET_COMPLETE,
   DELETE_ASSET,
   GET_ASSETS,
   GETTING_ASSET_DEF,
-  GET_HERC_ID,
+  // GET_HERC_ID,
   GET_ORIGIN_TRANS,
   GET_QR_DATA,
   GET_TRANS,
@@ -23,7 +23,7 @@ import {
   GOT_ASSET_TRANS,
   GOT_HERC_ID,
   GOT_LIST_ASSETS,
-  INC_HERC_ID,
+  // INC_HERC_ID,
   SELECT_ASSET,
   START_TRANS,
   SEND_TRANS,
@@ -57,25 +57,25 @@ export function clearState() {
 }
 
 
-export function getHercId() {
-  return dispatch => {
-    let hercId;
-    rootRef
-      .child("hercID")
-      .once("value")
-      .then(snapshot => {
-        hercId = snapshot.toJSON();
-      })
-      .then(() => dispatch(gotHercId(hercId)));
-  };
-}
+// export function getHercId() {
+//   return dispatch => {
+//     let hercId;
+//     rootRef
+//       .child("hercID")
+//       .once("value")
+//       .then(snapshot => {
+//         hercId = snapshot.toJSON();
+//       })
+//       .then(() => dispatch(gotHercId(hercId)));
+//   };
+// }
 
-export function gotHercId(hercId) {
-  return {
-    type: GOT_HERC_ID,
-    hercId: hercId
-  };
-}
+// export function gotHercId(hercId) {
+//   return {
+//     type: GOT_HERC_ID,
+//     hercId: hercId
+//   };
+// }
 
 // export function incHercId(hercid) {
 //   console.log(hercid, "hercid");

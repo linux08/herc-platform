@@ -12,6 +12,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { getHercId } from '../../actions/RegisterAssetActions';
 
 class RegAssetSplashTest extends Component {
     constructor(props) {
@@ -19,6 +20,9 @@ class RegAssetSplashTest extends Component {
         console.log(this.props, 'this props in regAssetSplash')
     }
 
+    componentWillMount() {
+        this.props.getHercId();
+    }
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
 
@@ -52,7 +56,10 @@ class RegAssetSplashTest extends Component {
 
 }
 
-export default RegAssetSplashTest;
+const mapDispatchToProps = (dispatch) => ({
+    getHercId: () => dispatch(getHercId())
+})
+export default connect(null, mapDispatchToProps)(RegAssetSplashTest);
 
 const localStyles = StyleSheet.create({
 

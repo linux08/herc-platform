@@ -16,7 +16,8 @@ import axios from 'axios';
 import hercLogoPillar from "../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
 import { getUsername, getAccount, authToken, getEthAddress, getWallet, updateBalances } from "../actions/WalletActActions";
-import { getHercId, getAssets, clearState } from "../actions/AssetActions";
+import { getAssets, clearState } from "../actions/AssetActions";
+
 import { getOrganization } from "../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
@@ -92,7 +93,7 @@ class Login extends Component {
           console.log("Is this the latest APK?", results[1].data)
           const { navigate } = this.props.navigation;
 
-          this.props.getHercId();
+          // this.props.getHercId();
           this.props.getAssets(this.props.username);
           this.props.getOrganization();
 
@@ -184,7 +185,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getHercId: () => dispatch(getHercId()),
+    // getHercId: () => dispatch(getHercId()),
     getAssets: (name) => dispatch(getAssets(name)),
     getOrganization: () => dispatch(getOrganization()),
     clearState: () => dispatch(clearState()),

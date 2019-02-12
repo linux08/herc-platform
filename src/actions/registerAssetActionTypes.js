@@ -1,3 +1,7 @@
+export const GET_HERC_ID = 'getHercId';
+export const GOT_HERC_ID = 'gotHercId';
+export const INC_HERC_ID = 'incHercId';
+
 export const ADD_ASSET = 'addAsset';
 export const SETTING_HEADER = "settingAssetHeaderInFirebase";
 export const SETTING_HEADER_COMPLETE = "settingHeaderComplete";

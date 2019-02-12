@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 }
 
 export default function ModalVisibilityReducers(state = INITIAL_STATE, action) {
-    console.log(action, "action in modalVizRedux", "state: ", state);
+    // console.log(action, "action in modalVizRedux", "state: ", state);
     switch (action.type) {
 
         case "toggleCamSourceModal":
@@ -14,12 +14,7 @@ export default function ModalVisibilityReducers(state = INITIAL_STATE, action) {
                 ...state,
                 showCamSourceModal: action.visible
             }
-
-        case "toggleCameraModal":
-            return {
-                ...state,
-                showCameraModal: action.visible
-            }
+      
         // case CLEAR_STATE:
         //     return initialState
 

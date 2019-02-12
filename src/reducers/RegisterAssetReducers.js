@@ -1,4 +1,5 @@
 import {
+    GOT_HERC_ID,
     ADD_ASSET,
     SETTING_HEADER,
     SETTING_HEADER_COMPLETE,
@@ -11,10 +12,9 @@ import {
     CONFIRM_ASSET_COMPLETE,
     INC_HERC_ID,
 
-} from '../actions/RegisterAssetActions';
+} from '../actions/registerAssetActionTypes';
 
 const INITIAL_STATE = {
-
     confirmStarted: false,
     headerComplete: false,
 
@@ -35,19 +35,27 @@ const INITIAL_STATE = {
 
 
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
-
+console.log(action, "in regReducers")
     switch (action.type) {
 
-        case INC_HERC_ID:
-            let hercID = action.hercIdplus1;
-            rootRef.child("hercID").set(hercID);
+        case GOT_HERC_ID:
+        console.log("gotHercIDreducers", action)
+            let hercId = action.hercId;
             return Object.assign({}, state, {
                 ...state,
-                hercId
+               hercId: hercId
+            })
+
+        case INC_HERC_ID:
+
+            return Object.assign({}, state, {
+                ...state,
+                hercId: action.hercId
             });
 
+
         case ADD_ASSET:
-        console.log(action, "addassetredux");
+            console.log(action, "addassetredux");
             const newAsset = action.newAsset;
             return Object.assign({}, state, {
                 ...state,
@@ -57,8 +65,8 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
         case SETTING_HEADER:
-            
-        return Object.assign({}, state, {
+
+            return Object.assign({}, state, {
                 ...state,
                 confirmStarted: true
             }
@@ -69,7 +77,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 headerComplete: true,
 
-                percentage: '15'
+                percentage: state.percentage + 15
             }
             )
 
