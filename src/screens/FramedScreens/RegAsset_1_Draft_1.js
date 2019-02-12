@@ -28,7 +28,7 @@ class RegAsset1 extends Component {
             Name: "",
             Logo: null,
             CoreProps: {
-                Metric1: "",
+                Metric1 : "",
                 // Metric2: "",
                 // Metric3: "",
                 // Metric4: "",
@@ -62,8 +62,8 @@ class RegAsset1 extends Component {
                 metricInputs.push(
                     <HercTextInputWithLabel
                         key={idx}
-                        name={"Metric 1"}
-                        label={"Metric " + (idx + 1)}
+                        name={"Metric1"}
+                        label={"Metric 1"}
                         placeholder={'Required'}
                         placeholderTextColor="crimson"
                         localOnChange={this.corePropChange}
@@ -74,7 +74,7 @@ class RegAsset1 extends Component {
                     <HercTextInputWithLabel
                         label={"Metric " + (idx + 1)}
                         key={x}
-                        name={"Metric " + (idx + 1)}
+                        name={"Metric" + (idx + 1)}
                         placeholder={x}
                         localOnChange={this.corePropChange}
                     />
@@ -151,7 +151,7 @@ class RegAsset1 extends Component {
         if (newMetricNumber >= 16) {
             Alert("NO More CoreProps");
         } else {
-            let newMetricName = "Metric " + newMetricNumber;
+            let newMetricName = "Metric" + newMetricNumber;
 
             let newCoreProps = Object.assign({}, this.state.CoreProps, {
                 ...this.state.CoreProps,

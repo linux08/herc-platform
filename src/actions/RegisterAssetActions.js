@@ -50,37 +50,40 @@ export function settingHeader() {
 }
 
 
-function settingAssetHeaderInFirebase() {
-
+async function settingAssetHeaderInFirebase() {
+  console.log("should error");
   // this will set the flag as well  RegAssetCofirmStarted: True
   let newAsset = store.getState().AssetReducers.newAsset;
   let uri = newAsset.LogoUri;
   console.log(uri, "right before fetch")
-  fetch(uri)
-    .then(response => gotFetchedURI(response));
-    // return dispatch => {
+  const response = await fetch(uri);
+  gotFetchedURI(response);
+  // return dispatch => {
 
-    // }
+  // }
 
 }
 
 
-function gotFetchedURI(fetchUri) {
+async function gotFetchedURI(fetchUri) {
   const edgeAccount = store.getState().WalletActReducers.edge_account;
   let newAsset = store.getState().AssetReducers.newAsset;
-  
+
   let logoLocation = firebase.storage().ref('assets')
-  .child(edgeAccount)
-  .child(newAsset.Name)
-  .child("Logo");
-  
-  return dispatch => {
-  fetchUri.blob()
-    .then(blob => logoLocation.put(blob)
-      .then(snapshot => makeHeader(snapshot.downloadURL))
-      .catch(err => dispatch(settingHeaderError(err))));
+    .child(edgeAccount)
+    .child(newAsset.Name)
+    .child("Logo");
+
+  try {
+    const blob = await fetchUri.blob();
+    const snapshot = await logoLocation.put(blob);
+    makeHeader(snapshot.downloadURL);
+  } catch (error) {
+    store.dispatch(settingHeaderError(error))
   }
+
 }
+
 
 function makeHeader(logoUrl) {
   let newAsset = store.getState().AssetReducers.newAsset;
@@ -92,7 +95,7 @@ function makeHeader(logoUrl) {
     Password: newAsset.Password
   }
 
-  assetRef.child(newAsset.Name).set(assetHeader);
+  assetRef.child(newAsset.Name).set(fbAsset);
 
   ipfsAsset = Object.assign({}, {
     Name: newAsset.Name,
@@ -104,16 +107,16 @@ function makeHeader(logoUrl) {
 
   incHercId(newAsset.hercId);
   return dispatch => {
-    dispatch(SETTING_HEADER_COMPLETE);
+    dispatch(settingHeaderComplete());
   }
 }
 
 
-// export function settingHeaderComplete() {
-//   return {
-//     type: SETTING_HEADER_COMPLETE,
-//   }
-// }
+export function settingHeaderComplete() {
+  return {
+    type: SETTING_HEADER_COMPLETE,
+  }
+}
 
 
 export function settingHeaderError(error) {
@@ -125,25 +128,28 @@ export function settingHeaderError(error) {
 
 
 
-export function regAssetToIpfs(assetForIPFS) {
-  return dispatch => {
-    dispatch(REG_ASSET_T0_IPFS);
-    let ipfsHash;
-    let asset = assetForIPFS;
-    let username = store.getState().WalletActReducers.edge_account
-    var dataObject = { key: 'asset', data: asset }
-    let maybething = axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
-      .then(response => {
-        console.log("1/3 ipfsHash: ", response)
-        ipfsHash = response.data.hash;
-        regAssetIpfsToFactom(ipfsHash);
-        dispatch(regIpfsComplete(ipfsHash))
-        return ipfsHash
-      }).catch(error => dispatch(ipfsError(error)))
+export async function regAssetToIpfs(assetForIPFS) {
+  store.dispatch(REG_ASSET_T0_IPFS);
 
-    console.log(maybething, "if we get this far..what is this...hashes from ipfs?");
-
+  let ipfsHash;
+  let asset = assetForIPFS;
+  let username = store.getState().WalletActReducers.edge_account
+  var dataObject = { key: 'asset', data: asset }
+  try {
+    let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
+    console.log("1/3 ipfsHash: ", response)
+    ipfsHash = response.data.hash;
+    regAssetIpfsToFactom(ipfsHash);
+    store.dispatch(regIpfsComplete(ipfsHash))
+    // return ipfsHash
   }
+  catch (error) {
+    store.dispatch(ipfsError(error))
+  }
+
+
+  console.log(maybething, "if we get this far..what is this...hashes from ipfs?");
+
 }
 
 export function regIpfsComplete(hash) {
@@ -154,25 +160,29 @@ export function regIpfsComplete(hash) {
 
 }
 
-export function regAssetIpfsToFactom(ipfsHash) {
-  return dispatch => {
-    dispatch(REG_ASSET_IPFS_TO_FACTOM);
-    var hashesForFirebase;
-    var dataObject = JSON.stringify({ ipfsHash: ipfsHash })
-    /* This part creates a new factom chain */
-    axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
-      .then(response => {
-        console.log("2/3 web server factom response: ", response)
-        var chainId = response.data
-        hashesForFirebase.chainId = chainId;
-        hashesForFirebase.ipfsHash = ipfsHash;
-        dispatch(REG_ASSET_FACTOM_COMPLETE(chainId))
-        console.log(hashesForFirebase, "hash check")
-        hashesToFirebase(hashesForFirebase);
-      }).catch(error => dispatch(factomError(error)))
+export async function regAssetIpfsToFactom(ipfsHash) {
+  store.dispatch(REG_ASSET_IPFS_TO_FACTOM);
+  var dataObject = JSON.stringify({ ipfsHash: ipfsHash })
+  /* This part creates a new factom chain */
+  try {
+    const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
+    console.log("2/3 web server factom response: ", response)
+    var chainId = response.data;
+    var hashesForFirebase = {
+      chainId: chainId,
+      ipfsHash: ipfsHash
+    }
 
+    store.dispatch(REG_ASSET_FACTOM_COMPLETE(chainId));
+    console.log(hashesForFirebase, "hash check");
+    hashesToFirebase(hashesForFirebase);
+
+  } catch (error) {
+    store.dispatch(factomError(error))
   }
+
 }
+
 export function hashesToFirebase(hashes) {
   let dataObject = Object.assign({}, {
     chainId: hashes.chainId,
@@ -183,7 +193,7 @@ export function hashesToFirebase(hashes) {
   console.log("3/3 going into firebase: ", dataObject)
   rootRef.child('assets').child(asset.Name).child('hashes').set(dataObject);
 
-  dispatch(CONFIRM_ASSET_COMPLETE);
+  store.dispatch(CONFIRM_ASSET_COMPLETE);
 
   // Charge them now? make the payment?
   store.dispatch(getAssets());

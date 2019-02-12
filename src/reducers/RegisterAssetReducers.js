@@ -79,7 +79,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
                 error: {
                     type: action.type,
-                    error
+                    error: action.error
                 }
             }
             )
