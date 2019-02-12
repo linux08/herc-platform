@@ -102,50 +102,24 @@ const SideMenuNavigator = createDrawerNavigator(
     })
 
 
-// RegAssetNav: {
-//     screen: RegAssetNavigator,
-//     navigationOptions: ({ navigation }) => ({
-//         header: <Header headerTitle={"Register Asset"} navigation={navigation} />
-//     })
 
-// },
-// SupplyChainNav: {
-//     screen: SupplyChainNav,
-//     navigationOptions: ({ navigation }) => ({
-//         header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
-//     })
-// }
-// }
-// , {
-//     initialRouteName: 'TestSplash',
-//     headerMode: 'none',
-// navigationOptions: ({ navigation }) => ({
-//     header: <Header headerTitle={'Welcome'} navigation={navigation} />
-// })
+const LoginNav = createSwitchNavigator(
+    {
+        Login: {
+            screen: Login
+        },
+        SideMenuNav: {
+            screen: SideMenuNavigator
+        }
+    },
+    {
+        initialRouteName: 'Login'
+    }
+)
 
-// })
+export default LoginNav;
 
-
-export default SideMenuNavigator;
-
-    // RegAssetSplashTest: {
-    //     screen: RegAssetSplashTest,
-    //     navigationOptions: ({ navigation }) => ({
-    //         header: <Header headerTitle={"Register Asset"} navigation={navigation} />
-    //     })
-
-    // },
-    // RegAssetNav: {
-    //     screen: RegAssetNavigator,
-
-    // },
-
-    // Login: { screen: TestSplash },
-    // MenuOptions: { screen: MenuOptions },
-    // NewAssetLanding: { screen: NewAssetLanding },
-    // NewAssetForm: { screen: NewAssetForm },
-    // NewAssetConfirm: { screen: NewAssetConfirm },
-
+    
     // HiprLanding: { screen: HiprLanding },
     // HiprAssets: { screen: HiprAssets },
     // HiprTransactions: { screen: HiprTransactions },

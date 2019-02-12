@@ -62,7 +62,7 @@ class RegAsset1 extends Component {
                 metricInputs.push(
                     <HercTextInputWithLabel
                         key={idx}
-                        name={x}
+                        name={"Metric 1"}
                         label={"Metric " + (idx + 1)}
                         placeholder={'Required'}
                         placeholderTextColor="crimson"
@@ -74,7 +74,7 @@ class RegAsset1 extends Component {
                     <HercTextInputWithLabel
                         label={"Metric " + (idx + 1)}
                         key={x}
-                        name={x}
+                        name={"Metric " + (idx + 1)}
                         placeholder={x}
                         localOnChange={this.corePropChange}
                     />
@@ -107,6 +107,7 @@ class RegAsset1 extends Component {
 
     assetNameChange = (nameEdits) => {
         this.setState({
+            ...this.state,
             Name: nameEdits
         })
     }
@@ -115,7 +116,10 @@ class RegAsset1 extends Component {
         console.log('inputValue', inputValue, "changing coreprop text", name);
         this.setState({
             ...this.state,
+            CoreProps:{
+                ...this.state.CoreProps,
             [name]: inputValue
+            }
         })
     }
 
@@ -132,7 +136,9 @@ class RegAsset1 extends Component {
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
     onPressTest = () => {
         console.log(this.state, "this state after Reg PRess");
-        this.props.addAsset(this.state);
+       let newAsset = Object.assign({},this.state)
+       console.log(newAsset,"hopefully shallow clone")
+        this.props.addAsset(newAsset);
         this.props.navigation.navigate("RegAsset2");
     }
 
@@ -142,10 +148,10 @@ class RegAsset1 extends Component {
     addMetric = () => {
         let newMetricNumber = Object.keys(this.state.CoreProps).length + 1;
         console.log("CoreProps Length: ", newMetricNumber)
-        if (newMetricNumber === 16) {
+        if (newMetricNumber >= 16) {
             Alert("NO More CoreProps");
         } else {
-            let newMetricName = "Metric" + newMetricNumber;
+            let newMetricName = "Metric " + newMetricNumber;
 
             let newCoreProps = Object.assign({}, this.state.CoreProps, {
                 ...this.state.CoreProps,
@@ -155,7 +161,7 @@ class RegAsset1 extends Component {
             this.setState({
                 CoreProps: newCoreProps
             })
-            this.renderInputs();
+            // this.renderInputs();
         }
 
     }
@@ -230,6 +236,7 @@ class RegAsset1 extends Component {
 const mapStateToProps = (state) => ({
     hercId: state.AssetReducers.hercId,
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

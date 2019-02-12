@@ -34,6 +34,11 @@ export class AssetCard extends Component {
                 Logo: props.asset.Logo
             })
         }
+        if (props.asset.hercId != this.state.hercId) {
+            this.setState({
+                hercId: props.asset.hercId
+            })
+        }
     }
     render() {
         console.log(this.state, "this is state, looking for the deets passed in")
@@ -58,7 +63,7 @@ export class AssetCard extends Component {
                     </View>
                     <View style={localStyles.cardContentRight}>
                         <Text style={localStyles.assetLabel}>Herc ID</Text>
-                        <Text style={localStyles.assetName}>{this.state.HercId}</Text>
+                        <Text style={localStyles.assetName}>{this.state.hercId}</Text>
                     </View>
                 </View>
             </View>

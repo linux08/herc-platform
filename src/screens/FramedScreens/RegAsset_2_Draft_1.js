@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-const buildingPic = require("../../assets/83MaidenLn.jpg")
+
+import { settingHeader } from '../../actions/RegisterAssetActions';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -20,6 +21,7 @@ import {
     CostDisplay
 } from '../../components/SharedComponents';
 
+// const buildingPic = require("../../assets/83MaidenLn.jpg")
 
 class RegAsset2 extends Component {
 
@@ -44,12 +46,13 @@ class RegAsset2 extends Component {
             //     metric13: "Rent Bumps",
             //     metric14: "Tenant expenses",
 
-            }
         }
+    }
 
-    
+
     onPress = () => {
-        this.props.navigation.navigate.goBack()
+        console.log("starting the test register");
+        this.props.settingHeader();
     }
 
     pwChange = (char) => {
@@ -58,7 +61,7 @@ class RegAsset2 extends Component {
         })
     }
     renderMetrics = () => {
-        let coreProps = this.state.CoreProps;
+        let coreProps = this.props.newAsset.CoreProps;
         let metrics = Object.keys(coreProps);
         let numOfMetrics = metrics.length;
         let metricList = [];
@@ -77,11 +80,7 @@ class RegAsset2 extends Component {
     }
 
     render() {
-        let asset = {
-            Logo: buildingPic,
-            Name: "83 Maiden Lane",
-            HercId: '42'
-        }
+
         console.log(this.props.navigation, 'where are the params')
         let metricList = this.renderMetrics();
         return (
@@ -94,8 +93,11 @@ class RegAsset2 extends Component {
                 />
 
                 <View style={styles.bodyContainer}>
-                    {/* <AssetCard asset={asset} /> */}
-                    <BasePasswordInput label={"Asset Password"} value={this.state.Password} />
+                    <AssetCard asset={this.props.newAsset} />
+                    <HercTextFieldWithLabel
+                        label={"Asset Password"} value={this.props.newAsset.Password}
+                        text={this.props.newAsset.Password}
+                    />
                     <ScrollView>
                         {metricList}
                     </ScrollView>
@@ -120,22 +122,20 @@ class RegAsset2 extends Component {
 
 const mapStateToProps = (state) => ({
     newAsset: state.AssetReducers.newAsset,
+    registerFlags: state.RegisterAssetReducers,
+
     // hercId: state.AssetReducers.hercId,
     edgeAccount: state.WalletActReducers.edge_account,
     // wallet: state.WalletActReducers.wallet,
-    dataFlags: state.AssetReducers.dataFlags,
     // watchBalance: state.WalletActReducers.watchBalance,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    settingHeader: (fbHead) => {
-        dispatch(settingHeader(fbHead))
+    settingHeader: () => {
+        dispatch(settingHeader())
     },
-    confirmAssetStarted: (asset) =>
-        dispatch(confirmAssetStarted(asset)),
-    confirmAssetComplete: () =>
-        dispatch(confirmAssetComplete()),
-   
+
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset2);

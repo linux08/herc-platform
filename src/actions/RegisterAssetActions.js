@@ -6,27 +6,35 @@ import {
   REG_ASSET_T0_IPFS,
   REG_IPFS_COMPLETE,
   REG_ASSET_IPFS_TO_FACTOM,
-  REG_ASSET_FACTOM_COPLETE,
+  REG_ASSET_FACTOM_COMPLETE,
   CONFIRM_ASSET_COMPLETE,
   INC_HERC_ID,
-} from './registerAssetActiontypes';
+  CLEAR_STATE
+} from './registerAssetActionTypes';
 
 import firebase from "../constants/Firebase";
 import store from '../store';
 import axios from 'axios';
-const edgeAccount = store.getState().WalletActReducers.edge_account
+// const edgeAccount = store.getState().WalletActReducers.edge_account
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 
 
 // Adding the new, yet to be confirmed, Asset to redux, will map on Confirm
-export function addAsset(newAsset) {
+export function addAsset(newTempAsset) {
+  console.log(newTempAsset, "in regAsstActions")
+  let newAsset = newTempAsset;
   return {
     type: ADD_ASSET,
     newAsset
   };
 }
 
+export function clearState() {
+  return {
+    type: CLEAR_STATE
+  };
+}
 // payment trigger in actions too? after reg complete?
 // fire the payment?
 
@@ -34,56 +42,78 @@ export function addAsset(newAsset) {
 //  assetForFirebase will be Name, hercID, Logo, Password 
 
 // this is the start of it 
-
-export async function settingAssetHeaderInFirebase(assetHeader) {
-  return dispatch => {
-    // this will set the flag as well  RegAssetCofirmStarted: True
-    dispatch(SETTING_HEADER);
-    let uri = assetHeader.Logo.uri;
-    let newAsset = store.getState().AssetReducers.newAsset;
-
-    const uriForBlob = await fetch(uri);
-    const blob = await uriForBlob.blob();
-
-    let logoLocation = firebase.storage().ref('assets')
-      .child(edgeAccount)
-      .child(newAsset.Name)
-      .child("Logo");
-
-    let assetLocation = firebase.database().ref('assets')
-      .child(edgeAccount);
-
-    const snapshot = await logoLocation.put(blob);
-    let downloadURL = snapshot.downloadURL;
-
-    fbAsset = {
-      hercId: newAsset.hercId,
-      Name: newAsset.Name,
-      Logo: downloadURL,
-      Password: newAsset.Password
-    }
-
-    assetRef.child(newAsset.Name).set(assetHeader);
-
-    ipfsAsset = Object.assign({}, {
-      Name: newAsset.Name,
-      CoreProps: newAsset.CoreProps,
-      hercId: newAsset.hercId,
-    });
-
-    dispatch(SETTING_HEADER_COMPLETE);
-    regAssetToIpfs(ipfsAsset);
-
-    dispatch(incHercId(newAsset.hercId))
-
-  }
-}
-
-export function settingHeaderComplete() {
+export function settingHeader() {
+  settingAssetHeaderInFirebase();
   return {
-    type: SETTING_HEADER_COMPLETE,
+    type: SETTING_HEADER
   }
 }
+
+
+function settingAssetHeaderInFirebase() {
+
+  // this will set the flag as well  RegAssetCofirmStarted: True
+  let newAsset = store.getState().AssetReducers.newAsset;
+  let uri = newAsset.LogoUri;
+  console.log(uri, "right before fetch")
+  fetch(uri)
+    .then(response => gotFetchedURI(response));
+    // return dispatch => {
+
+    // }
+
+}
+
+
+function gotFetchedURI(fetchUri) {
+  const edgeAccount = store.getState().WalletActReducers.edge_account;
+  let newAsset = store.getState().AssetReducers.newAsset;
+  
+  let logoLocation = firebase.storage().ref('assets')
+  .child(edgeAccount)
+  .child(newAsset.Name)
+  .child("Logo");
+  
+  return dispatch => {
+  fetchUri.blob()
+    .then(blob => logoLocation.put(blob)
+      .then(snapshot => makeHeader(snapshot.downloadURL))
+      .catch(err => dispatch(settingHeaderError(err))));
+  }
+}
+
+function makeHeader(logoUrl) {
+  let newAsset = store.getState().AssetReducers.newAsset;
+
+  fbAsset = {
+    hercId: newAsset.hercId,
+    Name: newAsset.Name,
+    Logo: logoUrl,
+    Password: newAsset.Password
+  }
+
+  assetRef.child(newAsset.Name).set(assetHeader);
+
+  ipfsAsset = Object.assign({}, {
+    Name: newAsset.Name,
+    CoreProps: newAsset.CoreProps,
+    hercId: newAsset.hercId,
+  });
+
+  regAssetToIpfs(ipfsAsset);
+
+  incHercId(newAsset.hercId);
+  return dispatch => {
+    dispatch(SETTING_HEADER_COMPLETE);
+  }
+}
+
+
+// export function settingHeaderComplete() {
+//   return {
+//     type: SETTING_HEADER_COMPLETE,
+//   }
+// }
 
 
 export function settingHeaderError(error) {
@@ -108,7 +138,7 @@ export function regAssetToIpfs(assetForIPFS) {
         ipfsHash = response.data.hash;
         regAssetIpfsToFactom(ipfsHash);
         dispatch(regIpfsComplete(ipfsHash))
-        // return ipfsHash
+        return ipfsHash
       }).catch(error => dispatch(ipfsError(error)))
 
     console.log(maybething, "if we get this far..what is this...hashes from ipfs?");
@@ -157,8 +187,15 @@ export function hashesToFirebase(hashes) {
 
   // Charge them now? make the payment?
   store.dispatch(getAssets());
-}
+};
 
+incHercId = () => {
+  let hercIdPlus1 = (store.getState().AssetReducers.hercId + 1);
+  return {
+    type: INC_HERC_ID,
+    hercIdPlus1
+  }
+}
 
 export function regFactomComplete(hash) {
   return {

@@ -3,7 +3,7 @@ import {
     SETTING_HEADER,
     SETTING_HEADER_COMPLETE,
     SETTING_HEADER_ERROR,
-    CONFIRM_STARTED,
+    CLEAR_STATE,
     REG_ASSET_T0_IPFS,
     REG_IPFS_COMPLETE,
     REG_ASSET_IPFS_TO_FACTOM,
@@ -11,22 +11,26 @@ import {
     CONFIRM_ASSET_COMPLETE,
     INC_HERC_ID,
 
-} from './registerAssetActiontypes';
+} from '../actions/RegisterAssetActions';
 
 const INITIAL_STATE = {
+
     confirmStarted: false,
     headerComplete: false,
 
     ipfsStarted: false,
     ipfsComplete: false,
+
     factomStarted: false,
     factomComplete: false,
+
     ipfsHash: "",
     chainId: "",
+
     confirmAssetComplete: false,
     percentage: 0
-},
-   
+}
+
 
 
 
@@ -43,6 +47,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             });
 
         case ADD_ASSET:
+        console.log(action, "addassetredux");
             const newAsset = action.newAsset;
             return Object.assign({}, state, {
                 ...state,
@@ -52,7 +57,8 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
         case SETTING_HEADER:
-            return Object.assign({}, state, {
+            
+        return Object.assign({}, state, {
                 ...state,
                 confirmStarted: true
             }
@@ -111,13 +117,21 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 percentage: '83'
             }
 
-            case CONFIRM_ASSET_COMPLETE:
+        case CONFIRM_ASSET_COMPLETE:
             return {
                 ...state,
                 confirmAssetComplete: true,
                 percentage: '100'
             }
-          default: return state;
 
-        }
-    }
+        case CLEAR_STATE:
+            return {
+                INITIAL_STATE
+            }
+
+        default: return state;
+
+    };
+}
+
+export default RegisterAssetReducers;
