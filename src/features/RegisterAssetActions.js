@@ -271,10 +271,9 @@ export function hashesToFirebase(hashes) {
     rootRef.child('assets')
       .child(newAssetName)
       .child('hashes')
-      .set(dataObject);
-
-    store.dispatch(confirmAssetComplete());
-
+      .set(dataObject)
+      .then(() =>
+      store.dispatch(confirmAssetComplete()));
 
   } catch (error) {
     store.dispatch(firebaseHashesError(error))
