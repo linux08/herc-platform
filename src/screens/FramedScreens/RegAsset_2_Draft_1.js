@@ -52,7 +52,7 @@ class RegAsset2 extends Component {
 
     onPress = () => {
         console.log("starting the test register");
-        this.props.settingHeader();
+        this.props.settingHeader(this.props.newAsset.LogoUri);
     }
 
     pwChange = (char) => {
@@ -80,8 +80,7 @@ class RegAsset2 extends Component {
     }
 
     render() {
-
-        console.log(this.props.navigation, 'where are the params')
+        console.log(this.props, "props in regasset2, lookin for the newAsset")
         let metricList = this.renderMetrics();
         return (
             <View style={styles.baseContainer}>
@@ -97,9 +96,10 @@ class RegAsset2 extends Component {
                     <HercTextFieldWithLabel
                         label={"Asset Password"} value={this.props.newAsset.Password}
                         text={this.props.newAsset.Password}
-                    />
+                    />}
                     <ScrollView>
-                        {metricList}
+                        
+                             {metricList}
                     </ScrollView>
                     <View style={localStyles.pageBottom}>
                         <CostDisplay amount={'1,000'} />
@@ -121,7 +121,7 @@ class RegAsset2 extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    newAsset: state.AssetReducers.newAsset,
+    newAsset: state.RegisterAssetReducers.newAsset,
     registerFlags: state.RegisterAssetReducers,
 
     // hercId: state.AssetReducers.hercId,

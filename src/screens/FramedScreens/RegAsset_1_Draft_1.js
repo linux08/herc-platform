@@ -145,6 +145,7 @@ class RegAsset1 extends Component {
        let newAsset = Object.assign({},this.state)
        console.log(newAsset,"hopefully shallow clone")
         this.props.addAsset(newAsset);
+        
         this.props.navigation.navigate("RegAsset2");
     }
 

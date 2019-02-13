@@ -6,7 +6,7 @@ import {
     SETTING_HEADER_COMPLETE,
     SETTING_HEADER_ERROR,
     CLEAR_STATE,
-    REG_ASSET_T0_IPFS,
+    REG_ASSET_T0_IPFS_STARTED,
     REG_IPFS_COMPLETE,
     REG_ASSET_IPFS_TO_FACTOM,
     REG_ASSET_FACTOM_COMPLETE,
@@ -16,7 +16,7 @@ import {
 } from '../actions/registerAssetActionTypes';
 
 const INITIAL_STATE = {
-    hercId: {},
+    hercId: "",
        
     confirmStarted: false,
     headerComplete: false,
@@ -38,11 +38,9 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
     console.log(action, "in regReducers")
     switch (action.type) {
         case GETTING_HERC_ID:
-            return Object.assign({}, state.hercId, {
-                ...state,
-                hercId:{
-                    status: 'getting'
-                }
+            return Object.assign({},{
+              
+            hercIdGetting: true   
             })
 
         case GOT_HERC_ID:
@@ -68,7 +66,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             const newAsset = action.newAsset;
             return Object.assign({}, state, {
                 ...state,
-                newAsset
+                newAsset: newAsset
             })
 
 
@@ -101,11 +99,11 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             }
             )
 
-        case REG_ASSET_T0_IPFS:
+        case REG_ASSET_T0_IPFS_STARTED:
             return {
                 ...state,
                 ipfsStarted: true,
-                percentage: '24'
+                percentage: state.percentage + 15
 
             }
 
@@ -115,7 +113,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 ipfsComplete: true,
                 ipfsHash: action.ipfsHash,
-                percentage: '35'
+                percentage: state.percentage + 25
             }
 
 
@@ -123,7 +121,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 factomStarted: true,
-                percentage: '55'
+                percentage: state.percentage + 15
             }
 
         case REG_ASSET_FACTOM_COMPLETE:
@@ -131,14 +129,14 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 factomComplete: true,
                 chainId: action.chainId,
-                percentage: '83'
+                percentage: state.percentage + 15
             }
 
         case CONFIRM_ASSET_COMPLETE:
             return {
                 ...state,
                 confirmAssetComplete: true,
-                percentage: '100'
+                percentage: 100
             }
 
         case CLEAR_STATE:
