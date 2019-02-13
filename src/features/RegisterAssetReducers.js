@@ -8,17 +8,20 @@ import {
     CLEAR_STATE,
     REG_ASSET_T0_IPFS_STARTED,
     REG_IPFS_COMPLETE,
-    REG_ASSET_IPFS_TO_FACTOM,
+    REG_ASSET_IPFS_TO_FACTOM_STARTED,
     REG_ASSET_FACTOM_COMPLETE,
+    FACTOM_ERROR,
     CONFIRM_ASSET_COMPLETE,
     INC_HERC_ID,
     IPFS_ERROR,
+    FIREBASE_HASHES_ERROR,
 
 } from './registerAssetActionTypes';
 
 const INITIAL_STATE = {
+    newAsset: {},
     hercId: "",
-       
+
     confirmStarted: false,
     headerComplete: false,
 
@@ -32,16 +35,17 @@ const INITIAL_STATE = {
     chainId: "",
 
     confirmAssetComplete: false,
-    percentage: 0
+    percentage: 0,
+    content: "Your Asset is Being Created"
 }
 
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
     console.log(action, "in regReducers")
     switch (action.type) {
         case GETTING_HERC_ID:
-            return Object.assign({},{
-              
-            hercIdGetting: true   
+            return Object.assign({}, {
+                ...state,
+                hercIdGetting: true
             })
 
         case GOT_HERC_ID:
@@ -50,7 +54,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 ...state,
                 hercId: hercId
-                
+
 
             })
 
@@ -78,6 +82,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 confirmStarted: true,
                 percentage: 5
+
             }
             )
 
@@ -105,11 +110,11 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 ipfsStarted: true,
-                percentage: state.percentage + 15
-
+                percentage: state.percentage + 15,
+                content: "Your Asset Info Is Being Written To The IPFS"
             }
 
-            case IPFS_ERROR:
+        case IPFS_ERROR:
             return {
                 ipfsError: action.error
             }
@@ -119,11 +124,12 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 ipfsComplete: true,
                 ipfsHash: action.ipfsHash,
-                percentage: state.percentage + 25
+                percentage: state.percentage + 25,
+                content: "Your Asset is On The IPFS And The Location Is Being Written To Factom"
             }
 
 
-        case REG_ASSET_IPFS_TO_FACTOM:
+        case REG_ASSET_IPFS_TO_FACTOM_STARTED:
             return {
                 ...state,
                 factomStarted: true,
@@ -138,11 +144,31 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 percentage: state.percentage + 15
             }
 
+        case FACTOM_ERROR:
+            return {
+                ...state,
+                error: {
+                    error: action.error,
+                    type: action.type
+                }
+            }
+
         case CONFIRM_ASSET_COMPLETE:
+
             return {
                 ...state,
                 confirmAssetComplete: true,
-                percentage: 100
+                percentage: 100,
+                content: "You're Asset Has Been Succesfully Created"
+            }
+
+        case FIREBASE_HASHES_ERROR:
+            return {
+                ...state,
+                error: {
+                    type: action.type,
+                    error: action.error
+                }
             }
 
         case CLEAR_STATE:

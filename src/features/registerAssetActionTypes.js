@@ -14,10 +14,10 @@ export const CONFIRM_ASSET_COMPLETE = 'confirmAssetComplete';
 export const REG_ASSET_T0_IPFS_STARTED = 'regAssetToIpfsStarted';
 export const REG_IPFS_COMPLETE = 'regIpfsComplete';
 export const IPFS_ERROR = 'ipfsError';
-export const REG_ASSET_IPFS_TO_FACTOM = 'regAssetIpfsToFactom';
+export const REG_ASSET_IPFS_TO_FACTOM_STARTED = 'regAssetIpfsToFactomStarted';
 export const REG_ASSET_FACTOM_COMPLETE = 'regAssetFactomComplete';
 export const FACTOM_ERROR = 'factomError';
 
-export const FIREBASE_HASHES_WRITTEN = 'firebaseHashesWritten';
+export const FIREBASE_HASHES_ERROR = 'firebaseHashesError';
 
 export const CLEAR_STATE = 'clearState';

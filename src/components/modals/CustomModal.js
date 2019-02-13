@@ -97,6 +97,7 @@ export default class CustomModal extends Component {
             console.log(this.props, "in custom modal")
             return (
                 <View style={localStyles.modalBackground}>
+                 <Text style={localStyles.dismissRejectText}>{this.state.heading}</Text>
                     <ProgressCircle
                         style={localStyles.pad10}
                         percent={this.props.percent}
@@ -109,7 +110,7 @@ export default class CustomModal extends Component {
                         <Text style={{ fontSize: 18, color: '#bbbecb' }}>{this.state.percent}%</Text>
                     </ProgressCircle>
                     <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
-                    <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>
+                    <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal() }}>
                         <Text style={localStyles.dismissRejectText}>{this.state.dismissRejectText}</Text>
                     </TouchableOpacity>
                 </View>)

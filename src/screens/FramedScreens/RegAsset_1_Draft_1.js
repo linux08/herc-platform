@@ -8,7 +8,7 @@ const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import styles from "../../assets/styles";
-import { addAsset } from "../../controllers/RegisterAssetActions"
+import { addAsset } from "../../features/RegisterAssetActions"
 import { AssetCard } from "../../components/AssetCard";
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";

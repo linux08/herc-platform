@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
-import { getHercId } from '../../controllers/RegisterAssetActions';
+import { getHercId, clearState } from '../../features/RegisterAssetActions';
 
 class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
@@ -28,7 +28,9 @@ class TestSplash extends Component {
         // this.toggleModal = this.toggleModal.bind(this);
     }
 
-
+    componentWillMount = () => {
+        this.props.clearState();
+    }
     componentDidMount = () => {
         console.log("function??")
         this.props.getHercId();
@@ -105,7 +107,8 @@ class TestSplash extends Component {
 }
 
 const mapDispatchToProps = (dispatch ) => ({
-    getHercId: () => dispatch(getHercId())
+    getHercId: () => dispatch(getHercId()),
+    clearState: () => dispatch(clearState())
 })
 export default connect(null, mapDispatchToProps)(TestSplash); 
 

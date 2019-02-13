@@ -12,7 +12,8 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 
-import { settingHeader } from '../../controllers/RegisterAssetActions';
+import CustomModal from '../../components/modals/CustomModal';
+import { settingHeader, clearState } from '../../features/RegisterAssetActions';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -29,7 +30,7 @@ class RegAsset2 extends Component {
         super(props);
         console.log("componentTest")
         this.state = {
-            modalVisible: false,
+            isVisible: false,
             // Password: "HELMSLEYSPEAR",
             // CoreProps: {
             //     metric1: "Tenant Name",
@@ -49,10 +50,27 @@ class RegAsset2 extends Component {
         }
     }
 
+    toggleModal = () => {
+        this.setState({
+            isVisible: !this.state.isVisible
+        })
+    }
+
+    allDone = () => {
+        this.setState({
+            isVisible: false,
+        })
+        this.props.navigation.navigate('TestSplash');
+        // this.props.clearState();
+
+    }
 
     onPress = () => {
         console.log("starting the test register");
         this.props.settingHeader(this.props.newAsset.LogoUri);
+        this.setState({
+            isVisible: true
+        })
     }
 
     pwChange = (char) => {
@@ -108,7 +126,16 @@ class RegAsset2 extends Component {
 
 
                 </View>
-
+                <CustomModal
+                    heading={"Your Asset Is Being Written To The Blockchain"}
+                    content={this.props.registerFlags.content}
+                    modalCase="progress"
+                    isVisible={this.state.isVisible}
+                    onBackdropPress={() => this.toggleModal()}
+                    percent={this.props.registerFlags.percentage}
+                    closeModal={this.allDone}
+                    dismissRejectText={"All Done"}
+                />
 
             </View>
 
@@ -132,7 +159,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     settingHeader: () => {
         dispatch(settingHeader())
-    },
+    }
+    // clearState: () => {
+    //     dispatch(clearState())
+    // }
 
 
 })

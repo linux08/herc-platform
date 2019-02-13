@@ -5,15 +5,16 @@ import {
   SETTING_HEADER_COMPLETE,
   SETTING_HEADER_ERROR,
   IPFS_ERROR,
-  REG_ASSET_T0_IPFS,
+  REG_ASSET_T0_IPFS_STARTED,
   REG_IPFS_COMPLETE,
-  REG_ASSET_IPFS_TO_FACTOM,
+  REG_ASSET_IPFS_TO_FACTOM_STARTED,
   REG_ASSET_FACTOM_COMPLETE,
+  FACTOM_ERROR,
   CONFIRM_ASSET_COMPLETE,
   INC_HERC_ID,
   CLEAR_STATE,
   GETTING_HERC_ID,
-  REG_ASSET_T0_IPFS_STARTED
+  FIREBASE_HASHES_ERROR,
 } from './registerAssetActionTypes';
 
 import firebase from "../constants/Firebase";
@@ -56,7 +57,7 @@ export function gotHercId(hercId) {
 }
 
 export function incHercId() {
-  let hercIdPlus1 = (store.getState().RegisterAssetReducers.hercId + 1);
+  let hercIdPlus1 = store.getState().RegisterAssetReducers.hercId + 1;
   rootRef.child("hercID").set(hercIdPlus1);
   return {
     type: INC_HERC_ID,
@@ -207,9 +208,6 @@ export async function newAssetToIpfs(assetForIPFS) {
     store.dispatch(ipfsError(error))
   }
 
-
-  console.log(maybething, "if we get this far..what is this...hashes from ipfs?");
-
 }
 
 export function ipfsError(error) {
@@ -228,20 +226,28 @@ export function regIpfsComplete(hash) {
 
 }
 
+export function regAssetIpfsToFactomStarted() {
+  return {
+    type: REG_ASSET_IPFS_TO_FACTOM_STARTED
+  }
+
+}
+
 async function ipfsToFactom(hash) {
-  store.dispatch(regAssetIpfsToFactom())
+  store.dispatch(regAssetIpfsToFactomStarted())
   var dataObject = JSON.stringify({ ipfsHash: hash })
   /* This part creates a new factom chain */
   try {
     const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
     console.log("2/3 web server factom response: ", response)
     var fctChainId = response.data;
+    store.dispatch(regAssetFactomComplete(fctChainId));
+
     var hashesForFirebase = {
       chainId: fctChainId,
-      ipfsHash: ipfsHash
+      ipfsHash: hash
     }
 
-    store.dispatch(regAssetFactomComplete(fctChainId));
     console.log(hashesForFirebase, "hash check");
     hashesToFirebase(hashesForFirebase);
 
@@ -251,31 +257,32 @@ async function ipfsToFactom(hash) {
 
 }
 
-export function regAsseIpfsToFactom() {
-  return {
-    type: REG_ASSET_IPFS_TO_FACTOM
-  }
-
-}
-
-
-
 export function hashesToFirebase(hashes) {
   let newAssetName = store.getState().RegisterAssetReducers.newAsset.Name;
   let dataObject = Object.assign({}, {
     chainId: hashes.chainId,
     ipfsHash: hashes.ipfsHash,
     organizationName: 'H3RCUL3S'
+
   }) // organizationName hard-coded for 0.9.5 in preparation for igvc.eth platform
 
-  console.log("3/3 going into firebase: ", dataObject)
-  rootRef.child('assets').child(newAssetName).child('hashes').set(dataObject)
-    .then(() =>
-      store.dispatch(CONFIRM_ASSET_COMPLETE)
-    )
-  // Charge them now? make the payment?
-  store.dispatch(getAssets());
-};
+  console.log("3/3 going into firebase: ", dataObject, "name: ", newAssetName);
+  try {
+    rootRef.child('assets')
+      .child(newAssetName)
+      .child('hashes')
+      .set(dataObject);
+
+    store.dispatch(confirmAssetComplete());
+
+
+  } catch (error) {
+    store.dispatch(firebaseHashesError(error))
+
+  }
+}
+// Charge them now? make the payment?
+// store.dispatch(getAssets());
 
 
 
@@ -287,7 +294,22 @@ export function regAssetFactomComplete(hash) {
 
 }
 
+export function factomError(err) {
+  return {
+    type: FACTOM_ERROR,
+    error: err
+  }
+}
+
+
+export function firebaseHashesError(error) {
+  return {
+    type: FIREBASE_HASHES_ERROR,
+    err: error
+  }
+}
 export function confirmAssetComplete() {
+  // store.dispatch(getAssets());
   return {
     type: CONFIRM_ASSET_COMPLETE
   }
