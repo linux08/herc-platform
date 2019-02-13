@@ -46,18 +46,16 @@ export class AssetCard extends Component {
         return (
             <View style={localStyles.assetCard}>
                 <View style={localStyles.assetImageContainer}>
-
                     {this.state.Logo ?
 
                         <Image source={{ uri: this.state.Logo }} style={localStyles.assetImage} />
 
                         : noImageIcon
-                    }
+                    } 
                 </View>
 
                 <View style={localStyles.cardMain}>
                     <View style={localStyles.cardContentLeft}>
-
                         <Text style={localStyles.assetLabel}>Asset Name</Text>
                         <Text style={localStyles.assetName}>{this.state.Name}</Text>
                     </View>

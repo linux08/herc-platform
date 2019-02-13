@@ -12,8 +12,9 @@ import {
     REG_ASSET_FACTOM_COMPLETE,
     CONFIRM_ASSET_COMPLETE,
     INC_HERC_ID,
+    IPFS_ERROR,
 
-} from '../actions/registerAssetActionTypes';
+} from './registerAssetActionTypes';
 
 const INITIAL_STATE = {
     hercId: "",
@@ -75,7 +76,8 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
             return Object.assign({}, state, {
                 ...state,
-                confirmStarted: true
+                confirmStarted: true,
+                percentage: 5
             }
             )
 
@@ -107,6 +109,10 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
             }
 
+            case IPFS_ERROR:
+            return {
+                ipfsError: action.error
+            }
 
         case REG_IPFS_COMPLETE:
             return {

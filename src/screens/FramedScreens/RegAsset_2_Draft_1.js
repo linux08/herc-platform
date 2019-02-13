@@ -12,7 +12,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 
-import { settingHeader } from '../../actions/RegisterAssetActions';
+import { settingHeader } from '../../controllers/RegisterAssetActions';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -96,10 +96,9 @@ class RegAsset2 extends Component {
                     <HercTextFieldWithLabel
                         label={"Asset Password"} value={this.props.newAsset.Password}
                         text={this.props.newAsset.Password}
-                    />}
+                    />
                     <ScrollView>
-                        
-                             {metricList}
+                        {metricList}
                     </ScrollView>
                     <View style={localStyles.pageBottom}>
                         <CostDisplay amount={'1,000'} />

@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
-import { getHercId } from '../../actions/RegisterAssetActions';
+import { getHercId } from '../../controllers/RegisterAssetActions';
 
 class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
