@@ -8,13 +8,11 @@ import {
 } from 'react-native';
 import styles from "../../assets/styles";
 import React, { Component } from 'react';
-import { CameraSourceModal } from "../../assets/modals/CameraSourceModal";
 import TesterAssets from "../../components/TesterAssets";
-import { AddPhotoButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
-import { AddAssetButton } from "../../components/SupplyChainComponents.js";
+import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
 // AssetCard props = Name, Logo, HercId
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 export default class SupplyChainSplash extends Component {
 
@@ -109,7 +107,7 @@ export default class SupplyChainSplash extends Component {
 
                     <Text>Hello</Text>
 
-                    {/* <CameraSourceModal showCamModal={this.state.showCamModal} /> */}
+                    <CameraSourceModal showCamModal={this.state.showCamModal} />
 
                     {/* Modal 1 */}
 

@@ -8,14 +8,14 @@ import {
     Dimensions
 } from 'react-native';
 
-import MetricModal from '../../assets/modals/MetricModal';
-import CameraSourceModal from '../../assets/modals/CameraSourceModal';
-import EditModal from '../../assets/modals/EDI_T_Modal';
+import MetricModal from '../../components/modals/MetricModal';
+import CameraSourceModal from '../../components/modals/CameraSourceModal';
+import EditModal from '../../components/modals/EDI_T_Modal';
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import Header from "../../components/Headers/Header";
-import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents";
+import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents/SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 import { connect } from 'react-redux';
@@ -28,10 +28,10 @@ import {
     BigYellowButton
 } from "../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 const ORIGNAL_STATE = {
     metricModalVisibility: false,
-    camerModalVisibility: false,
+    showCamSourceModal: false,
     editModalVisibility: false,
     img: {},
     doc: {},
@@ -49,7 +49,7 @@ export default class SupplyChainTX extends Component {
 
         this.state = ORIGNAL_STATE;
 
-        this.showCameraModal = this.showCameraModal.bind(this);
+        this.showCamSourceModal = this.showCamSourceModal.bind(this);
         this.showEditModal = this.showEditModal.bind(this);
         this.showMetricModal = this.showMetricModal.bind(this);
 
@@ -103,9 +103,9 @@ export default class SupplyChainTX extends Component {
 
     }
 
-    showCameraModal = () => {
+    showCamSourceModal = () => {
         this.setState({
-            camerModalVisibility: !this.state.camerModalVisibility
+            showCamSourceModal: !this.state.showCamSourceModal
         })
 
     }
@@ -140,7 +140,7 @@ export default class SupplyChainTX extends Component {
                         uri: source
                     }
                 });
-                this.showCameraModal();
+                this.showCamSourceModal();
             }
         });
     }
@@ -192,7 +192,7 @@ export default class SupplyChainTX extends Component {
 
 
     _onBackdropPress = () => {
-        this.showCameraModal();
+        this.showCamSourceModal();
 
     }
 
@@ -214,7 +214,7 @@ export default class SupplyChainTX extends Component {
                     <View style={localStyles.transactionComponentListContainer}>
 
                         <CameraTransactionComponent
-                            onPress={() => this.showCameraModal()}
+                            onPress={() => this.showCamSourceModal()}
                             img={this.state.img}
                             image={this.state.img.string}
                         />
@@ -242,8 +242,8 @@ export default class SupplyChainTX extends Component {
                 </View>
 
                 <CameraSourceModal
-                    visibility={this.state.camerModalVisibility}
-                    changeModal={this.showCameraModal}
+                    visibility={this.state.showCamSourceModal}
+                    changeModal={this.showCamSourceModal}
                     _pickImage={this._pickImage}
                     setPic={this.setPic}
                     navigation={this.props.navigation}

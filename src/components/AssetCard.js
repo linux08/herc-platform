@@ -6,37 +6,75 @@ import {
     Image
 } from 'react-native';
 import ColorConstants from "../assets/ColorConstants";
-import { widthPercentageToDP, heightPercentageToDP } from '../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
+import Icon from "react-native-vector-icons/AntDesign";
 
-export function AssetCard(asset) {
-    console.log(asset);
-    return (
-        <View style={localStyles.assetCard}>
-            <View style={localStyles.assetImageContainer}>
-                <Image source={asset.asset.Logo} style={localStyles.assetImage} />
+
+
+export class AssetCard extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+
+    componentWillMount = () => {
+        console.log("willmount in AssetCard", this.props);
+        this.setState(this.props.asset);
+    }
+
+    componentWillReceiveProps = (props) => {
+        if (props.asset.Name != this.state.Name) {
+            this.setState({
+                Name: props.asset.Name
+            })
+        }
+
+        if (props.asset.Logo != this.state.Logo) {
+            this.setState({
+                Logo: props.asset.Logo
+            })
+        }
+        if (props.asset.hercId != this.state.hercId) {
+            this.setState({
+                hercId: props.asset.hercId
+            })
+        }
+    }
+    render() {
+        console.log(this.state, "this is state, looking for the deets passed in")
+        let noImageIcon = <Icon name={'picture'} size={33} color={ColorConstants.MainBlue} />
+        return (
+            <View style={localStyles.assetCard}>
+                <View style={localStyles.assetImageContainer}>
+                    {this.state.Logo ?
+
+                        <Image source={{ uri: this.state.Logo }} style={localStyles.assetImage} />
+
+                        : noImageIcon
+                    } 
+                </View>
+
+                <View style={localStyles.cardMain}>
+                    <View style={localStyles.cardContentLeft}>
+                        <Text style={localStyles.assetLabel}>Asset Name</Text>
+                        <Text style={localStyles.assetName}>{this.state.Name}</Text>
+                    </View>
+                    <View style={localStyles.cardContentRight}>
+                        <Text style={localStyles.assetLabel}>Herc ID</Text>
+                        <Text style={localStyles.assetName}>{this.state.hercId}</Text>
+                    </View>
+                </View>
             </View>
 
-            <View style={localStyles.cardMain}>
-                <View style={localStyles.cardContentLeft}>
-
-                    <Text style={localStyles.assetLabel}>Asset Name</Text>
-                    <Text style={localStyles.assetName}>{asset.asset.Name}</Text>
-                </View>
-                <View style={localStyles.cardContentRight}>
-                    <Text style={localStyles.assetLabel}>Herc ID</Text>
-                    <Text style={localStyles.assetName}>{asset.asset.HercId}</Text>
-                </View>
-            </View>
-        </View>
-
-    )
+        )
+    }
 }
 
 const localStyles = StyleSheet.create({
 
     assetCard: {
-        flex: 0,
-        width: widthPercentageToDP('90'),
+        // flex: 0,
+        width: widthPercentageToDP('80'),
         height: heightPercentageToDP('10'),
         borderRadius: 6,
         backgroundColor: ColorConstants.MainGray,
@@ -48,7 +86,7 @@ const localStyles = StyleSheet.create({
     assetImageContainer: {
         height: '90%',
         width: '25%',
-        backgroundColor: ColorConstants.MainBlue,
+        // backgroundColor: ColorConstants.MainBlue,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -58,6 +96,7 @@ const localStyles = StyleSheet.create({
         resizeMode: 'contain'
 
     },
+
     cardMain: {
         flexDirection: 'row',
         backgroundColor: ColorConstants.MainGray,
@@ -78,7 +117,7 @@ const localStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-   
+
     assetName: {
         fontSize: 14,
         color: ColorConstants.MainBlue,
@@ -93,7 +132,7 @@ const localStyles = StyleSheet.create({
         textAlign: 'left'
 
     },
-   
+
 
 
 })

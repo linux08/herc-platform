@@ -6,28 +6,21 @@ import {
     StatusBar,
     Image
 } from 'react-native';
+import { connect } from "react-redux";
 
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
-import { createStackNavigator } from "react-navigation";
-import RegHeader from "../../components/Headers/Header";
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class RegAssetSplashTest extends Component {
-//  navigationOptions = ({ navigation }) => ({
-//             header: <RegHeader headerTitle={"Register Asset"} params={goBackTo = 'RegAssetSplash1'} navigation={navigation} />
-//         })
-
+class RegAssetSplashTest extends Component {
     constructor(props) {
         super(props);
         console.log(this.props, 'this props in regAssetSplash')
-
     }
 
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
-        // const { navigate } = this.props.navigation;
 
         this.props.navigation.navigate('RegAsset1');
     }
@@ -36,7 +29,7 @@ export default class RegAssetSplashTest extends Component {
         return (
             <View style={styles.baseContainer}>
                 <View style={[styles.baseContainer, styles.splashTop]}>
-                    <Image source={require('../../assets/register-asset.png')}
+                    <Image source={require('../../assets/RegisterAssetAssets/register-asset.png')}
                         style={styles.splashImage}
                         resizeMode="contain"
                     />
@@ -53,33 +46,17 @@ export default class RegAssetSplashTest extends Component {
 
                     <Button title='Continue' onPress={this.onPress}>ContinueButton</Button>
                 </View>
-
-                {/* //     <Icon.Button name="eye" backgroundColor="#3b5998" onPress={() => console.log("eyeball press")}>
-
-            //     </Icon.Button>
-            //     <View style={styles.modalBackground}>
-            //         <View style={styles.activityIndicatorWrapper}>
-            //             <Text>Modal1</Text>
-            //         </View>
-            //     </View>
-
-            //     <Icon name='eye' size={18} color={ColorConstants.MainGold} />
-            //     <RegisterAssetInput dims={this.Dims} placeholder={'hello'} />
-
-            //     <View style={localStyles.PasswordInputContainer}>
-            //         <Text style={styles.passwordInputlabel}>MainGray!!!!</Text>
-            //         <RegisterAssetPassword placeholder='SecondplaceholderTest' onChange={this.onChange} />
-
-            //     </View>
-
-            //     <Icon.Button name="eye" backgroundColor="#3b5998" onPress={() => console.log("eyeball press")}>
-            //     </Icon.Button> */}
-
             </View>
         )
     }
 
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    getHercId: () => dispatch(getHercId())
+})
+export default connect(null, mapDispatchToProps)(RegAssetSplashTest);
+
 const localStyles = StyleSheet.create({
 
     baseContainer: {

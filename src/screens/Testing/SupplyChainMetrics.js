@@ -15,7 +15,7 @@ import assets from "../../components/TesterAssets";
 import Header from "../../components/Headers/Header";
 
 // import Header from "../../components/Headers/Header";
-import { TransInfoCard } from "../../components/SupplyChainComponents";
+import { TransInfoCard } from "../../components/SupplyChainComponents/SupplyChainComponents";
 
 import {
     BigYellowButton, // props =  buttonName, onPress
@@ -23,7 +23,7 @@ import {
 
 } from "../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responisiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 export default class SupplyChainMetrics extends Component {
     navigationOptions = ({ navigation }) => {

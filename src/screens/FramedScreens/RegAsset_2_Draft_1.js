@@ -7,11 +7,13 @@ import {
     StatusBar,
     ScrollView
 } from 'react-native';
-
+import { connect } from "react-redux";
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-const buildingPic = require("../../assets/83MaidenLn.jpg")
+
+import CustomModal from '../../components/modals/CustomModal';
+import { settingHeader, clearState } from '../../features/RegisterAssetActions';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -20,36 +22,55 @@ import {
     CostDisplay
 } from '../../components/SharedComponents';
 
+// const buildingPic = require("../../assets/83MaidenLn.jpg")
 
-export default class RegAsset_2_Draft_1 extends Component {
+class RegAsset2 extends Component {
 
     constructor(props) {
         super(props);
         console.log("componentTest")
         this.state = {
+            isVisible: false,
+            // Password: "HELMSLEYSPEAR",
+            // CoreProps: {
+            //     metric1: "Tenant Name",
+            //     metric2: "Landlord Name",
+            //     metrci3: "Building Name / Address",
+            //     metric4: "Unit",
+            //     metric5: "Unit Type",
+            //     metric6: "Square footage",
+            //     metric8: "Lease start date",
+            //     metric9: "Lease commencement date",
+            //     metric10: "Rent commencement date",
+            //     metric11: "Lease end date",
+            //     metric12: "Current rent",
+            //     metric13: "Rent Bumps",
+            //     metric14: "Tenant expenses",
 
-            Password: "HELMSLEYSPEAR",
-            CoreProps: {
-                metric1: "Tenant Name",
-                metric2: "Landlord Name",
-                metrci3: "Building Name / Address",
-                metric4: "Unit",
-                metric5: "Unit Type",
-                metric6: "Square footage",
-                metric8: "Lease start date",
-                metric9: "Lease commencement date",
-                metric10: "Rent commencement date",
-                metric11: "Lease end date",
-                metric12: "Current rent",
-                metric13: "Rent Bumps",
-                metric14: "Tenant expenses",
-
-            }
         }
+    }
+
+    toggleModal = () => {
+        this.setState({
+            isVisible: !this.state.isVisible
+        })
+    }
+
+    allDone = () => {
+        this.setState({
+            isVisible: false,
+        })
+        this.props.navigation.navigate('TestSplash');
+        // this.props.clearState();
 
     }
+
     onPress = () => {
-        this.props.navigation.navigate.goBack()
+        console.log("starting the test register");
+        this.props.settingHeader(this.props.newAsset.LogoUri);
+        this.setState({
+            isVisible: true
+        })
     }
 
     pwChange = (char) => {
@@ -58,7 +79,7 @@ export default class RegAsset_2_Draft_1 extends Component {
         })
     }
     renderMetrics = () => {
-        let coreProps = this.state.CoreProps;
+        let coreProps = this.props.newAsset.CoreProps;
         let metrics = Object.keys(coreProps);
         let numOfMetrics = metrics.length;
         let metricList = [];
@@ -77,12 +98,7 @@ export default class RegAsset_2_Draft_1 extends Component {
     }
 
     render() {
-        let asset = {
-            Logo: buildingPic,
-            Name: "83 Maiden Lane",
-            HercId: '42'
-        }
-        console.log(this.props.navigation, 'where are the params')
+        console.log(this.props, "props in regasset2, lookin for the newAsset")
         let metricList = this.renderMetrics();
         return (
             <View style={styles.baseContainer}>
@@ -94,8 +110,11 @@ export default class RegAsset_2_Draft_1 extends Component {
                 />
 
                 <View style={styles.bodyContainer}>
-                    <AssetCard asset={asset} />
-                    <BasePasswordInput label={"Asset Password"} value={this.state.Password} />
+                    <AssetCard asset={this.props.newAsset} />
+                    <HercTextFieldWithLabel
+                        label={"Asset Password"} value={this.props.newAsset.Password}
+                        text={this.props.newAsset.Password}
+                    />
                     <ScrollView>
                         {metricList}
                     </ScrollView>
@@ -107,7 +126,16 @@ export default class RegAsset_2_Draft_1 extends Component {
 
 
                 </View>
-
+                <CustomModal
+                    heading={"Your Asset Is Being Written To The Blockchain"}
+                    content={this.props.registerFlags.content}
+                    modalCase="progress"
+                    isVisible={this.state.isVisible}
+                    onBackdropPress={() => this.toggleModal()}
+                    percent={this.props.registerFlags.percentage}
+                    closeModal={this.allDone}
+                    dismissRejectText={"All Done"}
+                />
 
             </View>
 
@@ -117,9 +145,33 @@ export default class RegAsset_2_Draft_1 extends Component {
     }
 
 }
+
+const mapStateToProps = (state) => ({
+    newAsset: state.RegisterAssetReducers.newAsset,
+    registerFlags: state.RegisterAssetReducers,
+
+    // hercId: state.AssetReducers.hercId,
+    edgeAccount: state.WalletActReducers.edge_account,
+    // wallet: state.WalletActReducers.wallet,
+    // watchBalance: state.WalletActReducers.watchBalance,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    settingHeader: () => {
+        dispatch(settingHeader())
+    }
+    // clearState: () => {
+    //     dispatch(clearState())
+    // }
+
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegAsset2);
+
 const localStyles = StyleSheet.create({
     pageBottom: {
-        flex: 0,
+        // flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: 20,
