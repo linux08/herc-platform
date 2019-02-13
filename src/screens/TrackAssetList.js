@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView, Modal, TouchableHighlight, Alert, Platform } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 // import track from '../components/buttons/blockScannerBtn.png';
 import { connect } from 'react-redux';
 import styles from '../assets/styles';

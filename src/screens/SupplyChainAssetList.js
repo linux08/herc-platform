@@ -12,7 +12,7 @@ import {
   StatusBar,
   Modal
 } from "react-native";
-import { createStackNavigator } from "react-navigation";
+import { createcreateStackNavigator } from "react-navigation";
 import { connect } from "react-redux";
 // import submit from "../components/buttons/submit.png"; // todo: turn into vector
 import styles from "../assets/styles";

@@ -28,70 +28,7 @@ class NewAssetForm extends Component {
     this.state = {}
   }
 
-  static navigationOptions = ({ navigation }) => {
 
-    let headerStyles = StyleSheet.create({
-      header__container: {
-        display: "flex",
-        height: 80,
-        alignSelf: "center",
-        flex: 1,
-        alignContent: "center",
-        alignItems: "center",
-        marginTop: 40,
-        paddingBottom: 20
-      },
-      header__container__centeredBox: {
-        height: "100%",
-        alignItems: "center",
-        flexDirection: 'row'
-      },
-      header__text__box: {
-        height: "100%",
-        marginBottom: 5,
-        marginLeft: 12,
-      },
-      header__image__box: {
-        height: "100%",
-        borderRadius: 100
-      },
-      assetHeaderLogo: {
-        height: 35,
-        width: 35,
-        borderRadius: 50,
-      },
-      headerText: {
-        fontFamily: "dinPro",
-        fontSize: 26,
-        alignSelf: "center",
-        fontWeight: "bold",
-        color: "black",
-        textAlign: "center",
-        marginTop: 2,
-      },
-    })
-    return {
-      headerTitle: (
-
-        <View style={headerStyles.header__container}>
-          <View style={headerStyles.header__container__centeredBox}>
-            <View style={headerStyles.header__image__box}>
-              <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => navigation.navigate("MenuOptions")}>
-                <Image
-                  style={headerStyles.assetHeaderLogo}
-                  source={logo}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={headerStyles.header__text__box}>
-              <Text style={headerStyles.headerText}>Register</Text>
-            </View>
-          </View>
-        </View>
-
-      )
-    }
-  }
 
   setImage = (imgObj) => {
     console.log("trying to set the Logo: ", imgObj)
@@ -251,7 +188,7 @@ class NewAssetForm extends Component {
                 blurOnSubmit={false}
                 autoCorrect={false}
                 spellCheck={false}
-                underlineColorAndroid='transparent'
+                // underlineColorAndroid='transparent'
                 style={localStyles.input}
                 onChangeText={metric1 =>
                   this.setState({

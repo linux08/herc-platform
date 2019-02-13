@@ -3,14 +3,8 @@ import React, { Component } from 'react';
 import { AppRegistry, Dimensions, StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ActivityIndicator, Modal } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { relative } from 'path';
-import modalStyle from "../assets/confModalStyles";
 
 export default class Camera extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: null
-    }
-  }
 
   constructor(props) {
     super(props);
@@ -25,37 +19,55 @@ export default class Camera extends Component {
     return (size.length);
   }
 
+  // Trying to make the camera reusable for the register asset flow,
+  // passing in the route that is calling the camera in params.origRoute
+  // also passing in the function to set the state with the taken image.
   takePicture = async () => {
     this.setState({ capturing: true })
+    console.log("takingPicture");
     const { params } = this.props.navigation.state;
+    console.log(params, "camera params")
     if (this.camera) {
       const options = {
-        quality: 0,
         base64: true,
-        pauseAfterCapture: true
+        //  fixOrientation: true,
+        // pauseAfterCapture: true
       }
-      if (params.width){
+      if (params.width) {
         options.width = params.width
       }
-
-      const data = await this.camera.takePictureAsync(options);
-      let image = Object.assign({}, {
-        uri: data.uri,
-        size: this._getSize(data.base64),
-        string: "data:image/jpg;base64," + data.base64
-      })
-      this.setState({ image }, () => {
-        params.setPic(this.state.image)
-      })
-      this.setState({ capturing: false })
+      try {
+        const data = await this.camera.takePictureAsync(options);
+        console.log(data, 'taken picture info, looking for name')
+        let image = Object.assign({}, {
+          name: data.uri.substring(data.uri.lastIndexOf('/') + 1, data.uri.length),
+          image: "data:image/jpg;base64," + data.base64,
+          size: this._getSize(data.base64),
+          uri: data.uri,
+        })
+        console.log(image.name, "image name!!!! i hope")
+        this.setState({
+          image
+        })
+        console.log("Camera: afterBase", data.uri, "Camera: size: ", this._getSize(data.base64));
+      } catch (err) { console.log('err: ', err) }
     };
   }
 
-  _pressCancel(){
+  _pressCancel() {
     this.setState({ image: null })
-    if (this.camera){
-      this.camera.resumePreview()
-    }
+    // if (this.camera) {
+    //   this.camera.resumePreview()
+    // }
+  }
+  
+
+  acceptPicture = () => {
+    const { params } = this.props.navigation.state;
+    console.log("its a keeper");
+    params.setPic(this.state.image);
+    params.navigation.navigate(params.origRoute)
+
   }
 
   renderCamera() {
@@ -64,21 +76,22 @@ export default class Camera extends Component {
         ref={(cam) => {
           this.camera = cam;
         }}
+        // ratio={"4:4"}
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
         flashMode={RNCamera.Constants.FlashMode.off}
         permissionDialogTitle={'Permission to use camera'}
         permissionDialogMessage={'We need your permission to use your camera phone'}
         onGoogleVisionBarcodesDetected={({ barcodes }) => {
-            console.log(barcodes);
-          }}
-        >
+          console.log(barcodes);
+        }}
+      >
         <TouchableHighlight
           style={styles.capture}
           onPress={this.takePicture.bind(this)}
           underlayColor="rgba(255, 255, 255, 0.5)"
-          >
-          <View/>
+        >
+          <View />
         </TouchableHighlight>
       </RNCamera>
     );
@@ -89,36 +102,38 @@ export default class Camera extends Component {
       <View>
         <Image
           source={{ uri: this.state.image.uri }}
-          style={styles.preview}/>
+          style={styles.preview} />
         <Text
           style={styles.cancel}
           onPress={this._pressCancel.bind(this)}>Cancel</Text>
         <Text
           style={styles.accept}
-          onPress={() => this.props.navigation.goBack()}>Accept</Text>
+          onPress={this.acceptPicture}>Accept</Text>
       </View>
     );
   }
 
   render() {
+    console.log(Object.keys(this.state), "thisStatein Render")
+
     return (
       <View style={styles.container}>
-        <Modal
-            transparent={false}
-            animationType={'none'}
-            visible={this.state.capturing}
-            onRequestClose={() => { console.log("modal closed") }}
+        {/* <Modal
+          transparent={false}
+          animationType={'none'}
+          visible={this.state.capturing}
+          onRequestClose={() => { console.log("modal closed") }}
         >
-            <View style={modalStyle.container}>
-                <View style={modalStyle.modalBackground}>
-                    <View style={modalStyle.activityIndicatorWrapper}>
-                    <Text>Snapping Photo</Text>
-                        <ActivityIndicator
-                            animating={this.state.capturing} size="large" color="#091141" />
-                    </View>
-                </View>
+          <View style={modalStyle.container}>
+            <View style={modalStyle.modalBackground}>
+              <View style={modalStyle.activityIndicatorWrapper}>
+                <Text>Snapping Photo</Text>
+                <ActivityIndicator
+                  animating={this.state.capturing} size="large" color="#091141" />
+              </View>
             </View>
-        </Modal>
+          </View>
+        </Modal> */}
         {this.state.image ? this.renderImage() : this.renderCamera()}
       </View>
     );
@@ -138,7 +153,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
+    padding: 50
   },
+
   preview: {
     flex: 1,
     justifyContent: 'flex-end',

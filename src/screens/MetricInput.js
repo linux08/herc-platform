@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, Touchab
 import styles from "../assets/styles";
 import originator from "../components/buttons/originatorButton.png";// todo: turn into vector
 import recipient from "../components/buttons/recipientButton.png";// todo: turn into vector
-import { StackNavigator, } from 'react-navigation';
+import { createStackNavigator, } from 'react-navigation';
 import { connect } from "react-redux";
 import { addMetrics } from "../actions/AssetActions";
 import review from "../components/buttons/reviewBtn.png"; // todo: turn into vector

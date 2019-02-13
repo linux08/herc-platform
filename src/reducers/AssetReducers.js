@@ -132,20 +132,20 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
                 selectedAsset: action.selectAsset
             })
 
-        case GOT_HERC_ID:
-            let hercId = action.hercId;
-            return Object.assign({}, state, {
-                ...state,
-                hercId
-            })
+        // case GOT_HERC_ID:
+        //     let hercId = action.hercId;
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         hercId
+        //     })
 
-        case INC_HERC_ID:
-            let hercID = action.hercIdplus1;
-            rootRef.child("hercID").set(hercID);
-            return Object.assign({}, state, {
-                ...state,
-                hercId
-            });
+        // case INC_HERC_ID:
+        //     let hercID = action.hercIdplus1;
+        //     rootRef.child("hercID").set(hercID);
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         hercId
+        //     });
 
         case START_TRANS:
             let trans = action.data;
@@ -252,93 +252,93 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
 
         ///// CONFIRM ASSETS REDUCERS /////
 
-        case ADD_ASSET:
-            const newAsset = action.newAsset;
-            return Object.assign({}, state, {
-                ...state,
-                newAsset
-            })
+        // case ADD_ASSET:
+        //     const newAsset = action.newAsset;
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         newAsset
+        //     })
 
 
 
-        case SETTING_HEADER:
-            return Object.assign({}, state, {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    headerSet: true
-                }
-            })
+        // case SETTING_HEADER:
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             headerSet: true
+        //         }
+        //     })
 
-        case SETTING_HEADER_ERROR:
-            return Object.assign({}, state, {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    error: {
-                        type: action.type,
-                        error
-                    }
-                }
-            })
+        // case SETTING_HEADER_ERROR:
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             error: {
+        //                 type: action.type,
+        //                 error
+        //             }
+        //         }
+        //     })
 
-        case CONFIRM_STARTED:
-            return {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    confirmStarted: true,
+        // case CONFIRM_STARTED:
+        //     return {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             confirmStarted: true,
 
-                }
-            }
-
-
-        case GOT_IPFS:
-            return {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    gotIpfs: true,
-                },
-                newAsset: {
-                        ...state.newAsset,
-                        ipfsHash: action.ipfsHash
-
-                    }
-            }
-        case GOT_FACT:
-            return {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    gotIpfs: true,
-                },
-                newAsset: {
-                    ...state.newAsset,
-                    chainId: action.chainId
-                }
-            }
-
-        case CONFIRM_ASSET_COMPLETE:
-            const asset = action.newAsset;
-
-            return Object.assign({}, state, {
-                ...state,
-                dataFlags: {
-                    ...state.dataFlags,
-                    confirmStarted: false,
-                    confAssetComplete: true
-                }
-
-            })
+        //         }
+        //     }
 
 
+        // case GOT_IPFS:
+        //     return {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             gotIpfs: true,
+        //         },
+        //         newAsset: {
+        //                 ...state.newAsset,
+        //                 ipfsHash: action.ipfsHash
+
+        //             }
+        //     }
+        // case GOT_FACT:
+        //     return {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             gotIpfs: true,
+        //         },
+        //         newAsset: {
+        //             ...state.newAsset,
+        //             chainId: action.chainId
+        //         }
+        //     }
+
+        // case CONFIRM_ASSET_COMPLETE:
+        //     const asset = action.newAsset;
+
+        //     return Object.assign({}, state, {
+        //         ...state,
+        //         dataFlags: {
+        //             ...state.dataFlags,
+        //             confirmStarted: false,
+        //             confAssetComplete: true
+        //         }
+
+        //     })
 
 
-        case DELETE_ASSET:
-            const key = action.delKey;
-            rootRef.child('assets').child(key).remove();
-            return state;
+
+
+        // case DELETE_ASSET:
+        //     const key = action.delKey;
+        //     rootRef.child('assets').child(key).remove();
+        //     return state;
 
 
         default:

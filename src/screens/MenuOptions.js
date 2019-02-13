@@ -12,7 +12,7 @@ import {
     YellowBox,
     PermissionsAndroid
 } from "react-native";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import hiprBtn from "../components/buttons/validate.png";
 import supplyChain from "../components/buttons/supplyChainButton.png";
 import track from "../components/buttons/trackButton.png";

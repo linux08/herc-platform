@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 // import { WebView } from 'react-native';
 // import TrackAssetList from '../components/TrackAssetList';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import track from '../components/buttons/blockScannerBtn.png';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableHighlight, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';

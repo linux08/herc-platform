@@ -25,15 +25,15 @@ export const DELETE_ASSET = 'deleteAsset';
 
 
 ///// ASSET CONFIRMATION TYPES /////
-export const SETTING_HEADER = 'settingHeader';
-export const SETTING_HEADER_ERROR = 'settingHeaderError';
-export const CONFIRM_STARTED = 'confirmStarted';
-export const CONFIRM_ASSET_COMPLETE = 'confrimAssetComplete'
-export const CONFIRM_ASSET_ERROR = 'confirmAssetError';
-export const GOT_IPFS = 'gotIpfs';
-export const IPFS_ERROR = 'ipfsError';
-export const GOT_FACT = 'gotFact';
-export const FACTOM_ERROR = 'factomError';
+// export const SETTING_HEADER = 'settingHeader';
+// export const SETTING_HEADER_ERROR = 'settingHeaderError';
+// export const CONFIRM_STARTED = 'confirmStarted';
+// export const CONFIRM_ASSET_COMPLETE = 'confrimAssetComplete'
+// export const CONFIRM_ASSET_ERROR = 'confirmAssetError';
+// export const GOT_IPFS = 'gotIpfs';
+// export const IPFS_ERROR = 'ipfsError';
+// export const GOT_FACT = 'gotFact';
+// export const FACTOM_ERROR = 'factomError';
 
 ///// TRANSACTION TYPES /////
 export const START_TRANS = 'startTrans';
@@ -68,3 +68,7 @@ export const FETCHING_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
 
 export const HANDLE_IMAGE_PICKED = 'handleImagePicked';
 export const GOT_LOGO = 'gotLogo';
+
+///// MODAL VISIBILITY TYPES /////
+export const TOGGLE_CAM_SOURCE_MODAL = 'toggleCamSourceModal';
+export const TOGGLE_CAMERA_MODAL = 'toggleCameraModal';

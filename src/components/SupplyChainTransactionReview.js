@@ -1,21 +1,9 @@
-import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight,
-  Alert,
-  ScrollView,
-  YellowBox,
-  Modal,
-  Linking,
-  ActivityIndicator,
-  Button
-} from "react-native";
-import { connect } from "react-redux";
-import { StackNavigator } from "react-navigation";
-import styles from "../assets/styles";
+import React, { Component } from 'react';
+import { StyleSheet, Text, TextInput, View, Image, TouchableHighlight, Alert, ScrollView, YellowBox, Modal, ActivityIndicator, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { createStackNavigator } from 'react-navigation';
+import styles from '../assets/styles';
+import submit from "./buttons/submit.png"; // todo: turn into vector
 import { sendTrans } from "../actions/AssetActions";
 import { storeTransactionIds, clearTransactionStore } from "../actions/WalletActActions";
 import fee from "../assets/hercLogoPillar.png";
