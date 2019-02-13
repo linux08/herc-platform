@@ -18,6 +18,8 @@ import { addAsset, getHercId } from "../actions/AssetActions";
 import next from "../components/buttons/nextButton.png"; // todo: turn into vector
 import takePhoto from "../components/buttons/takePhoto.png";
 import uploadPhoto from "../components/buttons/uploadImage.png";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 var ImagePicker = require('react-native-image-picker');
 
 
@@ -193,10 +195,10 @@ class NewAssetForm extends Component {
     }
   }
 
-  // qrSnapshot = () => {
-  //   const { navigate } = this.props.navigation;
-  //   navigate("QRCapture");
-  // };
+  qrSnapshot = () => {
+    const { navigate } = this.props.navigation;
+    navigate("QRCapture");
+  };
 
   render() {
     let Logo;
@@ -383,12 +385,12 @@ class NewAssetForm extends Component {
 
             <View style={localStyles.imageButtonContainer}>
 
-              {/* <TouchableHighlight
+              <TouchableHighlight
                 onPress={() => this.qrSnapshot()}
                 style={localStyles.menuItemField__textBox}
               >
-                <Image style={localStyles.qrScan} source={qrScan} />
-              </TouchableHighlight> */}
+                <Text>QR Button</Text>
+              </TouchableHighlight>
 
               <TouchableHighlight onPress={this._takePic}>
                 <Image style={styles.menuButton} source={takePhoto} />

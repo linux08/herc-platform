@@ -68,3 +68,4 @@ export const FETCHING_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
 
 export const HANDLE_IMAGE_PICKED = 'handleImagePicked';
 export const GOT_LOGO = 'gotLogo';
+export const GET_QR_DATA = 'getQRData';

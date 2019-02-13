@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Alert } from "react-native";
 import { Button } from "react-native";
 import { connect } from "react-redux";
 import { getQRData } from "../actions/AssetActions";
+import { RNCamera } from "react-native-camera";
 
 //to test QR functionality without a camera do the following:
 // * comment out lines 40, and 78 - 87
@@ -18,17 +19,19 @@ class QRCapture extends Component {
   }
 
   componentDidMount() {
-    this._requestCameraPermission();
+    console.log(this.props)
+    // this._requestCameraPermission();
   }
 
-  // _requestCameraPermission = async () => {
-  //   const { status } = await Permissions.askAsync(Permissions.CAMERA);
-  //   this.setState({
-  //     hasCameraPermission: status === "granted"
-  //   });
-  // };
+  _requestCameraPermission = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+      hasCameraPermission: status === "granted"
+    });
+  };
 
   handleQRForward = () => {
+    console.log("on line 34")
     const passStateToRedux = this.props.getQRData(this.state);
 
     const { navigate } = this.props.navigation;
@@ -37,7 +40,8 @@ class QRCapture extends Component {
 
   _handleBarCodeRead = data => {
     const scanResult = data.data;
-    const splitScanResult = scanResult.split(", ");
+    const splitScanResult = scanResult.split(",");
+    console.log(splitScanResult)
 
     // const splitScanResult = [
     //   "anthemSilver",
@@ -55,45 +59,44 @@ class QRCapture extends Component {
 
     this.setState(
       {
-        assetName: splitScanResult[0],
-        assetURL: splitScanResult[1], //assetURL is deprecated 11/09/2018 version 0.9.4
-        iconURL: splitScanResult[2],
+        // assetName: splitScanResult[0],
+        // assetURL: splitScanResult[1], //assetURL is deprecated 11/09/2018 version 0.9.4
+        // iconURL: splitScanResult[2],
         CoreProps: {
-          metric1: splitScanResult[3],
-          metric2: splitScanResult[4],
-          metric3: splitScanResult[5],
-          metric4: splitScanResult[6],
-          metric5: splitScanResult[7],
-          metric6: splitScanResult[8],
-          metric7: splitScanResult[9],
-          metric8: splitScanResult[10]
+          metric1: splitScanResult[0],
+          metric2: splitScanResult[1],
+          metric3: splitScanResult[2],
+          metric4: splitScanResult[3],
+          metric5: splitScanResult[4],
+          metric6: splitScanResult[5],
+          metric7: splitScanResult[6],
+          metric8: splitScanResult[7]
         }
       },
       () => this.handleQRForward()
+      // () => console.log(this.state.CoreProps)
     );
   };
 
   render() {
     return (
       <View style={styles.container}>
-        {this.state.hasCameraPermission === null ? (
-          <Text>Requesting for camera permission</Text>
-        ) : this.state.hasCameraPermission === false ? (
-          <Text>Camera permission is not granted</Text>
-        ) : (
-          <BarCodeScanner
-            onBarCodeRead={this._handleBarCodeRead}
-            style={{ height: 200, width: 200 }}
-          />
-        )}
-        {/* <Button
-          onPress={() => {
-            this._handleBarCodeRead();
+        <RNCamera
+          ref={cam => {
+            this.camera = cam;
           }}
-          title="click to simulate scan"
-          color="#841584"
-          accessibilityLabel="click to simulate scan"
-        /> */}
+          style={styles.preview}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.off}
+          permissionDialogTitle={"Permission to use camera"}
+          permissionDialogMessage={
+            "We need your permission to use your camera phone"
+          }
+          onBarCodeRead={(codes) => this._handleBarCodeRead(codes)}
+          // onGoogleVisionBarcodesDetected={({ barcodes }) => {
+          //   console.log(barcodes);
+          // }}
+        />
       </View>
     );
   }
@@ -106,6 +109,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     // paddingTop: Constants.statusBarHeight,
     backgroundColor: "#ecf0f1"
+  },
+  preview: {
+    // flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    height: 400,
+    width: 400
   }
 });
 
