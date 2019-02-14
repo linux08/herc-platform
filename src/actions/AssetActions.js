@@ -522,6 +522,6 @@ export function sendTrans(sendTransObj) {
     console.log(data, "this is actions getQRData");
     return {
       type: GET_QR_DATA,
-      data
+      data: data
     }
   }

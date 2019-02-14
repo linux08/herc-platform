@@ -31,8 +31,7 @@ class QRCapture extends Component {
   };
 
   handleQRForward = () => {
-    console.log("on line 34")
-    const passStateToRedux = this.props.getQRData(this.state);
+    const passStateToRedux = this.props.getQRData(this.state.CoreProps);
 
     const { navigate } = this.props.navigation;
     navigate("NewAssetForm");

@@ -30,6 +30,10 @@ class NewAssetForm extends Component {
     this.state = {}
   }
 
+  componentDidMount() {
+    console.log(this.props)
+  }
+
   static navigationOptions = ({ navigation }) => {
 
     let headerStyles = StyleSheet.create({
@@ -108,9 +112,10 @@ class NewAssetForm extends Component {
   }
 
   _takePic = () => {
-    const { navigate } = this.props.navigation;
-    console.log("Camera: Taking pic......")
-    navigate('Camera', { setPic: this.setImage, width: 200 })
+    console.log(this.props)
+    // const { navigate } = this.props.navigation;
+    // console.log("Camera: Taking pic......")
+    // navigate('Camera', { setPic: this.setImage, width: 200 })
   }
 
   _pickImage = () => {
@@ -482,6 +487,7 @@ const localStyles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
+  QRData: state.AssetReducers.QRData,
   hercId: state.AssetReducers.hercId
 });
 const mapDispatchToProps = dispatch => ({
