@@ -1,5 +1,5 @@
 import {
-  GOT_HERC_ID,
+  // GOT_HERC_ID,
   ADD_ASSET,
   SETTING_HEADER,
   SETTING_HEADER_COMPLETE,
@@ -11,11 +11,13 @@ import {
   REG_ASSET_FACTOM_COMPLETE,
   FACTOM_ERROR,
   CONFIRM_ASSET_COMPLETE,
-  INC_HERC_ID,
+  // INC_HERC_ID,
   CLEAR_STATE,
-  GETTING_HERC_ID,
+  // GETTING_HERC_ID,
   FIREBASE_HASHES_ERROR,
 } from './registerAssetActionTypes';
+
+import * as ActionNames from './RegAssetActionNames';
 
 import firebase from "../../constants/Firebase";
 import store from '../../store';
@@ -27,13 +29,13 @@ const assetRef = rootRef.child("assets");
 import {
   WEB_SERVER_API_IPFS_ADD,
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
-} from '../components/settings'
+} from '../../components/settings';
 
-export function getHercId() {
+export function GettingHercId() {
   console.log('getting hercID');
   grabHercId();
   return {
-    type: GETTING_HERC_ID
+    type: ActionNames.GettingHercId
   }
 }
 
@@ -48,19 +50,19 @@ async function grabHercId() {
 
 
 
-export function gotHercId(hercId) {
+export function GotHercId(hercId) {
   console.log('GotHercId: ', hercId)
   return {
-    type: GOT_HERC_ID,
+    type: ActionNames.GotHercId,
     hercId: hercId
   };
 }
 
-export function incHercId() {
+export function IncreaseHercId() {
   let hercIdPlus1 = store.getState().RegisterAssetReducers.hercId + 1;
   rootRef.child("hercID").set(hercIdPlus1);
   return {
-    type: INC_HERC_ID,
+    type: ActionNames.IncreaseHercId,
     hercId: hercIdPlus1
   }
 }
@@ -75,9 +77,9 @@ export function addAsset(newTempAsset) {
   };
 }
 
-export function clearState() {
+export function ClearState() {
   return {
-    type: CLEAR_STATE
+    type: ActionNames.ClearState
   };
 }
 // payment trigger in actions too? after reg complete?

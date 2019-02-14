@@ -1,6 +1,6 @@
 import {
-    GETTING_HERC_ID,
-    GOT_HERC_ID,
+    // GETTING_HERC_ID,
+    // GOT_HERC_ID,
     ADD_ASSET,
     SETTING_HEADER,
     SETTING_HEADER_COMPLETE,
@@ -12,11 +12,13 @@ import {
     REG_ASSET_FACTOM_COMPLETE,
     FACTOM_ERROR,
     CONFIRM_ASSET_COMPLETE,
-    INC_HERC_ID,
+    // INC_HERC_ID,
     IPFS_ERROR,
     FIREBASE_HASHES_ERROR,
 
 } from './registerAssetActionTypes';
+
+import * as ActionNames from './RegAssetActionCreators';
 
 const INITIAL_STATE = {
     newAsset: {},
@@ -42,13 +44,14 @@ const INITIAL_STATE = {
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
     console.log(action, "in regReducers")
     switch (action.type) {
-        case GETTING_HERC_ID:
+       
+        case ActionNames.GettingHercId:
             return Object.assign({}, {
                 ...state,
                 hercIdGetting: true
             })
 
-        case GOT_HERC_ID:
+        case ActionNames.GotHercId:
             console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
             return Object.assign({}, state, {
@@ -58,7 +61,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
             })
 
-        case INC_HERC_ID:
+        case ActionNames.IncreaseHercId:
 
             return Object.assign({}, state, {
                 ...state,

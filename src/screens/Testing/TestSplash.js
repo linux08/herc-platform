@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
-import { getHercId, clearState } from '../../features/RegisterAssetActions';
+import { GetHercId, ClearState } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 
 class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
@@ -29,11 +29,11 @@ class TestSplash extends Component {
     }
 
     componentWillMount = () => {
-        this.props.clearState();
+        this.props.ClearState();
     }
     componentDidMount = () => {
         console.log("function??")
-        this.props.getHercId();
+        this.props.GetHercId();
     }
 
     // componentWillUnmount = () => {
@@ -107,8 +107,8 @@ class TestSplash extends Component {
 }
 
 const mapDispatchToProps = (dispatch ) => ({
-    getHercId: () => dispatch(getHercId()),
-    clearState: () => dispatch(clearState())
+    GetHercId: () => dispatch(GetHercId()),
+    ClearState: () => dispatch(ClearState())
 })
 export default connect(null, mapDispatchToProps)(TestSplash); 
 

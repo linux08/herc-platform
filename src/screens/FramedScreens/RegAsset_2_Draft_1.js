@@ -13,7 +13,7 @@ import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 
 import CustomModal from '../../components/modals/CustomModal';
-import { settingHeader, clearState } from '../../features/RegisterAssetActions';
+import { settingHeader, clearState } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
