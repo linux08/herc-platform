@@ -2,11 +2,14 @@
 
 export const CLEAR_STATE = 'clearState';
 
+
+//  Ive removed the types that have been moved to another file.
+//  I've commented out the types that I'm actively moving. 
+
+
 ///// HERC ID TYPES  /////
 
-export const GET_HERC_ID = 'getHercId';
-export const GOT_HERC_ID = 'gotHercId';
-export const INC_HERC_ID = 'incHercId';
+
 
 ///// ASSET TYPES //////
 export const GET_ASSETS = 'getAssets';
@@ -14,26 +17,16 @@ export const LIST_ASSETS = 'listAssets';
 export const GOT_LIST_ASSETS = 'gotListAssets';
 
 ///// ASSET DEFINITION TYPES
-export const GET_ASSET_DEF = 'getAssetDef';
-export const GETTING_ASSET_DEF = 'gettingAssetDef';
-export const GOT_ASSET_DEF = 'gotAssetDef';
-export const ASSET_DEF_ERROR = 'assetDefError';
+// export const GET_ASSET_DEF = 'getAssetDef';
+// export const GETTING_ASSET_DEF = 'gettingAssetDef';
+// export const GOT_ASSET_DEF = 'gotAssetDef';
+// export const ASSET_DEF_ERROR = 'assetDefError';
 
-export const SELECT_ASSET = 'selectAsset';
-export const ADD_ASSET = 'addAsset';
-export const DELETE_ASSET = 'deleteAsset';
+// export const SELECT_ASSET = 'selectAsset';
+// export const DELETE_ASSET = 'deleteAsset';
 
 
-///// ASSET CONFIRMATION TYPES /////
-// export const SETTING_HEADER = 'settingHeader';
-// export const SETTING_HEADER_ERROR = 'settingHeaderError';
-// export const CONFIRM_STARTED = 'confirmStarted';
-// export const CONFIRM_ASSET_COMPLETE = 'confrimAssetComplete'
-// export const CONFIRM_ASSET_ERROR = 'confirmAssetError';
-// export const GOT_IPFS = 'gotIpfs';
-// export const IPFS_ERROR = 'ipfsError';
-// export const GOT_FACT = 'gotFact';
-// export const FACTOM_ERROR = 'factomError';
+
 
 ///// TRANSACTION TYPES /////
 export const START_TRANS = 'startTrans';
