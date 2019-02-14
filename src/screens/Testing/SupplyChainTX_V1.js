@@ -117,33 +117,33 @@ export default class SupplyChainTX extends Component {
         this.showEditModal();
     }
 
-    _pickImage = () => {
+    // _pickImage = () => {
 
-        ImagePicker.launchImageLibrary({}, (response) => {
+    //     ImagePicker.launchImageLibrary({}, (response) => {
 
-            if (response.didCancel) {
-                console.log('ImageUpload Camera: User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
-            }
-            else {
-                let source = { uri: response.uri };
-                this.setState({
-                    img: {
-                        name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
-                        image: "data:image/jpg;base64," + response.data,
-                        size: response.fileSize,
-                        uri: source
-                    }
-                });
-                this.showCamSourceModal();
-            }
-        });
-    }
+    //         if (response.didCancel) {
+    //             console.log('ImageUpload Camera: User cancelled image picker');
+    //         }
+    //         else if (response.error) {
+    //             console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
+    //         }
+    //         else if (response.customButton) {
+    //             console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
+    //         }
+    //         else {
+    //             let source = { uri: response.uri };
+    //             this.setState({
+    //                 img: {
+    //                     name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
+    //                     image: "data:image/jpg;base64," + response.data,
+    //                     size: response.fileSize,
+    //                     uri: source
+    //                 }
+    //             });
+    //             this.showCamSourceModal();
+    //         }
+    //     });
+    // }
 
     _pickDocument = () => {
         DocumentPicker.show({

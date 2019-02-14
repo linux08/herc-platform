@@ -17,8 +17,8 @@ import {
   FIREBASE_HASHES_ERROR,
 } from './registerAssetActionTypes';
 
-import firebase from "../constants/Firebase";
-import store from '../store';
+import firebase from "../../constants/Firebase";
+import store from '../../store';
 import axios from 'axios';
 // const edgeAccount = store.getState().WalletActReducers.edge_account
 const rootRef = firebase.database().ref();
