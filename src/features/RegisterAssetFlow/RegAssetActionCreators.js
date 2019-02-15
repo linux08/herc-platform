@@ -1,23 +1,5 @@
-import {
-  // GOT_HERC_ID,
-  ADD_ASSET,
-  SETTING_HEADER,
-  SETTING_HEADER_COMPLETE,
-  SETTING_HEADER_ERROR,
-  IPFS_ERROR,
-  REG_ASSET_T0_IPFS_STARTED,
-  REG_IPFS_COMPLETE,
-  REG_ASSET_IPFS_TO_FACTOM_STARTED,
-  REG_ASSET_FACTOM_COMPLETE,
-  FACTOM_ERROR,
-  CONFIRM_ASSET_COMPLETE,
-  // INC_HERC_ID,
-  CLEAR_STATE,
-  // GETTING_HERC_ID,
-  FIREBASE_HASHES_ERROR,
-} from './registerAssetActionTypes';
 
-import * as ActionNames from './RegAssetActionNames';
+import * as Reg from './RegAssetActionCreators';
 
 import firebase from "../../constants/Firebase";
 import store from '../../store';
@@ -31,79 +13,88 @@ import {
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
 } from '../../components/settings';
 
-export function GettingHercId() {
-  console.log('getting hercID');
-  grabHercId();
+// One size fits all error handling
+export function Error(error) {
+  console.log("general purpose error", error)
   return {
-    type: ActionNames.GettingHercId
+    type: Reg.Error,
+    Error: error
   }
 }
 
-async function grabHercId() {
-  const snapshot = await rootRef
-    .child("hercID")
-    .once("value");
-
-  console.log(snapshot.toJSON(), "snapshot to json");
-  store.dispatch(gotHercId(snapshot.toJSON()));
+export function ClearState() {
+  return {
+    type: Reg.ClearState,
+  }
 }
 
-
+export function GetHercId() {
+  console.log('getting hercID');
+  return (dispatch) => {
+    return (
+      rootRef
+        .child("hercID")
+        .once("value")
+        .then((snapshot) =>
+          dispatch(Reg.GotHercId(snapshot.toJSON())))
+        .catch((error) => {
+          dispatch(Reg.Error(error))
+        }
+        )
+    )
+  }
+}
 
 export function GotHercId(hercId) {
   console.log('GotHercId: ', hercId)
   return {
-    type: ActionNames.GotHercId,
+    type: Reg.GotHercId,
     hercId: hercId
   };
 }
 
 export function IncreaseHercId() {
-  let hercIdPlus1 = store.getState().RegisterAssetReducers.hercId + 1;
+  let hercIdPlus1 = store.getState().RegAssetReducers.hercId + 1;
   rootRef.child("hercID").set(hercIdPlus1);
   return {
-    type: ActionNames.IncreaseHercId,
+    type: Reg.IncreaseHercId,
     hercId: hercIdPlus1
   }
 }
 
 // Adding the new, yet to be confirmed, Asset to redux, will map on Confirm
-export function addAsset(newTempAsset) {
+export function AddAsset(newTempAsset) {
   console.log(newTempAsset, "in regAsstActions")
   let newAsset = newTempAsset;
   return {
-    type: ADD_ASSET,
+    type: Reg.AddAsset,
     newAsset: newAsset
   };
 }
 
-export function ClearState() {
-  return {
-    type: ActionNames.ClearState
-  };
-}
 // payment trigger in actions too? after reg complete?
 // fire the payment?
 
 //  rearranging the redux a little, trying to simplify
 //  assetForFirebase will be Name, hercID, Logo, Password 
 
-// this is the start of it 
-export function settingHeader() {
+export function SettingHeaderInFirebase() {
+
+  // this is the start of registering an asset, this sets 
+  // settingHeaderinFirebase and Confirm Started to true.
   fetchLocalUri();
   return {
-    type: SETTING_HEADER
+    type: Reg.SettingHeaderInFirebase
+
   }
 }
 
 
 async function fetchLocalUri() {
-
-  console.log("should error");
-  let newAsset = store.getState().RegisterAssetReducers.newAsset;
+  let newAsset = store.getState().RegAssetReducers.newAsset;
   let uri = newAsset.LogoUri;
-  console.log(uri, "right before fetch")
   const response = await fetch(uri);
+
   setLogoLocation(response);
 
 }
@@ -112,7 +103,7 @@ async function fetchLocalUri() {
 async function setLogoLocation(fetchUri) {
   const edgeAccount = 'hercstack'; // hardcoding for now, to escape login while testing.
   // const edgeAccount = store.getState().WalletActReducers.edge_account;
-  let newAsset = store.getState().RegisterAssetReducers.newAsset;
+  let newAsset = store.getState().RegAssetReducers.newAsset;
 
   let logoLocation = firebase.storage().ref('assets')
     .child(edgeAccount)
@@ -122,17 +113,17 @@ async function setLogoLocation(fetchUri) {
   try {
     const blob = await fetchUri.blob();
     const snapshot = await logoLocation.put(blob);
-
     makeAndSetHeader(snapshot.downloadURL);
-    createIpfsAsset(newAsset);
+    createAndSendIpfsAsset(newAsset);
   }
   catch (error) {
-    store.dispatch(settingHeaderError(error))
+    store.dispatch(Reg.Error(error))
   }
 
 }
 
-function createIpfsAsset(newAsset) {
+
+function createAndSendIpfsAsset(newAsset) {
   const ipfsAsset = Object.assign({}, {
     Name: newAsset.Name,
     CoreProps: newAsset.CoreProps,
@@ -145,44 +136,42 @@ function createIpfsAsset(newAsset) {
 
 
 function makeAndSetHeader(logoUrl) {
-  let newAsset = store.getState().RegisterAssetReducers.newAsset;
+  return (dispatch) => {
+    let newAsset = store.getState().RegAssetReducers.newAsset;
 
-  const fbAsset = {
-    hercId: newAsset.hercId,
-    Name: newAsset.Name,
-    Logo: logoUrl,
-    Password: newAsset.Password
-  }
-  console.log("making and setting header", newAsset)
-  try {
-    assetRef.child(newAsset.Name).set(fbAsset)
-      .then(() =>
-        store.dispatch(settingHeaderComplete()))
-  }
-  catch (error) {
-    store.dispatch(settingHeaderError(error))
-  }
+    const fbAsset = {
+      hercId: newAsset.hercId,
+      Name: newAsset.Name,
+      Logo: logoUrl,
+      Password: newAsset.Password
+    }
+    console.log("making and setting header", newAsset)
+    try {
+      assetRef.child(newAsset.Name).set(fbAsset)
+        .then(() =>
+          dispatch(Reg.SettingHeaderComplete()),
+          dispatch(Reg.IncreaseHercId())
+        );
+    }
+    catch (error) {
+      dispatch(Reg.Error(error))
+    }
 
 
+  }
 }
 
 
-export function settingHeaderComplete() {
-  store.dispatch(incHercId());
+export function SettingHeaderComplete() {
   return {
-    type: SETTING_HEADER_COMPLETE,
+    type: Reg.SettingHeaderComplete
   }
 }
 
 
-export function settingHeaderError(error) {
-  return {
-    type: SETTING_HEADER_ERROR,
-    error
-  }
-}
 
-export function regAssetToIpfsStarted() {
+
+export function RegAssetToIpfsStarted() {
   return {
     type: REG_ASSET_T0_IPFS_STARTED,
   }
@@ -190,8 +179,9 @@ export function regAssetToIpfsStarted() {
 
 
 
-export async function newAssetToIpfs(assetForIPFS) {
-  store.dispatch(regAssetToIpfsStarted())
+async function newAssetToIpfs(assetForIPFS) {
+
+  store.dispatch(Reg.RegAssetToIpfsStarted());
   let asset = assetForIPFS;
   console.log(asset, "trying to send to IPFS")
   // let username = store.getState().WalletActReducers.edge_account
@@ -203,34 +193,26 @@ export async function newAssetToIpfs(assetForIPFS) {
     let ipfsHash = response.data.hash;
     ipfsToFactom(ipfsHash);
 
-    store.dispatch(regIpfsComplete(ipfsHash))
-    // return ipfsHash
+    store.dispatch(Reg.RegAssetToIpfsComplete(ipfsHash))
   }
   catch (error) {
-    store.dispatch(ipfsError(error))
+    store.dispatch(Reg.Error(error))
   }
 
 }
 
-export function ipfsError(error) {
-  return {
-    type: IPFS_ERROR,
-    error: error
-  }
 
-}
-
-export function regIpfsComplete(hash) {
+export function RegAssetToIpfsComplete(hash) {
   return {
-    type: REG_IPFS_COMPLETE,
+    type: Reg.RegAssetToIpfsComplete,
     ipfsHash: hash
   }
 
 }
 
-export function regAssetIpfsToFactomStarted() {
+export function RegAssetIpfsHashToFactomStarted() {
   return {
-    type: REG_ASSET_IPFS_TO_FACTOM_STARTED
+    type: Reg.RegAssetIpfsHashToFactomStarted
   }
 
 }
@@ -260,7 +242,7 @@ async function ipfsToFactom(hash) {
 }
 
 export function hashesToFirebase(hashes) {
-  let newAssetName = store.getState().RegisterAssetReducers.newAsset.Name;
+  let newAssetName = store.getState().RegAssetReducers.newAsset.Name;
   let dataObject = Object.assign({}, {
     chainId: hashes.chainId,
     ipfsHash: hashes.ipfsHash,
@@ -275,7 +257,7 @@ export function hashesToFirebase(hashes) {
       .child('hashes')
       .set(dataObject)
       .then(() =>
-      store.dispatch(confirmAssetComplete()));
+        store.dispatch(confirmAssetComplete()));
 
   } catch (error) {
     store.dispatch(firebaseHashesError(error))
@@ -287,7 +269,7 @@ export function hashesToFirebase(hashes) {
 
 
 
-export function regAssetFactomComplete(hash) {
+export function RegAssetIpfsHashToFactomComplete(hash) {
   return {
     type: REG_ASSET_FACTOM_COMPLETE,
     chainId: hash
@@ -295,24 +277,10 @@ export function regAssetFactomComplete(hash) {
 
 }
 
-export function factomError(err) {
-  return {
-    type: FACTOM_ERROR,
-    error: err
-  }
-}
-
-
-export function firebaseHashesError(error) {
-  return {
-    type: FIREBASE_HASHES_ERROR,
-    err: error
-  }
-}
-export function confirmAssetComplete() {
+export function ConfirmAssetComplete() {
   // store.dispatch(getAssets());
   return {
-    type: CONFIRM_ASSET_COMPLETE
+    type: Reg.ConfirmAssetComplete
   }
 }
 

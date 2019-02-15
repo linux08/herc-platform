@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
-import { GetHercId, ClearState } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
+import * as ActionNames from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 
 class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
@@ -25,10 +25,12 @@ class TestSplash extends Component {
             modalIsVisible: false,
 
         }
+     console.log("whattup");
         // this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentWillMount = () => {
+
         this.props.ClearState();
     }
     componentDidMount = () => {
@@ -107,8 +109,8 @@ class TestSplash extends Component {
 }
 
 const mapDispatchToProps = (dispatch ) => ({
-    GetHercId: () => dispatch(GetHercId()),
-    ClearState: () => dispatch(ClearState())
+    GetHercId: () => dispatch(ActionNames.GetHercId()),
+    ClearState: () => dispatch(ActionNames.ClearState())
 })
 export default connect(null, mapDispatchToProps)(TestSplash); 
 

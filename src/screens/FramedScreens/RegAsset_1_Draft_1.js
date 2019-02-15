@@ -23,38 +23,24 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-            // showAddMetricModal: false,
-            // HercId: 123,
-            Name: "",
-            Logo: null,
-            CoreProps: {
-                Metric1 : "",
-                // Metric2: "",
-                // Metric3: "",
-                // Metric4: "",
-                // Metric5: "",
-                // Metric6: "",
-
-            }
+            
         }
         this.corePropChange = this.corePropChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
         this.setPic = this.setPic.bind(this);
-        // this.toggleAddMetricModal = this.toggleAddMetricModal.bind(this);
     }
 
     componentWillMount = () => {
         console.log(this.props, "regAsset1 Props Will mount")
-      
+     
+        this.setState({
+            newAsset: this.props.newAsset
+        })
     }
 
-    componentDidMount =() => {
-        this.setState({
-            ...this.state,
-            hercId: this.props.hercId
-        })
-        console.log(this.props, "props regasset1 didmount")
-    }
+    // componentDidMount =() => {
+    //     console.log(this.props, "props regasset1 didmount")
+    // }
 
     renderInputs = () => {
 
@@ -91,16 +77,6 @@ class RegAsset1 extends Component {
         console.log(metricInputs);
         return metricInputs;
     }
-    // Gonna get back to this
-    //
-    // toggleAddMetricModal = () => {
-    //     // console.log(this.state.showAddMetricModal, "showAddMetricModal");
-    //     this.setState({
-    //         showAddMetricModal: !this.state.showAddMetricModal
-    //     })
-    //     // console.log(this.state.showAddMetricModal, "showmodal1after");
-    // }
-
 
     //  Functions to pass to the components for value changes
     pwChange = (pwChar) => {
@@ -241,7 +217,7 @@ class RegAsset1 extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    hercId: state.RegisterAssetReducers.hercId,
+    hercId: state.RegAssetReducers.hercId,
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
 
 });

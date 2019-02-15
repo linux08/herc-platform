@@ -1,75 +1,69 @@
-import {
-    // GETTING_HERC_ID,
-    // GOT_HERC_ID,
-    ADD_ASSET,
-    SETTING_HEADER,
-    SETTING_HEADER_COMPLETE,
-    SETTING_HEADER_ERROR,
-    CLEAR_STATE,
-    REG_ASSET_T0_IPFS_STARTED,
-    REG_IPFS_COMPLETE,
-    REG_ASSET_IPFS_TO_FACTOM_STARTED,
-    REG_ASSET_FACTOM_COMPLETE,
-    FACTOM_ERROR,
-    CONFIRM_ASSET_COMPLETE,
-    // INC_HERC_ID,
-    IPFS_ERROR,
-    FIREBASE_HASHES_ERROR,
-
-} from './registerAssetActionTypes';
-
-import * as ActionNames from './RegAssetActionCreators';
+import * as RegAction from './RegAssetActionCreators';
 
 const INITIAL_STATE = {
-    newAsset: {},
-    hercId: "",
-
-    confirmStarted: false,
-    headerComplete: false,
-
-    ipfsStarted: false,
-    ipfsComplete: false,
-
-    factomStarted: false,
-    factomComplete: false,
-
-    ipfsHash: "",
-    chainId: "",
-
-    confirmAssetComplete: false,
+    newAsset: {
+        Name: "",
+        Logo: null,
+        CoreProps: {
+            Metric1: "",
+        }
+    },
+    HercId: "",
     percentage: 0,
-    content: "Your Asset is Being Created"
+    content: "Your Asset is Being Created",
+    flags: {}
 }
 
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
     console.log(action, "in regReducers")
     switch (action.type) {
-       
-        case ActionNames.GettingHercId:
+
+        case RegAction.Error:
             return Object.assign({}, {
                 ...state,
-                hercIdGetting: true
+                Error: {
+                    error: action.Error,
+                    type: action.type
+                }
             })
 
-        case ActionNames.GotHercId:
+        case RegAction.GetHercId:
+            return Object.assign({}, {
+                ...state,
+                flags: {
+                    hercIdGetting: true,
+                }
+            })
+
+        case RegAction.GotHercId:
             console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
             return Object.assign({}, state, {
                 ...state,
-                hercId: hercId
-
-
+                HercId: hercId,
+                newAsset: {
+                    hercId: hercId
+                },
+                flags: {
+                    ...state.flags,
+                    gotHercId: true
+                },
             })
 
-        case ActionNames.IncreaseHercId:
+        case RegAction.IncreaseHercId:
 
             return Object.assign({}, state, {
                 ...state,
-                hercId: action.hercId
+                HercId: action.hercId
             });
 
+        case RegAction.ClearState:
+            return {
+                INITIAL_STATE
+            }
 
-        case ADD_ASSET:
+
+        case RegAction.AddAsset:
             console.log(action, "addassetredux");
             const newAsset = action.newAsset;
             return Object.assign({}, state, {
@@ -79,105 +73,94 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
 
-        case SETTING_HEADER:
+        case RegAction.SettingHeaderInFirebase:
 
             return Object.assign({}, state, {
                 ...state,
-                confirmStarted: true,
-                percentage: 5
+                flags: {
+                    ...state.flags,
+                    confirmStarted: true,
+                    SettingHeader: true,
+                },
+                percentage: state.percentage + 5,
+                content: 'Your Asset Is Being Created!'
 
             }
             )
 
-        case SETTING_HEADER_COMPLETE:
+        case RegAction.SettingHeaderComplete:
             return Object.assign({}, state, {
                 ...state,
-                headerComplete: true,
+                flags: {
+                    headerComplete: true,
+                },
+                percentage: state.percentage + 5
+            })
 
-                percentage: state.percentage + 15
-            }
-            )
 
-        case SETTING_HEADER_ERROR:
-            return Object.assign({}, state, {
-                ...state,
 
-                error: {
-                    type: action.type,
-                    error: action.error
-                }
-            }
-            )
-
-        case REG_ASSET_T0_IPFS_STARTED:
+        case RegAction.RegAssetToIpfsStarted:
             return {
                 ...state,
-                ipfsStarted: true,
+                flags: {
+                    ...state.flags,
+                    ipfsStarted: true,
+                },
                 percentage: state.percentage + 15,
-                content: "Your Asset Info Is Being Written To The IPFS"
+                content: "Your Asset Is Being Written To The IPFS"
             }
 
-        case IPFS_ERROR:
-            return {
-                ipfsError: action.error
-            }
 
-        case REG_IPFS_COMPLETE:
+        case RegAction.RegAssetToIpfsComplete:
             return {
                 ...state,
-                ipfsComplete: true,
-                ipfsHash: action.ipfsHash,
+                flags: {
+                    ...state.flags,
+                    ipfsComplete: true,
+                },
                 percentage: state.percentage + 25,
+                ipfsHash: action.ipfsHash,
                 content: "Your Asset is On The IPFS And The Location Is Being Written To Factom"
             }
 
 
-        case REG_ASSET_IPFS_TO_FACTOM_STARTED:
+        case RegAction.RegAssetIpfsToFactomStarted:
             return {
                 ...state,
-                factomStarted: true,
+                flags: {
+                    ...state.flags,
+                    factomStarted: true,
+                },
                 percentage: state.percentage + 15
             }
 
-        case REG_ASSET_FACTOM_COMPLETE:
+        case RegAction.regAssetFactomComplete:
             return {
                 ...state,
-                factomComplete: true,
+                flags: {
+                    ...state.flags,
+                    factomComplete: true,
+                },
                 chainId: action.chainId,
                 percentage: state.percentage + 15
             }
 
-        case FACTOM_ERROR:
-            return {
-                ...state,
-                error: {
-                    error: action.error,
-                    type: action.type
-                }
-            }
 
-        case CONFIRM_ASSET_COMPLETE:
+
+        case RegAction.ConfirmAssetComplete:
 
             return {
                 ...state,
-                confirmAssetComplete: true,
+                flags: {
+
+                    confirmAssetComplete: true,
+                },
                 percentage: 100,
                 content: "You're Asset Has Been Succesfully Created"
             }
 
-        case FIREBASE_HASHES_ERROR:
-            return {
-                ...state,
-                error: {
-                    type: action.type,
-                    error: action.error
-                }
-            }
 
-        case CLEAR_STATE:
-            return {
-                INITIAL_STATE
-            }
+
 
         default: return state;
 
