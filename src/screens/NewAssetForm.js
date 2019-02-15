@@ -27,11 +27,45 @@ class NewAssetForm extends Component {
   constructor(props) {
     super(props);
     this.setImage = this.setImage.bind(this); // method to set the log from the camera component
-    this.state = {}
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.state = {
+      CoreProps: {
+        metric1: "",
+        metric2: "",
+        metric3: "",
+        metric4: "",
+        metric5: "",
+        metric6: "",
+        metric7: "",
+        metric8: ""
+      }
+    }
   }
 
   componentDidMount() {
-    console.log(this.props)
+  }
+
+  componentDidUpdate(prevProps) {
+    const data = this.props.QRData;
+
+    // Typical usage of componentDidUpdate (don't forget to compare props to prevent loop):
+
+    if (data !== prevProps.QRData) {
+      console.log("line 54***")
+      // this.setState({ CoreProps: data.CoreProps });
+
+      this.setState({ CoreProps: this.props.QRData })
+      
+    //   if (data.assetName) {
+    //     this.setState({ Name: data.assetName });
+    //   }
+    //   if (data.assetURL) {
+    //     this.setState({ URL: data.assetURL });
+    //   }
+    //   if (data.iconURL) {
+    //     this.setState({ Logo: data.iconURL });
+    //   }
+    }
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -205,10 +239,36 @@ class NewAssetForm extends Component {
     navigate("QRCapture");
   };
 
+  handleTextChange = (newText) => {
+    console.log("l;ine 242***********")
+    this.setState({
+      CoreProps: { ...this.state.CoreProps, metric1: newText }
+    })
+  };
+
   render() {
     let Logo;
     this.state.Logo ? Logo = this.state.Logo.uri : Logo = null
     if (this.state.Logo) { console.log("Camera: logo is here") }
+
+    // if (this.props.QRData) { 
+    //   // console.log(this.props.QRData, this.state.QRData)
+    //   if(this.state.CoreProps !== this.props.QRData ) {
+    //     console.log("line 217")
+    //     this.setState({ CoreProps: this.props.QRData }, () => {console.log(this.state)});  
+    //   }
+    // }
+
+    const {
+      metric1,
+      metric2,
+      metric3,
+      metric4,
+      metric5,
+      metric6,
+      metric7,
+      metric8
+    } = this.state.CoreProps;
 
     return (
       <View style={styles.container}>
@@ -254,17 +314,14 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 1</Text>
               <TextInput
+                value={metric1}
                 ref={(input) => { this.metric1 = input; }}
                 blurOnSubmit={false}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
                 style={localStyles.input}
-                onChangeText={metric1 =>
-                  this.setState({
-                    CoreProps: { ...this.state.CoreProps, metric1 }
-                  })
-                }
+                onChangeText={metric1input => this.handleTextChange(metric1input)}
                 placeholder="Required"
                 placeholderTextColor="crimson"
               />
@@ -272,6 +329,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 2</Text>
               <TextInput
+              value={metric2}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -287,6 +345,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 3</Text>
               <TextInput
+              value={metric3}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -302,6 +361,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 4</Text>
               <TextInput
+              value={metric4}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -317,6 +377,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 5</Text>
               <TextInput
+              value={metric5}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -332,6 +393,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 6</Text>
               <TextInput
+              value={metric6}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -347,6 +409,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 7</Text>
               <TextInput
+              value={metric7}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
@@ -362,6 +425,7 @@ class NewAssetForm extends Component {
             <View style={localStyles.assetMetricInputField}>
               <Text style={localStyles.text}>Metric 8</Text>
               <TextInput
+              value={metric8}
                 autoCorrect={false}
                 spellCheck={false}
                 underlineColorAndroid='transparent'
