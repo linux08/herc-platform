@@ -68,7 +68,7 @@ export function AddAsset(newTempAsset) {
   let newAsset = newTempAsset;
   return {
     type: Reg.AddAsset,
-    newAsset: newAsset
+    newAsset
   };
 }
 

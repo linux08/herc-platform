@@ -73,11 +73,7 @@ class RegAsset2 extends Component {
         })
     }
 
-    pwChange = (char) => {
-        this.setState({
-            pasword: char
-        })
-    }
+   
     renderMetrics = () => {
         let coreProps = this.props.newAsset.CoreProps;
         let metrics = Object.keys(coreProps);
@@ -147,8 +143,8 @@ class RegAsset2 extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    newAsset: state.RegisterAssetReducers.newAsset,
-    registerFlags: state.RegisterAssetReducers,
+    newAsset: state.RegAssetReducers.newAsset,
+    registerFlags: state.RegAssetReducers,
 
     // hercId: state.AssetReducers.hercId,
     edgeAccount: state.WalletActReducers.edge_account,

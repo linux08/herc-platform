@@ -38,21 +38,22 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
         case RegAction.GotHercId:
             console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
-            return Object.assign({}, state, {
-                ...state,
+            return Object.assign({}, {
                 HercId: hercId,
                 newAsset: {
+                    ...state.INITIAL_STATE.newAsset,
                     hercId: hercId
                 },
                 flags: {
                     ...state.flags,
                     gotHercId: true
                 },
+                percentage: 0
             })
 
         case RegAction.IncreaseHercId:
 
-            return Object.assign({}, state, {
+            return Object.assign({}, {
                 ...state,
                 HercId: action.hercId
             });
@@ -66,7 +67,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
         case RegAction.AddAsset:
             console.log(action, "addassetredux");
             const newAsset = action.newAsset;
-            return Object.assign({}, state, {
+            return Object.assign({}, {
                 ...state,
                 newAsset: newAsset
             })
@@ -75,7 +76,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
         case RegAction.SettingHeaderInFirebase:
 
-            return Object.assign({}, state, {
+            return Object.assign({}, {
                 ...state,
                 flags: {
                     ...state.flags,

@@ -8,7 +8,7 @@ const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import styles from "../../assets/styles";
-import { addAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
+import { AddAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 import { AssetCard } from "../../components/AssetCard";
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
@@ -23,7 +23,7 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-            
+
         }
         this.corePropChange = this.corePropChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
@@ -32,9 +32,9 @@ class RegAsset1 extends Component {
 
     componentWillMount = () => {
         console.log(this.props, "regAsset1 Props Will mount")
-     
+        let newAsset = Object.assign({}, this.props.newAsset);
         this.setState({
-            newAsset: this.props.newAsset
+            
         })
     }
 
@@ -44,7 +44,7 @@ class RegAsset1 extends Component {
 
     renderInputs = () => {
 
-        let metrics = Object.keys(this.state.CoreProps);
+        let metrics = Object.keys(this.state.newAsset.CoreProps);
         let metricInputs = [];
 
         //  Trying to get the FIRST input to have a red placeholder 
@@ -82,15 +82,21 @@ class RegAsset1 extends Component {
     pwChange = (pwChar) => {
         console.log(pwChar, 'incompoTest Passing functions')
         this.setState({
-
-            Password: pwChar
+            ...this.state,
+            newAsset: {
+                ...this.state.newAsset,
+                Password: pwChar
+            }
         });
     }
 
     assetNameChange = (nameEdits) => {
         this.setState({
             ...this.state,
-            Name: nameEdits
+            newAsset: {
+                ...this.state.newAsset,
+                Name: nameEdits,
+            }
         })
     }
 
@@ -98,9 +104,12 @@ class RegAsset1 extends Component {
         console.log('inputValue', inputValue, "changing coreprop text", name);
         this.setState({
             ...this.state,
-            CoreProps:{
-                ...this.state.CoreProps,
-            [name]: inputValue
+            newAsset: {
+                ...this.state.newAsset,
+                CoreProps: {
+                    ...this.state.newAsset.CoreProps,
+                    [name]: inputValue
+                }
             }
         })
     }
@@ -111,17 +120,20 @@ class RegAsset1 extends Component {
         console.log("setting image, same message for gallery or camera");
         this.setState({
             ...this.state,
-            Logo: img.imageString,
-            LogoUri: img.uri
+            newAsset: {
+                ...this.state.newAsset,
+                Logo: img.imageString,
+                LogoUri: img.uri
+            }
         })
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
     onPressTest = () => {
         console.log(this.state, "this state after Reg PRess");
-       let newAsset = Object.assign({},this.state)
-       console.log(newAsset,"hopefully shallow clone")
-        this.props.addAsset(newAsset);
-        
+        let newAsset = Object.assign({}, this.state)
+        console.log(newAsset, "hopefully shallow clone")
+        this.props.AddAsset(newAsset);
+
         this.props.navigation.navigate("RegAsset2");
     }
 
@@ -129,20 +141,24 @@ class RegAsset1 extends Component {
     // seems to work 
 
     addMetric = () => {
-        let newMetricNumber = Object.keys(this.state.CoreProps).length + 1;
+        let newMetricNumber = Object.keys(this.state.newAsset.CoreProps).length + 1;
         console.log("CoreProps Length: ", newMetricNumber)
         if (newMetricNumber >= 16) {
             Alert("NO More CoreProps");
         } else {
             let newMetricName = "Metric" + newMetricNumber;
 
-            let newCoreProps = Object.assign({}, this.state.CoreProps, {
-                ...this.state.CoreProps,
+            let newCoreProps = Object.assign({}, this.state.newAsset.CoreProps, {
+                ...this.state.newAsset.CoreProps,
                 [newMetricName]: ""
             })
             console.log(newCoreProps, 'newCoreProps');
             this.setState({
-                CoreProps: newCoreProps
+                ...this.state,
+                newAsset: {
+                    ...this.state.newAsset,
+                    CoreProps: newCoreProps
+                }
             })
             // this.renderInputs();
         }
@@ -186,7 +202,7 @@ class RegAsset1 extends Component {
                     <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                        <AssetCard asset={this.state} />
+                        <AssetCard asset={this.state.newAsset} />
 
                         <RegisterButton onPress={this.onPressTest} />
                     </View>
@@ -217,13 +233,12 @@ class RegAsset1 extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    hercId: state.RegAssetReducers.hercId,
     showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
-
+    newAsset: state.RegAssetReducers.newAsset
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    addAsset: (newAsset) => dispatch(addAsset(newAsset)),
+    AddAsset: (newAsset) => dispatch(AddAsset(newAsset)),
     // getHercId: () => dispatch(getHercId()),
     toggleCamSourceModal: (show) =>
         dispatch(toggleCamSourceModal(show)),
