@@ -241,14 +241,14 @@ export function deleteAsset(key) {
 }
 
 
-export function startTrans(trans) {
-  let newtrans = trans;
+// export function startTrans(trans) {
+//   let newtrans = trans;
 
-  return {
-    type: START_TRANS,
-    data: newtrans
-  };
-}
+//   return {
+//     type: START_TRANS,
+//     data: newtrans
+//   };
+// }
 
 
 export function makePayment(makePaymentObject) {
