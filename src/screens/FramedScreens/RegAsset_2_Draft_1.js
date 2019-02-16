@@ -124,11 +124,11 @@ class RegAsset2 extends Component {
                 </View>
                 <CustomModal
                     heading={"Your Asset Is Being Written To The Blockchain"}
-                    content={this.props.registerFlags.content}
+                    content={this.props.content}
                     modalCase="progress"
                     isVisible={this.state.isVisible}
                     onBackdropPress={() => this.toggleModal()}
-                    percent={this.props.registerFlags.percentage}
+                    percent={this.props.percent}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                 />
@@ -144,7 +144,9 @@ class RegAsset2 extends Component {
 
 const mapStateToProps = (state) => ({
     newAsset: state.RegAssetReducers.newAsset,
-    registerFlags: state.RegAssetReducers.flags,
+    content: state.RegAssetReducers.content,
+    percent: state.RegAssetReducers.percentage
+
 
     // hercId: state.AssetReducers.hercId,
     // edgeAccount: state.WalletActReducers.edge_account,

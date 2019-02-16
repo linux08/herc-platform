@@ -54,7 +54,7 @@ export function GotHercId(hercId) {
 }
 
 export function IncreaseHercId() {
-  let hercIdPlus1 = store.getState().RegAssetReducers.hercId + 1;
+  let hercIdPlus1 = store.getState().RegAssetReducers.HercId + 1;
   rootRef.child("hercID").set(hercIdPlus1);
   return {
     type: Reg.Action.IncreaseHercId,
@@ -136,31 +136,30 @@ function createAndSendIpfsAsset(newAsset) {
 
 
 function makeAndSetHeader(logoUrl) {
-  return (dispatch) => {
-    let newAsset = store.getState().RegAssetReducers.newAsset;
+  let newAsset = store.getState().RegAssetReducers.newAsset;
 
-    const fbAsset = {
-      hercId: newAsset.hercId,
-      Name: newAsset.Name,
-      Logo: logoUrl,
-      Password: newAsset.Password
-    }
-    console.log("making and setting header", newAsset)
-    try {
-      assetRef.child(newAsset.Name).set(fbAsset)
-        .then(() =>
-          dispatch(Reg.SettingHeaderComplete()),
-          dispatch(Reg.IncreaseHercId())
-        );
-    }
-    catch (error) {
-      dispatch(Error(error))
-    }
-
-
+  const fbAsset = {
+    hercId: newAsset.hercId,
+    Name: newAsset.Name,
+    Logo: logoUrl,
+    Password: newAsset.Password
   }
-}
+  console.log("making and setting header", newAsset)
 
+  try {
+
+    assetRef.child(newAsset.Name).set(fbAsset,
+      function (error) {
+        store.dispatch(Error(error))
+      });
+    store.dispatch(SettingHeaderComplete());
+    store.dispatch(IncreaseHercId());
+  }
+  catch (error) {
+    store.dispatch(Error(error))
+  }
+
+}
 
 export function SettingHeaderComplete() {
   return {
@@ -168,16 +167,11 @@ export function SettingHeaderComplete() {
   }
 }
 
-
-
-
 export function RegAssetToIpfsStarted() {
   return {
     type: Reg.Action.RegAssetToIpfsStarted,
   }
 }
-
-
 
 async function newAssetToIpfs(assetForIPFS) {
 
@@ -218,14 +212,14 @@ export function RegAssetIpfsHashToFactomStarted() {
 }
 
 async function ipfsToFactom(hash) {
-  store.dispatch(RegAssetIpfsToFactomStarted())
+  store.dispatch(RegAssetIpfsHashToFactomStarted())
   var dataObject = JSON.stringify({ ipfsHash: hash })
   /* This part creates a new factom chain */
   try {
     const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
     console.log("2/3 web server factom response: ", response)
     var fctChainId = response.data;
-    store.dispatch(RegAssetFactomComplete(fctChainId));
+    store.dispatch(RegAssetIpfsHashToFactomComplete(fctChainId));
 
     var hashesForFirebase = {
       chainId: fctChainId,
@@ -258,10 +252,8 @@ export function hashesToFirebase(hashes) {
       .set(dataObject)
       .then(() =>
         store.dispatch(ConfirmAssetComplete()));
-
   } catch (error) {
     store.dispatch(Error(error))
-
   }
 }
 // Charge them now? make the payment?
