@@ -68,49 +68,32 @@ export default class SupplyChainTX extends Component {
         this.setState(ORIGNAL_STATE)
     }
 
-    clearDoc = () => {
+    //  see if this works, trying to clean up a little
+    clear = (stateProp) => {
         this.setState({
-            doc: {}
+            stateProp: {}
         })
     }
 
-    clearImage = () => {
-        this.setState({
-            img: {}
-        })
+    // clearImage = () => {
+    //     this.setState({
+    //         img: {}
+    //     })
 
-    }
-    clearMetrics = () => {
-        this.setState({
-            metrics: {}
-        })
-    }
-    clearEDI = () => {
-        this.setState({
-            edi: {}
-        })
-    }
+    // }
+    // clearMetrics = () => {
+    //     this.setState({
+    //         metrics: {}
+    //     })
+    // }
+    // clearEDI = () => {
+    //     this.setState({
+    //         edi: {}
+    //     })
+    // }
 
-    showEditModal = () => {
-        this.setState({
-            editModalVisibility: !this.state.editModalVisibility
-        })
-
-    }
-
-    showMetricModal = () => {
-        this.setState({
-            metricModalVisibility: !this.state.metricModalVisibility
-        })
-
-    }
-
-    showCamSourceModal = () => {
-        this.setState({
-            showCamSourceModal: !this.state.showCamSourceModal
-        })
-
-    }
+   
+   
 
     setEDI = (item) => {
         this.setState({

@@ -1,10 +1,12 @@
-import * as Reg from './AssetActionNames';
+import * as Asset from './AssetActionNames';
 
 import axios from 'axios';
 import store from "../../../store";
 import firebase from "../../../constants/Firebase";
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
+
+
 
 export function GetHeaders(userName) {
     console.log('gettingHeaders,')
@@ -28,7 +30,7 @@ export function GetHeaders(userName) {
 function GotHeaders(assetList) {
     return (
         {
-            type: Reg.Action.GotHeaders,
+            type: Asset.Action.GotHeaders,
             assets: assetList
         }
     )
@@ -37,7 +39,7 @@ function GotHeaders(assetList) {
 
 export function SelectedAsset(asset) {
     return {
-        type: Reg.Action.SelectedAsset,
+        type: Asset.Action.SelectedAsset,
         selectAsset: asset
     }
 }
@@ -45,7 +47,7 @@ export function SelectedAsset(asset) {
 export function GettingAssetIpfsDefintion(ipfsHash) {
         getAssetDef(ipfsHash);
         return {
-            type: Reg.Action.GettingAssetIpfsDefintion
+            type: Asset.Action.GettingAssetIpfsDefintion
         }
     }
 
@@ -67,14 +69,14 @@ function getAssetDef(ipfsHash) {
 
 export function GotAssetIpfsDefinition(assetDef) {
     return {
-        type: Reg.Action.GotAssetIpfsDefinition,
+        type: Asset.Action.GotAssetIpfsDefinition,
         ipfsDef: assetDef
     };
 }
 
 export function Error(error) {
     return {
-        type: Reg.Action.Error,
+        type: Asset.Action.Error,
         Error: error
     };
 }

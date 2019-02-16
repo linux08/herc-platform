@@ -1,21 +1,34 @@
 export const Action = {
-//   The commented out names are function outside of redux
-//  that triggers the redux
-    // GetOriginTrans,
-    GettingOriginTrans,
-    GotOriginTrans,
 
-    ClearState,
+    GettingOriginTrans: 'GettingOriginTrans',
+    GotOriginTrans: 'GotOriginTrans',
 
-    StartTransaction,
+    //  not sure what this one is for
+    GetAssetTransactions: 'GetAssetTransactions',
+    GotAssetTransactions: 'GotAssetTransactions',
 
-    AddPhoto,
-    AddDoc,
-    AddMetrics,
-    AddEdiT,
-    
-    SendTransaction,
-    TransactionComplete,
-    TransactionError,
+    ClearState: 'ClearState',
+
+    StartTransaction: 'StartTransaction',
+
+    AddPhoto: 'AddPhoto',
+    AddDoc: 'AddDoc',
+    AddMetrics: 'AddMetrics',
+    AddEdiT: 'AddEdiT',
+
+    SendTransaction: 'SendTransaction',
+    IpfsComplete: 'IpfsComplete',
+    StorjComplete: 'StorjComplete',
+    FactomComplete: 'FactomComplete',
+    TransactionComplete: 'TransactionComplete',
+
+
+    ShowMetricModal: 'ShowMetricModal',
+    ShowCamSourceModal: 'ShowCamSourcModal',
+    ShowEditModal: 'ShowEditModal',
+
+
+    MakePayment: 'MakePayment',
+    Error: 'Error',
 
 }

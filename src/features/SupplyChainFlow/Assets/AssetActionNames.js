@@ -3,16 +3,16 @@
 
 export const Action = {
     ClearState: 'ClearState',
-    
-    GetHeaders: 'GetHeaders', 
+
+    GetHeaders: 'GetHeaders',
     GotHeaders: 'GotHeaders',
-  
+
     SelectedAsset: 'SelectedAsset',
 
     GettingAssetIpfsDefintion: 'GettingAssetIpfsDefinition',
     GotAssetIpfsDefinition: 'GotAssetDef',
     Error: 'Error',
-    
+
 }
 
 
