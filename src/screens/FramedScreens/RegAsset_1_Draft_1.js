@@ -34,7 +34,7 @@ class RegAsset1 extends Component {
         console.log(this.props, "regAsset1 Props Will mount")
         let newAsset = Object.assign({}, this.props.newAsset);
         this.setState({
-            
+            newAsset
         })
     }
 
@@ -132,7 +132,7 @@ class RegAsset1 extends Component {
         console.log(this.state, "this state after Reg PRess");
         let newAsset = Object.assign({}, this.state)
         console.log(newAsset, "hopefully shallow clone")
-        this.props.AddAsset(newAsset);
+        this.props.AddAsset(this.state.newAsset);
 
         this.props.navigation.navigate("RegAsset2");
     }

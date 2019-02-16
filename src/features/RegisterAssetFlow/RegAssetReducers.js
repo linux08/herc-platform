@@ -1,4 +1,4 @@
-import * as RegAction from './RegAssetActionCreators';
+import * as Reg from './RegAssetActionNames';
 
 const INITIAL_STATE = {
     newAsset: {
@@ -18,7 +18,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
     console.log(action, "in regReducers")
     switch (action.type) {
 
-        case RegAction.Error:
+        case Reg.Action.Error:
             return Object.assign({}, {
                 ...state,
                 Error: {
@@ -27,7 +27,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
-        case RegAction.GetHercId:
+        case Reg.Action.GetHercId:
             return Object.assign({}, {
                 ...state,
                 flags: {
@@ -35,7 +35,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
-        case RegAction.GotHercId:
+        case Reg.Action.GotHercId:
             console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
             return Object.assign({}, {
@@ -51,20 +51,20 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 percentage: 0
             })
 
-        case RegAction.IncreaseHercId:
+        case Reg.Action.IncreaseHercId:
 
             return Object.assign({}, {
                 ...state,
                 HercId: action.hercId
             });
 
-        case RegAction.ClearState:
+        case Reg.Action.ClearState:
             return {
                 INITIAL_STATE
             }
 
 
-        case RegAction.AddAsset:
+        case Reg.Action.AddAsset:
             console.log(action, "addassetredux");
             const newAsset = action.newAsset;
             return Object.assign({}, {
@@ -74,7 +74,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
 
-        case RegAction.SettingHeaderInFirebase:
+        case Reg.Action.SettingHeaderInFirebase:
 
             return Object.assign({}, {
                 ...state,
@@ -89,7 +89,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             }
             )
 
-        case RegAction.SettingHeaderComplete:
+        case Reg.Action.SettingHeaderComplete:
             return Object.assign({}, state, {
                 ...state,
                 flags: {
@@ -100,7 +100,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
 
-        case RegAction.RegAssetToIpfsStarted:
+        case Reg.Action.RegAssetToIpfsStarted:
             return {
                 ...state,
                 flags: {
@@ -112,7 +112,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             }
 
 
-        case RegAction.RegAssetToIpfsComplete:
+        case Reg.Action.RegAssetToIpfsComplete:
             return {
                 ...state,
                 flags: {
@@ -125,7 +125,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             }
 
 
-        case RegAction.RegAssetIpfsToFactomStarted:
+        case Reg.Action.RegAssetIpfsHashToFactomStarted:
             return {
                 ...state,
                 flags: {
@@ -135,7 +135,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 percentage: state.percentage + 15
             }
 
-        case RegAction.regAssetFactomComplete:
+        case Reg.Action.RegAssetIpfsHashToFactomComplete:
             return {
                 ...state,
                 flags: {
@@ -148,7 +148,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
 
 
 
-        case RegAction.ConfirmAssetComplete:
+        case Reg.Action.ConfirmAssetComplete:
 
             return {
                 ...state,

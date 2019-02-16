@@ -117,7 +117,7 @@ const LoginNav = createSwitchNavigator(
     }
 )
 
-export default SideMenuNavigator;
+export default LoginNav;
 
     
     // HiprLanding: { screen: HiprLanding },

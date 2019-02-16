@@ -1,5 +1,5 @@
 
-import * as Reg from './RegAssetActionCreators';
+import * as Reg from './RegAssetActionNames';
 
 import firebase from "../../constants/Firebase";
 import store from '../../store';
@@ -17,14 +17,14 @@ import {
 export function Error(error) {
   console.log("general purpose error", error)
   return {
-    type: Reg.Error,
+    type: Reg.Action.Error,
     Error: error
   }
 }
 
 export function ClearState() {
   return {
-    type: Reg.ClearState,
+    type: Reg.Action.ClearState,
   }
 }
 
@@ -36,9 +36,9 @@ export function GetHercId() {
         .child("hercID")
         .once("value")
         .then((snapshot) =>
-          dispatch(Reg.GotHercId(snapshot.toJSON())))
+          dispatch(GotHercId(snapshot.toJSON())))
         .catch((error) => {
-          dispatch(Reg.Error(error))
+          dispatch(Error(error))
         }
         )
     )
@@ -48,7 +48,7 @@ export function GetHercId() {
 export function GotHercId(hercId) {
   console.log('GotHercId: ', hercId)
   return {
-    type: Reg.GotHercId,
+    type: Reg.Action.GotHercId,
     hercId: hercId
   };
 }
@@ -57,7 +57,7 @@ export function IncreaseHercId() {
   let hercIdPlus1 = store.getState().RegAssetReducers.hercId + 1;
   rootRef.child("hercID").set(hercIdPlus1);
   return {
-    type: Reg.IncreaseHercId,
+    type: Reg.Action.IncreaseHercId,
     hercId: hercIdPlus1
   }
 }
@@ -65,10 +65,10 @@ export function IncreaseHercId() {
 // Adding the new, yet to be confirmed, Asset to redux, will map on Confirm
 export function AddAsset(newTempAsset) {
   console.log(newTempAsset, "in regAsstActions")
-  let newAsset = newTempAsset;
+  // let newAsset = Object.assign({}, newTempAsset)
   return {
-    type: Reg.AddAsset,
-    newAsset
+    type: Reg.Action.AddAsset,
+    newAsset: newTempAsset
   };
 }
 
@@ -84,7 +84,7 @@ export function SettingHeaderInFirebase() {
   // settingHeaderinFirebase and Confirm Started to true.
   fetchLocalUri();
   return {
-    type: Reg.SettingHeaderInFirebase
+    type: Reg.Action.SettingHeaderInFirebase
 
   }
 }
@@ -101,8 +101,8 @@ async function fetchLocalUri() {
 
 
 async function setLogoLocation(fetchUri) {
-  const edgeAccount = 'hercstack'; // hardcoding for now, to escape login while testing.
-  // const edgeAccount = store.getState().WalletActReducers.edge_account;
+  // const edgeAccount = 'hercstack'; // hardcoding for now, to escape login while testing.
+  const edgeAccount = store.getState().WalletActReducers.edge_account;
   let newAsset = store.getState().RegAssetReducers.newAsset;
 
   let logoLocation = firebase.storage().ref('assets')
@@ -117,7 +117,7 @@ async function setLogoLocation(fetchUri) {
     createAndSendIpfsAsset(newAsset);
   }
   catch (error) {
-    store.dispatch(Reg.Error(error))
+    store.dispatch(Error(error))
   }
 
 }
@@ -154,7 +154,7 @@ function makeAndSetHeader(logoUrl) {
         );
     }
     catch (error) {
-      dispatch(Reg.Error(error))
+      dispatch(Error(error))
     }
 
 
@@ -164,7 +164,7 @@ function makeAndSetHeader(logoUrl) {
 
 export function SettingHeaderComplete() {
   return {
-    type: Reg.SettingHeaderComplete
+    type: Reg.Action.SettingHeaderComplete
   }
 }
 
@@ -173,7 +173,7 @@ export function SettingHeaderComplete() {
 
 export function RegAssetToIpfsStarted() {
   return {
-    type: REG_ASSET_T0_IPFS_STARTED,
+    type: Reg.Action.RegAssetToIpfsStarted,
   }
 }
 
@@ -181,7 +181,7 @@ export function RegAssetToIpfsStarted() {
 
 async function newAssetToIpfs(assetForIPFS) {
 
-  store.dispatch(Reg.RegAssetToIpfsStarted());
+  store.dispatch(RegAssetToIpfsStarted());
   let asset = assetForIPFS;
   console.log(asset, "trying to send to IPFS")
   // let username = store.getState().WalletActReducers.edge_account
@@ -193,10 +193,10 @@ async function newAssetToIpfs(assetForIPFS) {
     let ipfsHash = response.data.hash;
     ipfsToFactom(ipfsHash);
 
-    store.dispatch(Reg.RegAssetToIpfsComplete(ipfsHash))
+    store.dispatch(RegAssetToIpfsComplete(ipfsHash))
   }
   catch (error) {
-    store.dispatch(Reg.Error(error))
+    store.dispatch(Error(error))
   }
 
 }
@@ -204,7 +204,7 @@ async function newAssetToIpfs(assetForIPFS) {
 
 export function RegAssetToIpfsComplete(hash) {
   return {
-    type: Reg.RegAssetToIpfsComplete,
+    type: Reg.Action.RegAssetToIpfsComplete,
     ipfsHash: hash
   }
 
@@ -212,20 +212,20 @@ export function RegAssetToIpfsComplete(hash) {
 
 export function RegAssetIpfsHashToFactomStarted() {
   return {
-    type: Reg.RegAssetIpfsHashToFactomStarted
+    type: Reg.Action.RegAssetIpfsHashToFactomStarted
   }
 
 }
 
 async function ipfsToFactom(hash) {
-  store.dispatch(regAssetIpfsToFactomStarted())
+  store.dispatch(RegAssetIpfsToFactomStarted())
   var dataObject = JSON.stringify({ ipfsHash: hash })
   /* This part creates a new factom chain */
   try {
     const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
     console.log("2/3 web server factom response: ", response)
     var fctChainId = response.data;
-    store.dispatch(regAssetFactomComplete(fctChainId));
+    store.dispatch(RegAssetFactomComplete(fctChainId));
 
     var hashesForFirebase = {
       chainId: fctChainId,
@@ -236,7 +236,7 @@ async function ipfsToFactom(hash) {
     hashesToFirebase(hashesForFirebase);
 
   } catch (error) {
-    store.dispatch(factomError(error))
+    store.dispatch(Error(error))
   }
 
 }
@@ -257,10 +257,10 @@ export function hashesToFirebase(hashes) {
       .child('hashes')
       .set(dataObject)
       .then(() =>
-        store.dispatch(confirmAssetComplete()));
+        store.dispatch(ConfirmAssetComplete()));
 
   } catch (error) {
-    store.dispatch(firebaseHashesError(error))
+    store.dispatch(Error(error))
 
   }
 }
@@ -271,7 +271,7 @@ export function hashesToFirebase(hashes) {
 
 export function RegAssetIpfsHashToFactomComplete(hash) {
   return {
-    type: REG_ASSET_FACTOM_COMPLETE,
+    type: Reg.Action.RegAssetIpfsHashToFactomComplete,
     chainId: hash
   }
 
@@ -280,7 +280,7 @@ export function RegAssetIpfsHashToFactomComplete(hash) {
 export function ConfirmAssetComplete() {
   // store.dispatch(getAssets());
   return {
-    type: Reg.ConfirmAssetComplete
+    type: Reg.Action.ConfirmAssetComplete
   }
 }
 

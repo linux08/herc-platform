@@ -13,7 +13,7 @@ import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 
 import CustomModal from '../../components/modals/CustomModal';
-import { settingHeader, clearState } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
+import { SettingHeaderInFirebase } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -67,7 +67,7 @@ class RegAsset2 extends Component {
 
     onPress = () => {
         console.log("starting the test register");
-        this.props.settingHeader(this.props.newAsset.LogoUri);
+        this.props.SettingHeader(this.props.newAsset.LogoUri);
         this.setState({
             isVisible: true
         })
@@ -144,17 +144,17 @@ class RegAsset2 extends Component {
 
 const mapStateToProps = (state) => ({
     newAsset: state.RegAssetReducers.newAsset,
-    registerFlags: state.RegAssetReducers,
+    registerFlags: state.RegAssetReducers.flags,
 
     // hercId: state.AssetReducers.hercId,
-    edgeAccount: state.WalletActReducers.edge_account,
+    // edgeAccount: state.WalletActReducers.edge_account,
     // wallet: state.WalletActReducers.wallet,
     // watchBalance: state.WalletActReducers.watchBalance,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    settingHeader: () => {
-        dispatch(settingHeader())
+    SettingHeader: () => {
+        dispatch(SettingHeaderInFirebase())
     }
     // clearState: () => {
     //     dispatch(clearState())
