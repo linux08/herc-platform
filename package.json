@@ -60,6 +60,7 @@
     "react-navigation": "^2",
     "react-qr-code": "^0.1.2",
     "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.3.0",
     "url": "^0.10.3",
     "web3": "^1.0.0-beta.35"
   },
