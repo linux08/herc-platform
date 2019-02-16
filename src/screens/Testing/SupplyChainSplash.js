@@ -68,7 +68,7 @@ render() {
             <View style={styles.bodyContainer}>
 
 
-                {/* <AddAssetButton onPress={this.onPressTest} /> */}
+                <AddAssetButton onPress={this.onPressTest} />
                 <ScrollView>
                     {assetList}
                 </ScrollView>

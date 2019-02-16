@@ -69,7 +69,15 @@ export function AddMetricButton(props) {
 
 
 const localStyles = StyleSheet.create({
-   
+    buttonLabel: {
+        fontSize: 12,
+        color: ColorConstants.MainSubGray,
+        margin: 5,
+        // marginLeft: '15%',
+        alignSelf: 'center'
+
+    },
+
   
     registerButton: {
         height: heightPercentageToDP(((40 / height) * 100).toString()),
