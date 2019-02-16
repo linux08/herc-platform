@@ -4,119 +4,91 @@ import {
     View,
     StatusBar,
     Image,
+    ScrollView,
     TouchableHighlight
 } from 'react-native';
 import styles from "../../assets/styles";
 import React, { Component } from 'react';
-import TesterAssets from "../../components/TesterAssets";
+import { connect } from "react-redux";
 import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
-// AssetCard props = Name, Logo, HercId
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { GettingAssetIpfsDefintion, SelectedAsset } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
+// import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class SupplyChainSplash extends Component {
+class SupplyChainSplash extends Component {
 
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
         super(props);
         console.log("componentTest")
 
-        this.showCamModal = this.showCamModal.bind(this);
-        this.pwChange = this.pwChange.bind(this);
-
-        this.state = {
-            showCamModal: false,
-            showModal2: false
-        }
     }
 
-
-
-    onPressTest = (assetName) => {
-
-        console.log(assetName, "I got Pressed!")
-        this.props.navigation.navigate('SupplyChainSideChoice', { headerName: assetName });
+    onSelectAsset = (assetIndex) => {
+        this.props.SelectedAsset(this.props.assets[assetIndex]);
+        // console.log(assetName, "I got Pressed!")
+        this.props.navigation.navigate('SupplyChainSideChoice',{ headerName: this.props.assets[assetIndex].Name});
     }
 
     renderAssets = () => {
 
-        let assetList = []
-        TesterAssets.map((x, i) => {
+       return assetList = this.props.assets.map((x, i) => {
             console.log(x, i)
-            assetList.push(
-                <TouchableHighlight key={i} onPress={() => this.onPressTest(x.Name)}>
+            return (
+                <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
                     <AssetCard asset={x} />
                 </TouchableHighlight>
             )
-        })
-
-        console.log(assetList.length, "in renderAssets func");
-        return assetList;
-    }
-
-    showCamModal = () => {
-        console.log(this.state.showCamModal, "showCamModal");
-        this.setState({
-            showCamModal: !this.state.showCamModal
-        })
-        console.log(this.state.showCamModal, "showCamModal---after");
-    }
-
-    changeModal2 = () => {
-        console.log(this.state.showModal2, "showmodal2");
-        this.setState({
-            showModal2: !this.state.showModal2
-        })
-        console.log(this.state.showModal2, "showmodal2after");
-    }
-
-
-    pwChange = (pwChar) => {
-        console.log(pwChar, 'incompoTest Passing functions')
-        this.setState({
-            Password: pwChar
-        });
-    }
-
-    localOnChange = (inputValue, name) => {
-        console.log('inputValue', inputValue, "changing metric text", name);
-        this.setState({
-            [name]: inputValue
-        })
-    }
-
-    render() {
-
-        console.log(TesterAssets, "testerAssets")
-        let assetList = this.renderAssets();
-        return (
-
-            <View style={styles.baseContainer}>
-                <StatusBar
-                    barStyle={'light-content'}
-                    translucent={true}
-                    backgroundColor='transparent'
-
-                />
-                <View style={styles.bodyContainer}>
-
-
-                    <AddAssetButton onPress={this.onPressTest} />
-
-                    {assetList}
-
-                    <Text>Hello</Text>
-
-                    <CameraSourceModal showCamModal={this.state.showCamModal} />
-
-                    {/* Modal 1 */}
-
-
-                </View>
-            </View >
+        }
         )
     }
+
+    
+
+
+localOnChange = (inputValue, name) => {
+    console.log('inputValue', inputValue, "changing metric text", name);
+    this.setState({
+        [name]: inputValue
+    })
 }
+
+render() {
+
+    let assetList = this.renderAssets();
+    return (
+
+        <View style={styles.baseContainer}>
+            <StatusBar
+                barStyle={'light-content'}
+                translucent={true}
+                backgroundColor='transparent'
+
+            />
+            <View style={styles.bodyContainer}>
+
+
+                {/* <AddAssetButton onPress={this.onPressTest} /> */}
+                <ScrollView>
+                    {assetList}
+                </ScrollView>
+
+            </View>
+        </View>
+    )
+}
+}
+
+const mapStateToProps = state => ({
+    assets: state.AssetReducers.assets
+});
+
+const mapDispatchToProps = dispatch => ({
+    SelectedAsset: asset => dispatch(SelectedAsset(asset)),
+    GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSplash);
 
 // const localStyles = StyleSheet.create({
 

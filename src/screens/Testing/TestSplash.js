@@ -90,7 +90,7 @@ class TestSplash extends Component {
                 <View style={[localStyles.baseContainer, localStyles.bodyContainer]}>
 
 
-                    <Button title='Continue' onPress={() => this.props.navigation.navigate('RegAsset1')} />
+                    <Button title='Continue' onPress={() => this.props.navigation.navigate('SupplyChainNavigator')} />
                 </View>
 
                 {/* <CustomModal

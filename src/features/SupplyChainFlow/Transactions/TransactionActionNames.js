@@ -1,4 +1,4 @@
-export const transactionActionNames = {
+export const Action = {
 //   The commented out names are function outside of redux
 //  that triggers the redux
     // GetOriginTrans,

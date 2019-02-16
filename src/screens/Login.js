@@ -16,7 +16,7 @@ import axios from 'axios';
 import hercLogoPillar from "../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
 import { getUsername, getAccount, authToken, getEthAddress, getWallet, updateBalances } from "../actions/WalletActActions";
-import { getAssets, clearState } from "../actions/AssetActions";
+import { GetHeaders, ClearState } from "../features/SupplyChainFlow/Assets/AssetActionCreators";
 
 import { getOrganization } from "../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../components/settings";
@@ -94,7 +94,7 @@ class Login extends Component {
           const { navigate } = this.props.navigation;
 
           // this.props.getHercId();
-          this.props.getAssets(this.props.username);
+          this.props.GetHeaders(this.props.username);
           this.props.getOrganization();
 
           if (results[1].data && results[1].data == true) {
@@ -186,9 +186,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     // getHercId: () => dispatch(getHercId()),
-    getAssets: (name) => dispatch(getAssets(name)),
+    GetHeaders: (name) => dispatch(GetHeaders(name)),
     getOrganization: () => dispatch(getOrganization()),
-    clearState: () => dispatch(clearState()),
+    ClearState: () => dispatch(ClearState()),
 
     updateBalances: (newBalances) => dispatch(updateBalances(newBalances)),
     getUsername: (edge_account) => dispatch(getUsername(edge_account)),

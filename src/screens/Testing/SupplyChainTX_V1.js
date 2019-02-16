@@ -19,9 +19,9 @@ import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, Edi
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 import { connect } from 'react-redux';
-import assets from "../../components/TesterAssets";
+// import assets from "../../components/TesterAssets";
 
-var ImagePicker = require('react-native-image-picker');
+// var ImagePicker = require('react-native-image-picker');
 const { height, width } = Dimensions.get('window');
 
 import {
@@ -29,6 +29,7 @@ import {
 } from "../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+
 const ORIGNAL_STATE = {
     metricModalVisibility: false,
     showCamSourceModal: false,
@@ -38,6 +39,7 @@ const ORIGNAL_STATE = {
     edi: {},
     metrics: {}
 }
+
 export default class SupplyChainTX extends Component {
     navigationOptions = ({ navigation }) => {
         return {
@@ -117,33 +119,7 @@ export default class SupplyChainTX extends Component {
         this.showEditModal();
     }
 
-    // _pickImage = () => {
-
-    //     ImagePicker.launchImageLibrary({}, (response) => {
-
-    //         if (response.didCancel) {
-    //             console.log('ImageUpload Camera: User cancelled image picker');
-    //         }
-    //         else if (response.error) {
-    //             console.log('ImageUpload Camera: ImagePicker Error: ', response.error);
-    //         }
-    //         else if (response.customButton) {
-    //             console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
-    //         }
-    //         else {
-    //             let source = { uri: response.uri };
-    //             this.setState({
-    //                 img: {
-    //                     name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
-    //                     image: "data:image/jpg;base64," + response.data,
-    //                     size: response.fileSize,
-    //                     uri: source
-    //                 }
-    //             });
-    //             this.showCamSourceModal();
-    //         }
-    //     });
-    // }
+   
 
     _pickDocument = () => {
         DocumentPicker.show({

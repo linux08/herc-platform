@@ -77,12 +77,15 @@ const MainNavigator = createStackNavigator({
         })
     },
     SupplyChainNavigator: {
-        screen: SupplyChainNavigator
+        screen: SupplyChainNavigator,
+        navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
+        })
     }
 
 },
     {
-        initialRouteName: 'TestSplash',
+        initialRouteName: 'SupplyChainNavigator',
         headerMode: 'screen',
     } 
 )

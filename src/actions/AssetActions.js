@@ -1,29 +1,23 @@
 import {
-  // ADD_ASSET,
   ADD_DOC,
   ADD_METRICS,
   ADD_PHOTO,
-  // SETTING_HEADER,
-  // SETTING_HEADER_ERROR,
-  // CONFIRM_STARTED,
+  
   GOT_IPFS,
   IPFS_ERROR,
   GOT_FACT,
   FACTOM_ERROR,
-  // CONFIRM_ASSET_COMPLETE,
   DELETE_ASSET,
-  GET_ASSETS,
-  GETTING_ASSET_DEF,
-  // GET_HERC_ID,
-  GET_ORIGIN_TRANS,
+  // GET_ASSETS,
+  // GETTING_ASSET_DEF,
+  // GET_ORIGIN_TRANS,
   GET_QR_DATA,
-  GET_TRANS,
+  // GET_TRANS,
   GOT_ASSET_DEF,
   ASSET_DEF_ERROR,
   GOT_ASSET_TRANS,
   GOT_HERC_ID,
   GOT_LIST_ASSETS,
-  // INC_HERC_ID,
   SELECT_ASSET,
   START_TRANS,
   SEND_TRANS,
@@ -89,80 +83,80 @@ export function clearState() {
 
 
 
-export function getAssets(userName) {
-  return dispatch => {
-    let assetLabels = [];
-    assetRef.once("value")
-      .then(snapshot => {
-        snapshot.forEach(asset => {
-          assetLabels.push(
-            asset.toJSON()
-            // ipfsHash: asset.toJSON().ipfsHash,
-            // chainId: asset.toJSON().chainID
-          );
-        })
-      }).then(() => {
-        dispatch(gotListAssets(assetLabels))
-      })
-  }
-}
+// export function getAssets(userName) {
+//   return dispatch => {
+//     let assetLabels = [];
+//     assetRef.once("value")
+//       .then(snapshot => {
+//         snapshot.forEach(asset => {
+//           assetLabels.push(
+//             asset.toJSON()
+//             // ipfsHash: asset.toJSON().ipfsHash,
+//             // chainId: asset.toJSON().chainID
+//           );
+//         })
+//       }).then(() => {
+//         dispatch(gotListAssets(assetLabels))
+//       })
+//   }
+// }
 
 
-function gotListAssets(assetList) {
-  return (
-    {
-      type: GOT_LIST_ASSETS,
-      assets: assetList
-    }
-  )
-}
+// function gotListAssets(assetList) {
+//   return (
+//     {
+//       type: GOT_LIST_ASSETS,
+//       assets: assetList
+//     }
+//   )
+// }
 
-export function selectAsset(asset) {
-  return {
-    type: SELECT_ASSET,
-    selectAsset: asset
-  }
-}
+// export function selectAsset(asset) {
+//   return {
+//     type: SELECT_ASSET,
+//     selectAsset: asset
+//   }
+// }
 
-export function getAssetDef(ipfsHash) {
-  return dispatch => {
-    dispatch(gettingAssetDef(ipfsHash))
-    return {
-      type: GETTING_ASSET_DEF
-    }
-  }
-}
+// export function getAssetDef(ipfsHash) {
+//   return dispatch => {
+//     dispatch(gettingAssetDef(ipfsHash))
+//     return {
+//       type: GETTING_ASSET_DEF
+//     }
+//   }
+// }
 
-export function gettingAssetDef(ipfsHash) {
-  return dispatch => {
-    let singleHash = ipfsHash;
-    axios.get(WEB_SERVER_API_IPFS_GET, { params: singleHash })
-      .then(response => {
-        let assetDef = response.data[0];
-        return assetDef
-      })
-      .then((assetDef) => dispatch(gotAssetDef(assetDef)))
-      .catch(error => {
-        dispatch(assetDefError(error)),
-          console.log(err)
-      })
-  }
-}
+// export function gettingAssetDef(ipfsHash) {
+//   return dispatch => {
+//     let singleHash = ipfsHash;
+//     axios.get(WEB_SERVER_API_IPFS_GET, { params: singleHash })
+//       .then(response => {
+//         let assetDef = response.data[0];
+//         return assetDef
+//       })
+//       .then((assetDef) => dispatch(gotAssetDef(assetDef)))
+//       .catch(error => {
+//         dispatch(assetDefError(error)),
+//           console.log(err)
+//       })
+//   }
+// }
 
-export function gotAssetDef(assetDef) {
-  return {
-    type: GOT_ASSET_DEF,
+// export function gotAssetDef(assetDef) {
+//   return {
+//     type: GOT_ASSET_DEF,
 
-    ipfsDef: assetDef
-  };
-}
+//     ipfsDef: assetDef
+//   };
+// }
 
-export function assetDefError(error) {
-  return {
-    type: ASSET_DEF_ERROR,
-    error
-  };
-}
+// export function assetDefError(error) {
+//   return {
+//     type: ASSET_DEF_ERROR,
+//     error
+//   };
+// }
 
 
 
@@ -235,57 +229,7 @@ export function assetDefError(error) {
 //   }
 // }
 
-export function gotIpfs(hash) {
-  let assetName = store.getState().AssetReducers.newAsset.Name;
-  assetRef.child(assetName).child('ipfsHash').set(hash)
-  then(() => {
-    return {
-      type: GOT_IPFS,
-      ipfs: hash
-    }
 
-  }).catch(error => dispatch(ipfsError(error)))
-}
-
-export function ipfsError(error) {
-  // TODO: ipfsError should turn off confirmationScreenModal and popup an alert
-  return {
-    type: IPFS_ERROR,
-    error
-  }
-}
-
-export function gotFact(hash) {
-  let assetName = store.getState().AssetReducers.newAsset.Name;
-  assetRef.child(assetName).child('chainId').set(hash)
-  then(() => {
-    return {
-      type: GOT_FACT,
-      chainId: hash
-    }
-
-  }).catch(error => dispatch(factomError(error)))
-
-
-  return {
-    type: GOT_IPFS,
-    fctHash: hash
-  }
-
-}
-
-export function factomError(error) {
-  return {
-    type: FACTOM_ERROR,
-    error
-  }
-}
-
-// export function confirmAssetComplete() {
-//   return {
-//     type: CONFIRM_ASSET_COMPLETE
-//   }
-// }
 
 
 export function deleteAsset(key) {

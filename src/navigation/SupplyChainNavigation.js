@@ -24,30 +24,29 @@ const SupplyChainNavigator = createStackNavigator(
         SupplyChainTx: {
             screen: SupplyChainTx,
             navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
+                header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
             })
 
         },
         SupplyChainMetrics: {
             screen: SupplyChainMetrics,
             navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
+                header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
             })
 
         },
-        Camera: {
-            screen: Camera,
+       
             // navigationOptions: ({ navigation }) => ({
             //     header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
             // })
 
-        }
+        // }
 
 
 
     },
     {
-        initialRouteName: 'SupplyChainTx',
+        initialRouteName: 'SupplyChainSplash',
         headerMode: 'none',
         // navigationOptions: ({ navigation }) => ({
         //     header: <Header headerTitle={"Asset Name"} navigation={navigation} />

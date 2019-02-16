@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 // import Assets from './Assets';
 import Web3Reducers from './Web3Reducers';
-import AssetReducers from './AssetReducers';
+// import AssetReducers from './AssetReducers';
+import AssetReducers from '../features/SupplyChainFlow/Assets/AssetReducers';
 import RegAssetReducers from '../features/RegisterAssetFlow/RegAssetReducers';
 import TransactionDataReducers from './TransactionDataReducers';
 import WalletActReducers from './WalletActReducers';
