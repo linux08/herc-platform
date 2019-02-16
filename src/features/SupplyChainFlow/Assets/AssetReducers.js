@@ -7,6 +7,8 @@ const rootRef = firebase.database().ref();
 
 const INITIAL_STATE = {
     selectedAsset: {},
+    assetFetched: false,
+    showPasswordModal: false,
     assets: []
 }
 
@@ -16,6 +18,12 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
 
         case Asset.Action.ClearState:
             return INITIAL_STATE
+
+        case Asset.Action.ShowPasswordModal:
+        return {
+            ...state,
+            isVisible: action.isVisible
+        }
 
         case Asset.Action.GotHeaders:
             console.log("getHeader reducer", action)
@@ -53,6 +61,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 ...state,
                 assetFetched: true,
+                showPasswordModal: true,
                 selectedAsset: action.selectAsset
             })
 

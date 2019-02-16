@@ -7,6 +7,12 @@ const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 
 
+export function ShowPasswordModal(isViz) {
+    return {
+        type: Asset.Action.ShowPasswordModal,
+        isVisible: isViz
+    }
+}
 
 export function GetHeaders(userName) {
     console.log('gettingHeaders,')
@@ -45,11 +51,11 @@ export function SelectedAsset(asset) {
 }
 
 export function GettingAssetIpfsDefintion(ipfsHash) {
-        getAssetDef(ipfsHash);
-        return {
-            type: Asset.Action.GettingAssetIpfsDefintion
-        }
+    getAssetDef(ipfsHash);
+    return {
+        type: Asset.Action.GettingAssetIpfsDefintion
     }
+}
 
 
 function getAssetDef(ipfsHash) {

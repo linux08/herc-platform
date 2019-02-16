@@ -27,6 +27,7 @@ export function AddAssetButton(props) {
                     color={'white'}
                     name='plus-circle'
                     onPress={props.onPress}
+
                 >
                 </Icon>
 

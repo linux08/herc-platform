@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import CustomModal from "../../components/modals/CustomModal";
 import { ClearState, GetHercId }  from '../../features/RegisterAssetFlow/RegAssetActionCreators';
+import { GetHeaders } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
 
 class TestSplash extends Component {
     navigationOptions = ({ navigation, screenProps }) => ({
@@ -36,6 +37,7 @@ class TestSplash extends Component {
     componentDidMount = () => {
         console.log("function??")
         this.props.GetHercId();
+        this.props.GetHeaders();
     }
 
     // componentWillUnmount = () => {
@@ -110,7 +112,8 @@ class TestSplash extends Component {
 
 const mapDispatchToProps = (dispatch ) => ({
     GetHercId: () => dispatch(GetHercId()),
-    ClearState: () => dispatch(ClearState())
+    ClearState: () => dispatch(ClearState()),
+    GetHeaders: () => dispatch(GetHeaders())
 })
 export default connect(null, mapDispatchToProps)(TestSplash); 
 

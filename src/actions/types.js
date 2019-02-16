@@ -1,6 +1,6 @@
 
 
-export const CLEAR_STATE = 'clearState';
+// export const CLEAR_STATE = 'clearState';
 
 
 //  Ive removed the types that have been moved to another file.
@@ -12,9 +12,9 @@ export const CLEAR_STATE = 'clearState';
 
 
 ///// ASSET TYPES //////
-export const GET_ASSETS = 'getAssets';
-export const LIST_ASSETS = 'listAssets';
-export const GOT_LIST_ASSETS = 'gotListAssets';
+// export const GET_ASSETS = 'getAssets';
+// export const LIST_ASSETS = 'listAssets';
+// export const GOT_LIST_ASSETS = 'gotListAssets';
 
 ///// ASSET DEFINITION TYPES
 // export const GET_ASSET_DEF = 'getAssetDef';

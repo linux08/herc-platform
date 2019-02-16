@@ -12,6 +12,10 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
+import { ShowPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+
+import AssetPasswordModal from '../../components/modals/AssetPasswordModal';
+
 import { GettingAssetIpfsDefintion, SelectedAsset } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
@@ -21,18 +25,24 @@ class SupplyChainSplash extends Component {
         // console.log(this.props.navigation, "navigation??")
         super(props);
         console.log("componentTest")
-
+        this.checkPassword = this.checkPassword.bind(this);
     }
 
     onSelectAsset = (assetIndex) => {
         this.props.SelectedAsset(this.props.assets[assetIndex]);
-        // console.log(assetName, "I got Pressed!")
-        this.props.navigation.navigate('SupplyChainSideChoice',{ headerName: this.props.assets[assetIndex].Name});
+    }
+
+    checkPassword = (pass) => {
+        if (this.props.selectedAsset.Password === pass) {
+            return true
+        } else {
+            return false
+        }
     }
 
     renderAssets = () => {
 
-       return assetList = this.props.assets.map((x, i) => {
+        return assetList = this.props.assets.map((x, i) => {
             console.log(x, i)
             return (
                 <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
@@ -43,47 +53,51 @@ class SupplyChainSplash extends Component {
         )
     }
 
-    
+   
 
+    render() {
 
-localOnChange = (inputValue, name) => {
-    console.log('inputValue', inputValue, "changing metric text", name);
-    this.setState({
-        [name]: inputValue
-    })
-}
+        let assetList = this.renderAssets();
+        return (
 
-render() {
+            <View style={styles.baseContainer}>
+                <StatusBar
+                    barStyle={'light-content'}
+                    translucent={true}
+                    backgroundColor='transparent'
 
-    let assetList = this.renderAssets();
-    return (
+                />
+                <View style={styles.bodyContainer}>
 
-        <View style={styles.baseContainer}>
-            <StatusBar
-                barStyle={'light-content'}
-                translucent={true}
-                backgroundColor='transparent'
+                    <AddAssetButton onPress={() => this.props.navigation.navigate('RegisterAssetNavigator')} />
 
-            />
-            <View style={styles.bodyContainer}>
+                    <ScrollView>
+                        {assetList}
+                    </ScrollView>
 
+                </View>
 
-                <AddAssetButton onPress={this.onPressTest} />
-                <ScrollView>
-                    {assetList}
-                </ScrollView>
-
+                <AssetPasswordModal
+                    heading={'Enter Asset Password'}
+                    isVisible={this.props.showPasswordModal}
+                    checkPassword={this.checkPassword}
+                    ShowPasswordModal={this.props.ShowPasswordModal}
+                />
             </View>
-        </View>
-    )
+        )
+    }
 }
-}
+
 
 const mapStateToProps = state => ({
-    assets: state.AssetReducers.assets
+    assets: state.AssetReducers.assets,
+    selectedAsset: state.AssetReducers.selectedAsset,
+    assetFetched: state.AssetReducers.assetFetched,
+    showPasswordModal: state.AssetReducers.showPasswordModal,
 });
 
 const mapDispatchToProps = dispatch => ({
+    ShowPasswordModal: visible => dispatch(ShowPasswordModal(visible)),
     SelectedAsset: asset => dispatch(SelectedAsset(asset)),
     GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
 });

@@ -85,7 +85,7 @@ const MainNavigator = createStackNavigator({
 
 },
     {
-        initialRouteName: 'SupplyChainNavigator',
+        initialRouteName: 'TestSplash',
         headerMode: 'screen',
     } 
 )
@@ -120,7 +120,7 @@ const LoginNav = createSwitchNavigator(
     }
 )
 
-export default LoginNav;
+export default MainNavigator;
 
     
     // HiprLanding: { screen: HiprLanding },

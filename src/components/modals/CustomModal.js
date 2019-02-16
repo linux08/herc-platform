@@ -115,20 +115,20 @@ export default class CustomModal extends Component {
                     </TouchableOpacity>
                 </View>)
         }
-        else if (this.props.modalCase === 'imageSource') {
-            return (
-                <View style={localStyles.modalBackground}>
-                    <Text>{this.state.heading}</Text>
-                    <TouchableOpacity onPress={this.props.closeModal}>
-                        <SimpleIcon name='camera' size={32} />
-                        <Text>Camera</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.props.closeModal}>
-                        <SimpleIcon name='picture' size={32} />
-                        <Text>Gallery</Text>
-                    </TouchableOpacity>
-                </View>)
-        }
+        // else if (this.props.modalCase === 'imageSource') {
+        //     return (
+        //         <View style={localStyles.modalBackground}>
+        //             <Text>{this.state.heading}</Text>
+        //             <TouchableOpacity onPress={this.props.closeModal}>
+        //                 <SimpleIcon name='camera' size={32} />
+        //                 <Text>Camera</Text>
+        //             </TouchableOpacity>
+        //             <TouchableOpacity onPress={this.props.closeModal}>
+        //                 <SimpleIcon name='picture' size={32} />
+        //                 <Text>Gallery</Text>
+        //             </TouchableOpacity>
+        //         </View>)
+        // }
         else if (this.props.modalCase === 'add') {
             return (
                 <View style={localStyles.modalBackground}>

@@ -8,10 +8,3 @@ export function toggleCamSourceModal(toggle) {
 
 }
 
-export function toggleCameraModal(toggle) {
-    return {
-        type: TOGGLE_CAMERA_MODAL,
-        visible: toggle
-    };
-
-}
