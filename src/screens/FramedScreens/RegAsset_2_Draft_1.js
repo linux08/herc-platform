@@ -13,7 +13,7 @@ import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 
 import CustomModal from '../../components/modals/CustomModal';
-import { settingHeader, clearState } from '../../features/RegisterAssetActions';
+import { SettingHeaderInFirebase } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { AssetCard } from "../../components/AssetCard";
 import { RegisterButton } from '../../components/RegisterAssetComponents/RegisterAssetInputs';
 import {
@@ -67,17 +67,13 @@ class RegAsset2 extends Component {
 
     onPress = () => {
         console.log("starting the test register");
-        this.props.settingHeader(this.props.newAsset.LogoUri);
+        this.props.SettingHeader(this.props.newAsset.LogoUri);
         this.setState({
             isVisible: true
         })
     }
 
-    pwChange = (char) => {
-        this.setState({
-            pasword: char
-        })
-    }
+   
     renderMetrics = () => {
         let coreProps = this.props.newAsset.CoreProps;
         let metrics = Object.keys(coreProps);
@@ -128,11 +124,11 @@ class RegAsset2 extends Component {
                 </View>
                 <CustomModal
                     heading={"Your Asset Is Being Written To The Blockchain"}
-                    content={this.props.registerFlags.content}
+                    content={this.props.content}
                     modalCase="progress"
                     isVisible={this.state.isVisible}
                     onBackdropPress={() => this.toggleModal()}
-                    percent={this.props.registerFlags.percentage}
+                    percent={this.props.percent}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                 />
@@ -147,18 +143,20 @@ class RegAsset2 extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    newAsset: state.RegisterAssetReducers.newAsset,
-    registerFlags: state.RegisterAssetReducers,
+    newAsset: state.RegAssetReducers.newAsset,
+    content: state.RegAssetReducers.content,
+    percent: state.RegAssetReducers.percentage
+
 
     // hercId: state.AssetReducers.hercId,
-    edgeAccount: state.WalletActReducers.edge_account,
+    // edgeAccount: state.WalletActReducers.edge_account,
     // wallet: state.WalletActReducers.wallet,
     // watchBalance: state.WalletActReducers.watchBalance,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    settingHeader: () => {
-        dispatch(settingHeader())
+    SettingHeader: () => {
+        dispatch(SettingHeaderInFirebase())
     }
     // clearState: () => {
     //     dispatch(clearState())
