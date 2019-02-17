@@ -18,7 +18,7 @@ import {
   PermissionsAndroid
 } from "react-native";
 import firebase from "firebase";
-import Firebase from "../constants/Firebase";
+import Firebase from "../../constants/Firebase";
 import hercLogo from "../assets/hercLogoBreak.png";
 import {
   DocumentPicker,
@@ -26,13 +26,13 @@ import {
 } from "react-native-document-picker";
 var RNFS = require("react-native-fs");
 import QRCode from "react-qr-code";
-import styles from "../assets/styles";
+import styles from "../../assets/styles";
 import { RNCamera } from "react-native-camera";
 import axios from "axios";
 import { WEB_SERVER_API_SHORTEN_URL } from "../components/settings";
-import store from "../store";
+import store from "../../store";
 import BigNumber from "bignumber.js";
-import { addDocStorage, sendTrans } from "../actions/AssetActions";
+import { addDocStorage, sendTrans } from "../../actions/AssetActions";
 import { TOKEN_ADDRESS } from "../components/settings";
 import { captureRef } from "react-native-view-shot";
 

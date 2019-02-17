@@ -11,7 +11,7 @@ import {
   Linking
 } from "react-native";
 import React from "react";
-import styles from "../assets/styles";
+import styles from "../../assets/styles";
 import round from "../assets/round.png";
 import plus from "../assets/plus.png"; // todo: turn into vector
 import { connect } from "react-redux";

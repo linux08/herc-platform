@@ -3,11 +3,11 @@ import { createStackNavigator } from "react-navigation";
 
 import Header from "../components/Headers/Header";
 
-import Camera from "../screens/Camera";
-import SupplyChainSplash from "../screens/Testing/SupplyChainSplash";
-import SupplyChainSideChoice from "../screens/Testing/SupplyChainSideChoice";
-import SupplyChainTx from "../screens/Testing/SupplyChainTX_V1";
-import SupplyChainMetrics from  "../screens/Testing/SupplyChainMetrics";
+import Camera from "../screens/MainApp/Camera";
+import SupplyChainSplash from "../screens/SupplyChain/SupplyChainSplash";
+import SupplyChainSideChoice from "../screens/SupplyChain/SupplyChainSideChoice";
+import SupplyChainTx from "../screens/SupplyChain/SupplyChainTX_V1";
+import SupplyChainMetrics from  "../screens/SupplyChain/SupplyChainMetrics";
 
 const SupplyChainNavigator = createStackNavigator(
     {

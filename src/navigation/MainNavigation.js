@@ -10,25 +10,25 @@ import {
 import React, { Component } from "react";
 import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from "react-navigation";
 
-import BlockScanner from "../screens/BlockScanner";
+import BlockScanner from "../screens/MainApp/BlockScanner";
 import Confirm from "../screens/Confirm";
 
 import Hipr from "../screens/Hipr";
 import HiprTransactions from "../screens/HiprTransactions";
-import Login from "../screens/Login";
+import Login from "../screens/MainApp/Login";
 
 import HiprLanding from "../screens/HiprLanding";
-import TxSwiperContainer from "../screens/TxSwiperContainer";
+import TxSwiperContainer from "../screens/MainApp/TxSwiperContainer";
 import TxSwiper from "../components/TxSwiper";
-import Wallet from "../screens/Wallet";
-import Settings from "../screens/Settings";
+import Wallet from "../screens/MainApp/Wallet";
+import Settings from "../screens/MainApp/Settings";
 import QRCapture from "../screens/QRCapture";
 import QRCapture2 from "../screens/QRCapture2";
 import WebViewComponent from "../components/WebViewComponent";
-import DocumentStorage from "../screens/DocumentStorage";
-import DocumentQRScanner from "../screens/DocumentQRScanner";
+import DocumentStorage from "../screens/MainApp/DocumentStorage";
+import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
 
-import TestSplash from "../screens/Testing/TestSplash";
+import TestSplash from "../screens/MainApp/TestSplash";
 
 import Header from "../components/Headers/Header";
 import SideNavMenu from "../components/SideNavMenu"

@@ -11,7 +11,7 @@ import {
   WebView,
   Linking
 } from "react-native";
-import styles from "../assets/styles";
+import styles from "../../assets/styles";
 import { VERSION } from '../components/settings.js'
 import contributeIcon from "../assets/icons/contributeIcon.png";
 import discordIcon from "../assets/icons/discordIcon.png";
@@ -26,8 +26,8 @@ import termsAndConditionsIcon from "../assets/icons/termsAndConditionsIcon.png";
 import twitterIcon from "../assets/icons/twitterIcon.png"; //todo: turn into vector
 import versionIcon from "../assets/icons/versionIcon.png";
 import { connect } from "react-redux";
-import firebase from '../constants/Firebase';
-import store from '../store';
+import firebase from '../../constants/Firebase';
+import store from '../../store';
 
 
 export class Settings extends Component {

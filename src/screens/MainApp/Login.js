@@ -15,14 +15,14 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import hercLogoPillar from "../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
-import { getUsername, getAccount, authToken, getEthAddress, getWallet, updateBalances } from "../actions/WalletActActions";
-import { GetHeaders, ClearState } from "../features/SupplyChainFlow/Assets/AssetActionCreators";
+import { getUsername, getAccount, authToken, getEthAddress, getWallet, updateBalances } from "../../actions/WalletActActions";
+import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
-import { getOrganization } from "../actions/WalletActActions";
+import { getOrganization } from "../../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
 import { EDGE_API_KEY } from '../components/settings.js'
-import firebase from "../constants/Firebase";
+import firebase from "../../constants/Firebase";
 
 class Login extends Component {
   static navigationOptions = {

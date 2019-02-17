@@ -3,9 +3,9 @@ import { createStackNavigator } from "react-navigation";
 import { connect } from "react-redux";
 import Header from "../components/Headers/Header";
 
-import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
-import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
-import RegAsset2 from "../screens/FramedScreens/RegAsset_2_Draft_1";
+import RegAssetSplashTest from "../screens/RegisterAsset/RegAssetSplash_Draft_1";
+import RegAsset1 from "../screens/RegisterAsset/RegAsset_1_Draft_1";
+import RegAsset2 from "../screens/RegisterAsset/RegAsset_2_Draft_1";
 
 const RegisterAssetNavigator = createStackNavigator(
     {

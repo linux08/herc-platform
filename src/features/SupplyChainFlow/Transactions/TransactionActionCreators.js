@@ -41,14 +41,6 @@ export function ShowEditModal() {
     type: Trans.Action.ShowEditModal
 }
 
-
-//  think I got it.
-// TODO: OOP pick asset..done, pick recip => enter password => 
-// get Origin Trans Info => Create transHeader with originTrans info =>
-//  proceed with transaction creation. 
-
-
-
 export function StartTransaction(place, pw) {
     if (place === 'Recipient') {
         getOriginTrans(pw)
@@ -101,6 +93,7 @@ getOriginTrans = (password) => {
             }
         }
     };
+}
 
 export function SetOgTransInfo(info) {
     return{

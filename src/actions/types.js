@@ -29,15 +29,15 @@
 
 
 ///// TRANSACTION TYPES /////
-export const START_TRANS = 'startTrans';
-export const SEND_TRANS = 'sendTrans';
-export const ADD_PHOTO = 'addPhoto';
-export const ADD_DOC = 'addDoc';
-export const SET_SET = 'setSet';
-export const ADD_METRICS = 'addMetrics';
-export const GET_TRANS = 'getTrans';
-export const GOT_ASSET_TRANS = 'gotAssetTrans';
-export const TRANS_COMPLETE = 'transComplete';
+// export const START_TRANS = 'startTrans';
+// export const SEND_TRANS = 'sendTrans';
+// export const ADD_PHOTO = 'addPhoto';
+// export const ADD_DOC = 'addDoc';
+// export const SET_SET = 'setSet';
+// export const ADD_METRICS = 'addMetrics';
+// export const GET_TRANS = 'getTrans';
+// export const GOT_ASSET_TRANS = 'gotAssetTrans';
+// export const TRANS_COMPLETE = 'transComplete';
 
 ///// WALLET TYPES /////
 

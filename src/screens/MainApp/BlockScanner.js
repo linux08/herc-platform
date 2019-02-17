@@ -13,7 +13,7 @@ import {
   Clipboard,
   Alert
 } from "react-native";
-import styles from "../assets/styles";
+import styles from "../../assets/styles";
 import { connect } from "react-redux";
 import hercCoin from "../assets/icons/hercCoin.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";

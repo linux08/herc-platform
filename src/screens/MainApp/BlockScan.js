@@ -6,8 +6,8 @@ import { createStackNavigator } from 'react-navigation';
 import track from '../components/buttons/blockScannerBtn.png';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableHighlight, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import styles from '../assets/styles';
-import { getTrans } from '../actions/AssetActions';
+import styles from '../../assets/styles';
+import { getTrans } from '../../actions/AssetActions';
 
 // TODO: Get a proper 'Track' Label from Grey if styling is an issue
 

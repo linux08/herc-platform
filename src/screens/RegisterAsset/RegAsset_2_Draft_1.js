@@ -31,22 +31,7 @@ class RegAsset2 extends Component {
         console.log("componentTest")
         this.state = {
             isVisible: false,
-            // Password: "HELMSLEYSPEAR",
-            // CoreProps: {
-            //     metric1: "Tenant Name",
-            //     metric2: "Landlord Name",
-            //     metrci3: "Building Name / Address",
-            //     metric4: "Unit",
-            //     metric5: "Unit Type",
-            //     metric6: "Square footage",
-            //     metric8: "Lease start date",
-            //     metric9: "Lease commencement date",
-            //     metric10: "Rent commencement date",
-            //     metric11: "Lease end date",
-            //     metric12: "Current rent",
-            //     metric13: "Rent Bumps",
-            //     metric14: "Tenant expenses",
-
+          
         }
     }
 
