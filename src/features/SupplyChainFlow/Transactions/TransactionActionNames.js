@@ -2,14 +2,13 @@ export const Action = {
 
     GetOriginTrans: 'GetOriginTrans',
     SetOriginTransInfo: 'SetOriginTransInfo',
-    //  not sure what this one is for
+    //  not sure what these are is for
     // GetAssetTransactions: 'GetAssetTransactions',
     // GotAssetTransactions: 'GotAssetTransactions',
 
 
     ClearState: 'ClearState',
-
-    StartOriginTransaction: 'StartOriginTransaction',
+    StartTransaction: 'StartTransaction',
     
     AddPhoto: 'AddPhoto',
     AddDoc: 'AddDoc',

@@ -121,56 +121,56 @@ class NewAssetConfirm extends Component {
         this.props.incHercId(this.props.hercId);
     }
 // moving the check balance part to RegAssetSplash
-    _CheckBalance() {
+    // _CheckBalance() {
 
-        console.log("Checking Balances, circumventing dev check")
-        if (DEVELOPERS.includes(this.props.edgeAccount)) {
-            // this is a developer
-            console.log("You are a developer. jm")
-            this.uploadImageAsync(this.props.newAsset.Logo.uri)
-            console.log(this.state, this.props, "not sending the asset")
-        } else {
-            console.log("jm checkbalance()", this.props.wallet.balances.HERC)
-            debugger;
-            // this is a non-developer
-            console.log("You are NOT a developer. jm")
-            let price = new BigNumber(1000)
+    //     console.log("Checking Balances, circumventing dev check")
+    //     if (DEVELOPERS.includes(this.props.edgeAccount)) {
+    //         // this is a developer
+    //         console.log("You are a developer. jm")
+    //         this.uploadImageAsync(this.props.newAsset.Logo.uri)
+    //         console.log(this.state, this.props, "not sending the asset")
+    //     } else {
+    //         console.log("jm checkbalance()", this.props.wallet.balances.HERC)
+    //         debugger;
+    //         // this is a non-developer
+    //         console.log("You are NOT a developer. jm")
+    //         let price = new BigNumber(1000)
 
-            let weibalance = new BigNumber(this.props.wallet.balances.HERC)
-            //  Balance is stored as wei, converting to HERCS for check
-            let convertBalance = weibalance.times(1e-18);
-            // this is the math after converting the user balance to eth from wei
-            let convertMath = convertBalance.minus(price);
+    //         let weibalance = new BigNumber(this.props.wallet.balances.HERC)
+    //         //  Balance is stored as wei, converting to HERCS for check
+    //         let convertBalance = weibalance.times(1e-18);
+    //         // this is the math after converting the user balance to eth from wei
+    //         let convertMath = convertBalance.minus(price);
 
-            console.log(
-                'do you have enough?', convertMath.isPositive(),
-                "convertBalance" + convertBalance,
-                "convertMath:" + convertMath
-            );
+    //         console.log(
+    //             'do you have enough?', convertMath.isPositive(),
+    //             "convertBalance" + convertBalance,
+    //             "convertMath:" + convertMath
+    //         );
 
-            if (convertMath.isNegative()) {
-                Alert.alert(
-                    'Insufficient Funds',
-                    'Current Balance: ' + convertBalance.toFixed(12) + ' HERC',
-                    [
-                        { text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel' },
-                        { text: 'Ok', onPress: () => console.log('OK Pressed') },
-                    ],
-                    { cancelable: true }
-                )
-            } else {
-                Alert.alert(
-                    'You Meet the Minimum Balance!',
-                    'Current Balance:' + convertBalance.toFixed(12) + ' HERC \n Do you wish to proceed?',
-                    [
-                        { text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel' },
-                        { text: 'Yes, Make an Asset', onPress: () => this.uploadImageAsync() },
-                    ],
-                    { cancelable: false }
-                )
-            }
-        }
-    }
+    //         if (convertMath.isNegative()) {
+    //             Alert.alert(
+    //                 'Insufficient Funds',
+    //                 'Current Balance: ' + convertBalance.toFixed(12) + ' HERC',
+    //                 [
+    //                     { text: 'Top Up Hercs', onPress: () => Linking.openURL("https://purchase.herc.one/"), style: 'cancel' },
+    //                     { text: 'Ok', onPress: () => console.log('OK Pressed') },
+    //                 ],
+    //                 { cancelable: true }
+    //             )
+    //         } else {
+    //             Alert.alert(
+    //                 'You Meet the Minimum Balance!',
+    //                 'Current Balance:' + convertBalance.toFixed(12) + ' HERC \n Do you wish to proceed?',
+    //                 [
+    //                     { text: 'Cancel', onPress: () => console.log('No Pressed'), style: 'cancel' },
+    //                     { text: 'Yes, Make an Asset', onPress: () => this.uploadImageAsync() },
+    //                 ],
+    //                 { cancelable: false }
+    //             )
+    //         }
+    //     }
+    // }
 
 
 

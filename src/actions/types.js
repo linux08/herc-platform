@@ -41,27 +41,27 @@
 
 ///// WALLET TYPES /////
 
-export const GET_ETH_ADDRESS = 'getEthAddress';
-export const GET_USERNAME = 'getUsername';
-export const GET_WALLET = 'getWallet';
-export const GET_ACCOUNT = 'getAccount';
-export const UPDATE_BALANCES = 'updateBalances';
-export const STORE_TRANSACTION_IDS = 'storeTransactionIds';
-export const CLEAR_TRANSACTION_STORE = 'clearTransactionStore';
+// export const GET_ETH_ADDRESS = 'getEthAddress';
+// export const GET_USERNAME = 'getUsername'; moved to account
+// export const GET_WALLET = 'getWallet';
+// export const GET_ACCOUNT = 'getAccount'; moved to account
+// export const UPDATE_BALANCES = 'updateBalances';
+// export const STORE_TRANSACTION_IDS = 'storeTransactionIds';
+// export const CLEAR_TRANSACTION_STORE = 'clearTransactionStore';
 
 ///// ACCOUNT TYPES /////
-export const AUTH_TOKEN = 'authToken';
-export const GET_ORGANIZATION = 'getOrganization';
-export const GETTING_ORGANIZATION = 'gettingOrganization;'
+// export const AUTH_TOKEN = 'authToken';
+// export const GET_ORGANIZATION = 'getOrganization';
+// export const GETTING_ORGANIZATION = 'gettingOrganization;'
 
-export const GET_LATEST_BLOCK = "getLatestBlock";
-export const FETCHING_DATA = 'FETCHING_DATA'
-export const FETCHING_DATA_SUCCESS = 'FETCHING_DATA_SUCCESS'
-export const FETCHING_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
+// export const GET_LATEST_BLOCK = "getLatestBlock";
+// export const FETCHING_DATA = 'FETCHING_DATA'
+// export const FETCHING_DATA_SUCCESS = 'FETCHING_DATA_SUCCESS'
+// export const FETCHING_DATA_FAILURE = 'FETCHING_DATA_FAILURE'
 
-export const HANDLE_IMAGE_PICKED = 'handleImagePicked';
-export const GOT_LOGO = 'gotLogo';
+// export const HANDLE_IMAGE_PICKED = 'handleImagePicked';
+// export const GOT_LOGO = 'gotLogo';
 
-///// MODAL VISIBILITY TYPES /////
-export const TOGGLE_CAM_SOURCE_MODAL = 'toggleCamSourceModal';
-export const TOGGLE_CAMERA_MODAL = 'toggleCameraModal';
+// ///// MODAL VISIBILITY TYPES /////
+// export const TOGGLE_CAM_SOURCE_MODAL = 'toggleCamSourceModal';
+// export const TOGGLE_CAMERA_MODAL = 'toggleCameraModal';
