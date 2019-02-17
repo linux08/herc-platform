@@ -13,26 +13,26 @@ const SupplyChainNavigator = createStackNavigator(
     {
         SupplyChainSplash: {
             screen: SupplyChainSplash,
+            navigationOptions: ({ navigation }) => ({
+                header: <Header headerTitle={"Supply Chain"} navigation={navigation} />
+            })
         },
         // headerTitle={navigation.state.params.headerName}
         SupplyChainSideChoice: {
             screen: SupplyChainSideChoice,
-            navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
-            })
         },
         SupplyChainTx: {
             screen: SupplyChainTx,
-            navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
-            })
+            // navigationOptions: ({ navigation }) => ({
+            //     header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
+            // })
 
         },
         SupplyChainMetrics: {
             screen: SupplyChainMetrics,
-            navigationOptions: ({ navigation }) => ({
-                header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
-            })
+            // navigationOptions: ({ navigation }) => ({
+            //     header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
+            // })
 
         },
        

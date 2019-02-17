@@ -15,11 +15,12 @@ import React, { Component } from 'react';
 import {
     BigYellowButton
 } from "../../components/SharedComponents";
+import { connect } from 'react-redux';
 const OrigImage = require('../../assets/SupplyChainAssets/originator.png')
 const RecipImage = require('../../assets/SupplyChainAssets/recipient.png')
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class SupplyChainSideChoice extends Component {
+class SupplyChainSideChoice extends Component {
 
     constructor(props) {
         // console.log(this.props.navigation, "navigation??")
@@ -117,6 +118,12 @@ testOnPress = () => {
         )
     }
 }
+
+const mapDispatchToProps
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSideChoice)
 
 const localStyles = StyleSheet.create({
 

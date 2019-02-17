@@ -10,6 +10,8 @@ export const Action = {
 
     SelectedAsset: 'SelectedAsset',
 
+    // GetOriginTrans: 'GetOriginTrans',
+
     GettingAssetIpfsDefintion: 'GettingAssetIpfsDefinition',
     GotAssetIpfsDefinition: 'GotAssetDef',
     Error: 'Error',

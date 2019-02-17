@@ -204,8 +204,8 @@ const localStyles = StyleSheet.create({
 
     addAssetButton: {
         height: heightPercentageToDP(((40 / height) * 100).toString()),
-        width: widthPercentageToDP('90'),
-        backgroundColor: ColorConstants.ElementBG,
+        width: widthPercentageToDP('75'),
+        backgroundColor: ColorConstants.MainGold,
         borderRadius: 8,
         margin: 5,
         marginTop: 20,

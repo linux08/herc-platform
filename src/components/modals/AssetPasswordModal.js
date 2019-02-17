@@ -10,37 +10,53 @@ import {
 import Modal from 'react-native-modal';
 import ColorConstants from "../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
-
+import { connect } from 'react-redux';
 import { HercTextInputWithLabel } from '../SharedComponents'
+import { ShowPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
 
 
-export default class AssetPasswordModal extends Component {
+class AssetPasswordModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pwTry: ""
+            pwTry: "",
+            headerText: "Enter Asset Password",
+           
         }
     }
+
+    checkPassword = () => {
+        if (this.props.selectedAsset.Password === this.state.pwTry) {
+            this.props.passwordCorrect()
+        } else {
+           this.setState({
+               headerText: 'Password Incorrect!'
+           })
+        }
+    }
+
+
     render() {
+        console.log(this.props, "password modal");
         return (
             <Modal
-                isVisible={this.props.isVisible}
-                onBackdropPress={this.props.ShowPasswordModal}
+                isVisible={this.props.showPasswordModal}
+                onBackdropPress={() => this.props.ShowPasswordModal(false)}
             >
                 <View style={localStyles.baseModal}>
                     <View style={localStyles.modalBackground}>
-                        <Text style={[localStyles.pad10, localStyles.headingFont]}>EnterAsset Password</Text>
+                        <Text style={[localStyles.pad10, localStyles.headingFont]}>{this.state.headerText}</Text>
                         <HercTextInputWithLabel
                             style={{ width: '90%' }}
-                            localOnChange={() => this.setState({ pwTry: text })} label={'Asset Password'}
+                            localOnChange={(text) => this.setState({ pwTry: text })} label={'Asset Password'}
                             placeholder={'Asset Password'}
                         />
-                        <View style={[{ flexDirection: 'row', alignSelf: 'flex-end' }, localStyles.pad10]}>
-                            <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this.props.checkPassword(this.state.pwTry) }}>
-                                <Text style={localStyles.dismissAcceptText}>{this.state.dismissAcceptText}</Text>
+                        <View style={localStyles.buttonContainer}>
+                            <TouchableOpacity style={localStyles.button} onPress={() => this.checkPassword(this.state.pwTry)}>
+                                <Text style={localStyles.dismissAcceptText}>Submit</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => { this.props.closeModal(false) }}>
-                                <Text style={localStyles.dismissRejectText}>{this.state.dismissRejectText}</Text>
+                            <TouchableOpacity style={localStyles.button} onPress={() => this.props.ShowPasswordModal(false)}>
+                                <Text style={localStyles.dismissRejectText}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -51,6 +67,20 @@ export default class AssetPasswordModal extends Component {
     }
 
 }
+
+mapStateToProps = (state) => ({
+    selectedAsset: state.AssetReducers.selectedAsset,
+    showPasswordModal: state.AssetReducers.showPasswordModal,
+    AssetPassword: state.AssetReducers.selectedAsset.Password
+})
+
+mapDispatchToProps = (dispatch) => ({
+    ShowPasswordModal: visible => dispatch(ShowPasswordModal(visible)),
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AssetPasswordModal);
+
 const localStyles = StyleSheet.create({
     baseModal: {
         alignItems: 'center',
@@ -71,6 +101,24 @@ const localStyles = StyleSheet.create({
         marginHorizontal: 10,
     },
 
+    buttonContainer: {
+        width: '100%',
+        padding: 10,
+        height: 50,
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        
+    },
+    button: {
+        height: 20,
+        width: 70,
+        backgroundColor: ColorConstants.MainGray,
+        marginHorizontal: 20,
+        alignSelf: 'center',
+        
+
+    },
 
     pad10: {
         padding: 5
@@ -83,15 +131,18 @@ const localStyles = StyleSheet.create({
     contentFont: {
         fontSize: 18,
         fontFamily: 'dinPro',
-        color: '#000000'
+        color: '#000000',
+        textAlign: 'center'
     },
     dismissAcceptText: {
-        color: '#95c260',
+        color: ColorConstants.MainSubCrownBlue,
         fontSize: 18,
+        textAlign: 'center'
     },
     dismissRejectText: {
-        color: '#bbbecb',
+        color: ColorConstants.MainSubRed,
         fontSize: 18,
+        textAlign: 'center'
     }
 
 });

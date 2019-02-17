@@ -22,7 +22,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
         case Asset.Action.ShowPasswordModal:
         return {
             ...state,
-            isVisible: action.isVisible
+            showPasswordModal: action.isVisible
         }
 
         case Asset.Action.GotHeaders:

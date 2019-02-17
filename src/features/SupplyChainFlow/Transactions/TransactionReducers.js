@@ -3,12 +3,15 @@ const INITIAL_STATE = {
     metricModal: false,
     camSourceModal: false,
     editModal: false,
+    trans: {},
 
 }
 
 
 const TransactionReducers = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        
+        
         case Trans.Action.ShowMetricModal:
             return {
                 ...state,
@@ -27,25 +30,28 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
 
         case Trans.Action.StartTransaction:
-            let trans = action.data;
 
-            return Object.assign({}, state, {
+            return  Object.assign({}, {
                 ...state,
+                trans: action.trans
+                 })
+            
 
-                trans
+        case Trans.Action.SetOriginTransInfo:
+            return Object.assign({},{
+                ...state,
+                gotOgTransInfo: true,
+                trans: {
+                    ...state.trans,
+                    header: {
+                        ...state.trans.header,
+                    OgTransInfo: action.ogTrans 
+                    }
+                }
 
             })
 
-        case SEND_TRANS:
-            return Object.assign({}, state, {
-                ...state,
-                transDataFlags: {
-                    transStarted: true
-                },
-
-            })
-
-        case TRANS_COMPLETE:
+        case Trans.Action.TransactionComplete:
             // let trans = action.data;
             return Object.assign({}, state, {
                 ...state,
@@ -60,7 +66,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             }
             )
 
-        case ADD_PHOTO:
+        case Trans.Action.AddPhoto:
             let images = {
                 image: action.data,
                 size: action.size,
@@ -82,7 +88,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
 
-        case ADD_DOC:
+        case Trans.Action.AddDoc:
             let documents = action.document;
             // let documents = [...state.selectedAsset.trans.data.documents, doc];
             return Object.assign({}, state, {
@@ -96,7 +102,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
-        case ADD_METRICS:
+        case Trans.Action.AddMetrics:
             const properties = action.data;
             return Object.assign({}, state, {
                 ...state,
@@ -111,7 +117,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
-        case SET_SET:
+        case Trans.Action.AddEdiT:
             const ediT = action.item
             return Object.assign({}, state, {
                 ...state,

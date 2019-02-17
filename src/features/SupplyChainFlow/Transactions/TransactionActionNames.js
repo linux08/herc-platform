@@ -1,16 +1,16 @@
 export const Action = {
 
-    GettingOriginTrans: 'GettingOriginTrans',
-    GotOriginTrans: 'GotOriginTrans',
-
+    GetOriginTrans: 'GetOriginTrans',
+    SetOriginTransInfo: 'SetOriginTransInfo',
     //  not sure what this one is for
-    GetAssetTransactions: 'GetAssetTransactions',
-    GotAssetTransactions: 'GotAssetTransactions',
+    // GetAssetTransactions: 'GetAssetTransactions',
+    // GotAssetTransactions: 'GotAssetTransactions',
+
 
     ClearState: 'ClearState',
 
-    StartTransaction: 'StartTransaction',
-
+    StartOriginTransaction: 'StartOriginTransaction',
+    
     AddPhoto: 'AddPhoto',
     AddDoc: 'AddDoc',
     AddMetrics: 'AddMetrics',

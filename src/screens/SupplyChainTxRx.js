@@ -186,32 +186,32 @@ class SupplyChainTxRx extends Component {
     });
   };
 
-  _getOriginTrans = (password) => {
-    const { navigate } = this.props.navigation;
-    let originalTransInfo;
-    let origTransHeader;
+  // _getOriginTrans = (password) => {
+  //   const { navigate } = this.props.navigation;
+  //   let originalTransInfo;
+  //   let origTransHeader;
 
-    for (const key of Object.keys(this.props.transactions)) {
-      if (this.props.asset.transactions[key].header.password) {
-        console.log("password found", this.props.asset.transactions[key].header)
-        if (this.props.asset.transactions[key].header.password === password) {
+  //   for (const key of Object.keys(this.props.transactions)) {
+  //     if (this.props.asset.transactions[key].header.password) {
+  //       console.log("password found", this.props.asset.transactions[key].header)
+  //       if (this.props.asset.transactions[key].header.password === password) {
 
-          origTransHeader = this.props.transactions[key].header;
-          this.setState({
-            originalTransInfo: {
-              // ogTransTime: origTransHeader.dTime,
-              entryHash: origTransHeader.factomEntry,
-              hercId: this.props.asset.hercId || null,
-              txId: key
-            },
-            showPass: false,
-            gotTransInfo: true,
-          });
-          return originalTransInfo;
-        }
-      }
-    }
-  };
+  //         origTransHeader = this.props.transactions[key].header;
+  //         this.setState({
+  //           originalTransInfo: {
+  //             // ogTransTime: origTransHeader.dTime,
+  //             entryHash: origTransHeader.factomEntry,
+  //             hercId: this.props.asset.hercId || null,
+  //             txId: key
+  //           },
+  //           showPass: false,
+  //           gotTransInfo: true,
+  //         });
+  //         return originalTransInfo;
+  //       }
+  //     }
+  //   }
+  // };
 
 
   componentDidMount() {

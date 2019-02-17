@@ -25,19 +25,18 @@ class SupplyChainSplash extends Component {
         // console.log(this.props.navigation, "navigation??")
         super(props);
         console.log("componentTest")
-        this.checkPassword = this.checkPassword.bind(this);
+        // this.checkPassword = this.checkPassword.bind(this);
     }
 
     onSelectAsset = (assetIndex) => {
         this.props.SelectedAsset(this.props.assets[assetIndex]);
     }
 
-    checkPassword = (pass) => {
-        if (this.props.selectedAsset.Password === pass) {
-            return true
-        } else {
-            return false
-        }
+   
+
+    passwordCorrect = () => {
+        this.props.ShowPasswordModal(false);
+        this.props.navigation.navigate('SupplyChainSideChoice')
     }
 
     renderAssets = () => {
@@ -78,10 +77,10 @@ class SupplyChainSplash extends Component {
                 </View>
 
                 <AssetPasswordModal
-                    heading={'Enter Asset Password'}
+                    // heading={'Enter Asset Password'}
                     isVisible={this.props.showPasswordModal}
-                    checkPassword={this.checkPassword}
-                    ShowPasswordModal={this.props.ShowPasswordModal}
+                    passwordCorrect={this.passwordCorrect}
+                    // ShowPasswordModal={this.props.ShowPasswordModal}
                 />
             </View>
         )
