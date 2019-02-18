@@ -4,6 +4,8 @@ const INITIAL_STATE = {
         metricModal: false,
         camSourceModal: false,
         editModal: false,
+        passwordModal: false,
+        
     },
     flags: {
 
@@ -17,10 +19,19 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         
         case Trans.Action.ClearState: 
-        return{
+        return Object.assign({},{
             state = INITIAL_STATE
-        }
+        })
 
+        case Trans.Action.Error:
+            return Object.assign({}, {
+                ...state,
+                Error: {
+                    type: action.type,
+                    error: action.error
+                }
+            })
+        
         // Modal State
         case Trans.Action.ShowMetricModal:
             return Object.assing({}, {
@@ -41,16 +52,41 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
         case Trans.Action.ShowEdiTModal:
             return Object.assing({}, {
                 ...state,
-                modals: {
+               modals: {
                     editModal: !state.modals.editModal
                 }
             })
+        case Trans.Action.ShowPasswordModal:
+            return Object.assing({},{
+                ...state,
+                modals: {
+                    passwordModal: !state.modals.passwordModal
+                }
+
+            })
         
 //  Transactions
+
+        case Trans.Action.SetOriginTransPassword:
+        return Object.assign({}, {
+            ...state,
+            trans: {
+                ...state.trans,
+                header: {
+                ...state.trans.header,
+                    password: action.password
+                }
+            }
+            
+
+        })
         case Trans.Action.StartTransaction:
 
             return  Object.assign({}, {
                 ...state,
+                flags: {
+                    transactionStarted: true,
+                },
                 trans: action.trans
                  })
             
@@ -58,7 +94,10 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
         case Trans.Action.SetOriginTransInfo:
             return Object.assign({},{
                 ...state,
-                gotOgTransInfo: true,
+                flags: {
+                ...state.flags,
+                    gotOgTransInfo: true,
+                },
                 trans: {
                     ...state.trans,
                     header: {

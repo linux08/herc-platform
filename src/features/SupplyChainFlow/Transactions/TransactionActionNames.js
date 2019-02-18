@@ -1,7 +1,9 @@
 export const Action = {
-
+// moved to the transPassModal
     GetOriginTrans: 'GetOriginTrans',
     SetOriginTransInfo: 'SetOriginTransInfo',
+
+    SetOriginTransPassword: 'SetOriginTransPassword',
     //  not sure what these are is for
     // GetAssetTransactions: 'GetAssetTransactions',
     // GotAssetTransactions: 'GotAssetTransactions',
@@ -26,7 +28,8 @@ export const Action = {
     ShowMetricModal: 'ShowMetricModal',
     ShowCamSourceModal: 'ShowCamSourcModal',
     ShowEditModal: 'ShowEditModal',
-
+    ShowPasswordModal: 'ShowPasswordModal',
+  
     GetCurrentHercValue: 'GetCurrentHercValue',
     GotDynamicHercValue: 'GotDynamicHercValue',
 

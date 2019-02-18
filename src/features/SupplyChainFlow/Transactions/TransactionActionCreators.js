@@ -44,6 +44,15 @@ export function ShowEditModal() {
   type: Trans.Action.ShowEditModal
 }
 }
+
+export function SetOriginTransPassword(password) {
+  return {
+    type: Trans.Action.SetOriginTransPassword,
+    password
+  }
+
+
+}
 export function StartTransaction(place, pw) {
   if (place === "Recipient") {
     getOriginTrans(pw);
@@ -73,28 +82,31 @@ export function StartTransaction(place, pw) {
   };
 }
 
-GetOriginTrans = password => {
-  return dispatch => {
-    let transactions = store.getState().AssetReducers.selectedAsset
-      .transactions;
-    for (const key of Object.keys(transactions)) {
-      if (transactions[key].header.password === password) {
-        console.log("password found", transactions[key].header);
-        if (transactions[key].header.password === password) {
-          let OgHeader = transactions[key].header;
-          let OriginTransInfo = {
-            OrigTxEntryHash: OgHeader.factomEntry,
-            hercId: OgHeader.hercId,
-            OgTxKey: key,
-            OgTxTime: OgHeader.dTime
-          };
+// TODO: breakdown into 2 functions one to find the correct TX
+//  should check for both password and "Originator", and then 
+//  another to build the OriginTransInfo object and call SetOriginTransInfo
+// GetOriginTrans = password => {
+//   return dispatch => {
+//     let transactions = store.getState().AssetReducers.selectedAsset
+//       .transactions;
+//     for (const key of Object.keys(transactions)) {
+//       if (transactions[key].header.password === password) {
+//         console.log("password found", transactions[key].header);
+//         if (transactions[key].header.password === password) {
+//           let OgHeader = transactions[key].header;
+//           let OriginTransInfo = {
+//             OrigTxEntryHash: OgHeader.factomEntry,
+//             hercId: OgHeader.hercId,
+//             OgTxKey: key,
+//             OgTxTime: OgHeader.dTime
+//           };
 
-          dispatch(SetOriginTransInfo(OriginTransInfo));
-        }
-      }
-    }
-  };
-};
+//           dispatch(SetOriginTransInfo(OriginTransInfo));
+//         }
+//       }
+//     }
+//   };
+// };
 
 export function SetOriginTransInfo(info) {
   return {
