@@ -1,7 +1,7 @@
 import * as Wallet from './WalletActionNames';
 
-import store from "../store";
-import firebase from "../constants/Firebase";
+import store from "../../store";
+import firebase from "../../constants/Firebase";
 const rootRef = firebase.database().ref();
 import DEVELOPERS from '../../components/settings';
 

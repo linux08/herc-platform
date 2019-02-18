@@ -13,16 +13,16 @@ import { LoginScreen } from 'herc-edge-login-ui-rn';
 import { YellowBox } from 'react-native';
 import { connect } from "react-redux";
 import axios from 'axios';
-import hercLogoPillar from "../assets/hercLogoPillar.png";
+import hercLogoPillar from "../../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
 import { GetUsername, GetAccount, AuthToken } from '../../features/AccountFlow/AccountActionCreators';
- import {  GetEthAddress, GetWallet, UpdateBalances } from '../../featurs/WalletFlow/WalletActionCreators';
+ import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
-import { getOrganization } from "../../actions/WalletActActions";
-import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../components/settings";
+// import { getOrganization } from "../../actions/WalletActActions";
+import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
-import { EDGE_API_KEY } from '../components/settings.js'
+import { EDGE_API_KEY } from '../../components/settings.js'
 import firebase from "../../constants/Firebase";
 
 class Login extends Component {

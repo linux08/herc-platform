@@ -13,7 +13,7 @@ import { AssetCard } from "../../components/AssetCard";
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
-import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
+// import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 
 // import ColorConstants from "../../assets/ColorConstants";
 class RegAsset1 extends Component {

@@ -1,30 +1,22 @@
-import {
-    Image,
-    Platform,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View
-} from "react-native";
+
 import React, { Component } from "react";
 import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from "react-navigation";
 
 import BlockScanner from "../screens/MainApp/BlockScanner";
-import Confirm from "../screens/Confirm";
+// import Confirm from "../screens/Confirm";
 
-import Hipr from "../screens/Hipr";
-import HiprTransactions from "../screens/HiprTransactions";
+// import Hipr from "../screens/Hipr";
+// import HiprTransactions from "../screens/HiprTransactions";
 import Login from "../screens/MainApp/Login";
 
-import HiprLanding from "../screens/HiprLanding";
-import TxSwiperContainer from "../screens/MainApp/TxSwiperContainer";
-import TxSwiper from "../components/TxSwiper";
+// import HiprLanding from "../screens/HiprLanding";
+// import TxSwiperContainer from "../screens/MainApp/TxSwiperContainer";
+// import TxSwiper from "../components/TxSwiper";
 import Wallet from "../screens/MainApp/Wallet";
 import Settings from "../screens/MainApp/Settings";
-import QRCapture from "../screens/QRCapture";
-import QRCapture2 from "../screens/QRCapture2";
-import WebViewComponent from "../components/WebViewComponent";
+// import QRCapture from "../screens/QRCapture";
+// import QRCapture2 from "../screens/QRCapture2";
+// import WebViewComponent from "../components/WebViewComponent";
 import DocumentStorage from "../screens/MainApp/DocumentStorage";
 import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
 

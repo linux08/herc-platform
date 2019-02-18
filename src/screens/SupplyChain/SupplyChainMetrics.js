@@ -11,7 +11,7 @@ const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import assets from "../../components/TesterAssets";
+// import assets from "../../components/TesterAssets";
 import Header from "../../components/Headers/Header";
 
 // import Header from "../../components/Headers/Header";

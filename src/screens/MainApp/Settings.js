@@ -12,19 +12,19 @@ import {
   Linking
 } from "react-native";
 import styles from "../../assets/styles";
-import { VERSION } from '../components/settings.js'
-import contributeIcon from "../assets/icons/contributeIcon.png";
-import discordIcon from "../assets/icons/discordIcon.png";
-import emailUsIcon from "../assets/icons/emailUsIcon.png"; //todo: turn into vector
-import facebookIcon from "../assets/icons/facebookIcon.png"; //todo: turn into vector
-import networkIcon from "../assets/icons/networkIcon.png";
-import privacyPolicyIcon from "../assets/icons/privacyPolicyIcon.png";
-import profileIcon from "../assets/icons/profileIcon.png";
-import settingsIcon from "../assets/icons/settingsIcon.png";
-import telegramIcon from "../assets/icons/telegramIcon.png"; //todo: turn into vector
-import termsAndConditionsIcon from "../assets/icons/termsAndConditionsIcon.png";
-import twitterIcon from "../assets/icons/twitterIcon.png"; //todo: turn into vector
-import versionIcon from "../assets/icons/versionIcon.png";
+import { VERSION } from '../../components/settings.js'
+import contributeIcon from "../../assets/icons/contributeIcon.png";
+import discordIcon from "../../assets/icons/discordIcon.png";
+import emailUsIcon from "../../assets/icons/emailUsIcon.png"; //todo: turn into vector
+import facebookIcon from "../../assets/icons/facebookIcon.png"; //todo: turn into vector
+import networkIcon from "../../assets/icons/networkIcon.png";
+import privacyPolicyIcon from "../../assets/icons/privacyPolicyIcon.png";
+import profileIcon from "../../assets/icons/profileIcon.png";
+import settingsIcon from "../../assets/icons/settingsIcon.png";
+import telegramIcon from "../../assets/icons/telegramIcon.png"; //todo: turn into vector
+import termsAndConditionsIcon from "../../assets/icons/termsAndConditionsIcon.png";
+import twitterIcon from "../../assets/icons/twitterIcon.png"; //todo: turn into vector
+import versionIcon from "../../assets/icons/versionIcon.png";
 import { connect } from "react-redux";
 import firebase from '../../constants/Firebase';
 import store from '../../store';
