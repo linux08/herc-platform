@@ -5,7 +5,7 @@ const INITIAL_STATE = {
         camSourceModal: false,
         editModal: false,
         passwordModal: false,
-        
+
     },
     flags: {
 
@@ -67,7 +67,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
         
 //  Transactions
 
-        case Trans.Action.SetOriginTransPassword:
+        case Trans.Action.SetNewOriginTransPassword:
         return Object.assign({}, {
             ...state,
             trans: {

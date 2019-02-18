@@ -13,20 +13,35 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsi
 import { connect } from 'react-redux';
 import { HercTextInputWithLabel } from '../SharedComponents'
 import { ShowPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
+import { transitions } from 'material-ui/styles';
 
 
-class GetTransactionPasswordModal extends Component {
+class GetorSetTransactionPasswordModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pwTry: "",
-            headerText: "Enter Asset Password",
-           
+            pass: "",
+            getHeaderText: "Enter The Transaction Code Word",
+            setHeaderText: "Pick A Code Word To ID the Transaction"
+            
         }
     }
 
-    
-    getOriginTrans = password => {
+    handlePasswordInput = (password) => {
+        if(this.props.place === 'Originator') {
+        
+            this.props.SetNewOriginTransPassword(password);
+            this.props.passwordHandled(); 
+        }else {
+
+        findOriginTrans(this.state.password);
+
+        }
+
+    }
+
+
+    findOriginTrans = password => {
        
           let transactions = this.props.selectedAsset.transactions;
           for (const key of Object.keys(transactions)) {
@@ -45,13 +60,25 @@ class GetTransactionPasswordModal extends Component {
             }
         }
     }
+}
 
+    newOriginTransPasswordSet = password => {
+        
+        this.props.SetNewOriginTransPassword(password);
+        // this.props.ShowPasswordModal();
+        // TODO: navigation flag on page that indicates logic is done to move on
+        
+    }
 
 
 
 
     render() {
         console.log(this.props, "password modal");
+        let headerText = this.props.place === "Originator" ? 
+            this.state.setHeaderText :
+            this.state.getHeaderText;
+
         return (
             <Modal
                 isVisible={this.props.showPasswordModal}
@@ -59,14 +86,14 @@ class GetTransactionPasswordModal extends Component {
             >
                 <View style={localStyles.baseModal}>
                     <View style={localStyles.modalBackground}>
-                        <Text style={[localStyles.pad10, localStyles.headingFont]}>{this.state.headerText}</Text>
+                        <Text style={[localStyles.pad10, localStyles.headingFont]}>{headerText}</Text>
                         <HercTextInputWithLabel 
                             style={{ width: '90%' }}
-                            localOnChange={(text) => this.setState({ pwTry: text })} label={'Asset Password'}
+                            localOnChange={(text) => this.setState({ pass: text })} label={'Transaction Password'}
                             placeholder={'Transaction Password'}
                         />
                         <View style={localStyles.buttonContainer}>
-                            <TouchableOpacity style={localStyles.button} onPress={() => this.checkPassword(this.state.pwTry)}>
+                            <TouchableOpacity style={localStyles.button} onPress={() => this.handlePasswordInput(this.state.pass)}>
                                 <Text style={localStyles.dismissAcceptText}>Submit</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={localStyles.button} onPress={() => this.props.ShowPasswordModal(false)}>
@@ -84,18 +111,19 @@ class GetTransactionPasswordModal extends Component {
 
 mapStateToProps = (state) => ({
     selectedAsset: state.AssetReducers.selectedAsset,
-    passwordModal: state.TransactionReducers.modals.passwordModal,
+    showPasswordModal: state.TransactionReducers.modals.passwordModal,
     
 })
 
 mapDispatchToProps = (dispatch) => ({
-    ShowPasswordModal: visible => dispatch(ShowPasswordModal(visible)),
-    SetOriginTransInfo: 
+    ShowPasswordModal: () => dispatch(ShowPasswordModal()),
+    // SetOriginTransInfo: (transInfo) => dispatch(SetOriginTransInfo(transInfo)),
+    // SetNewOriginTransPassword: (password) => dispatch(SetNewOriginTransPassword(password))
 
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GetTransactionPasswordModal);
+export default connect(mapStateToProps, mapDispatchToProps)(GetOrSetTransactionPasswordModal);
 
 const localStyles = StyleSheet.create({
     baseModal: {

@@ -45,7 +45,7 @@ export function ShowEditModal() {
 }
 }
 
-export function SetOriginTransPassword(password) {
+export function SetNewOriginTransPassword(password) {
   return {
     type: Trans.Action.SetOriginTransPassword,
     password
@@ -53,10 +53,10 @@ export function SetOriginTransPassword(password) {
 
 
 }
-export function StartTransaction(place, pw) {
-  if (place === "Recipient") {
-    getOriginTrans(pw);
-  }
+export function StartTransaction(place) {
+  // if (place === "Recipient") {
+  //   getOriginTrans(pw);
+  // }
 
   let asset = store.getState().AssetReducers.selectedAsset;
   trans = {

@@ -15,12 +15,14 @@ import React, { Component } from "react";
 import { BigYellowButton } from "../../components/SharedComponents";
 import { connect } from "react-redux";
 import { StartTransaction } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
+import GetOrSetTransactionPasswordModal from '../../components/modals/GetOrSetTransactionPasswordModal';
 const OrigImage = require("../../assets/SupplyChainAssets/originator.png");
 const RecipImage = require("../../assets/SupplyChainAssets/recipient.png");
 import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "../../assets/responsiveUI";
+import { ShowPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
 class SupplyChainSideChoice extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class SupplyChainSideChoice extends Component {
       pwModalIsVisible: false
 
     };
-    this.toggleModal = this.toggleModal.bind(this);
+    this.passwordHandled = this.passwordHandled.bind(this);
     // this.localOnChange = this.localOnChange.bind(this);
     // this.pwChange = this.pwChange.bind(this);
   }
@@ -64,7 +66,16 @@ class SupplyChainSideChoice extends Component {
     });
   };
 
-  TxSideChoice = () => {
+  passwordHandled = () => {
+      this.props.StartTransaction();
+      this.props.ShowPasswordModal();
+      this.props.navigation.navigate('SupplyChainTX');
+
+  }
+
+
+
+ handleSideChoice = () => {
     console.log("pressed on testpress");
     if(this.state.place === 'Recipient') {
         this.setState({
@@ -143,22 +154,31 @@ class SupplyChainSideChoice extends Component {
           <View style={localStyles.pageBottom}>
             <BigYellowButton
               buttonName={"Next"}
-              onPress={() => this.testOnPress()}
+              onPress={() => this.handleSideChoice()}
             />
           </View>
         </View>
+        <GetOrSetTransactionPasswordModal
+            place={this.state.place}
+            passwordHandled={this.passwordHandled}
+            />
+        
+
+
       </View>
     );
   }
 }
 
-const mapStateToProps = state => {
-  selectedAsset: state.AssetReducers.selectedAsset;
-};
+const mapStateToProps = (state) => ({
+  selectedAsset: state.AssetReducers.selectedAsset,
+  showPassWordModal: state.TransactionReducers.passwordModal
+});
 
-const mapDispatchToProps = dispatch => {
-  StartTransaction: () => dispatch(StartTransaction());
-};
+const mapDispatchToProps = (dispatch) => ({
+  StartTransaction: () => dispatch(StartTransaction()),
+  showPassWordModal: () => dispatch(ShowPasswordModal())
+});
 
 export default connect(
   mapStateToProps,
