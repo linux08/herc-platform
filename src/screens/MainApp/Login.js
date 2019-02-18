@@ -15,7 +15,8 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import hercLogoPillar from "../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
-import { getUsername, getAccount, authToken, getEthAddress, getWallet, updateBalances } from "../../actions/WalletActActions";
+import { GetUsername, GetAccount, AuthToken } from '../../features/AccountFlow/AccountActionCreators';
+ import {  GetEthAddress, GetWallet, UpdateBalances } from '../../featurs/WalletFlow/WalletActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
 import { getOrganization } from "../../actions/WalletActActions";
@@ -64,8 +65,8 @@ class Login extends Component {
     };
     if (!this.state.account) {
       this.setState({account})
-      this.props.getAccount(account);
-      this.props.getUsername(account.username);
+      this.props.GetAccount(account);
+      this.props.GetUsername(account.username);
 
       let promiseArray = []
 
@@ -95,7 +96,7 @@ class Login extends Component {
 
           // this.props.getHercId();
           this.props.GetHeaders(this.props.username);
-          this.props.getOrganization();
+          this.props.GetOrganization();
 
           if (results[1].data && results[1].data == true) {
             navigate('SideMenuNav') // pass in T/F response from /latest/apk
@@ -119,13 +120,13 @@ class Login extends Component {
             wallet.watch('balances', (newBalances) =>
             {
               console.log('NewBalances in login.js: jm', newBalances)
-              this.props.updateBalances(newBalances)
+              this.props.UpdateBalances(newBalances)
             }
           );
             const tokens = await wallet.getEnabledTokens()
 
-            this.props.getEthAddress(wallet.keys.ethereumAddress)
-            this.props.getWallet(wallet)
+            this.props.GetEthAddress(wallet.keys.ethereumAddress)
+            this.props.GetWallet(wallet)
             wallet.addCustomToken(tokenHerc)
             wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
             return wallet
@@ -135,9 +136,9 @@ class Login extends Component {
           name: 'My First Wallet',
           fiatCurrencyCode: 'iso:USD'
         }).then(async wallet => {
-          wallet.watch('balances', (newBalances) => this.props.updateBalances(newBalances));
-          this.props.getEthAddress(wallet.keys.ethereumAddress)
-          this.props.getWallet(wallet)
+          wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
+          this.props.GetEthAddress(wallet.keys.ethereumAddress)
+          this.props.GetWallet(wallet)
           wallet.addCustomToken(tokenHerc)
           wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
           this.setState({walletId: wallet.id})
@@ -187,14 +188,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     // getHercId: () => dispatch(getHercId()),
     GetHeaders: (name) => dispatch(GetHeaders(name)),
-    getOrganization: () => dispatch(getOrganization()),
+    GetOrganization: () => dispatch(GetOrganization()),
     ClearState: () => dispatch(ClearState()),
 
-    updateBalances: (newBalances) => dispatch(updateBalances(newBalances)),
-    getUsername: (edge_account) => dispatch(getUsername(edge_account)),
-    authToken: (auth_token) => dispatch(authToken(auth_token)),
-    getEthAddress: (ethereumAddress) => dispatch(getEthAddress(ethereumAddress)),
-    getWallet: (wallet) => dispatch(getWallet(wallet)),
-    getAccount: (account) => dispatch(getAccount(account)),
+    UpdateBalances: (newBalances) => dispatch(UpdateBalances(newBalances)),
+    GetUsername: (edge_account) => dispatch(GetUsername(edge_account)),
+    AuthToken: (auth_token) => dispatch(AuthToken(auth_token)),
+    GetEthAddress: (ethereumAddress) => dispatch(GetEthAddress(ethereumAddress)),
+    GetWallet: (wallet) => dispatch(GetWallet(wallet)),
+    GetAccount: (account) => dispatch(GetAccount(account)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

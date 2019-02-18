@@ -34,30 +34,7 @@ import Header from "../components/Headers/Header";
 import SideNavMenu from "../components/SideNavMenu"
 import RegAssetNavigator from "./RegisterAssetNavigation";
 import SupplyChainNavigator from "./SupplyChainNavigation";
-// import SideMenu from 'react-native-side-menu';
 
-// import RegAsset1 from "../screens/FramedScreens/RegAsset_1_Draft_1";
-// import RegAssetSplashTest from "../screens/FramedScreens/RegAssetSplash_Draft_1";
-// import RegAsset2 from "../screens/Testing/RegAsset_2_Draft_1";
-
-
-// import Camera from "../screens/Camera";
-// import NewAssetLanding from "../screens/NewAssetLanding";
-// import DocUp from "../screens/DocUp";
-// import EdiT from "../screens/Edi-T";
-// import ImageUpload from "../screens/ImageUpload";
-// import HiprAssets from "../screens/HiprAssets";
-// import MetricInput from "../screens/MetricInput";
-// import MenuOptions from "../screens/MenuOptions";
-// import NewAssetConfirm from "../screens/NewAssetConfirm";
-// import TrackAssetOptions from "../screens/TrackAssetOptions";
-
-// import SupplyChainAssetList from "../screens/SupplyChainAssetList";
-// import SupplyChainTxRx from "../screens/SupplyChainTxRx";
-// import SupplyChainReview from "../screens/SupplyChainReview";
-// import NewAssetForm from "../screens/NewAssetForm";
-
-// import TrackAssetList from "../screens/TrackAssetList";
 
 
 
@@ -81,7 +58,17 @@ const MainNavigator = createStackNavigator({
         navigationOptions: ({ navigation, screenProps }) => ({
             header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
         })
-    }
+    },
+
+    Wallet: {
+        screen: Wallet,
+    },
+
+    BlockScanner: {
+        screen: Blockscanner
+    },
+
+    
 
 },
     {

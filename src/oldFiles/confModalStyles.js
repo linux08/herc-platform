@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
-import ColorConstants from "../../constants/ColorConstants";
+import ColorConstants from "../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from "../../assets/responsiveUI";
 
 module.exports = StyleSheet.create({
