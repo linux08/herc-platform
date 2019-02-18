@@ -29,17 +29,21 @@ export function ClearState() {
 }
 
 export function ShowMetricModal() {
-  type: Trans.Action.ShowMetricModal;
+ return {
+  type: Trans.Action.ShowMetricModal
 }
-
+}
 export function ShowCamSourceModal() {
-  type: Trans.Action.ShowCamSourceModal;
+  return{
+  type: Trans.Action.ShowCamSourceModal
+}
 }
 
 export function ShowEditModal() {
-  type: Trans.Action.ShowEditModal;
+  return {
+  type: Trans.Action.ShowEditModal
 }
-
+}
 export function StartTransaction(place, pw) {
   if (place === "Recipient") {
     getOriginTrans(pw);
@@ -109,7 +113,7 @@ export function AddMetrics(newMetrics) {
 export function AddPhoto(imgObj) {
   let dynamicHercValue = store.getState().TransactionReducers.hercValue;
   let imgPrice = (
-    ((transDat.images.size / 1024) * 0.00000002) /
+    ((imgObj.size / 1024) * 0.00000002) /
     dynamicHercValue
   ).toFixed(18);
   return {
