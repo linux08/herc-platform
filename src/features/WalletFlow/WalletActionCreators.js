@@ -5,6 +5,12 @@ import firebase from "../constants/Firebase";
 const rootRef = firebase.database().ref();
 import DEVELOPERS from '../../components/settings';
 
+ export function UpdateBalances(newBalances) {
+      return {
+        type: Wallet.Action.UpdateBalances,
+        newBalances
+      };
+    }
 
 export function GetEthAddress(ethereumAddress) {
     return {
@@ -13,12 +19,7 @@ export function GetEthAddress(ethereumAddress) {
     };
   }
   
-  export function UpdateBalances(newBalances) {
-      return {
-        type: Wallet.Action.UpdateBalances,
-        newBalances
-      };
-    }
+ 
 
 
 export function GetWallet(wallet) {
@@ -34,21 +35,6 @@ export function GetBalance() {
     }
 }
 
-export function DebitTrans(amount) {
-    return {
-        type: Wallet.Action.DebitTrans,
-        hercAmount: amount
-    }
-}
-
-export function DeleteWallet(walletName) {
-
-    return {
-        type: Wallet.Action.DeleteWallet,
-        data: walletName
-
-    }
-}
 
 export function ClearTransactionStore() {
   console.log("jm clearing transaction store.... 1/2")
@@ -209,4 +195,23 @@ export function MakePayment(makePaymentObject) {
       }
     }
   }
+
+  
+  //  not sure we're using this
+// export function DebitTrans(amount) {
+//     return {
+//         type: Wallet.Action.DebitTrans,
+//         hercAmount: amount
+//     }
+// }
+
+//   not sure we're using this
+// export function DeleteWallet(walletName) {
+
+//     return {
+//         type: Wallet.Action.DeleteWallet,
+//         data: walletName
+
+//     }
+// }
   

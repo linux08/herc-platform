@@ -8,6 +8,7 @@ export const Action = {
 
 
     ClearState: 'ClearState',
+
     StartTransaction: 'StartTransaction',
     
     AddPhoto: 'AddPhoto',
@@ -26,7 +27,11 @@ export const Action = {
     ShowCamSourceModal: 'ShowCamSourcModal',
     ShowEditModal: 'ShowEditModal',
 
+    GetCurrentHercValue: 'GetCurrentHercValue',
+    GotDynamicHercValue: 'GotDynamicHercValue',
 
+    GotNetworkFee: 'GotNetworkFee',
+    
     MakePayment: 'MakePayment',
     Error: 'Error',
 

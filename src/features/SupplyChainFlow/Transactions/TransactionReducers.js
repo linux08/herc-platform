@@ -1,8 +1,13 @@
 import * as Trans from './TransactionActionNames'
 const INITIAL_STATE = {
-    metricModal: false,
-    camSourceModal: false,
-    editModal: false,
+    modals: {
+        metricModal: false,
+        camSourceModal: false,
+        editModal: false,
+    },
+    flags: {
+
+    },
     trans: {},
 
 }
@@ -11,24 +16,37 @@ const INITIAL_STATE = {
 const TransactionReducers = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         
-        
+        case Trans.Action.ClearState: 
+        return{
+            state = INITIAL_STATE
+        }
+
+        // Modal State
         case Trans.Action.ShowMetricModal:
-            return {
+            return Object.assing({}, {
                 ...state,
-                metricModal: !state.metricModal
-            }
+                modals: {
+                    metricModal: !state.modals.metricModal
+                }
+            })
+        
         case Trans.Action.ShowCamSourcModal:
-            return {
+            return Object.assing({}, {
                 ...state,
-                camSourceModal: !state.camSourceModal
-            }
+                modals: {
+                    camSourceModal: !state.modals.camSourceModal
+                }
+            })
+       
         case Trans.Action.ShowEdiTModal:
-            return {
+            return Object.assing({}, {
                 ...state,
-                editModal: !state.editModal
-            }
-
-
+                modals: {
+                    editModal: !state.modals.editModal
+                }
+            })
+        
+//  Transactions
         case Trans.Action.StartTransaction:
 
             return  Object.assign({}, {
@@ -51,82 +69,82 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
             })
 
+        case Trans.Action.GetCurrentHercValue:
+            return Object.assign({},{
+                ...state,
+                gettingHercValue: true
+
+            })
+
+         case Trans.Action.GotDynamicHercValue:
+         return Object.assign({},{
+             ...state,
+             hercValue: action.hercValue
+         })
+        
+         case Trans.Action.GotNetworkFee:
+         return Object.assign({},{
+             ...state,
+            networkFee: action.fee 
+            
+         })
+
         case Trans.Action.TransactionComplete:
             // let trans = action.data;
-            return Object.assign({}, state, {
+            return Object.assign({}, {
                 ...state,
-                transDataFlags: {
-                    ...state.transDataFlags,
-                    confTransComplete: true,
-                },
-
-                trans: {
-                    ...state.trans,
-                }
-            }
-            )
+                confTransComplete: true,
+            })
 
         case Trans.Action.AddPhoto:
-            let images = {
-                image: action.data,
-                size: action.size,
-                uri: action.uri
-            };
-
-            // let images = [...state.selectedAsset.trans.data.images, image];
-            return Object.assign({}, state, {
+           
+            return Object.assign({}, {
                 ...state,
-
-
                 trans: {
                     ...state.trans,
                     data: {
                         ...state.trans.data,
-                        images
+                        images: action.images
                     }
                 }
             })
 
 
         case Trans.Action.AddDoc:
-            let documents = action.document;
-            // let documents = [...state.selectedAsset.trans.data.documents, doc];
-            return Object.assign({}, state, {
+            return Object.assign({},{
                 ...state,
                 trans: {
                     ...state.trans,
                     data: {
                         ...state.trans.data,
-                        documents
+                        documents: action.document
                     }
                 }
             })
 
         case Trans.Action.AddMetrics:
-            const properties = action.data;
-            return Object.assign({}, state, {
+            return Object.assign({}, {
                 ...state,
-
                 trans: {
                     ...state.trans,
                     data: {
                         ...state.trans.data,
-                        properties
+                        properties: action.data
                     }
 
                 }
             })
 
         case Trans.Action.AddEdiT:
-            const ediT = action.item
-            return Object.assign({}, state, {
+          
+            return Object.assign({}, {
                 ...state,
-                ...state.trans,
+              
                 trans: {
                     ...state.trans,
                     data: {
                         ...state.trans.data,
-                        ediT
+                        ediT: action.item
                     }
                 }
 
@@ -136,8 +154,9 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
         default:
             return state;
+    
+        }
     }
-}
 
 
 export default TransactionReducers;
