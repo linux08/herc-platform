@@ -7,7 +7,7 @@ import {
   WEB_SERVER_API_CSV,
   WEB_SERVER_API_UPLOAD_DOCUMENT,
   TOKEN_ADDRESS,
-   DEVELOPERS 
+  DEVELOPERS
 } from '../../../components/settings';
 
 import * as Trans from "./TransactionActionNames";
@@ -31,25 +31,33 @@ export function ClearState() {
 }
 
 export function ShowMetricModal() {
- return {
-  type: Trans.Action.ShowMetricModal
-}
+  return {
+    type: Trans.Action.ShowMetricModal
+  }
 }
 export function ShowCamSourceModal() {
-  return{
-  type: Trans.Action.ShowCamSourceModal
+  return {
+    type: Trans.Action.ShowCamSourceModal
+  }
 }
+
+export function ShowPasswordModal() {
+  return {
+    type: Trans.Action.ShowPasswordModal
+  }
 }
+
 
 export function ShowEditModal() {
   return {
-  type: Trans.Action.ShowEditModal
-}
+    type: Trans.Action.ShowEditModal
+  }
 }
 
 export function SetNewOriginTransPassword(password) {
+  console.log('settingNewOGPass')
   return {
-    type: Trans.Action.SetOriginTransPassword,
+    type: Trans.Action.SetNewOriginTransPassword,
     password
   }
 
@@ -63,8 +71,9 @@ export function StartTransaction(place) {
   let asset = store.getState().AssetReducers.selectedAsset;
   trans = {
     header: {
+      tXSide: place, 
       hercId: asset.hercId,
-      password: this.state.password,
+      // password: this.state.password,
       name: asset.Name,
       tXLocation: place,
       price: 0.000125, //this is the bare starter price i'm going with which is (128b / 1024) x 0.001
@@ -111,6 +120,7 @@ export function StartTransaction(place) {
 // };
 
 export function SetOriginTransInfo(info) {
+  // store.dispatch(StartTransaction('Recipient'));
   return {
     type: Trans.Action.SetOriginTransInfo,
     ogTrans: info

@@ -31,6 +31,7 @@ export const Action = {
     ShowMetricModal: 'ShowMetricModal',
     ShowCamSourceModal: 'ShowCamSourcModal',
     ShowEditModal: 'ShowEditModal',
+    
     ShowPasswordModal: 'ShowPasswordModal',
   
     GetCurrentHercValue: 'GetCurrentHercValue',

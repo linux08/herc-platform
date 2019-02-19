@@ -12,7 +12,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
-import { ShowPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+import { ShowAssetPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
 import AssetPasswordModal from '../../components/modals/AssetPasswordModal';
 
@@ -35,13 +35,13 @@ class SupplyChainSplash extends Component {
    
 
     passwordCorrect = () => {
-        this.props.ShowPasswordModal(false);
+        this.props.ShowAssetPasswordModal();
         this.props.navigation.navigate('SupplyChainSideChoice')
     }
 
     renderAssets = () => {
 
-        return assetList = this.props.assets.map((x, i) => {
+        return this.props.assets.map((x, i) => {
             console.log(x, i)
             return (
                 <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
@@ -96,7 +96,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    ShowPasswordModal: visible => dispatch(ShowPasswordModal(visible)),
+    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
     SelectedAsset: asset => dispatch(SelectedAsset(asset)),
     GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
 });

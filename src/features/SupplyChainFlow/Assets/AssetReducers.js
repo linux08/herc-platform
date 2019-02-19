@@ -19,12 +19,12 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
         case Asset.Action.ClearState:
             return INITIAL_STATE
 
-        case Asset.Action.ShowPasswordModal:
-        return {
-            ...state,
-            showPasswordModal: action.isVisible
-        }
-
+        case Asset.Action.ShowAssetPasswordModal:
+            return {
+                ...state,
+                    showPasswordModal: !state.showPasswordModal
+                }
+            
         case Asset.Action.GotHeaders:
             console.log("getHeader reducer", action)
             let assetHeaders = action.assets;
@@ -35,6 +35,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
 
         case Asset.Action.GettingAssetIpfsDefinfition:
             return {
+                ...state,
                 assetDefFetching: true
             }
 
@@ -45,7 +46,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
                     ...state.selectedAsset,
                     ipfsDef: action.ipfsDef
                 }
-            })
+        })
 
         case Asset.Action.Error:
             return Object.assign({}, {

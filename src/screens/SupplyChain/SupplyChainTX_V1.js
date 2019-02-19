@@ -29,11 +29,9 @@ import {
 } from "../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { ShowMetricModal, ShowCamSourceModal, SendTransaction } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 const ORIGNAL_STATE = {
-    metricModalVisibility: false,
-    showCamSourceModal: false,
-    editModalVisibility: false,
     img: {},
     doc: {},
     edi: {},
@@ -51,18 +49,21 @@ export default class SupplyChainTX extends Component {
 
         this.state = ORIGNAL_STATE;
 
-        this.showCamSourceModal = this.showCamSourceModal.bind(this);
-        this.showEditModal = this.showEditModal.bind(this);
-        this.showMetricModal = this.showMetricModal.bind(this);
+        // this.showEditModal = this.showEditModal.bind(this);
+        // this.showMetricModal = this.showMetricModal.bind(this);
 
-        this._pickImage = this._pickImage.bind(this);
-        this.setPic = this.setPic.bind(this);
-        this.setEDI = this.setEDI.bind(this);
-        this.setMetrics = this.setMetrics.bind(this);
+        // this._pickImage = this._pickImage.bind(this);
+        // this.setPic = this.setPic.bind(this);
+        // this.setEDI = this.setEDI.bind(this);
+        // this.setMetrics = this.setMetrics.bind(this);
 
-        this.clearEDI = this.clearEDI.bind(this);
-        this.clearMetrics = this.clearMetrics.bind(this);
+        // this.clearEDI = this.clearEDI.bind(this);
+        // this.clearMetrics = this.clearMetrics.bind(this);
     }
+
+componentDidMount = () => {
+    this
+}
 
     clearAll = () => {
         this.setState(ORIGNAL_STATE)
@@ -92,17 +93,10 @@ export default class SupplyChainTX extends Component {
     //     })
     // }
 
-   
-   
-
     setEDI = (item) => {
-        this.setState({
-            edi: item
-        })
-        this.showEditModal();
+        this.props.addEdit(item);
+        this.props.showEditModal();
     }
-
-   
 
     _pickDocument = () => {
         DocumentPicker.show({
@@ -114,15 +108,14 @@ export default class SupplyChainTX extends Component {
                 // Android
                 RNFS.readFile(res.uri, 'base64')
                     .then(contents => {
-                        this.setState({
-                            doc: {
-                                uri: res.uri,
-                                name: res.fileName,
-                                size: res.fileSize,
-                                type: res.type,
-                                content: contents
-                            }
-                        });
+                        let doc = {
+                            uri: res.uri,
+                            name: res.fileName,
+                            size: res.fileSize,
+                            type: res.type,
+                            content: contents
+                        }
+                        this.props.addDocument(doc);
                     })
             }
         });
@@ -130,15 +123,14 @@ export default class SupplyChainTX extends Component {
 
     setPic = (snappedImg) => {
         console.log("setting a taken image");
-        this.setState({
-            img: snappedImg
-        })
+        this.props.addPhoto(snappedImg)
     }
 
 
     setMetrics = (metricName, value) => {
         this.setState({
             metrics: {
+                ...this.state.metrics,
                 [metricName]: value
             }
         })
@@ -151,7 +143,7 @@ export default class SupplyChainTX extends Component {
 
 
     _onBackdropPress = () => {
-        this.showCamSourceModal();
+        // this.showCamSourceModal();
 
     }
 
@@ -201,25 +193,25 @@ export default class SupplyChainTX extends Component {
                 </View>
 
                 <CameraSourceModal
-                    visibility={this.state.showCamSourceModal}
-                    changeModal={this.showCamSourceModal}
+                    visibility={this.props.modals.showCamSourceModal}
+                    changeModal={this.props.showCamSourceModal}
                     _pickImage={this._pickImage}
                     setPic={this.setPic}
                     navigation={this.props.navigation}
                     routeName={'SupplyChainTx'}
-                    onBackdropPress={this._onBackdropPress}
+                    // onBackdropPress={this.props.showCamSourceModal()}
                 />
 
                 <EditModal
-                    visibility={this.state.editModalVisibility}
-                    changeModal={this.showEditModal}
-                    setEDI={this.setEDI}
-                    onBackdropPress={this.showEditModal}
-                    clearEDI={this.clearEDI}
+                    visibility={this.props.modals.editModal}
+                    changeModal={this.props.showEditModal}
+                    setEDI={this.props.addEdit}
+                    onBackdropPress={this.props.showEditModal}
+                    clearEDI={this.props.clearEDI}
                 />
 
                 <MetricModal
-                    visibility={this.state.metricModalVisibility}
+                    visibility={this.props.modals.metricModal}
                     metrics={metrics}
                     clearMetrics={this.clearMetrics}
                     localOnChange={this.setMetrics}
@@ -230,7 +222,26 @@ export default class SupplyChainTX extends Component {
         )
     }
 }
+const mapStateToProps = (state) => ({
+    modals: state.TransactionReducers.modals,
+    trans: state.TransactionReducers.trans,
+})
 
+const mapDispatchToProps = (dispatch) => ({
+    showMetricModal = () => dispatch(ShowMetricModal()),
+    addMetrics = (newMetrics) => dispatch(AddMetrics(newMetrics)),
+
+    showCamSourceModal = () => dispatch(ShowCamSourceModal()),
+    addPhoto = (imgObject) => dispatch(AddPhoto(imgObject)),
+
+    addDocument = (file) => dispatch(AddDoc(file)),
+    showEditModal = () => dispatch(ShowEditModal()),
+    addEdit = (ediItem) => dispatch(AddEdiT(editItem)),
+
+
+    sendTransaction = () => dispatch(SendTransaction())
+
+})
 const localStyles = StyleSheet.create({
 
     textBold: {

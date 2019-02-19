@@ -12,7 +12,7 @@ import ColorConstants from "../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import { connect } from 'react-redux';
 import { HercTextInputWithLabel } from '../SharedComponents'
-import { ShowPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
+import { ShowAssetPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
 
 
 class AssetPasswordModal extends Component {
@@ -41,7 +41,7 @@ class AssetPasswordModal extends Component {
         return (
             <Modal
                 isVisible={this.props.showPasswordModal}
-                onBackdropPress={() => this.props.ShowPasswordModal(false)}
+                onBackdropPress={() => this.props.ShowAssetPasswordModal()}
             >
                 <View style={localStyles.baseModal}>
                     <View style={localStyles.modalBackground}>
@@ -55,7 +55,7 @@ class AssetPasswordModal extends Component {
                             <TouchableOpacity style={localStyles.button} onPress={() => this.checkPassword(this.state.pwTry)}>
                                 <Text style={localStyles.dismissAcceptText}>Submit</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={localStyles.button} onPress={() => this.props.ShowPasswordModal(false)}>
+                            <TouchableOpacity style={localStyles.button} onPress={() => this.props.ShowAssetPasswordModal(false)}>
                                 <Text style={localStyles.dismissRejectText}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
@@ -75,7 +75,7 @@ mapStateToProps = (state) => ({
 })
 
 mapDispatchToProps = (dispatch) => ({
-    ShowPasswordModal: visible => dispatch(ShowPasswordModal(visible)),
+    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
 
 })
 

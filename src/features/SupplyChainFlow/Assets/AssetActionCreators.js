@@ -7,10 +7,9 @@ const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 
 
-export function ShowPasswordModal(isViz) {
+export function ShowAssetPasswordModal(isViz) {
     return {
-        type: Asset.Action.ShowPasswordModal,
-        isVisible: isViz
+        type: Asset.Action.ShowAssetPasswordModal,
     }
 }
 

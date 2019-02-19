@@ -10,18 +10,20 @@ const INITIAL_STATE = {
     flags: {
 
     },
-    trans: {},
+    trans: {
+        header: {},
+        data: {}
+    },
 
 }
 
 
 const TransactionReducers = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        
-        case Trans.Action.ClearState: 
-        return Object.assign({},{
-            state:  INITIAL_STATE
-        })
+
+        case Trans.Action.ClearState:
+            return INITIAL_STATE
+
 
         case Trans.Action.Error:
             return Object.assign({}, {
@@ -31,113 +33,128 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     error: action.error
                 }
             })
-        
+
         // Modal State
         case Trans.Action.ShowMetricModal:
             return Object.assing({}, {
                 ...state,
                 modals: {
+                    ...state.modals,
                     metricModal: !state.modals.metricModal
                 }
             })
-        
+
         case Trans.Action.ShowCamSourcModal:
             return Object.assing({}, {
                 ...state,
                 modals: {
+                    ...state.modals,
                     camSourceModal: !state.modals.camSourceModal
                 }
             })
-       
+
         case Trans.Action.ShowEdiTModal:
             return Object.assing({}, {
                 ...state,
-               modals: {
+                modals: {
+                    ...state.modals,
                     editModal: !state.modals.editModal
                 }
             })
         case Trans.Action.ShowPasswordModal:
-            return Object.assing({},{
+            console.log(action, 'assetpassword modal')
+            return Object.assign({}, {
                 ...state,
                 modals: {
+                    ...state.modals,
                     passwordModal: !state.modals.passwordModal
                 }
 
-            })
-        
-//  Transactions
+            }
+            )
+
+        //  Transactions
 
         case Trans.Action.SetNewOriginTransPassword:
-        return Object.assign({}, {
-            ...state,
-            trans: {
-                ...state.trans,
-                header: {
-                ...state.trans.header,
-                    password: action.password
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    header: {
+                        ...state.trans.header,
+                        password: action.password
+                    }
                 }
-            }
-            
+            })
 
-        })
         case Trans.Action.StartTransaction:
-
-            return  Object.assign({}, {
+            let trans = action.trans;
+            return Object.assign({}, {
                 ...state,
                 flags: {
                     transactionStarted: true,
                 },
-                trans: action.trans
-                 })
-            
+                trans: {
+                    ...state.trans,
+                    header: {
+                        ...state.trans.header,
+                        hercId: trans.header.hercId,
+                        name: trans.header.name,
+                        price: trans.header.price,
+                        dTime: trans.header.dTime
+                    }
+                },
+            })
+
 
         case Trans.Action.SetOriginTransInfo:
-            return Object.assign({},{
+            return Object.assign({}, {
                 ...state,
                 flags: {
-                ...state.flags,
+                    ...state.flags,
                     gotOgTransInfo: true,
                 },
                 trans: {
                     ...state.trans,
                     header: {
                         ...state.trans.header,
-                    OgTransInfo: action.ogTrans 
+                        OgTransInfo: action.ogTrans
                     }
                 }
 
             })
 
         case Trans.Action.GetCurrentHercValue:
-            return Object.assign({},{
+            return Object.assign({}, state, {
                 ...state,
-                gettingHercValue: true
+                flags: {
+                    gettingHercValue: true
+                }
+            })
+
+        case Trans.Action.GotDynamicHercValue:
+            return Object.assign({}, state, {
+                ...state,
+                hercValue: action.hercValue
+            })
+
+        case Trans.Action.GotNetworkFee:
+            return Object.assign({}, state, {
+                ...state,
+                networkFee: action.fee
 
             })
 
-         case Trans.Action.GotDynamicHercValue:
-         return Object.assign({},{
-             ...state,
-             hercValue: action.hercValue
-         })
-        
-         case Trans.Action.GotNetworkFee:
-         return Object.assign({},{
-             ...state,
-            networkFee: action.fee 
-            
-         })
-
         case Trans.Action.TransactionComplete:
             // let trans = action.data;
-            return Object.assign({}, {
+            return Object.assign({}, state, {
                 ...state,
                 confTransComplete: true,
             })
 
         case Trans.Action.AddPhoto:
-           
-            return Object.assign({}, {
+
+            return Object.assign({}, state, {
                 ...state,
                 trans: {
                     ...state.trans,
@@ -150,7 +167,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
 
         case Trans.Action.AddDoc:
-            return Object.assign({},{
+            return Object.assign({}, state, {
                 ...state,
                 trans: {
                     ...state.trans,
@@ -162,7 +179,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.AddMetrics:
-            return Object.assign({}, {
+            return Object.assign({}, state, {
                 ...state,
                 trans: {
                     ...state.trans,
@@ -175,10 +192,10 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.AddEdiT:
-          
-            return Object.assign({}, {
+
+            return Object.assign({}, state, {
                 ...state,
-              
+
                 trans: {
                     ...state.trans,
                     data: {
@@ -193,9 +210,9 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
         default:
             return state;
-    
-        }
+
     }
+}
 
 
 export default TransactionReducers;

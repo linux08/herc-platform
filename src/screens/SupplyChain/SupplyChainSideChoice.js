@@ -22,7 +22,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "../../assets/responsiveUI";
-import { ShowPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+import { ShowPasswordModal } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
 
 class SupplyChainSideChoice extends Component {
   constructor(props) {
@@ -69,19 +69,15 @@ class SupplyChainSideChoice extends Component {
   passwordHandled = () => {
       this.props.StartTransaction();
       this.props.ShowPasswordModal();
-      this.props.navigation.navigate('SupplyChainTX');
-
+      this.props.navigation.navigate('SupplyChainTx');
   }
 
-
+goToSupplyChainTX = () => {
+}
 
  handleSideChoice = () => {
-    console.log("pressed on testpress");
-    if(this.state.place === 'Recipient') {
-        this.setState({
-            pwModalIsVisible: true,
-        })
-    }
+    console.log("handling side choice");
+    this.props.ShowPasswordModal()
     
   };
 
@@ -170,12 +166,12 @@ class SupplyChainSideChoice extends Component {
 
 const mapStateToProps = (state) => ({
   selectedAsset: state.AssetReducers.selectedAsset,
-  showPassWordModal: state.TransactionReducers.passwordModal
+  showPassWordModal: state.TransactionReducers.modals.passwordModal
 });
 
 const mapDispatchToProps = (dispatch) => ({
   StartTransaction: () => dispatch(StartTransaction()),
-  showPassWordModal: () => dispatch(ShowPasswordModal())
+  ShowPasswordModal: () => dispatch(ShowPasswordModal())
 });
 
 export default connect(
