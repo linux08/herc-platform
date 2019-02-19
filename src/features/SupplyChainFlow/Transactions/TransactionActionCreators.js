@@ -239,9 +239,9 @@ getDynamicHercValue = async () => {
       "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5"
     );
 
-    let highPrice = response.json();
-    store.dispatch(GotDynamicHercValue(highPrice.h));
+    let highPrice = await response.json();
     console.log(highPrice, "dynamic herc price, what format? looking for 'h'");
+    store.dispatch(GotDynamicHercValue(highPrice.h));
   } catch (error) {
     store.dispatch(Error(error));
   }
