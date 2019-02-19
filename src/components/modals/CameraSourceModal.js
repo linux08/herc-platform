@@ -6,7 +6,7 @@ import {
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { toggleCamSourceModal, toggleCameraModal } from "../../actions/ModalVisibilityActions";
+import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceActionCreators";
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
 // import { NavigationActions } from 'react-navigation';
@@ -45,7 +45,7 @@ class CameraSourceModal extends Component {
     }
 
     _pickImage = () => {
-        this.props.toggleCamSourceModal(false);
+        this.props.toggleCamSourceModal();
 
         ImagePicker.launchImageLibrary({}, (response) => {
 
@@ -77,7 +77,7 @@ class CameraSourceModal extends Component {
         return (
             <Modal
                 //OnBackdrop will close the modal if clicked on outside of it
-                onBackdropPress={() => this.props.toggleCamSourceModal(false)}
+                onBackdropPress={() => this.props.toggleCamSourceModal()}
                 backdropColor={'rgba(0,0,0,0.5)'}
                 //  Attached visiblility to the redux state
                 isVisible={this.props.showCamSourceModal}
@@ -124,15 +124,13 @@ class CameraSourceModal extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
+    showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
 
-    showCameraModal: state.ModalVisibilityReducers.showCameraModal
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleCamSourceModal: (show) =>
-        dispatch(toggleCamSourceModal(show)),
-    toggleCameraModal: (show) =>
-        dispatch(toggleCameraModal(show))
+    toggleCamSourceModal: () =>
+        dispatch(ToggleCamSourceModal()),
+  
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CameraSourceModal);

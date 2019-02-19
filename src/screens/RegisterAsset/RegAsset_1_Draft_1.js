@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import styles from "../../assets/styles";
 import { AddAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 import { AssetCard } from "../../components/AssetCard";
+import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceModalActionCreators";
 import CameraSourceModal from "../../components/modals/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
@@ -233,14 +234,14 @@ class RegAsset1 extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    showCamSourceModal: state.ModalVisibilityReducers.showCamSourceModal,
+    showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     newAsset: state.RegAssetReducers.newAsset
 });
 
 const mapDispatchToProps = (dispatch) => ({
     AddAsset: (newAsset) => dispatch(AddAsset(newAsset)),
     // getHercId: () => dispatch(getHercId()),
-    toggleCamSourceModal: (show) =>
-        dispatch(toggleCamSourceModal(show)),
+    ToggleCamSourceModal: () =>
+        dispatch(ToggleCamSourceModal()),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);
