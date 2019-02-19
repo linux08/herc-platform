@@ -16,7 +16,7 @@ import { ShowPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetAc
 import { transitions } from 'material-ui/styles';
 
 
-class GetorSetTransactionPasswordModal extends Component {
+class GetOrSetTransactionPasswordModal extends Component {
     constructor(props) {
         super(props);
         this.state = {

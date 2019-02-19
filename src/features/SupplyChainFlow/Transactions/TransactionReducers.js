@@ -20,7 +20,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
         
         case Trans.Action.ClearState: 
         return Object.assign({},{
-            state = INITIAL_STATE
+            state:  INITIAL_STATE
         })
 
         case Trans.Action.Error:

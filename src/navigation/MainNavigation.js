@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from "react-navigation";
 
-import BlockScanner from "../screens/MainApp/BlockScanner";
+// import BlockScanner from "../screens/MainApp/BlockScanner";
 // import Confirm from "../screens/Confirm";
 
 // import Hipr from "../screens/Hipr";
@@ -17,8 +17,8 @@ import Settings from "../screens/MainApp/Settings";
 // import QRCapture from "../screens/QRCapture";
 // import QRCapture2 from "../screens/QRCapture2";
 // import WebViewComponent from "../components/WebViewComponent";
-import DocumentStorage from "../screens/MainApp/DocumentStorage";
-import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
+// import DocumentStorage from "../screens/MainApp/DocumentStorage";
+// import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
 
 import TestSplash from "../screens/MainApp/TestSplash";
 
@@ -26,10 +26,6 @@ import Header from "../components/Headers/Header";
 import SideNavMenu from "../components/SideNavMenu"
 import RegAssetNavigator from "./RegisterAssetNavigation";
 import SupplyChainNavigator from "./SupplyChainNavigation";
-
-
-
-
 
 
 const MainNavigator = createStackNavigator({
@@ -52,13 +48,13 @@ const MainNavigator = createStackNavigator({
         })
     },
 
-    Wallet: {
-        screen: Wallet,
-    },
+    // Wallet: {
+    //     screen: Wallet,
+    // },
 
-    BlockScanner: {
-        screen: Blockscanner
-    },
+    // BlockScanner: {
+    //     screen: Blockscanner
+    // },
 
     
 

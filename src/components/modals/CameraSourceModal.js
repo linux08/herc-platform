@@ -6,7 +6,7 @@ import {
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceActionCreators";
+import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceModalActionCreators";
 import Modal from 'react-native-modal';
 import modalStyles from "./ModalStyles";
 // import { NavigationActions } from 'react-navigation';

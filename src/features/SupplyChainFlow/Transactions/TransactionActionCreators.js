@@ -5,15 +5,17 @@ import {
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
   WEB_SERVER_API_STORJ_UPLOAD,
   WEB_SERVER_API_CSV,
-  WEB_SERVER_API_UPLOAD_DOCUMENT
-} from "../../../components/settings";
+  WEB_SERVER_API_UPLOAD_DOCUMENT,
+  TOKEN_ADDRESS,
+   DEVELOPERS 
+} from '../../../components/settings';
+
 import * as Trans from "./TransactionActionNames";
 import axios from "axios";
 import store from "../../../store";
 import firebase from "../../../constants/Firebase";
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
-import { TOKEN_ADDRESS, DEVELOPERS } from "../components/settings";
 
 export function Error(error) {
   return {

@@ -163,8 +163,6 @@ class SupplyChainSideChoice extends Component {
             passwordHandled={this.passwordHandled}
             />
         
-
-
       </View>
     );
   }

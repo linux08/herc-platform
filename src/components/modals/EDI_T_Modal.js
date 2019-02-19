@@ -5,7 +5,7 @@ import styles from '../../assets/styles';
 import ColorConstants from '../../constants/ColorConstants';
 import edits from '../../constants/Edi-T-Sets';
 import Modal from 'react-native-modal';
-import { setSet } from '../../actions/AssetActions';
+import { AddEdiT } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators/';
 import { HercTextFieldWithLabel } from '../../components/SharedComponents'
 
 class EDI_T_Sets_Modal extends Component {
@@ -34,7 +34,7 @@ class EDI_T_Sets_Modal extends Component {
                         renderItem={(item) => {
                             console.log(item, 'edits??');
                             return (
-                                <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.props.setEDI(item.item)}>
+                                <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.props.AddEdiT(item.item)}>
                                     <HercTextFieldWithLabel label={item.item.value} text={item.item.name} />
                                 </TouchableHighlight>
                             )
@@ -52,10 +52,10 @@ class EDI_T_Sets_Modal extends Component {
 //     // logo: state.AssetReducers.selectedAsset.Logo
 // });
 
-// const mapDispatchToProps = (dispatch) => ({
-//     setSet: (item) => dispatch(setSet(item))
-// });
-export default EDI_T_Sets_Modal;
+const mapDispatchToProps = (dispatch) => ({
+    AddEdiT: (item) => dispatch(AddEdiT(item))
+});
+export default connect(null,mapDispatchToProps)(EDI_T_Sets_Modal);
 // export default connect(null, mapDispatchToProps)(EditSets);
 
 const localStyles = StyleSheet.create({
