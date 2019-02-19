@@ -155,7 +155,7 @@ class SupplyChainTX extends Component {
 
 
     render() {
-
+console.log("render in supplychainTx")
         return (
 
             <View style={styles.baseContainer}>

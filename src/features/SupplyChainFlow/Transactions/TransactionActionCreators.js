@@ -144,7 +144,7 @@ export function AddPhoto(imgObj) {
   return {
     type: Trans.Action.AddPhoto,
     image: {
-      data: imgObj.image,
+      data: imgObj.imageString,
       size: imgObj.size,
       uri: imgObj.uri,
       price: imgPrice

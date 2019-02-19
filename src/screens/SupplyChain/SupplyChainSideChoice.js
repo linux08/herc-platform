@@ -170,7 +170,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  StartTransaction: () => dispatch(StartTransaction()),
+  StartTransaction: (place) => dispatch(StartTransaction(place)),
   ShowPasswordModal: () => dispatch(ShowPasswordModal())
 });
 
