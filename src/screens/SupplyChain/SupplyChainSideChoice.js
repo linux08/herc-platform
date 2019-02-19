@@ -67,7 +67,7 @@ class SupplyChainSideChoice extends Component {
   };
 
   passwordHandled = () => {
-      this.props.StartTransaction();
+      this.props.StartTransaction(this.state.place);
       this.props.ShowPasswordModal();
       this.props.navigation.navigate('SupplyChainTx');
   }

@@ -10,6 +10,7 @@ import {
   DEVELOPERS
 } from '../../../components/settings';
 
+const BigNumber = require('bignumber.js');
 import * as Trans from "./TransactionActionNames";
 import axios from "axios";
 import store from "../../../store";
@@ -35,11 +36,11 @@ export function ShowMetricModal() {
     type: Trans.Action.ShowMetricModal
   }
 }
-export function ShowCamSourceModal() {
-  return {
-    type: Trans.Action.ShowCamSourceModal
-  }
-}
+// export function ShowCamSourceModal() {
+//   return {
+//     type: Trans.Action.ShowCamSourceModal
+//   }
+// }
 
 export function ShowPasswordModal() {
   return {
@@ -225,7 +226,7 @@ GotNetworkFee = fee => {
   };
 };
 
-GetCurrentHercValue = () => {
+export function GetCurrentHercValue(){
   getDynamicHercValue();
   return {
     type: Trans.Action.GetCurrentHercValue
@@ -475,6 +476,8 @@ export function getQRData(data) {
   };
 }
 
+
+// this is needed swiper!
 // export function GetAssetTransactions(assetKey) {
 //     return dispatch => {
 //         dispatch({

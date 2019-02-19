@@ -29,7 +29,7 @@ export const Action = {
 
 
     ShowMetricModal: 'ShowMetricModal',
-    ShowCamSourceModal: 'ShowCamSourcModal',
+    // ShowCamSourceModal: 'ShowCamSourcModal',
     ShowEditModal: 'ShowEditModal',
     
     ShowPasswordModal: 'ShowPasswordModal',

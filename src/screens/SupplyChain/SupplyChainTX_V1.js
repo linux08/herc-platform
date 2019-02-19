@@ -10,14 +10,25 @@ import {
 
 import MetricModal from '../../components/modals/MetricModal';
 import CameraSourceModal from '../../components/modals/CameraSourceModal';
+import { ToggleCamSourceModal } from '../../features/CamSourceModal/CamSourceModalActionCreators';
 import EditModal from '../../components/modals/EDI_T_Modal';
+
+import {
+    ShowEditModal,
+    ShowMetricModal,
+    AddDoc,
+    AddEdiT,
+    AddMetrics,
+    AddPhoto,
+} from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+
 import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
-import Header from "../../components/Headers/Header";
 import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents/SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
+
 import { connect } from 'react-redux';
 // import assets from "../../components/TesterAssets";
 
@@ -29,7 +40,6 @@ import {
 } from "../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
-import { ShowMetricModal, ShowCamSourceModal, SendTransaction } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 const ORIGNAL_STATE = {
     img: {},
@@ -38,12 +48,8 @@ const ORIGNAL_STATE = {
     metrics: {}
 }
 
-export default class SupplyChainTX extends Component {
-    navigationOptions = ({ navigation }) => {
-        return {
-            header: <Header headerName={'Asset Name'} navigation={navigation} />
-        }
-    }
+class SupplyChainTX extends Component {
+
     constructor(props) {
         super(props);
 
@@ -61,9 +67,9 @@ export default class SupplyChainTX extends Component {
         // this.clearMetrics = this.clearMetrics.bind(this);
     }
 
-componentDidMount = () => {
-    this
-}
+    // componentDidMount = () => {
+    //     this
+    // }
 
     clearAll = () => {
         this.setState(ORIGNAL_STATE)
@@ -149,7 +155,7 @@ componentDidMount = () => {
 
 
     render() {
-        let metrics = assets[0].CoreProps;
+
         return (
 
             <View style={styles.baseContainer}>
@@ -158,20 +164,19 @@ componentDidMount = () => {
                     translucent={true}
                     backgroundColor='transparent'
                 />
-                <Header headerName={'Asset Name'} navigation={this.props.navigation} />
                 <View style={styles.bodyContainer}>
                     <TransInfoCard transSide={'Originator'} hercId={'42'} />
 
                     <View style={localStyles.transactionComponentListContainer}>
 
                         <CameraTransactionComponent
-                            onPress={() => this.showCamSourceModal()}
+                            onPress={() => this.props.ToggleCamSourceModal()}
                             img={this.state.img}
                             image={this.state.img.string}
                         />
 
                         <EdiTransactionComponent
-                            onPress={() => this.showEditModal()}
+                            onPress={() => this.props.showEditModal()}
                             componentName={"Choose EDI-T Sets"}
                             edi={this.state.edi}
                         />
@@ -182,7 +187,7 @@ componentDidMount = () => {
                         />
 
                         <MetricTransactionComponent
-                            onPress={() => this.showMetricModal()}
+                            onPress={() => this.props.showMetricModal()}
                             iconName='clipboard'
                         />
 
@@ -193,13 +198,13 @@ componentDidMount = () => {
                 </View>
 
                 <CameraSourceModal
-                    visibility={this.props.modals.showCamSourceModal}
-                    changeModal={this.props.showCamSourceModal}
+                    visibility={this.props.showCamSourceModal}
+                    changeModal={this.props.ToggleCamSourceModal}
                     _pickImage={this._pickImage}
                     setPic={this.setPic}
                     navigation={this.props.navigation}
                     routeName={'SupplyChainTx'}
-                    // onBackdropPress={this.props.showCamSourceModal()}
+                    onBackdropPress={this.props.ToggleCamSourceModal}
                 />
 
                 <EditModal
@@ -212,7 +217,7 @@ componentDidMount = () => {
 
                 <MetricModal
                     visibility={this.props.modals.metricModal}
-                    metrics={metrics}
+                    metrics={this.props.trans.data.metrics}
                     clearMetrics={this.clearMetrics}
                     localOnChange={this.setMetrics}
                     changeModal={this.showMetricModal}
@@ -224,24 +229,30 @@ componentDidMount = () => {
 }
 const mapStateToProps = (state) => ({
     modals: state.TransactionReducers.modals,
+    showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     trans: state.TransactionReducers.trans,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    showMetricModal = () => dispatch(ShowMetricModal()),
-    addMetrics = (newMetrics) => dispatch(AddMetrics(newMetrics)),
+    showMetricModal: () => dispatch(ShowMetricModal()),
+    addMetrics: (newMetrics) => dispatch(AddMetrics(newMetrics)),
 
-    showCamSourceModal = () => dispatch(ShowCamSourceModal()),
-    addPhoto = (imgObject) => dispatch(AddPhoto(imgObject)),
+    ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
+    addPhoto: (imgObject) => dispatch(AddPhoto(imgObject)),
 
-    addDocument = (file) => dispatch(AddDoc(file)),
-    showEditModal = () => dispatch(ShowEditModal()),
-    addEdit = (ediItem) => dispatch(AddEdiT(editItem)),
+    addDocument: (file) => dispatch(AddDoc(file)),
+   
+    showEditModal: () => dispatch(ShowEditModal()),
+    addEdit: (ediItem) => dispatch(AddEdiT(editItem)),
 
 
-    sendTransaction = () => dispatch(SendTransaction())
+    sendTransaction: () => dispatch(SendTransaction()),
+
+    ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
 
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainTX);
 const localStyles = StyleSheet.create({
 
     textBold: {

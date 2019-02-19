@@ -1,4 +1,6 @@
 import * as Trans from './TransactionActionNames'
+
+
 const INITIAL_STATE = {
     modals: {
         metricModal: false,
@@ -12,7 +14,12 @@ const INITIAL_STATE = {
     },
     trans: {
         header: {},
-        data: {}
+        data: {
+            metrics:{},
+            images: {},
+            documents: {},
+            ediT: {},
+        }
     },
 
 }
@@ -88,7 +95,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.StartTransaction:
-            let trans = action.trans;
+            let tRans = action.trans;
             return Object.assign({}, {
                 ...state,
                 flags: {
@@ -98,10 +105,11 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.trans,
                     header: {
                         ...state.trans.header,
-                        hercId: trans.header.hercId,
-                        name: trans.header.name,
-                        price: trans.header.price,
-                        dTime: trans.header.dTime
+                        txSide: tRans.header.tXSide,
+                        hercId: tRans.header.hercId,
+                        name: tRans.header.name,
+                        price: tRans.header.price,
+                        dTime: tRans.header.dTime
                     }
                 },
             })
@@ -185,7 +193,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.trans,
                     data: {
                         ...state.trans.data,
-                        properties: action.data
+                        metrics: action.data
                     }
 
                 }

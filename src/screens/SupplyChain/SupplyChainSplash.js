@@ -12,11 +12,11 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
-import { ShowAssetPasswordModal } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+import { ShowAssetPasswordModal, GettingAssetIpfsDefintion, SelectedAsset } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
 import AssetPasswordModal from '../../components/modals/AssetPasswordModal';
 
-import { GettingAssetIpfsDefintion, SelectedAsset } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
+import { GetCurrentHercValue } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class SupplyChainSplash extends Component {
@@ -28,14 +28,22 @@ class SupplyChainSplash extends Component {
         // this.checkPassword = this.checkPassword.bind(this);
     }
 
+    componentDidMount = () => {
+        console.log("supplychain splash did mount, go for the prices"),
+            this.props.GetCurrentHercValue();
+
+    }
+
     onSelectAsset = (assetIndex) => {
         this.props.SelectedAsset(this.props.assets[assetIndex]);
     }
 
-   
+
 
     passwordCorrect = () => {
+        this.props.GetAssetDef(this.props.selectedAsset.hashes.ipfsHash)
         this.props.ShowAssetPasswordModal();
+
         this.props.navigation.navigate('SupplyChainSideChoice')
     }
 
@@ -52,7 +60,7 @@ class SupplyChainSplash extends Component {
         )
     }
 
-   
+
 
     render() {
 
@@ -80,7 +88,7 @@ class SupplyChainSplash extends Component {
                     // heading={'Enter Asset Password'}
                     isVisible={this.props.showPasswordModal}
                     passwordCorrect={this.passwordCorrect}
-                    // ShowPasswordModal={this.props.ShowPasswordModal}
+                // ShowPasswordModal={this.props.ShowPasswordModal}
                 />
             </View>
         )
@@ -99,6 +107,7 @@ const mapDispatchToProps = dispatch => ({
     ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
     SelectedAsset: asset => dispatch(SelectedAsset(asset)),
     GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
+    GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSplash);

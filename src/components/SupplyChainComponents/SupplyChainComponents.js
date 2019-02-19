@@ -134,7 +134,7 @@ export function DocTransactionComponent(props) {
             <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
                 <Icon
                     style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='text-document'
+                    name='file-text'
                     onPress={props.onPress}
                 >
                 </Icon>

@@ -1,5 +1,17 @@
 import * as Asset from './AssetActionNames';
 
+import {
+    WEB_SERVER_API_IPFS_GET,
+    WEB_SERVER_API_IPFS_ADD,
+    WEB_SERVER_API_FACTOM_CHAIN_ADD,
+    WEB_SERVER_API_FACTOM_ENTRY_ADD,
+    WEB_SERVER_API_STORJ_UPLOAD,
+    WEB_SERVER_API_CSV,
+    WEB_SERVER_API_UPLOAD_DOCUMENT,
+    TOKEN_ADDRESS,
+    DEVELOPERS
+  } from '../../../components/settings';
+  
 import axios from 'axios';
 import store from "../../../store";
 import firebase from "../../../constants/Firebase";
@@ -40,13 +52,15 @@ function GotHeaders(assetList) {
         }
     )
 }
- 
+
 
 export function SelectedAsset(asset) {
-    return {
-        type: Asset.Action.SelectedAsset,
-        selectAsset: asset
-    }
+    return (
+        {
+            type: Asset.Action.SelectedAsset,
+            selectAsset: asset
+        }
+    )
 }
 
 export function GettingAssetIpfsDefintion(ipfsHash) {
@@ -57,18 +71,16 @@ export function GettingAssetIpfsDefintion(ipfsHash) {
 }
 
 
-function getAssetDef(ipfsHash) {
-    return dispatch => {
-        let singleHash = ipfsHash;
-        axios.get(WEB_SERVER_API_IPFS_GET, { params: singleHash })
-            .then(response => {
-                let assetDef = response.data[0];
-                dispatch(GotAssetDef(assetDef))
-            })
-            .catch(error => {
-                dispatch(Error(error)),
-                    console.log(err)
-            })
+async function getAssetDef(ipfsHash) {
+    try {
+        let response = await axios.get(WEB_SERVER_API_IPFS_GET, { params: ipfsHash });
+        let assetDef = response.data[0];
+
+        store.dispatch(GotAssetDef(assetDef))
+
+    } catch (error) {
+        store.dispatch(Error(error)),
+            console.log(error)
     }
 }
 

@@ -18,7 +18,7 @@ export class AssetCard extends Component {
 
 
     componentWillMount = () => {
-        console.log("willmount in AssetCard", this.props);
+        // console.log("willmount in AssetCard", this.props);
         this.setState(this.props.asset);
     }
 
@@ -41,7 +41,7 @@ export class AssetCard extends Component {
         }
     }
     render() {
-        console.log(this.state, "this is state, looking for the deets passed in")
+        // console.log(this.state, "this is state, looking for the deets passed in")
         let noImageIcon = <Icon name={'picture'} size={33} color={ColorConstants.MainBlue} />
         return (
             <View style={localStyles.assetCard}>

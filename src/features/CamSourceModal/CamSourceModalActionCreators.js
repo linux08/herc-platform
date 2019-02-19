@@ -1,7 +1,7 @@
 import * as CamSource from './CamSourceActionNames';
 
 
-export function ToggleCameraSourceModal() {
+export function ToggleCamSourceModal() {
     return {
     type: CamSource.Action.ToggleCamSourceModal,
     }
