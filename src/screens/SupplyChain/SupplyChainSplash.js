@@ -5,7 +5,8 @@ import {
     StatusBar,
     Image,
     ScrollView,
-    TouchableHighlight
+    TouchableHighlight,
+    FlatList
 } from 'react-native';
 import styles from "../../assets/styles";
 import React, { Component } from 'react';
@@ -34,9 +35,9 @@ class SupplyChainSplash extends Component {
 
     }
 
-    onSelectAsset = (assetIndex) => {
-        this.props.SelectedAsset(this.props.assets[assetIndex]);
-    }
+    // onSelectAsset = (assetIndex) => {
+    //     this.props.SelectedAsset(this.props.assets[assetIndex]);
+    // }
 
 
 
@@ -77,41 +78,53 @@ class SupplyChainSplash extends Component {
                 <View style={styles.bodyContainer}>
 
                     <AddAssetButton onPress={() => this.props.navigation.navigate('RegisterAssetNavigator')} />
+                    <FlatList
+                        data={this.props.assets}
+                        keyExtractor={item => item.Logo }
+                        renderItem={(item) => {
+                            return (
+                                <TouchableHighlight key={item.item.Name} onPress={() => this.props.SelectedAsset(item.item)}>
+                                    <AssetCard asset={item.item} />
+                                </TouchableHighlight>
+                            )
+                        }}
 
-                    <ScrollView>
+/>
+
+                        {/* <ScrollView>
                         {assetList}
-                    </ScrollView>
+                    </ScrollView> */}
 
                 </View>
-
+    
                 <AssetPasswordModal
-                    // heading={'Enter Asset Password'}
-                    isVisible={this.props.showPasswordModal}
-                    passwordCorrect={this.passwordCorrect}
-                // ShowPasswordModal={this.props.ShowPasswordModal}
-                />
-            </View>
-        )
-    }
-}
-
-
+                        // heading={'Enter Asset Password'}
+                        isVisible={this.props.showPasswordModal}
+                        passwordCorrect={this.passwordCorrect}
+                    // ShowPasswordModal={this.props.ShowPasswordModal}
+                    />
+                </View>
+                )
+            }
+        }
+        
+        
 const mapStateToProps = state => ({
-    assets: state.AssetReducers.assets,
-    selectedAsset: state.AssetReducers.selectedAsset,
-    assetFetched: state.AssetReducers.assetFetched,
-    showPasswordModal: state.AssetReducers.showPasswordModal,
-});
-
+                    assets: state.AssetReducers.assets,
+                selectedAsset: state.AssetReducers.selectedAsset,
+                assetFetched: state.AssetReducers.assetFetched,
+                showPasswordModal: state.AssetReducers.showPasswordModal,
+            });
+            
 const mapDispatchToProps = dispatch => ({
-    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
-    SelectedAsset: asset => dispatch(SelectedAsset(asset)),
-    GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
-    GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSplash);
-
+                    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
+                SelectedAsset: asset => dispatch(SelectedAsset(asset)),
+                GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
+                GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
+            });
+            
+            export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSplash);
+            
 // const localStyles = StyleSheet.create({
 
 //     imageSourceContainer: {

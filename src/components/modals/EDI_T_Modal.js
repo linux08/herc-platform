@@ -5,14 +5,22 @@ import styles from '../../assets/styles';
 import ColorConstants from '../../constants/ColorConstants';
 import edits from '../../constants/Edi-T-Sets';
 import Modal from 'react-native-modal';
-import { AddEdiT } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators/';
+import { AddEdiT, ClearEdi } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators/';
 import { HercTextFieldWithLabel } from '../../components/SharedComponents'
+import { ShowEditModal } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 class EDI_T_Sets_Modal extends Component {
     constructor(props) {
         super(props);
     }
 
+ onSelectEdi = (item) => {
+
+    this.props.AddEdiT(item);
+    this.props.ShowEditModal();
+ }
+  
+  
     render() {
         let visibility = this.props.visibility;
 
@@ -21,20 +29,20 @@ class EDI_T_Sets_Modal extends Component {
                 backdropColor={'rgba(0,0,0,0.5)'}
                 animationIn={'slideInLeft'}
                 animationOut={'slideOutLeft'}
-                isVisible={visibility}
+                isVisible={this.props.visible}
                 onRequestClose={() => { console.log("modal closed") }}
             >
                 <View style={styles.bodyContainer}>
-                    <Text onPress={this.props.changeModal} style={localStyles.editLabel}>EDI-T Sets</Text>
-                    <TouchableHighlight onPress={this.props.clearEDI} style={localStyles.editField}>
+                    <Text onPress={this.props.ShowEditModal} style={localStyles.editLabel}>EDI-T Sets</Text>
+                    <TouchableHighlight onPress={this.props.ClearEdiT} style={localStyles.editField}>
                         <Text style={localStyles.editLabel}>Clear EDIT</Text>
                     </TouchableHighlight>
                     <FlatList
                         data={edits}
                         renderItem={(item) => {
-                            console.log(item, 'edits??');
+                            // console.log(item, 'edits??');
                             return (
-                                <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.props.AddEdiT(item.item)}>
+                                <TouchableHighlight key={item.index} style={{ justifyContent: "center" }} onPress={() => this.props.AddEdiT(item.item)}>
                                     <HercTextFieldWithLabel label={item.item.value} text={item.item.name} />
                                 </TouchableHighlight>
                             )
@@ -46,16 +54,16 @@ class EDI_T_Sets_Modal extends Component {
         );
     }
 }
-
-// const mapStateToProps = (state) => ({
-//     // name: state.AssetReducers.selectedAsset.Name,
-//     // logo: state.AssetReducers.selectedAsset.Logo
-// });
+const mapStateToProps = (state) => ({
+    visible: state.TransactionReducers.modals.editModal,
+})
 
 const mapDispatchToProps = (dispatch) => ({
-    AddEdiT: (item) => dispatch(AddEdiT(item))
+    AddEdiT: (item) => dispatch(AddEdiT(item)),
+    ClearEdiT: () => dispatch(ClearEdiT()),
+    ShowEditModal: () => dispatch(ShowEditModal)
 });
-export default connect(null,mapDispatchToProps)(EDI_T_Sets_Modal);
+export default connect(mapStateToProps, mapDispatchToProps)(EDI_T_Sets_Modal);
 // export default connect(null, mapDispatchToProps)(EditSets);
 
 const localStyles = StyleSheet.create({
