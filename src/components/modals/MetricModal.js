@@ -4,7 +4,8 @@ import styles from '../../assets/styles';
 import { connect } from "react-redux";
 import ColorConstants from '../../constants/ColorConstants';
 import Modal from 'react-native-modal';
-import { BigYellowButton, HercTextInputWithLabel } from '../../components/SharedComponents'
+import { BigYellowButton, HercTextInputWithLabel } from '../../components/SharedComponents';
+import { ShowMetricModal } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 class MetricModal extends Component {
     constructor(props) {
@@ -56,9 +57,12 @@ class MetricModal extends Component {
                 animationOut={'slideOutRight'}
                 isVisible={visibility}
                 onRequestClose={() => { console.log("modal closed") }}
+
             >
+            
                 <View style={styles.bodyContainer}>
-                    <Text onPress={this.props.changeModal} style={localStyles.editLabel}>{this.props.assetName} Metrics</Text>
+                    <Text style={localStyles.editLabel}>{this.props.assetName} Metrics</Text>
+                    <Text onPress={() => this.props.ShowMetricModal()}  style={localStyles.editLabel}>Close Modal</Text>
                     <TouchableHighlight onPress={this.props.clearMetrics} style={localStyles.editField}>
                         <Text style={localStyles.editLabel}>Clear Metrics</Text>
                     </TouchableHighlight>
@@ -99,11 +103,11 @@ class MetricModal extends Component {
 
 const mapStateToProps = (state) => ({
     metrics: state.AssetReducers.selectedAsset.ipfsDef.CoreProps,
-    logo: state.AssetReducers.selectedAsset.Logo
+    assetName: state.AssetReducers.selectedAsset.Name
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setSet: (item) => dispatch(setSet(item))
+    ShowMetricModal: () => dispatch(ShowMetricModal())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MetricModal);
