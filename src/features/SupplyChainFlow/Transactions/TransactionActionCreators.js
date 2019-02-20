@@ -143,7 +143,8 @@ export function AddPhoto(imgObj) {
   ).toFixed(18);
   return {
     type: Trans.Action.AddPhoto,
-    image: {
+    images: {
+      name: imgObj.name,
       data: imgObj.imageString,
       size: imgObj.size,
       uri: imgObj.uri,

@@ -41,10 +41,11 @@ export function AddAssetButton(props) {
 export function TransInfoCard(props) {
     return (
         <View style={localStyles.transInfoCard}>
-            <Text style={localStyles.textBold}>{props.transSide}</Text>
+         <Text style={localStyles.textBold}>{props.header.name}</Text>
+            <Text style={localStyles.textBold}>{props.header.txSide}</Text>
             <View style={localStyles.flexEndRow}>
                 <Text style={[localStyles.textNormal, { fontSize: 12, marginRight: 10 }]}>HERC ID</Text>
-                <Text style={[localStyles.textBold]}>{props.hercId}</Text>
+                <Text style={[localStyles.textBold]}>{props.header.hercId}</Text>
             </View>
         </View>
     )
@@ -57,10 +58,10 @@ export function CameraTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            {props.image ?
+            {props.image.data ?
                 <TouchableHighlight onPress={props.onPress} style={localStyles.imageSquare}>
                     <Image style={{ height: '100%', width: '100%', resizeMode: 'contain' }}
-                        source={{ uri: props.image }} />
+                        source={{ uri: props.image.data }} />
                 </TouchableHighlight>
                 :
 
@@ -73,15 +74,15 @@ export function CameraTransactionComponent(props) {
                     </Icon>
                 </View>
             }
-            {props.image ?
+            {props.image.name ?
                 <View style={localStyles.transComponentInfo}>
                     <View>
-                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.img.name}</Text>
-                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.img.size / 1024).toFixed(3)} kb</Text>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{props.image.name}</Text>
+                        <Text style={[localStyles.textNormal, { fontSize: 12, margin: 5 }]}>{(props.image.size / 1024).toFixed(3)} kb</Text>
                     </View>
 
                     <View style={localStyles.price}>
-                        <Text style={localStyles.textBold}>{(((props.img.size / 1024) * .00000002) / .4).toFixed(8)}</Text>
+                        <Text style={localStyles.textBold}>{props.image.price}</Text>
                         <Image source={hercpngIcon} style={localStyles.hercPriceIcon} />
                     </View>
                 </View>
@@ -232,7 +233,7 @@ const localStyles = StyleSheet.create({
     transComponentInfo: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: 'blue',
+        backgroundColor: ColorConstants.ElementBG,
         justifyContent: 'flex-start',
         marginLeft: 0
     },
