@@ -2,6 +2,7 @@
 export const Action = {
     Error: 'Error',
     ClearState: 'ClearState',
+    // ToggleCamSourceModal: 'ToggleCameSourceModal',
 
     GetHercId: 'GetHercId',
     GotHercId: 'GotHercId',
