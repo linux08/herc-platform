@@ -148,7 +148,7 @@ export function DocTransactionComponent(props) {
                     </View>
 
                     <View style={localStyles.price}>
-                        <Text style={localStyles.textBold}>{(((props.doc.size / 1024) * .00000002) / .4).toFixed(8)}</Text>
+                        <Text style={localStyles.textBold}>{props.doc.price}</Text>
                         <Image source={hercpngIcon} style={localStyles.hercPriceIcon} />
                     </View>
                 </View>

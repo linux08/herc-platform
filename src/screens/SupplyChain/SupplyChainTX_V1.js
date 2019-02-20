@@ -183,7 +183,7 @@ console.log("render in supplychainTx")
 
                         <DocTransactionComponent
                             onPress={this._pickDocument}
-                            doc={this.state.doc}
+                            doc={this.props.trans.data.documents}
                         />
 
                         <MetricTransactionComponent
