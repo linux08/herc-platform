@@ -43,7 +43,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
 
         // Modal State
         case Trans.Action.ShowMetricModal:
-            return Object.assing({}, {
+            return Object.assign({}, {
                 ...state,
                 modals: {
                     ...state.modals,
@@ -52,7 +52,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.ShowCamSourcModal:
-            return Object.assing({}, {
+            return Object.assign({}, {
                 ...state,
                 modals: {
                     ...state.modals,
@@ -61,7 +61,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.ShowEdiTModal:
-            return Object.assing({}, {
+            return Object.assign({}, {
                 ...state,
                 modals: {
                     ...state.modals,
