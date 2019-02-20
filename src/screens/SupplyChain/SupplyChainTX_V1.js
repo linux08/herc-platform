@@ -165,14 +165,14 @@ console.log("render in supplychainTx")
                     backgroundColor='transparent'
                 />
                 <View style={styles.bodyContainer}>
-                    <TransInfoCard transSide={'Originator'} hercId={'42'} />
+                    <TransInfoCard header={this.props.trans.header} />
 
                     <View style={localStyles.transactionComponentListContainer}>
 
                         <CameraTransactionComponent
                             onPress={() => this.props.ToggleCamSourceModal()}
                             img={this.state.img}
-                            image={this.state.img.string}
+                            image={this.props.trans.data.images}
                         />
 
                         <EdiTransactionComponent
