@@ -32,13 +32,13 @@ class MetricModal extends Component {
         let numOfMetrics = metrics.length;
         let metricList = [];
         metrics.forEach((x, i) => {
-
+          console.log("jm check this",x, i)
             metricList.push(
                 <HercTextInputWithLabel
                     key={x}
-                    label={coreProps[x]}
-                    placeholder={coreProps[x]}
-                    name={coreProps[x]}
+                    label={x}
+                    placeholder={x}
+                    name={x}
                     localOnChange={this.onMetricUpdate}
                 />
             )
@@ -67,20 +67,10 @@ class MetricModal extends Component {
                         <Text style={localStyles.editLabel}>Clear Metrics</Text>
                     </TouchableHighlight>
 
-                    <HercTextInputWithLabel
-                        label={"didchange"}
-                        placeholder={"testPlaceHolder"}
-                        name={'testName'}
-                        localOnchange={this.onMetricUpdate}
-                    />
-
-                    <View style={localStyles.centralBody}>
-                        <ScrollView contentContainerStyle={localStyles.scrollView}>
-                            {this.renderMetrics(this.props.metrics)}
-                        </ScrollView>
-                    </View>
-
-                    <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+                    <ScrollView contentContainerStyle={localStyles.scrollView}>
+                        {this.renderMetrics(this.props.metrics)}
+                        <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+                    </ScrollView>
 
                   {/*  <FlatList
                         data={this.props.metrics}
@@ -115,7 +105,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(MetricModal);
 const localStyles = StyleSheet.create({
   scrollView: {
       width: '100%',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      height: '60%'
   },
     editField: {
         height: 50,

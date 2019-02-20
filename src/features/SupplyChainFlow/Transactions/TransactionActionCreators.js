@@ -31,6 +31,28 @@ export function ClearState() {
   };
 }
 
+export function ClearEdiT() {
+  return {
+    type: Trans.Action.ClearEdiT
+  };
+}
+export function ClearImages() {
+  return {
+    type: Trans.Action.ClearImages
+  };
+}
+export function ClearDocuments() {
+  return {
+    type: Trans.Action.ClearDocuments
+  };
+}
+export function ClearMetirics() {
+  return {
+    type: Trans.Action.ClearMetrics
+  };
+}
+
+
 export function ShowMetricModal() {
   return {
     type: Trans.Action.ShowMetricModal

@@ -7,12 +7,16 @@ export const Action = {
     // Set the Origin trans Password
     SetNewOriginTransPassword: 'NewOriginTransPasswordSet',
     
-    //  not sure what these are is for
+    // these are for swiper I think
 
     // GetAssetTransactions: 'GetAssetTransactions',
     // GotAssetTransactions: 'GotAssetTransactions',
 
     ClearState: 'ClearState',
+    ClearEdiT: 'ClearEdiT',
+    ClearImages: 'ClearImages',
+    ClearDocuments: 'ClearDocuments',
+    ClearMetrics: 'ClearMetrics',
 
     StartTransaction: 'StartTransaction',
     
