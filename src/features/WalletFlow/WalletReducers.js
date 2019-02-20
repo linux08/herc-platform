@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   transactionIdStore: null
 };
 
-const WalletReducer = (state = INITIAL_STATE, action) => {
+const WalletReducers = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
     case Wallet.Action.UpdateBalances:
@@ -61,7 +61,7 @@ const WalletReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-
+export default WalletReducers;
 //   Not using this....YET
     // case Wallet.Action.DeleteWallet:
     //   console.log("getting balance", state, action, "state actions");

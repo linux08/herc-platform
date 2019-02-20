@@ -60,8 +60,8 @@ class SideMenu extends Component {
                                 <Text style={localStyles.subInfo__Text}>Profile</Text>
                                 <View style={localStyles.profileBlock}>
                                     <Text style={localStyles.subInfo__TextUserName}>
-                                        Hello you
-                                        {/* {this.state.accountName} */}
+                                        {/* Hello you */}
+                                        {this.props.edge_account}
                                     </Text>
                                 </View>
                             </View>
@@ -238,6 +238,24 @@ class SideMenu extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    account: state.AccountReducers.account,
+    edge_account: state.AccountReducers.edge_account,
+});
+
+// const mapDispatchToProps = dispatch => ({
+//     getAccount: (account) =>
+//         dispatch(getAccount(account)),
+//     getUsername: (edge_account) =>
+//         dispatch(getUsername(edge_account)),
+//     fetchAssets: () => dispatch(fetchAssets()),
+//     getHercId: () => dispatch(getHercId()),
+//     signOut: () => dispatch(signOut()),
+//     fetchData: () => dispatch(fetchData())
+// });
+export default connect(mapStateToProps)(SideMenu);
+
+
 const localStyles = StyleSheet.create({
     block: {
         flexDirection: "row",
@@ -307,22 +325,3 @@ const localStyles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => ({
-    account: state.AccountReducers.account,
-    edge_account: state.AccountReducers.edge_account,
-});
-
-const mapDispatchToProps = dispatch => ({
-    getAccount: (account) =>
-        dispatch(getAccount(account)),
-    getUsername: (edge_account) =>
-        dispatch(getUsername(edge_account)),
-    fetchAssets: () => dispatch(fetchAssets()),
-    getHercId: () => dispatch(getHercId()),
-    signOut: () => dispatch(signOut()),
-    fetchData: () => dispatch(fetchData())
-});
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SideMenu);
