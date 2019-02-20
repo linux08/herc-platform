@@ -35,9 +35,7 @@ class SupplyChainSplash extends Component {
 
     }
 
-    // onSelectAsset = (assetIndex) => {
-    //     this.props.SelectedAsset(this.props.assets[assetIndex]);
-    // }
+  
 
 
 

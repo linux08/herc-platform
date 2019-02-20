@@ -5,25 +5,28 @@ import styles from '../../assets/styles';
 import ColorConstants from '../../constants/ColorConstants';
 import edits from '../../constants/Edi-T-Sets';
 import Modal from 'react-native-modal';
-import { AddEdiT, ClearEdi } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators/';
 import { HercTextFieldWithLabel } from '../../components/SharedComponents'
-import { ShowEditModal } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+import { AddEdiT, ShowEditModal, ClearEdiT } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 class EDI_T_Sets_Modal extends Component {
     constructor(props) {
         super(props);
     }
 
- onSelectEdi = (item) => {
+    onSelectEdi = (item) => {
 
-    this.props.AddEdiT(item);
-    this.props.ShowEditModal();
- }
-  
-  
+        this.props.AddEdiT(item);
+        this.props.ShowEditModal();
+    }
+
+    clearEdi = () => {
+        this.props.ClearEdiT();
+        this.props.ShowEditModal();
+    }
+
+
     render() {
-        let visibility = this.props.visibility;
-
+        console.log('editModal', this.props)
         return (
             <Modal style={styles.baseModal}
                 backdropColor={'rgba(0,0,0,0.5)'}
@@ -31,14 +34,16 @@ class EDI_T_Sets_Modal extends Component {
                 animationOut={'slideOutLeft'}
                 isVisible={this.props.visible}
                 onRequestClose={() => { console.log("modal closed") }}
+                onBackdropPress={() => this.props.ShowEditModal()}
             >
                 <View style={styles.bodyContainer}>
-                    <Text onPress={this.props.ShowEditModal} style={localStyles.editLabel}>EDI-T Sets</Text>
-                    <TouchableHighlight onPress={this.props.ClearEdiT} style={localStyles.editField}>
+                    <Text onPress={() => this.props.ShowEditModal()} style={localStyles.editLabel}>Close EDI-T Sets</Text>
+                    <TouchableHighlight onPress={() => this.clearEdi()} style={localStyles.editField}>
                         <Text style={localStyles.editLabel}>Clear EDIT</Text>
                     </TouchableHighlight>
                     <FlatList
                         data={edits}
+                        keyExtractor={(item) => item.index}
                         renderItem={(item) => {
                             // console.log(item, 'edits??');
                             return (
@@ -61,7 +66,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     AddEdiT: (item) => dispatch(AddEdiT(item)),
     ClearEdiT: () => dispatch(ClearEdiT()),
-    ShowEditModal: () => dispatch(ShowEditModal)
+    ShowEditModal: () => dispatch(ShowEditModal())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EDI_T_Sets_Modal);
 // export default connect(null, mapDispatchToProps)(EditSets);
