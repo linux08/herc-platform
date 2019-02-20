@@ -61,6 +61,8 @@ const WalletReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
+export default WalletReducer
+
 
 //   Not using this....YET
     // case Wallet.Action.DeleteWallet:
