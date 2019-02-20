@@ -241,7 +241,7 @@ const mapDispatchToProps = (dispatch) => ({
     addPhoto: (imgObject) => dispatch(AddPhoto(imgObject)),
 
     addDocument: (file) => dispatch(AddDoc(file)),
-   
+
     showEditModal: () => dispatch(ShowEditModal()),
     addEdit: (ediItem) => dispatch(AddEdiT(editItem)),
 

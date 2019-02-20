@@ -1,18 +1,54 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, ScrollView, FlatList } from 'react-native';
 import styles from '../../assets/styles';
+import { connect } from "react-redux";
 import ColorConstants from '../../constants/ColorConstants';
 import Modal from 'react-native-modal';
-import { HercTextInputWithLabel } from '../../components/SharedComponents'
+import { BigYellowButton, HercTextInputWithLabel } from '../../components/SharedComponents'
 
-export default class MetricModal extends Component {
+class MetricModal extends Component {
     constructor(props) {
         super(props);
+        this.state={}
+        this.onMetricUpdate = this.onMetricUpdate.bind(this)
     }
+
+    testOnPress = () => {
+        console.log("jm metricModal this.state", this.state);
+    };
+
+    onMetricUpdate = (change, metricName) => {
+        console.log(change, metricName, "jm trying to do the thing")
+        this.setState({
+            [metricName]: change
+        }, () => {console.log("jm", this.state)})
+
+    }
+
+    renderMetrics = (coreProps) => {
+
+        let metrics = Object.keys(coreProps);
+        let numOfMetrics = metrics.length;
+        let metricList = [];
+        metrics.forEach((x, i) => {
+
+            metricList.push(
+                <HercTextInputWithLabel
+                    key={x}
+                    label={coreProps[x]}
+                    placeholder={coreProps[x]}
+                    name={coreProps[x]}
+                    localOnChange={this.onMetricUpdate}
+                />
+            )
+        })
+        return metricList;
+    };
+
 
     render() {
         let visibility = this.props.visibility;
-        console.log(this.props.metrics)
+        console.log("jm this.props.metrics",this.props.metrics)
         return (
             <Modal style={styles.baseModal}
                 backdropColor={'rgba(0,0,0,0.5)'}
@@ -26,13 +62,31 @@ export default class MetricModal extends Component {
                     <TouchableHighlight onPress={this.props.clearMetrics} style={localStyles.editField}>
                         <Text style={localStyles.editLabel}>Clear Metrics</Text>
                     </TouchableHighlight>
-                    {/* <FlatList
+
+                    <HercTextInputWithLabel
+                        label={"didchange"}
+                        placeholder={"testPlaceHolder"}
+                        name={'testName'}
+                        localOnchange={this.onMetricUpdate}
+                    />
+
+                    <View style={localStyles.centralBody}>
+                        <ScrollView contentContainerStyle={localStyles.scrollView}>
+                            {this.renderMetrics(this.props.metrics)}
+                        </ScrollView>
+                    </View>
+
+                    <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+
+                  {/*  <FlatList
                         data={this.props.metrics}
                         renderItem={(item) => {
-                            console.log(item, 'Metrics??');
+                            console.log(item, 'jm Metrics??');
                             return (
                                     <HercTextInputWithLabel
-                                     label={item.item.value} text={item.item.name} />
+                                     label={item.item.value}
+                                     placeholder={item.item.name}
+                                     />
                             )
                         }}
                     /> */}
@@ -43,18 +97,22 @@ export default class MetricModal extends Component {
     }
 }
 
-// const mapStateToProps = (state) => ({
-//     // name: state.AssetReducers.selectedAsset.Name,
-//     // logo: state.AssetReducers.selectedAsset.Logo
-// });
+const mapStateToProps = (state) => ({
+    metrics: state.AssetReducers.selectedAsset.ipfsDef.CoreProps,
+    logo: state.AssetReducers.selectedAsset.Logo
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//     setSet: (item) => dispatch(setSet(item))
-// });
-// export default EDI_T_Sets_Modal;
-// export default connect(null, mapDispatchToProps)(EditSets);
+const mapDispatchToProps = (dispatch) => ({
+    setSet: (item) => dispatch(setSet(item))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MetricModal);
 
 const localStyles = StyleSheet.create({
+  scrollView: {
+      width: '100%',
+      justifyContent: 'center'
+  },
     editField: {
         height: 50,
         width: "75%",
