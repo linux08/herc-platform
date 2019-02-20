@@ -178,7 +178,7 @@ console.log("render in supplychainTx")
                         <EdiTransactionComponent
                             onPress={() => this.props.showEditModal()}
                             componentName={"Choose EDI-T Sets"}
-                            edi={this.state.edi}
+                            edi={this.props.trans.data.ediT}
                         />
 
                         <DocTransactionComponent
@@ -215,13 +215,13 @@ console.log("render in supplychainTx")
                     clearEDI={this.props.clearEDI}
                 />
 
-                <MetricModal
+                {/* <MetricModal
                     visibility={this.props.modals.metricModal}
                     metrics={this.props.trans.data.metrics}
                     clearMetrics={this.clearMetrics}
                     localOnChange={this.setMetrics}
                     changeModal={this.showMetricModal}
-                />
+                /> */}
 
             </View>
         )

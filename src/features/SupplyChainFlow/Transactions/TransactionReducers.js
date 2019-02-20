@@ -15,7 +15,7 @@ const INITIAL_STATE = {
     trans: {
         header: {},
         data: {
-            metrics:{},
+            metrics: {},
             images: {},
             documents: {},
             ediT: {},
@@ -41,6 +41,59 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
+        // Clear States
+
+        case Trans.Action.ClearEdiT:
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        ediT: {}
+                    }
+                }
+            })
+        
+        case Trans.Action.ClearImages:
+        return Object.assign({}, {
+            ...state,
+            trans: {
+                ...state.trans,
+                data: {
+                    ...state.trans.data,
+                    images: {}
+                }
+            }
+        })
+
+        case Trans.Action.ClearDocuments:
+        return Object.assign({}, {
+            ...state,
+            trans: {
+                ...state.trans,
+                data: {
+                    ...state.trans.data,
+                    documents: {}
+                }
+            }
+        })
+
+        case Trans.Action.ClearMetrics:
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        metrics: {}
+                    }
+                }
+            })
+
+
+
+
         // Modal State
         case Trans.Action.ShowMetricModal:
             return Object.assign({}, {
@@ -60,7 +113,8 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
-        case Trans.Action.ShowEdiTModal:
+        case Trans.Action.ShowEditModal:
+            console.log(action, "showeditmodal redux")
             return Object.assign({}, {
                 ...state,
                 modals: {
