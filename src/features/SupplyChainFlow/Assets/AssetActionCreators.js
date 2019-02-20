@@ -11,7 +11,7 @@ import {
     TOKEN_ADDRESS,
     DEVELOPERS
   } from '../../../components/settings';
-  
+
 import axios from 'axios';
 import store from "../../../store";
 import firebase from "../../../constants/Firebase";
@@ -76,7 +76,7 @@ async function getAssetDef(ipfsHash) {
         let response = await axios.get(WEB_SERVER_API_IPFS_GET, { params: ipfsHash });
         let assetDef = response.data[0];
 
-        store.dispatch(GotAssetDef(assetDef))
+        store.dispatch(GotAssetIpfsDefinition(assetDef))
 
     } catch (error) {
         store.dispatch(Error(error)),

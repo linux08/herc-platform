@@ -308,8 +308,8 @@ const localStyles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    account: state.WalletActReducers.account,
-    edge_account: state.WalletActReducers.edge_account,
+    account: state.AccountReducers.account,
+    edge_account: state.AccountReducers.edge_account,
 });
 
 const mapDispatchToProps = dispatch => ({

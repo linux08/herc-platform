@@ -26,7 +26,6 @@ class TestSplash extends Component {
             modalIsVisible: false,
 
         }
-     console.log("whattup");
         // this.toggleModal = this.toggleModal.bind(this);
     }
 
@@ -35,7 +34,6 @@ class TestSplash extends Component {
         this.props.ClearState();
     }
     componentDidMount = () => {
-        console.log("function??")
         this.props.GetHercId();
         this.props.GetHeaders();
     }
@@ -115,7 +113,7 @@ const mapDispatchToProps = (dispatch ) => ({
     ClearState: () => dispatch(ClearState()),
     GetHeaders: () => dispatch(GetHeaders())
 })
-export default connect(null, mapDispatchToProps)(TestSplash); 
+export default connect(null, mapDispatchToProps)(TestSplash);
 
 const localStyles = StyleSheet.create({
 

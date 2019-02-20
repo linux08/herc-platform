@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import hercLogoPillar from "../../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
-import { GetUsername, GetAccount, AuthToken } from '../../features/AccountFlow/AccountActionCreators';
+import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
  import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
@@ -73,7 +73,7 @@ class Login extends Component {
       promiseArray.push(axios.get(WEB_SERVER_API_TOKEN + account.username)
         .then(response => {
           let token = response.data
-          this.props.authToken(token)
+          this.props.AuthToken(token)
           firebase.auth().signInWithCustomToken(token).catch( error => { console.log(error) })
           axios.defaults.headers.common = {
             'Authorization': token,
@@ -96,7 +96,7 @@ class Login extends Component {
 
           // this.props.getHercId();
           this.props.GetHeaders(this.props.username);
-          this.props.GetOrganization();
+          // this.props.GetOrganization();
 
           if (results[1].data && results[1].data == true) {
             navigate('SideMenuNav') // pass in T/F response from /latest/apk
@@ -188,7 +188,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     // getHercId: () => dispatch(getHercId()),
     GetHeaders: (name) => dispatch(GetHeaders(name)),
-    GetOrganization: () => dispatch(GetOrganization()),
+    // GetOrganization: () => dispatch(GetOrganization()),
     ClearState: () => dispatch(ClearState()),
 
     UpdateBalances: (newBalances) => dispatch(UpdateBalances(newBalances)),

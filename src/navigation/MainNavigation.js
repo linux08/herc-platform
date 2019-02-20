@@ -56,13 +56,13 @@ const MainNavigator = createStackNavigator({
     //     screen: Blockscanner
     // },
 
-    
+
 
 },
     {
         initialRouteName: 'TestSplash',
         headerMode: 'screen',
-    } 
+    }
 )
 
 const SideMenuNavigator = createDrawerNavigator(
@@ -95,9 +95,11 @@ const LoginNav = createSwitchNavigator(
     }
 )
 
-export default MainNavigator;
+// export default MainNavigator;
+export default LoginNav;
 
-    
+
+
     // HiprLanding: { screen: HiprLanding },
     // HiprAssets: { screen: HiprAssets },
     // HiprTransactions: { screen: HiprTransactions },
@@ -129,4 +131,3 @@ export default MainNavigator;
     // TxSwiper: { screen: TxSwiper },
     // DocumentStorage: { screen: DocumentStorage },
     // DocumentQRScanner: { screen: DocumentQRScanner },
-

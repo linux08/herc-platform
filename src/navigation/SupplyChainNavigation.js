@@ -35,7 +35,7 @@ const SupplyChainNavigator = createStackNavigator(
             // })
 
         },
-       
+
             // navigationOptions: ({ navigation }) => ({
             //     header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
             // })

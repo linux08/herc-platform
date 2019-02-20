@@ -24,7 +24,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                     showPasswordModal: !state.showPasswordModal
                 }
-            
+
         case Asset.Action.GotHeaders:
             console.log("getHeader reducer", action)
             let assetHeaders = action.assets;

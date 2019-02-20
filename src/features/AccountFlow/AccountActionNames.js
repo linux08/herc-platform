@@ -1,4 +1,4 @@
-export const Action = { 
+export const Action = {
 
 Error: 'Error',
 
