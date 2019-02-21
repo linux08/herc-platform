@@ -4,8 +4,9 @@ import styles from '../../assets/styles';
 import { connect } from "react-redux";
 import ColorConstants from '../../constants/ColorConstants';
 import Modal from 'react-native-modal';
+import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import { BigYellowButton, HercTextInputWithLabel } from '../../components/SharedComponents';
-import { ShowMetricModal } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+import { ShowMetricModal, AddMetrics } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 class MetricModal extends Component {
     constructor(props) {
@@ -16,11 +17,13 @@ class MetricModal extends Component {
 
     testOnPress = () => {
         console.log("jm metricModal this.state", this.state);
+        this.props.AddMetrics(this.state)
+        this.props.ShowMetricModal()
     };
 
     onMetricUpdate = (change, metricName) => {
-        console.log(change, metricName, "jm trying to do the thing")
         this.setState({
+          ...this.state.metrics,
             [metricName]: change
         }, () => {console.log("jm", this.state)})
 
@@ -49,7 +52,6 @@ class MetricModal extends Component {
 
     render() {
         let visibility = this.props.visibility;
-        console.log("jm this.props.metrics",this.props.metrics)
         return (
             <Modal style={styles.baseModal}
                 backdropColor={'rgba(0,0,0,0.5)'}
@@ -59,7 +61,7 @@ class MetricModal extends Component {
                 onRequestClose={() => { console.log("modal closed") }}
 
             >
-            
+
                 <View style={styles.bodyContainer}>
                     <Text style={localStyles.editLabel}>{this.props.assetName} Metrics</Text>
                     <Text onPress={() => this.props.ShowMetricModal()}  style={localStyles.editLabel}>Close Modal</Text>
@@ -97,16 +99,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    ShowMetricModal: () => dispatch(ShowMetricModal())
+    ShowMetricModal: () => dispatch(ShowMetricModal()),
+    AddMetrics: (metrics) => dispatch(AddMetrics(metrics))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MetricModal);
 
 const localStyles = StyleSheet.create({
   scrollView: {
-      width: '100%',
+      width: widthPercentageToDP('80'),
       justifyContent: 'center',
-      height: '60%'
+      height: heightPercentageToDP('60')
   },
     editField: {
         height: 50,

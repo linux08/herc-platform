@@ -189,6 +189,7 @@ console.log("render in supplychainTx")
                         <MetricTransactionComponent
                             onPress={() => this.props.showMetricModal()}
                             iconName='clipboard'
+                            metrics={this.props.trans.data.metrics}
                         />
 
                     </View>

@@ -54,7 +54,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     }
                 }
             })
-        
+
         case Trans.Action.ClearImages:
         return Object.assign({}, {
             ...state,

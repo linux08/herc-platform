@@ -163,8 +163,9 @@ export function DocTransactionComponent(props) {
 }
 /// rendering the metrics UX
 export function MetricTransactionComponent(props) {
-    let bgColor = props.metrics ? ColorConstants.ElementBG : ColorConstants.MainGray;
-    let iconColor = props.metric ? ColorConstants.MainGold : 'black';
+  // metrics:{}
+    let bgColor = Object.keys(props.metrics).length != 0 ? ColorConstants.ElementBG : ColorConstants.MainGray;
+    let iconColor = Object.keys(props.metrics).length != 0 ? ColorConstants.MainGold : 'black';
     console.log(props, "metric transaction component")
     return (
 
@@ -314,6 +315,6 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    
+
 
 })

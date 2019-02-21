@@ -46,12 +46,11 @@ export function ClearDocuments() {
     type: Trans.Action.ClearDocuments
   };
 }
-export function ClearMetirics() {
+export function ClearMetrics() {
   return {
     type: Trans.Action.ClearMetrics
   };
 }
-
 
 export function ShowMetricModal() {
   return {
@@ -94,7 +93,7 @@ export function StartTransaction(place) {
   let asset = store.getState().AssetReducers.selectedAsset;
   trans = {
     header: {
-      tXSide: place, 
+      tXSide: place,
       hercId: asset.hercId,
       // password: this.state.password,
       name: asset.Name,
@@ -117,7 +116,7 @@ export function StartTransaction(place) {
 }
 
 // TODO: breakdown into 2 functions one to find the correct TX
-//  should check for both password and "Originator", and then 
+//  should check for both password and "Originator", and then
 //  another to build the OriginTransInfo object and call SetOriginTransInfo
 // GetOriginTrans = password => {
 //   return dispatch => {
