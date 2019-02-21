@@ -15,8 +15,7 @@ class MetricModal extends Component {
         this.onMetricUpdate = this.onMetricUpdate.bind(this)
     }
 
-    testOnPress = () => {
-        console.log("jm metricModal this.state", this.state);
+    submitMetrics = () => {
         this.props.AddMetrics(this.state)
         this.props.ShowMetricModal()
     };
@@ -35,7 +34,6 @@ class MetricModal extends Component {
         let numOfMetrics = metrics.length;
         let metricList = [];
         metrics.forEach((x, i) => {
-          console.log("jm check this",x, i)
             metricList.push(
                 <HercTextInputWithLabel
                     key={x}
@@ -71,7 +69,7 @@ class MetricModal extends Component {
 
                     <ScrollView contentContainerStyle={localStyles.scrollView}>
                         {this.renderMetrics(this.props.metrics)}
-                        <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this.submitMetrics} />
                     </ScrollView>
 
                   {/*  <FlatList
