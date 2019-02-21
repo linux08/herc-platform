@@ -5,7 +5,6 @@ import Button from 'react-native-button';
 import originator from "./buttons/originatorButton.png";// todo: turn into vector
 import recipient from "./buttons/recipientButton.png"; // todo: turn into vector
 import { WebViewComponent } from "../components/WebViewComponent"
-import { createStackNavigator } from 'react-navigation';
 
 export default class TxSwiper extends Component {
   constructor(props) {
