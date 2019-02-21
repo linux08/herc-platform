@@ -26,7 +26,7 @@ import Header from "../components/Headers/Header";
 import SideNavMenu from "../components/SideNavMenu"
 import RegAssetNavigator from "./RegisterAssetNavigation";
 import SupplyChainNavigator from "./SupplyChainNavigation";
-
+import WalletNavigator from "./WalletNavigation";
 
 const MainNavigator = createStackNavigator({
     TestSplash: {
@@ -47,6 +47,12 @@ const MainNavigator = createStackNavigator({
             header: <Header headerTitle={'Supply Chain'} navigation={navigation} />
         })
     },
+    WalletNavigator: {
+        screen: WalletNavigator,
+        navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'Wallet'} navigation={navigation} />
+        })
+    },
 
     // Wallet: {
     //     screen: Wallet,
@@ -60,7 +66,7 @@ const MainNavigator = createStackNavigator({
 
 },
     {
-        initialRouteName: 'TestSplash',
+        initialRouteName: 'WalletNavigator',
         headerMode: 'screen',
     }
 )
