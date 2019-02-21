@@ -1,8 +1,7 @@
 import { View, StatusBar, TouchableHighlight, FlatList } from "react-native";
-import styles from "../../assets/styles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AssetCard } from "../../components/AssetCard";
+import { AssetCard } from "../../../../AssetCard";
 import {
   ShowAssetPasswordModal,
   SelectedAsset
