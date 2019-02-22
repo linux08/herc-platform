@@ -1,76 +1,78 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { Image, swiperStylesheet, TouchableHighlight, Share, Text, View } from 'react-native';
-import Button from 'react-native-button';
-import { swiperswiperStyles, swiperOverlayLables } from '../../swiperStyles';
-// import swiperStyles from '../../../../assets/swiperStyles';
-import { WebViewComponent } from "../components/WebViewComponent"
+import { connect } from "react-redux";
+import  {AssetCard, HercTextFieldWithLabel, BigYellowButton,  CostDisplay } from '../../../../components/SharedComponents';
 
-export default class TxSwiper extends Component {
+const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
+import { TouchableHighlight, Image, Share, Text, View } from 'react-native';
+import { swiperStyles, swiperOverlayLables } from './styles';
+// import swiperStyles from '../../../../assets/swiperStyles';
+import { WebViewComponent } from "./components/WebViewComponent"
+
+class TxSwiper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cards: this.props.cards,
-      hashes: this.props.hashes,
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
       cardIndex: 0
     }
+    console.log('TxSwiperConstructor', props)
   }
 
-  _goToWebView = data => {
-    this.props.navigation.navigate("WebViewComponent", { data: data });
-  }
+  // _goToWebView = data => {
+  //   this.props.navigation.navigate("WebViewComponent", { data: data });
+  // }
 
-  renderCard = card => {
-    let hashes = this.state.hashes
-    let factomChain = hashes.chainId;
-    let corePropsHash = hashes.ipfsHash;
+  renderCard = ( card, index) => {
+
+    console.log(card, 'card in rendercard')
+    
+    let factomChain = this.props.SelectedAsset.hashes.chainId;
+    let corePropsHash = this.props.SelectedAsset.hashes.ipfsHash;
     let factomEntry = card.header.factomEntry
     let data = card.data;
     let header = card.header;
     let metricsHash, ediTHash, documentHash, imageHash;
 
     if (data.hasOwnProperty('ediT')) {
-      ediTHash = data.ediT;
+      ediTHash = card.data.ediT;
     }
 
     if (data.hasOwnProperty('documents')) {
-      documentHash = data.documents;
+      documentHash = card.data.documents;
     }
 
     if (data.hasOwnProperty('images')) {
-      imageHash = data.images;
+      imageHash = card.data.images;
     }
 
-    if (data.hasOwnProperty('properties')) {
-      metricsHash = data.properties;
+    if (data.hasOwnProperty('metrics')) {
+      metricsHash = card.data.metrics;
     }
 
     return (
-      <View key={card.key} style={swiperStyles.card}>
-        <Text style={swiperStyles.revPropVal}>{header.hercId}</Text>
-        <Text style={swiperStyles.TransactionReviewName}>{header.dTime}</Text>
-        <Text style={swiperStyles.TransactionReviewName}>{header.tXLocation}</Text>
-        <View style={{ margin: 10 }}>
-          <Text style={swiperStyles.text}>Factom Chain:{factomChain}</Text>
-          <Text style={swiperStyles.text}>Factom Entry:{factomEntry}</Text>
+      <View key={factomChain} style={swiperStyles.card}>
+ 
+        <HercTextFieldWithLabel text={header.dTime} label={'Created'} />
+        <HercTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
 
-          <TouchableHighlight style={{ width: 300, justifyContent: "center", height: 50, paddingBottom: 10, paddingTop: 10, marginTop: 10, marginBottom: 10 }} onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })}>
-            <Text style={{ fontSize: 20, backgroundColor: 'white', textAlign: 'center' }}>View Factom Entry</Text>
-          </TouchableHighlight>
+        <HercTextFieldWithLabel text={this.props.SelectedAsset.hashes.factomChain} label={'Factom Chain'} />
+        <HercTextFieldWithLabel text={header.factomEntry} label={'Factom Entry'} />
 
-          {corePropsHash && <Text style={swiperStyles.text}>Core Properties:{corePropsHash}</Text>}
-          {imageHash && <Text style={swiperStyles.text}>Image StorJ:{imageHash}</Text>}
-          {metricsHash && <Text style={swiperStyles.text}>Metrics IPFS: {metricsHash}</Text>}
-          {documentHash && <Text style={swiperStyles.text}>Document IPFS:{documentHash}</Text>}
-          {ediTHash && <Text style={swiperStyles.text}>EDI-T IPFS:{ediTHash}</Text>}
-          <Text style={swiperStyles.text}>Price: {header.price}</Text>
-        </View>
+        {corePropsHash && <HercTextFieldWithLabel label={'Core Properties'} text={'corePropsHash'} />}
+        {imageHash && <HercTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
+        {metricsHash && <HercTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
+        {documentHash && <HercTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
+        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} 
+        {/* <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} /> */}
+
+        {/* <BigYellowButton onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })} /> */}
       </View>
     )
-  };
+  }
+  
 
   onSwipedAllCards = () => {
     console.log('Swiped all cards');
@@ -119,48 +121,52 @@ export default class TxSwiper extends Component {
     // navigate('HiprLanding');
   }
 
-  makeMessage = (cardData) => {
-    let header = cardData.header
-    let data = cardData.data
-    let time = header.dTime;
-    let location = header.tXLocation.toUpperCase() + " ";
-    let properties = data.properties ? Object.keys(data.properties).length + " Properties;\n" : "";
-    let images = data.images ? data.images.length + " Image(s);\n" : "";
-    let documents = data.documents ? data.documents.length + " Document(s);\n" : "";
-    let price = "Hercs: " + header.price + ";\n";
-    let sig = "Sent from Herc v.1.0"
-    let edit = "";
-    let password = header.password ? header.password : "No password";
-    if (data.ediT) {
-      edit = "EDI-T Value: " + data.ediT.value;
+  // makeMessage = (cardData) => {
+  //   let header = cardData.header
+  //   let data = cardData.data
+  //   let time = header.dTime;
+  //   let location = header.tXLocation.toUpperCase() + " ";
+  //   let properties = data.properties ? Object.keys(data.properties).length + " Properties;\n" : "";
+  //   let images = data.images ? data.images.length + " Image(s);\n" : "";
+  //   let documents = data.documents ? data.documents.length + " Document(s);\n" : "";
+  //   let price = "Hercs: " + header.price + ";\n";
+  //   let sig = "Sent from Herc v.1.0"
+  //   let edit = "";
+  //   let password = header.password ? header.password : "No password";
+  //   if (data.ediT) {
+  //     edit = "EDI-T Value: " + data.ediT.value;
 
-    }
-    let title = header.name + " " + location + " Transaction @ " + time + ";";
-    let message = title + "\n" +
-      properties + edit + images + documents + price + password + " " + sig;
-    console.log(title, "title", message, "message")
-    return [title, message];
-  }
+  //   }
+  //   let title = header.name + " " + location + " Transaction @ " + time + ";";
+  //   let message = title + "\n" +
+  //     properties + edit + images + documents + price + password + " " + sig;
+  //   console.log(title, "title", message, "message")
+  //   return [title, message];
+  // }
 
 
-  sharing = (data) => {
-    let shareTitle = this.makeMessage(data);
-    Share.share({
-      message: shareTitle[1],
-      title: shareTitle[0]
-    },
-      {// Android only:
-        dialogTitle: shareTitle[0],
-        // iOS only:
-        excludedActivityTypes: [
-          'com.apple.UIKit.activity.PostToTwitter'
-        ]
-      })
-  }
+  // sharing = (data) => {
+  //   let shareTitle = this.makeMessage(data);
+  //   Share.share({
+  //     message: shareTitle[1],
+  //     title: shareTitle[0]
+  //   },
+  //     {// Android only:
+  //       dialogTitle: shareTitle[0],
+  //       // iOS only:
+  //       excludedActivityTypes: [
+  //         'com.apple.UIKit.activity.PostToTwitter'
+  //       ]
+  //     })
+  // }
 
   render() {
+    let cards = Object.keys(this.props.transactions).map(x =>this.props.transactions[x]);
     return (
       <View swiperStyles={swiperStyles.baseContainer}>
+
+      {/* <AssetCard asset={this.props.SelectedAsset} /> */}
+
 
         <Swiper
           backgroundColor={'#002740'}
@@ -168,9 +174,10 @@ export default class TxSwiper extends Component {
           ref={swiper => {
             this.swiper = swiper
           }}
+          keyExtractor={card => card.header.price}
           onSwiped={this.onSwiped}
           onTapCard={this.swipeLeft}
-          cards={this.state.cards}
+          cards={cards}
           cardIndex={this.state.cardIndex}
           cardVerticalMargin={10}
           infinite={true}
@@ -191,3 +198,10 @@ export default class TxSwiper extends Component {
     )
   }
 }
+
+mapStateToProps = (state) => ({
+  SelectedAsset: state.AssetReducers.selectedAsset,
+  transactions: state.AssetReducers.selectedAsset.transactions
+})
+
+export default connect(mapStateToProps)(TxSwiper);

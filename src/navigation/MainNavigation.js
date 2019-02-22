@@ -50,7 +50,7 @@ const MainNavigator = createStackNavigator({
 
 },
     {
-        initialRouteName: 'TestSplash',
+        initialRouteName: 'TrackNavigator',
         headerMode: 'screen',
     } 
 )
@@ -83,6 +83,6 @@ const LoginNav = createSwitchNavigator(
     }
 )
 
-export default LoginNav;
+export default MainNavigator;
 
     

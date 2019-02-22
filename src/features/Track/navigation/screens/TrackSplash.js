@@ -1,26 +1,38 @@
 import { View, StatusBar, TouchableHighlight, FlatList } from "react-native";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AssetCard } from "../../../../AssetCard";
+import { AssetCard } from "../../../../components/AssetCard";
 import {
   ShowAssetPasswordModal,
-  SelectedAsset
-} from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+  SelectedAsset,
+  GetHeaders
+} from "../../../SupplyChainFlow/Assets/AssetActionCreators";
 
-import AssetPasswordModal from "../../components/modals/AssetPasswordModal";
-
+import AssetPasswordModal from "../../../../components/modals/AssetPasswordModal";
+import styles from '../../../../assets/styles';
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class TrackSplash extends Component {
   constructor(props) {
     super(props);
-    console.log("componentTest");
+    console.log("TrackSplash");
   }
 
-  passwordCorrect = () => {
-    this.props.ShowAssetPasswordModal();
-    this.props.navigation.navigate("TrackSideChoice");
-  };
+componentWillMount = () => {
+  this.props.GetHeaders();
+}
+
+noAssetPassword = ( asset ) => {
+  this.props.SelectedAsset(asset);
+  this.props.navigation.navigate('TrackSideChoice')
+}
+
+
+  // passwordCorrect = () => {
+
+  //   this.props.ShowAssetPasswordModal();
+  //   this.props.navigation.navigate("TrackSideChoice");
+  // };
 
 
   render() {
@@ -34,12 +46,12 @@ class TrackSplash extends Component {
         <View style={styles.bodyContainer}>
           <FlatList
             data={this.props.assets}
-            keyExtractor={item => item.Logo}
+            keyExtractor={item => item.Name}
             renderItem={item => {
               return (
                 <TouchableHighlight
                   key={item.item.Name}
-                  onPress={() => this.props.SelectedAsset(item.item)}
+                  onPress={() => this.noAssetPassword(item.item)}
                 >
                   <AssetCard asset={item.item} />
                 </TouchableHighlight>
@@ -67,8 +79,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
-  SelectedAsset: asset => dispatch(SelectedAsset(asset))
+  SelectedAsset: asset => dispatch(SelectedAsset(asset)),
+  GetHeaders: () => dispatch(GetHeaders())
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(SupplyChainSplash);
+export default connect(mapStateToProps,mapDispatchToProps)(TrackSplash);
 

@@ -1,13 +1,12 @@
 
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-import {
-    BlockScanner,
-    TrackSplash,
-    TrackChoice,
-    TxSwiper
-}
-    from './screens';
+
+import TrackSplash from './screens/TrackSplash';
+import TrackSideChoice from './screens/TrackSideChoice';
+// import BlockScanner from './screens/BlockScanner';
+import TxSwiper from './screens/TxSwiper';
+  
 
 import Header from '../../../components/Headers/Header';
 
@@ -17,8 +16,8 @@ const TrackNavigator = createStackNavigator({
         screen: TrackSplash,
        
     },
-    TrackChoice: {
-        screen: TrackChoice,
+    TrackSideChoice: {
+        screen: TrackSideChoice,
 
     },
     TxSwiper: {
@@ -27,12 +26,12 @@ const TrackNavigator = createStackNavigator({
             header: <Header headerTitle={'Previous Transactions'} navigation={navigation} />
         })
     },
-    BlockScanner: {
-        screen: BlockScanner,
-        navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={'Block Scanner'} navigation={navigation} />
-        })
-    }
+    // BlockScanner: {
+    //     screen: BlockScanner,
+    //     navigationOptions: ({ navigation }) => ({
+    //         header: <Header headerTitle={'Block Scanner'} navigation={navigation} />
+    //     })
+    // }
 },
     {
         initalRouteName: 'TrackSplash',
