@@ -56,6 +56,7 @@
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-tcp": "git://github.com/Airbitz/react-native-tcp.git#c6af8f728fcbbae23d20c0211fd5b6c322f7a446",
     "react-native-vector-icons": "^6.1.0",
+    "react-native-view-overflow": "0.0.4",
     "react-native-view-shot": "^2.5.0",
     "react-navigation": "^2",
     "react-qr-code": "^0.1.2",

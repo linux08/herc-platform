@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-
+import ExampleSwiper from './screens/ExampleSwiper'
 import TrackSplash from './screens/TrackSplash';
 import TrackSideChoice from './screens/TrackSideChoice';
 // import BlockScanner from './screens/BlockScanner';
@@ -21,10 +21,12 @@ const TrackNavigator = createStackNavigator({
 
     },
     TxSwiper: {
-        screen: TxSwiper,
-        navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={'Previous Transactions'} navigation={navigation} />
-        })
+            screen: ExampleSwiper
+
+        // screen: TxSwiper,
+        // navigationOptions: ({ navigation }) => ({
+        //     header: <Header headerTitle={'Previous Transactions'} navigation={navigation} />
+        // })
     },
     // BlockScanner: {
     //     screen: BlockScanner,

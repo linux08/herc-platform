@@ -14,8 +14,8 @@ import ColorConstants from "../../../../assets/ColorConstants";
 import React, { Component } from "react";
 import { BigYellowButton } from "../../../../components/SharedComponents";
 import { connect } from "react-redux";
-const blockscannerImage = require("../../assets/block-scanner.png");
-const swiperImage = require("../../assets/transaction-swiper.png");
+const blockscannerImage = require("../../images/block-scanner.png");
+const swiperImage = require("../../images/transaction-swiper.png");
 import {
   widthPercentageToDP,
   heightPercentageToDP

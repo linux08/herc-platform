@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import  ColorConstants  from '../../../../constants/ColorConstants';
 
 export const swiperStyles = StyleSheet.create({
     container: {
