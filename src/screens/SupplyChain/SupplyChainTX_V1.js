@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import MetricModal from '../../components/modals/MetricModal';
+import CustomModal from '../../components/modals/CustomModal';
 import CameraSourceModal from '../../components/modals/CameraSourceModal';
 import { ToggleCamSourceModal } from '../../features/CamSourceModal/CamSourceModalActionCreators';
 import EditModal from '../../components/modals/EDI_T_Modal';
@@ -46,14 +47,14 @@ const ORIGNAL_STATE = {
     img: {},
     doc: {},
     edi: {},
-    metrics: {}
+    metrics: {},
+    isVisible: false,
 }
 
 class SupplyChainTX extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = ORIGNAL_STATE;
 
         // this.showEditModal = this.showEditModal.bind(this);
@@ -68,9 +69,20 @@ class SupplyChainTX extends Component {
         // this.clearMetrics = this.clearMetrics.bind(this);
     }
 
-    // componentDidMount = () => {
-    //     this
-    // }
+    toggleModal = () => {
+        this.setState({
+            isVisible: !this.state.isVisible
+        })
+    }
+    
+    allDone = () => {
+        this.setState({
+            isVisible: false,
+        })
+        this.props.navigation.navigate('TestSplash');
+        // this.props.clearState();
+
+    }
 
     clearAll = () => {
         this.setState(ORIGNAL_STATE)
@@ -224,6 +236,18 @@ class SupplyChainTX extends Component {
                     localOnChange={this.setMetrics}
                     changeModal={this.showMetricModal}
                 />
+
+                <CustomModal
+                    heading={"Your Transaction Is Being Written To The Blockchain"}
+                    content={this.props.content}
+                    modalCase="progress"
+                    isVisible={this.state.isVisible}
+                    onBackdropPress={() => this.toggleModal()}
+                    percent={this.props.percent}
+                    closeModal={this.allDone}
+                    dismissRejectText={"All Done"}
+                />
+
 
             </View>
         )

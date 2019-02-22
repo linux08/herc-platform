@@ -31,7 +31,7 @@ class RegAsset2 extends Component {
         console.log("componentTest")
         this.state = {
             isVisible: false,
-          
+
         }
     }
 
@@ -58,7 +58,7 @@ class RegAsset2 extends Component {
         })
     }
 
-   
+
     renderMetrics = () => {
         let coreProps = this.props.newAsset.CoreProps;
         let metrics = Object.keys(coreProps);
@@ -109,11 +109,9 @@ class RegAsset2 extends Component {
                 </View>
                 <CustomModal
                     heading={"Your Asset Is Being Written To The Blockchain"}
-                    content={this.props.content}
                     modalCase="progress"
                     isVisible={this.state.isVisible}
                     onBackdropPress={() => this.toggleModal()}
-                    percent={this.props.percent}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                 />
