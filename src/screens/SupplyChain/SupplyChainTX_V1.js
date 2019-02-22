@@ -16,6 +16,7 @@ import EditModal from '../../components/modals/EDI_T_Modal';
 import {
     ShowEditModal,
     ShowMetricModal,
+    SendTransaction,
     AddDoc,
     AddEdiT,
     AddMetrics,
@@ -142,9 +143,10 @@ class SupplyChainTX extends Component {
         })
     }
 
-    testOnPress = () => {
+    submitTransaction = () => {
         console.log("this will be Transaction Start!");
         console.log(this.state, 'state here');
+        this.props.sendTransaction()
     }
 
 
@@ -155,7 +157,6 @@ class SupplyChainTX extends Component {
 
 
     render() {
-console.log("render in supplychainTx")
         return (
 
             <View style={styles.baseContainer}>
@@ -194,7 +195,7 @@ console.log("render in supplychainTx")
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this.submitTransaction} />
                     </View>
                 </View>
 

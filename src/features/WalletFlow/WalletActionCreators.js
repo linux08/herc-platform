@@ -18,8 +18,8 @@ export function GetEthAddress(ethereumAddress) {
       ethereumAddress
     };
   }
-  
- 
+
+
 
 
 export function GetWallet(wallet) {
@@ -43,12 +43,6 @@ export function ClearTransactionStore() {
   };
 }
 
-export function StoreTransactionIds(transactionIds) {
-  return {
-    type: Wallet.Action.StoreTransactionIds,
-    transactionIds
-  };
-}
 
 export function SwitchWallet(walletName) {
     return {
@@ -133,11 +127,11 @@ export function MakePayment(makePaymentObject) {
     return async dispatch => {
       console.log("jm makePaymentObject", makePaymentObject)
       if (DEVELOPERS.includes(store.getState().WalletActReducers.edge_account)){
-  
-        store.dispatch(storeTransactionIds({burnTransaction: "madeUpBurnTransactionID", dataFeeTransaction: "madeUpdataFeeTransactionID"}));
+
+        store.dispatch(StoreTransactionIds({burnTransaction: "madeUpBurnTransactionID", dataFeeTransaction: "madeUpdataFeeTransactionID"}));
         dispatch({type:TRANS_COMPLETE})
       } else {
-  
+
         const burnSpendInfo = {
           networkFeeOption: "standard",
           currencyCode: "HERC",
@@ -175,7 +169,7 @@ export function MakePayment(makePaymentObject) {
           await wallet.broadcastTx(burnTransaction);
           await wallet.saveTx(burnTransaction);
           console.log("jm Sent burn transaction with ID = " + burnTransaction.txid);
-  
+
           let dataFeeTransaction = await wallet.makeSpend(dataFeeSpendInfo);
           await wallet.signTx(dataFeeTransaction);
           await wallet.broadcastTx(dataFeeTransaction);
@@ -183,11 +177,11 @@ export function MakePayment(makePaymentObject) {
           console.log(
             "jm Sent dataFee transaction with ID = " + dataFeeTransaction.txid
           );
-  
+
           if (burnTransaction.txid && dataFeeTransaction.txid) {
-            store.dispatch(storeTransactionIds({burnTransaction: burnTransaction.txid, dataFeeTransaction: dataFeeTransaction.txid}));
+            store.dispatch(StoreTransactionIds({burnTransaction: burnTransaction.txid, dataFeeTransaction: dataFeeTransaction.txid}));
             dispatch({type:TRANS_COMPLETE})
-  
+
           }
         } catch (e) {
           console.log("jm error", e)
@@ -196,7 +190,7 @@ export function MakePayment(makePaymentObject) {
     }
   }
 
-  
+
   //  not sure we're using this
 // export function DebitTrans(amount) {
 //     return {
@@ -214,4 +208,3 @@ export function MakePayment(makePaymentObject) {
 
 //     }
 // }
-  

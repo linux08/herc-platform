@@ -24,7 +24,7 @@ class MetricModal extends Component {
         this.setState({
           ...this.state.metrics,
             [metricName]: change
-        }, () => {console.log("jm", this.state)})
+        })
 
     }
 

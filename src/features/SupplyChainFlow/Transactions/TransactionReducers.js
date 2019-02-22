@@ -21,7 +21,7 @@ const INITIAL_STATE = {
             ediT: {},
         }
     },
-
+    transactionIdStore: null
 }
 
 
@@ -213,6 +213,13 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 ...state,
                 confTransComplete: true,
             })
+
+        case Trans.Action.StoreTransactionIds:
+          console.log("jm transactionIDs in reducer", action.transactionIds);
+          return Object.assign({}, state, {
+              ...state,
+              transactionIdStore: action.transactionIds
+          })
 
         case Trans.Action.AddPhoto:
 

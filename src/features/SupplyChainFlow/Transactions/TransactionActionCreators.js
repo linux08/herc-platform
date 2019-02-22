@@ -3,9 +3,8 @@ import {
   WEB_SERVER_API_IPFS_ADD,
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
-  WEB_SERVER_API_STORJ_UPLOAD,
-  WEB_SERVER_API_CSV,
-  WEB_SERVER_API_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
+  WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT,
   TOKEN_ADDRESS,
   DEVELOPERS
 } from '../../../components/settings';
@@ -299,8 +298,8 @@ export function MakePayment(makePaymentObject) {
   return async dispatch => {
     console.log("jm makePaymentObject", makePaymentObject);
     if (DEVELOPERS.includes(store.getState().AccountReducers.edge_account)) {
-      store.dispatch(
-        storeTransactionIds({
+      dispatch(
+        StoreTransactionIds({
           burnTransaction: "madeUpBurnTransactionID",
           dataFeeTransaction: "madeUpdataFeeTransactionID"
         })
@@ -356,8 +355,8 @@ export function MakePayment(makePaymentObject) {
         );
 
         if (burnTransaction.txid && dataFeeTransaction.txid) {
-          store.dispatch(
-            storeTransactionIds({
+          dispatch(
+            StoreTransactionIds({
               burnTransaction: burnTransaction.txid,
               dataFeeTransaction: dataFeeTransaction.txid
             })
@@ -371,37 +370,74 @@ export function MakePayment(makePaymentObject) {
   };
 }
 
-export function SendTransaction(sendTransObj) {
+export function SendTransaction() {
+  console.log('jm started SendTransaction')
   return dispatch => {
-    dispatch({ type: SEND_TRANS });
+    // dispatch({ type: SEND_TRANS }); //brings up MODAL
 
-    let dTime = Date.now();
-    let transObject = store.getState().AssetReducers.trans;
-    // let organizationName = store.getState().WalletActReducers.organizationName
-
-    // let transObject = state.AssetReducers.selectedAsset.trans;
+    let transObject = store.getState().TransactionReducers.trans;
+    let price = 0;
+    if( transObject.data.images.price ){
+      price = price + transObject.data.images.price
+    }
+    if( transObject.data.documents.price ){
+      price = price + transObject.data.documents.price
+    }
     let header = Object.assign({}, transObject.header, {
       ...transObject.header,
-      price: sendTransObj.totalBN
+      price: price
     }); //tXlocation, hercId, price, name
-    delete sendTransObj.totalBN;
+    console.log('jm price', price, "\nheader:", header)
 
-    let data = transObject.data; //documents, images, properties, dTime
-    let keys = Object.keys(data); //[ 'dTime', 'documents', 'images', 'properties' ]
+    let data = transObject.data; //documents, images, metrics, edit
+    /*
+    {
+    metrics:{
+        stuff,
+        stuff1
+      },
+    images:{
+        name,
+        data,
+        size,
+        uri,
+        price
+      },
+    documents:{
+        uri,
+        name,
+        type,
+        content,
+        price
+      },
+    edit:{
+      value,
+      name,
+      }
+  }
+
+    */
+    let keys = Object.keys(data); // ["metrics", "images", "documents", "ediT"]
     let promiseArray = [];
+
+    console.log('jm data', data, "\nkeys", keys)
+
+
 
     //Checks if documents, metrics, images and EDIT was added
     keys.forEach(key => {
-      if (data[key].image) {
-        var base64 = data[key].image;
+      console.log('jm key', key)
+      if (key == 'images' && Object.keys(data['images']).length !== 0) {
+        var base64 = data[key].data;
         var dataObject = Object.assign(
           {},
           { key: key },
           { data: encodeURIComponent(base64) }
         );
+        console.log('jm check image dataObject', dataObject)
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_STORJ_UPLOAD, JSON.stringify(dataObject))
+            .post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
               return response;
             }) // {key: 'images', hash: 'QmU1D1eAeSLC5Dt4wVRR'}
@@ -409,9 +445,9 @@ export function SendTransaction(sendTransObj) {
               console.log(error);
             })
         );
-      } else if (data[key].content) {
+      } else if (data[key].contents) {
         let contentTypeName = {
-          content: encodeURIComponent(data[key].content),
+          content: encodeURIComponent(data[key].contents),
           type: data[key].type,
           name: data[key].name
         };
@@ -422,7 +458,7 @@ export function SendTransaction(sendTransObj) {
         );
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_UPLOAD_DOCUMENT, JSON.stringify(dataObject))
+            .post(WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT, JSON.stringify(dataObject))
             .then(response => {
               return response;
             })
@@ -474,11 +510,10 @@ export function SendTransaction(sendTransObj) {
               .child("assets")
               .child(firebaseHeader.name)
               .child("transactions")
-              .child(dTime)
+              .child(Date.now())
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
-            console.log("jm mutated sendTransObj", sendTransObj);
-            dispatch(MakePayment(sendTransObj));
+            dispatch(MakePayment(price));
           })
           .catch(err => {
             console.log(err);
@@ -495,6 +530,14 @@ export function getQRData(data) {
   return {
     type: GET_QR_DATA,
     data
+  };
+}
+
+export function StoreTransactionIds(transactionIds) {
+  console.log('jm storing transaction IDs', transactionIds)
+  return {
+    type: Trans.Action.StoreTransactionIds,
+    transactionIds
   };
 }
 

@@ -31,6 +31,7 @@ export const Action = {
     StorjComplete: 'StorjComplete',
     FactomComplete: 'FactomComplete',
     TransactionComplete: 'TransactionComplete',
+    StoreTransactionIds: 'StoreTransactionIds',
 
 
     ShowMetricModal: 'ShowMetricModal',
