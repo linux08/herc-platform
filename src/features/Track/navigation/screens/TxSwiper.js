@@ -66,7 +66,7 @@ class TxSwiper extends Component {
       <View key={data.price} style={swiperStyles.card}>
         <Text>{header.dTime}</Text>
         <HercTextFieldWithLabel text={header.dTime} label={'Created'} />
-        {/* 
+        
         <HercTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
 
         <HercTextFieldWithLabel text={this.props.SelectedAsset.hashes.factomChain} label={'Factom Chain'} />
@@ -76,10 +76,10 @@ class TxSwiper extends Component {
         {imageHash && <HercTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
         {metricsHash && <HercTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
         {documentHash && <HercTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
-        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} */}
-        {/* <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} /> */}
+        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} 
+         <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} />
 
-        {/* <BigYellowButton onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })} /> */}
+         <BigYellowButton onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })} /> 
       </View>
     )
   }

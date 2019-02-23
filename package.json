@@ -38,7 +38,7 @@
     "react-native": "0.55.3",
     "react-native-button": "^2.3.0",
     "react-native-camera": "^1.8.0",
-    "react-native-deck-swiper": "^1.5.9",
+    "react-native-deck-swiper": "^1.6.6",
     "react-native-device-info": "^0.22.4",
     "react-native-document-picker": "^2.1.0",
     "react-native-elements": "^0.18.5",

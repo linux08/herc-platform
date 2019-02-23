@@ -2053,9 +2053,9 @@ bcrypt-pbkdf@^1.0.0:
     tweetnacl "^0.14.3"
 
 big-integer@^1.6.7:
-  version "1.6.41"
-  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.41.tgz#6fb0e51bc8661129ef3832d46c939170b81ca794"
-  integrity sha512-d5AT9lMTYJ/ZE/4gzxb+5ttPcRWljVsvv7lF1w9KzkPhVUhBtHrjDo1J8swfZKepfLsliDhYa31zRYwcD0Yg9w==
+  version "1.6.42"
+  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.42.tgz#91623ae5ceeff9a47416c56c9440a66f12f534f1"
+  integrity sha512-3UQFKcRMx+5Z+IK5vYTMYK2jzLRJkt+XqyDdacgWgtMjjuifKpKTFneJLEgeBElOE2/lXZ1LcMcb5s8pwG2U8Q==
 
 biggystring@^3.0.0, biggystring@^3.0.2:
   version "3.0.2"
@@ -7322,7 +7322,7 @@ react-native-camera@^1.8.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-deck-swiper@^1.5.9:
+react-native-deck-swiper@^1.6.6:
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/react-native-deck-swiper/-/react-native-deck-swiper-1.6.6.tgz#1a452024f112a15e4855e07921c3afb4f0973b46"
   integrity sha512-Dkdm+Fyz2EZNFxl9f+k8cAvwSWjFYrY/xj84LqRaGzntKpl71GoX4Nzb3BHK9ITlK0OHKWcMkvLxDywIQmLdow==
