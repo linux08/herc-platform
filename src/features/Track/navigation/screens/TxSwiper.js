@@ -21,6 +21,7 @@ class TxSwiper extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      cards: Object.keys(this.props.transactions).map(x => this.props.transactions[x]),
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
@@ -64,9 +65,8 @@ class TxSwiper extends Component {
 
     return (
       <View key={data.price} style={swiperStyles.card}>
-        <Text>{header.dTime}</Text>
         <HercTextFieldWithLabel text={header.dTime} label={'Created'} />
-        
+
         <HercTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
 
         <HercTextFieldWithLabel text={this.props.SelectedAsset.hashes.factomChain} label={'Factom Chain'} />
@@ -76,10 +76,10 @@ class TxSwiper extends Component {
         {imageHash && <HercTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
         {metricsHash && <HercTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
         {documentHash && <HercTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
-        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} 
-         <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} />
+        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />}
+        <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} />
 
-         <BigYellowButton onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })} /> 
+        {/* <BigYellowButton onPress={() => this._goToWebView({ factomChain: factomChain, factomEntry: factomEntry })} /> */}
       </View>
     )
   }
@@ -102,36 +102,20 @@ class TxSwiper extends Component {
   };
 
   onSwiped = (index) => {
-    currentCard = index;
+    currentCard = this.state.cards[index];
     console.log("index", index, "and currentCard", currentCard)
+    this.setState({
+      cardIndex: this.state.cardIndex + 1
+    })
   }
 
-  swipeBack = () => {
-    if (!this.state.isSwipingBack) {
-      this.setIsSwipingBack(true, () => {
-        this.swiper.swipeBack(() => {
-          this.setIsSwipingBack(false)
-        })
-      })
-    }
-  };
-
-  setIsSwipingBack = (isSwipingBack, cb) => {
-    this.setState(
-      {
-        isSwipingBack: isSwipingBack
-      },
-      cb
-    )
-  };
-
-  swipeLeft = () => {
-    this.swiper.swipeLeft()
-  };
+  onTap = (index) => {
+    console.log(index, 'ontap')
+  }
 
   swipeTop = (index) => {
     this.sharing(this.state.cards[index]);
-    // this.makeMessage(this.state.cards[currentCard].data);
+    this.makeMessage(this.state.cards[currentCard].data);
   }
 
   swipeBottom = () => {
@@ -180,32 +164,37 @@ class TxSwiper extends Component {
   // }
 
   render() {
-    let cards = Object.keys(this.props.transactions).map(x => this.props.transactions[x]);
+    let cardIndex = this.state.cardIndex;
+    // let cards = Object.keys(this.props.transactions).map(x => this.props.transactions[x]);
     return (
       <View swiperStyles={swiperStyles.baseContainer}>
 
         {/* <AssetCard asset={this.props.SelectedAsset} /> */}
-      
-    
- 
+
+
+
         <Swiper
           backgroundColor={ColorConstants.MainSubCrownBlue}
           // marginBottom={}
           ref={swiper => {
             this.swiper = swiper
           }}
+
           keyExtractor={card => card.header.price}
-          onSwiped={this.onSwiped}
-          onTapCard={this.swipeLeft}
-          cards={cards}
-          cardIndex={this.state.cardIndex}
+          
+          renderCard={(card) => this.renderCard(card)}
+          
+          cards={this.state.cards}
+          cardIndex={cardIndex}
+         
+          onSwiped={() => this.onSwiped(cardIndex)}
+          onTapCard={() => this.onTap(cardIndex)}
+          onSwipedAll={() => this.onSwipedAllCards()}
+          onSwipedTop={() => this.swipeTop(cardIndex)}
+          onSwipedLeft={() => this.swipeLeft}
+          onSwipedBottom={() => this.swipeBottom}
           cardVerticalMargin={10}
           infinite={true}
-          renderCard={(card) => this.renderCard(card)}
-          onSwipedAll={() => this.onSwipedAllCards()}
-          onSwipedTop={this.swipeTop}
-          onSwipedLeft={this.swipeLeft}
-          onSwipedBottom={this.swipeBottom}
           stackSize={3}
           cardHorizontalMargin={5}
           stackSeparation={15}
@@ -214,10 +203,11 @@ class TxSwiper extends Component {
           animateCardOpacity
         >
 
-        <Text>HelloThere</Text>
+          {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
-</View>
-    )}
+      </View>
+    )
+  }
 }
 
 mapStateToProps = (state) => ({

@@ -36,6 +36,7 @@ noAssetPassword = ( asset ) => {
 
 
   render() {
+    let assets = Object.keys(this.props.assets).map(x => this.props.assets[x])
     return (
       <View style={styles.baseContainer}>
         <StatusBar
@@ -45,15 +46,15 @@ noAssetPassword = ( asset ) => {
         />
         <View style={styles.bodyContainer}>
           <FlatList
-            data={this.props.assets}
-            keyExtractor={item => item.Name}
-            renderItem={item => {
+            data={assets}
+            keyExtractor={item => item.index}
+            renderItem={(item) => {
               return (
                 <TouchableHighlight
-                  key={item.item.Name}
+                  key={item.index}
                   onPress={() => this.noAssetPassword(item.item)}
                 >
-                  <AssetCard asset={item.item} />
+                  <AssetCard key={item.index} asset={item.item} />
                 </TouchableHighlight>
               );
             }}

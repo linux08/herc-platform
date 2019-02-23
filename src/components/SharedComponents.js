@@ -62,7 +62,7 @@ export class HercTextFieldWithLabel extends Component {
     render() {
         return (
 
-            <View style={localStyles.textFieldContainer}>
+            <View key={this.props.label} style={localStyles.textFieldContainer}>
                 <Text style={localStyles.labelText}>{this.props.label}</Text>
                 <Text style={localStyles.textField}>{this.props.text}</Text>
             </View>
