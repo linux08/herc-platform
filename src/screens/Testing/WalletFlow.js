@@ -30,13 +30,15 @@ class WalletFlow extends React.Component {
       sendAmount: "",
       displayWallet: "",
       availableTokens: [],
-      sendCrypto1ModalVisible: false,
-      sendCrypto2ModalVisible: false,
-      sendCrypto3ModalVisible: false,
       selectedCrypto: "HERC",
       receiveModalVisible: false,
       transactions: [],
-      displayTransactions: true
+      displayTransactions: true,
+      displayModalChooseToken: false,
+      displayModalSendDetails: false,
+      displayModalConfirmation: false,
+      displayModalComplete: false,
+      transactionID: ""
     };
   }
 
@@ -73,7 +75,7 @@ class WalletFlow extends React.Component {
       );
     }
 
-    this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
+    await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
     this.setInterval(() => console.log(this.state.transactions), 1000);
   };
 
@@ -129,19 +131,25 @@ class WalletFlow extends React.Component {
       await wallet.signTx(abcTransaction);
       await wallet.broadcastTx(abcTransaction);
       await wallet.saveTx(abcTransaction);
-      Alert.alert(
-        "Transaction ID",
-        abcTransaction.txid,
-        [
-          {
-            text: "Copy",
-            onPress: () => this.writeToClipboard(abcTransaction.txid),
-            style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-        ],
-        { cancelable: false }
-      );
+      this._closeAllModals();
+      this.setState({
+        transactionID: abcTransaction.txid,
+        displayModalComplete: true,
+      });
+
+      // Alert.alert(
+      //   "Transaction ID",
+      //   abcTransaction.txid,
+      //   [
+      //     {
+      //       text: "Copy",
+      //       onPress: () => this.writeToClipboard(abcTransaction.txid),
+      //       style: "cancel"
+      //     },
+      //     { text: "OK", onPress: () => console.log("OK Pressed") }
+      //   ],
+      //   { cancelable: false }
+      // );
     } catch (e) {
       let displayWallet = this.state.displayWallet;
       let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
@@ -167,21 +175,6 @@ class WalletFlow extends React.Component {
     this.props.addWallet(walObj);
     this.setModalVisible();
   };
-  _toggleSendCrypto1 = () => {
-    this.setState({
-      sendCrypto1ModalVisible: !this.state.sendCrypto1ModalVisible
-    });
-  };
-  _toggleSendCrypto2 = () => {
-    this.setState({
-      sendCrypto2ModalVisible: !this.state.sendCrypto2ModalVisible
-    });
-  };
-  _toggleSendCrypto3 = () => {
-    this.setState({
-      sendCrypto3ModalVisible: !this.state.sendCrypto3ModalVisible
-    });
-  };
 
   _toggleReceiveModal = () => {
     this.setState({
@@ -189,7 +182,16 @@ class WalletFlow extends React.Component {
     });
   };
 
-  _displayChangeCurreny = () => {
+  _closeAllModals = () => {
+    this.setState({
+      displayModalChooseToken: false,
+      displayModalSendDetails: false,
+      displayModalConfirmation: false,
+      displayModalComplete: false
+    });
+  };
+
+  _displayChangeCurrency = () => {
     if (this.state.displayWallet === "HERC") {
       return (
         <View style={localStyles.changeCurrencyContainer}>
@@ -214,6 +216,9 @@ class WalletFlow extends React.Component {
   };
 
   _displayActivity = (transaction, index) => {
+    console.log(transaction.value, "transaction.valueee")
+    let transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
+    console.log(transactionAmount, "transaction amount")
     if (transaction.from === this.props.ethereumAddress) {
       activityType = "Sent";
     } else if (transaction.to === this.props.ethereumAddress) {
@@ -247,7 +252,8 @@ class WalletFlow extends React.Component {
             {activityType} {this.state.displayWallet}
           </Text>
           <Text style={{ fontWeight: "bold" }}>
-            {transaction.value} {this.state.displayWallet}
+            {transactionAmount}
+             {this.state.displayWallet}
           </Text>
         </View>
         <Text
@@ -311,33 +317,6 @@ class WalletFlow extends React.Component {
     this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   };
 
-  _displayButton = () => {
-    return (
-      <TouchableHighlight
-        onPress={() => {
-          this._toggleSendCrypto1();
-          this._toggleSendCrypto2();
-        }}
-        style={localStyles.bigButton}
-      >
-        <Text style={localStyles.bigButtonText}>Next</Text>
-      </TouchableHighlight>
-    );
-  };
-
-  _displaySendButton = () => {
-    return (
-      <TouchableHighlight
-        onPress={() => {
-          this._onPressSend();
-        }}
-        style={localStyles.bigButton}
-      >
-        <Text style={localStyles.bigButtonText}>Send</Text>
-      </TouchableHighlight>
-    );
-  };
-
   render() {
     let currencyValue = this._updateWallet();
 
@@ -352,9 +331,9 @@ class WalletFlow extends React.Component {
                   style={{
                     flexDirection: "row",
                     marginRight: 5,
-                    alignItems: "center",
-                    borderWidth: 3,
-                    borderColor: "red"
+                    alignItems: "center"
+                    // borderWidth: 3,
+                    // borderColor: "red"
                   }}
                 >
                   <Text style={localStyles.balanceText}>{currencyValue} </Text>
@@ -379,7 +358,7 @@ class WalletFlow extends React.Component {
                     this._changeCurrency();
                   }}
                 >
-                  {this._displayChangeCurreny()}
+                  {this._displayChangeCurrency()}
                 </TouchableHighlight>
               </View>
             </View>
@@ -389,17 +368,17 @@ class WalletFlow extends React.Component {
         <View style={localStyles.activityContainer}>
           <Text>Activity</Text>
           <ScrollView>
-          {typeof this.state.transactions !== "undefined"
-            ? this.state.transactions.map((transaction, index) =>
-                this._displayActivity(transaction, index)
-              )
-            : null}
-            </ScrollView>
+            {typeof this.state.transactions !== "undefined"
+              ? this.state.transactions.map((transaction, index) =>
+                  this._displayActivity(transaction, index)
+                )
+              : null}
+          </ScrollView>
         </View>
         <View style={localStyles.actionsContainer}>
           <TouchableHighlight
             style={[localStyles.actionButton, { backgroundColor: "#95c260" }]}
-            onPress={this._toggleSendCrypto1}
+            onPress={() => this.setState({ displayModalChooseToken: true })}
           >
             <Text style={localStyles.actionButtonText}>Send</Text>
           </TouchableHighlight>
@@ -412,9 +391,11 @@ class WalletFlow extends React.Component {
         </View>
 
         <Modal
-          isVisible={this.state.sendCrypto1ModalVisible}
-          onBackButtonPress={this._toggleSendCrypto1}
-          onBackdropPress={this._toggleSendCrypto1}
+          isVisible={this.state.displayModalChooseToken}
+          onBackButtonPress={() =>
+            this.setState({ displayModalChooseToken: false })
+          }
+          onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
         >
           <View style={modalStyles.modalLower}>
@@ -478,32 +459,42 @@ class WalletFlow extends React.Component {
                 </View>
               </View>
 
-              {this._displayButton()}
+              <TouchableHighlight
+                onPress={() => {
+                  this.setState({
+                    displayModalChooseToken: false,
+                    displayModalSendDetails: true
+                  });
+                  console.log("clicked button");
+                }}
+                style={localStyles.bigButton}
+              >
+                <Text style={localStyles.bigButtonText}>Send</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </Modal>
 
         <Modal
-          isVisible={this.state.sendCrypto2ModalVisible}
+          isVisible={this.state.displayModalSendDetails}
           onBackButtonPress={() => {
-            this._toggleSendCrypto2();
-            this._toggleSendCrypto1();
+            this.setState({ displayModalSendDetails: false, displayModalChooseToken: true })
           }}
-          onBackdropPress={this._toggleSendCrypto2}
+          onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
         >
           <View style={modalStyles.modalLower}>
             <View style={modalStyles.sendCryptoContainer}>
               <Text style={modalStyles.menuTitle}>Send Cryptocurrency</Text>
               <Text style={modalStyles.menuSubtitle}>
-                Choose Cryptocurrency
+                Send Details
               </Text>
 
               <View style={modalStyles.send2LowerContainer}>
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
-                  placeholder="Destination"
+                  placeholder="Destination Address"
                   onChangeText={destAddress =>
                     this.setState({ destAddress }, () =>
                       console.log("destination address", this.state.destAddress)
@@ -524,18 +515,27 @@ class WalletFlow extends React.Component {
                 />
               </View>
 
-              {this._displaySendButton()}
+              <TouchableHighlight
+                onPress={() => {
+                  this.setState({
+                    displayModalConfirmation: true,
+                    displayModalSendDetails: false
+                  });
+                }}
+                style={localStyles.bigButton}
+              >
+                <Text style={localStyles.bigButtonText}>Send</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </Modal>
 
         <Modal
-          isVisible={this.state.sendCrypto3ModalVisible}
+          isVisible={this.state.displayModalConfirmation}
           onBackButtonPress={() => {
-            this._toggleSendCrypto3();
-            this._toggleSendCrypto2();
+            this.setState({ displayModalConfirmation: false, displayModalSendDetails: true })
           }}
-          onBackdropPress={this._toggleSendCrypto3}
+          onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
         >
           <View style={modalStyles.modalLower}>
@@ -544,41 +544,88 @@ class WalletFlow extends React.Component {
               <Text style={modalStyles.menuSubtitle}>Confirmation</Text>
 
               <View style={modalStyles.send2LowerContainer}>
-                <View>
-                  <Text>Address</Text>
-                  <Text>Address</Text>
+                <View style={{ width: "90%" }}>
+                  <Text style={{ textAlign: "left" }}>Address</Text>
+                  <Text style={{ color: "gold" }}>
+                    {this.state.destAddress}
+                  </Text>
                 </View>
 
-                <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    width: "90%"
+                  }}
+                >
                   <View>
-                    <Text>Amount</Text>
-                    <Text>500</Text>
+                    <Text style={modalStyles.menuSubtitle}>Amount</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "black"
+                      }}
+                    >
+                      {" "}
+                      {this.state.sendAmount}{" "}
+                    </Text>
                   </View>
                   <View>
-                    <Text>Cryptocurrency</Text>
-                    <Text>{this.state.selectedCrypto}</Text>
+                    <Text style={modalStyles.menuSubtitle}>Cryptocurrency</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "black"
+                      }}
+                    >
+                      {this.state.selectedCrypto}
+                    </Text>
                   </View>
+                  {/* ***THIS IS THE DOLLARS VALUE WORTH OF CRYPTO**
+                  
                   <View>
-                    <Text>US Dollars</Text>
-                    <Text>500</Text>
-                  </View>
+                    <Text style={modalStyles.menuSubtitle}>US Dollars</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "black"
+                      }}
+                    >
+                      500
+                    </Text>
+                  </View> */}
+
                 </View>
               </View>
 
-              {this._displayButton()}
+              <TouchableHighlight
+                onPress={() => {
+                  this._closeAllModals();
+                  this._onPressSend()
+                }}
+                style={localStyles.confirmButton}
+              >
+                <Text style={localStyles.confirmButtonText}>Send</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </Modal>
+
         <Modal
           isVisible={this.state.receiveModalVisible}
           onBackButtonPress={this._toggleReceiveModal}
-          onBackdropPress={this._toggleReceiveModal}
+          onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
         >
           <View style={modalStyles.modalLower}>
             <View style={modalStyles.receiveContainer}>
               <Text style={modalStyles.menuTitle}>Receive Cryptocurrency</Text>
-              <QRCode size={200} value={this.props.ethereumAddress} />
+              {this.props.ethereumAddress ? (
+                <QRCode size={200} value={this.props.ethereumAddress} />
+              ) : null}
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Text style={modalStyles.menuSubtitle}>
                   Hold to copy wallet address
@@ -601,11 +648,17 @@ class WalletFlow extends React.Component {
           </View>
         </Modal>
         <CustomModal
-          isVisible={false}
+          isVisible={this.state.displayModalComplete}
           modalCase="complete"
-          content="HERC has been sent successfully."
+          content={
+            "HERC has been sent successfully." +
+            " Transaction ID: " +
+            this.state.transactionID
+          }
           dismissAcceptText="Continue"
-          closeModal={() => {}}
+          closeModal={() => {
+            this.setState({ displayModalComplete: false });
+          }}
         />
         <CustomModal
           isVisible={false}
@@ -688,8 +741,8 @@ const localStyles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   balanceInnerRightContainer: {
-      borderColor: "green",
-      borderWidth: 3,
+    // borderColor: "green",
+    // borderWidth: 3,
     // flex: 1,
     // marginLeft: 10,
     justifyContent: "center",
@@ -791,8 +844,30 @@ const localStyles = StyleSheet.create({
     width: "90%",
     borderRadius: 5
   },
+  confirmButton: {
+    margin: 5,
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "15%",
+    width: "90%",
+    borderRadius: 5
+  },
   bigButtonText: {
     color: "#ffffff",
+    fontSize: 16
+  },
+  greenSendButton: {
+    margin: 5,
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "15%",
+    width: "90%",
+    borderRadius: 5
+  },
+  confirmButtonText: {
+    color: "white",
     fontSize: 16
   },
   textInput: {
@@ -874,10 +949,9 @@ const modalStyles = StyleSheet.create({
   },
   menuSubtitle: {
     color: "#9398b2",
-    fontSize: 16,
+    fontSize: 12,
     margin: 5
   },
-
   receiveContainer: {
     flexDirection: "column",
     backgroundColor: "#ffffff",
