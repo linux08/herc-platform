@@ -20,6 +20,13 @@ export const Action = {
 
     StartTransaction: 'StartTransaction',
 
+    TransactionStarted:'TransactionStarted',
+    TransactionInstantiating:'TransactionInstantiating',
+    TransactionFactomEntryCompleted:'TransactionFactomEntryCompleted',
+    TransactionWriteToFirebaseCompleted: 'TransactionWriteToFirebaseCompleted',
+    TransactionComplete: 'TransactionComplete',
+
+
     AddPhoto: 'AddPhoto',
     AddDoc: 'AddDoc',
     AddMetrics: 'AddMetrics',
@@ -30,7 +37,6 @@ export const Action = {
     IpfsComplete: 'IpfsComplete',
     StorjComplete: 'StorjComplete',
     FactomComplete: 'FactomComplete',
-    TransactionComplete: 'TransactionComplete',
     StoreTransactionIds: 'StoreTransactionIds',
 
 

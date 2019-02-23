@@ -74,7 +74,7 @@ class SupplyChainTX extends Component {
             isVisible: !this.state.isVisible
         })
     }
-    
+
     allDone = () => {
         this.setState({
             isVisible: false,
@@ -159,6 +159,9 @@ class SupplyChainTX extends Component {
         console.log("this will be Transaction Start!");
         console.log(this.state, 'state here');
         this.props.sendTransaction()
+        this.setState({
+            isVisible: true
+        })
     }
 
 
@@ -257,6 +260,8 @@ const mapStateToProps = (state) => ({
     modals: state.TransactionReducers.modals,
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     trans: state.TransactionReducers.trans,
+    content: state.TransactionReducers.content,
+    percent: state.TransactionReducers.percentage
 })
 
 const mapDispatchToProps = (dispatch) => ({

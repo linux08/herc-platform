@@ -370,10 +370,44 @@ export function MakePayment(makePaymentObject) {
   };
 }
 
+export function TransactionStarted() {
+  return {
+    type: Trans.Action.TransactionStarted,
+  }
+}
+
+
+export function TransactionInstantiating() {
+  return {
+    type: Trans.Action.TransactionInstantiating,
+  }
+}
+
+export function TransactionFactomEntryCompleted(factomEntry) {
+  return {
+    type: Trans.Action.TransactionFactomEntryCompleted,
+    factomEntry: factomEntry
+  }
+}
+
+export function TransactionWriteToFirebaseCompleted() {
+  return {
+    type: Trans.Action.TransactionWriteToFirebaseCompleted,
+  }
+}
+
+export function TransactionComplete() {
+  return {
+    type: Trans.Action.TransactionComplete,
+  }
+}
+
+
 export function SendTransaction() {
   console.log('jm started SendTransaction')
   return dispatch => {
     // dispatch({ type: SEND_TRANS }); //brings up MODAL
+    store.dispatch(TransactionStarted()) // new 15%
 
     let transObject = store.getState().TransactionReducers.trans;
     let price = 0;
@@ -486,6 +520,8 @@ export function SendTransaction() {
 
     let chainId = store.getState().AssetReducers.selectedAsset.hashes.chainId;
 
+    store.dispatch(TransactionInstantiating()) //new 25%
+
     Promise.all(promiseArray)
       .then(results => {
         // sometimes results are [undefined] when Network Error
@@ -500,6 +536,7 @@ export function SendTransaction() {
         axios
           .post(WEB_SERVER_API_FACTOM_ENTRY_ADD, JSON.stringify(factomEntry))
           .then(response => {
+            store.dispatch(TransactionFactomEntryCompleted(response.data)) // new 50%
             //response.data = entryHash
             var dataObject = {};
             hashlist.map(hash => (dataObject[hash.key] = hash.hash));
@@ -513,6 +550,7 @@ export function SendTransaction() {
               .child(Date.now())
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
+            store.dispatch(TransactionWriteToFirebaseCompleted()) // new 75%
             dispatch(MakePayment(price));
           })
           .catch(err => {

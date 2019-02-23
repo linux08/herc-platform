@@ -21,7 +21,9 @@ const INITIAL_STATE = {
             ediT: {},
         }
     },
-    transactionIdStore: null
+    transactionIdStore: null,
+    percentage: 0,
+    content: "Your Transaction is Being Created",
 }
 
 
@@ -147,6 +149,62 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     }
                 }
             })
+
+        case Trans.Action.TransactionStarted:
+            return {
+                ...state,
+                flags: {
+                    ...state.flags,
+                    transactionStarted: true,
+                },
+                percentage: state.percentage + 20,
+                content: "Your Transaction Is Starting"
+            }
+
+        case Trans.Action.TransactionInstantiating:
+            return {
+                ...state,
+                flags: {
+                    ...state.flags,
+                    TransactionInstantiating: true,
+                },
+                percentage: state.percentage + 20,
+                content: "Your Transaction Is Prepped To Launch"
+            }
+
+        case Trans.Action.TransactionFactomEntryCompleted:
+            return {
+                ...state,
+                flags: {
+                    ...state.flags,
+                    factomEntryCompleted: true,
+                },
+                factomEntry: action.factomEntry,
+                percentage: state.percentage + 20,
+                content: "Factom Entry Is Complete"
+            }
+
+        case Trans.Action.TransactionWriteToFirebaseCompleted:
+            return {
+                ...state,
+                flags: {
+                    ...state.flags,
+                    writtenToFirebase: true,
+                },
+                percentage: state.percentage + 20,
+                content: "Written To Database"
+            }
+
+        case Trans.Action.TransactionComplete:
+            return {
+                ...state,
+                flags: {
+                    ...state.flags,
+                    paymentCompleted: true,
+                },
+                percentage: 100,
+                content: "Payment Complete"
+            }
 
         case Trans.Action.StartTransaction:
             let tRans = action.trans;
