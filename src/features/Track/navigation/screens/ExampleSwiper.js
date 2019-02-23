@@ -9,6 +9,8 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../../../assets/re
 const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
 import { WebViewComponent } from "./components/WebViewComponent"
 const { height, width } = Dimensions.get('window');
+
+import {SwiperTextFieldWithLabel, WebViewComponent} from './components';
 // demo purposes only
 // function * range (start, end) {
 //   for (let i = start; i <= end; i++) {
@@ -16,15 +18,15 @@ const { height, width } = Dimensions.get('window');
 //   }
 // }
 
-const SwiperTextFieldWithLabel = (props) => {
-  return (
-    <View key={props.label} style={localStyles.textFieldContainer}>
-      <Text style={localStyles.labelText}>{props.label}</Text>
-      <Text style={localStyles.textField}>{props.text}</Text>
-    </View>
-  )
+// const SwiperTextFieldWithLabel = (props) => {
+//   return (
+//     <View key={props.label} style={localStyles.textFieldContainer}>
+//       <Text style={localStyles.labelText}>{props.label}</Text>
+//       <Text style={localStyles.textField}>{props.text}</Text>
+//     </View>
+//   )
 
-}
+// }
 
 
 
@@ -40,8 +42,19 @@ class ExampleSwiper extends Component {
   }
 
   _goToWebView = (factomChain, factomEntry) => {
-
-    console.log(factomChain, factomEntry, 'hashes');
+    this.props.navigation.navigate('WebView', {data: {factomChain, factomEntry}});
+    
+    // let url;
+    // if (data.factomChain){
+    //   url = "https://explorer.factom.com/chains/" + factomChain + "/entries/" + factomEntry
+    // }
+    // return (
+    //   <WebView
+    //     source={{ uri: url }}
+    //     style={{ margin: 0, padding: 0, flex: 1, width: '100%' }}
+    //   />
+    // )
+    
   }
 
 
@@ -75,25 +88,21 @@ class ExampleSwiper extends Component {
 
     return (
       <View key={index} style={swiperStyles.card}>
-        <HercTextFieldWithLabel style={{ width: '90%' }} text={header.dTime} label={'Created'} />
-        <View key={this.props.label} style={localStyles.textFieldContainer}>
-          <Text style={localStyles.labelText}>Created</Text>
-          <Text style={localStyles.textField}>{header.dTime}</Text>
-        </View>
-
+        <SwiperTextFieldWithLabel text={header.dTime} label={'Created'} />
+     
         <SwiperTextFieldWithLabel label={'Factom Chain'} text={factomChain} />
 
-        <HercTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
+        <SwiperTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
 
-        <HercTextFieldWithLabel text={factomChain} label={'Factom Chain'} />
-        <HercTextFieldWithLabel text={factomEntry} label={'Factom Entry'} />
+        <SwiperTextFieldWithLabel text={factomChain} label={'Factom Chain'} />
+        <SwiperTextFieldWithLabel text={factomEntry} label={'Factom Entry'} />
 
-        <HercTextFieldWithLabel label={'Core Properties'} text={corePropsHash} />
-        {/* {imageHash && <HercTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
-        {metricsHash && <HercTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
-        {documentHash && <HercTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
-        {ediTHash && <HercTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />}  */}
-        {/* <HercTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} /> */}
+        <SwiperTextFieldWithLabel label={'Core Properties'} text={corePropsHash} />
+        {imageHash && <SwiperTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
+        {metricsHash && <SwiperTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
+        {documentHash && <SwiperTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
+        {ediTHash && <SwiperTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} 
+        <SwiperTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} />
 
         <BigYellowButton onPress={() => this._goToWebView(factomChain, factomEntry)} />
       </View>
