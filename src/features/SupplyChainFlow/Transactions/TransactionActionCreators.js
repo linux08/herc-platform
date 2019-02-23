@@ -407,7 +407,7 @@ export function SendTransaction() {
   console.log('jm started SendTransaction')
   return dispatch => {
     // dispatch({ type: SEND_TRANS }); //brings up MODAL
-    store.dispatch(TransactionStarted()) // new 15%
+    store.dispatch(TransactionStarted())
 
     let transObject = store.getState().TransactionReducers.trans;
     let price = 0;
@@ -520,7 +520,7 @@ export function SendTransaction() {
 
     let chainId = store.getState().AssetReducers.selectedAsset.hashes.chainId;
 
-    store.dispatch(TransactionInstantiating()) //new 25%
+    store.dispatch(TransactionInstantiating())
 
     Promise.all(promiseArray)
       .then(results => {
@@ -536,7 +536,7 @@ export function SendTransaction() {
         axios
           .post(WEB_SERVER_API_FACTOM_ENTRY_ADD, JSON.stringify(factomEntry))
           .then(response => {
-            store.dispatch(TransactionFactomEntryCompleted(response.data)) // new 50%
+            store.dispatch(TransactionFactomEntryCompleted(response.data))
             //response.data = entryHash
             var dataObject = {};
             hashlist.map(hash => (dataObject[hash.key] = hash.hash));
@@ -550,7 +550,7 @@ export function SendTransaction() {
               .child(Date.now())
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
-            store.dispatch(TransactionWriteToFirebaseCompleted()) // new 75%
+            store.dispatch(TransactionWriteToFirebaseCompleted())
             dispatch(MakePayment(price));
           })
           .catch(err => {
