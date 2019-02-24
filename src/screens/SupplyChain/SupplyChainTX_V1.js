@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import MetricModal from '../../components/modals/MetricModal';
+import CustomModal from '../../components/modals/CustomModal';
 import CameraSourceModal from '../../components/modals/CameraSourceModal';
 import { ToggleCamSourceModal } from '../../features/CamSourceModal/CamSourceModalActionCreators';
 import EditModal from '../../components/modals/EDI_T_Modal';
@@ -16,6 +17,7 @@ import EditModal from '../../components/modals/EDI_T_Modal';
 import {
     ShowEditModal,
     ShowMetricModal,
+    SendTransaction,
     AddDoc,
     AddEdiT,
     AddMetrics,
@@ -45,14 +47,14 @@ const ORIGNAL_STATE = {
     img: {},
     doc: {},
     edi: {},
-    metrics: {}
+    metrics: {},
+    isVisible: false,
 }
 
 class SupplyChainTX extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = ORIGNAL_STATE;
 
         // this.showEditModal = this.showEditModal.bind(this);
@@ -67,9 +69,20 @@ class SupplyChainTX extends Component {
         // this.clearMetrics = this.clearMetrics.bind(this);
     }
 
-    // componentDidMount = () => {
-    //     this
-    // }
+    toggleModal = () => {
+        this.setState({
+            isVisible: !this.state.isVisible
+        })
+    }
+
+    allDone = () => {
+        this.setState({
+            isVisible: false,
+        })
+        this.props.navigation.navigate('TestSplash');
+        // this.props.clearState();
+
+    }
 
     clearAll = () => {
         this.setState(ORIGNAL_STATE)
@@ -142,9 +155,13 @@ class SupplyChainTX extends Component {
         })
     }
 
-    testOnPress = () => {
+    submitTransaction = () => {
         console.log("this will be Transaction Start!");
         console.log(this.state, 'state here');
+        this.props.sendTransaction()
+        this.setState({
+            isVisible: true
+        })
     }
 
 
@@ -155,7 +172,6 @@ class SupplyChainTX extends Component {
 
 
     render() {
-console.log("render in supplychainTx")
         return (
 
             <View style={styles.baseContainer}>
@@ -189,11 +205,12 @@ console.log("render in supplychainTx")
                         <MetricTransactionComponent
                             onPress={() => this.props.showMetricModal()}
                             iconName='clipboard'
+                            metrics={this.props.trans.data.metrics}
                         />
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this.submitTransaction} />
                     </View>
                 </View>
 
@@ -215,13 +232,25 @@ console.log("render in supplychainTx")
                     clearEDI={this.props.clearEDI}
                 />
 
-                {/* <MetricModal
+                <MetricModal
                     visibility={this.props.modals.metricModal}
                     metrics={this.props.trans.data.metrics}
                     clearMetrics={this.clearMetrics}
                     localOnChange={this.setMetrics}
                     changeModal={this.showMetricModal}
-                /> */}
+                />
+
+                <CustomModal
+                    heading={"Your Transaction Is Being Written To The Blockchain"}
+                    content={this.props.content}
+                    modalCase="progress"
+                    isVisible={this.state.isVisible}
+                    onBackdropPress={() => this.toggleModal()}
+                    percent={this.props.percent}
+                    closeModal={this.allDone}
+                    dismissRejectText={"All Done"}
+                />
+
 
             </View>
         )
@@ -231,6 +260,8 @@ const mapStateToProps = (state) => ({
     modals: state.TransactionReducers.modals,
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     trans: state.TransactionReducers.trans,
+    content: state.TransactionReducers.content,
+    percent: state.TransactionReducers.percentage
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -241,7 +272,7 @@ const mapDispatchToProps = (dispatch) => ({
     addPhoto: (imgObject) => dispatch(AddPhoto(imgObject)),
 
     addDocument: (file) => dispatch(AddDoc(file)),
-   
+
     showEditModal: () => dispatch(ShowEditModal()),
     addEdit: (ediItem) => dispatch(AddEdiT(editItem)),
 

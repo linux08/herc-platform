@@ -238,6 +238,27 @@ class SideMenu extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    account: state.AccountReducers.account,
+    edge_account: state.AccountReducers.edge_account,
+});
+
+const mapDispatchToProps = dispatch => ({
+    getAccount: (account) =>
+        dispatch(getAccount(account)),
+    getUsername: (edge_account) =>
+        dispatch(getUsername(edge_account)),
+    fetchAssets: () => dispatch(fetchAssets()),
+    getHercId: () => dispatch(getHercId()),
+    signOut: () => dispatch(signOut()),
+    fetchData: () => dispatch(fetchData())
+});
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SideMenu);
+
+
 const localStyles = StyleSheet.create({
     block: {
         flexDirection: "row",
@@ -306,23 +327,3 @@ const localStyles = StyleSheet.create({
         color: '#8e94af'
     }
 });
-
-const mapStateToProps = state => ({
-    account: state.AccountReducers.account,
-    edge_account: state.AccountReducers.edge_account,
-});
-
-const mapDispatchToProps = dispatch => ({
-    getAccount: (account) =>
-        dispatch(getAccount(account)),
-    getUsername: (edge_account) =>
-        dispatch(getUsername(edge_account)),
-    fetchAssets: () => dispatch(fetchAssets()),
-    getHercId: () => dispatch(getHercId()),
-    signOut: () => dispatch(signOut()),
-    fetchData: () => dispatch(fetchData())
-});
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SideMenu);

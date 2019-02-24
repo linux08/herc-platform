@@ -6,7 +6,7 @@ export const Action = {
     SetOriginTransInfo: 'SetOriginTransInfo',
     // Set the Origin trans Password
     SetNewOriginTransPassword: 'NewOriginTransPasswordSet',
-    
+
     // these are for swiper I think
 
     // GetAssetTransactions: 'GetAssetTransactions',
@@ -19,30 +19,38 @@ export const Action = {
     ClearMetrics: 'ClearMetrics',
 
     StartTransaction: 'StartTransaction',
-    
+
+    TransactionStarted:'TransactionStarted',
+    TransactionInstantiating:'TransactionInstantiating',
+    TransactionFactomEntryCompleted:'TransactionFactomEntryCompleted',
+    TransactionWriteToFirebaseCompleted: 'TransactionWriteToFirebaseCompleted',
+    TransactionComplete: 'TransactionComplete',
+
+
     AddPhoto: 'AddPhoto',
     AddDoc: 'AddDoc',
     AddMetrics: 'AddMetrics',
     AddEdiT: 'AddEdiT',
 
+
     SendTransaction: 'SendTransaction',
     IpfsComplete: 'IpfsComplete',
     StorjComplete: 'StorjComplete',
     FactomComplete: 'FactomComplete',
-    TransactionComplete: 'TransactionComplete',
+    StoreTransactionIds: 'StoreTransactionIds',
 
 
     ShowMetricModal: 'ShowMetricModal',
     // ShowCamSourceModal: 'ShowCamSourcModal',
     ShowEditModal: 'ShowEditModal',
-    
+
     ShowPasswordModal: 'ShowPasswordModal',
-  
+
     GetCurrentHercValue: 'GetCurrentHercValue',
     GotDynamicHercValue: 'GotDynamicHercValue',
 
     GotNetworkFee: 'GotNetworkFee',
-    
+
     MakePayment: 'MakePayment',
     Error: 'Error',
 

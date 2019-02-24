@@ -41,13 +41,6 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
         transactionIdStore: null
       };
 
-    case Wallet.Action.StoreTransactionIds:
-      console.log("jm transactionIDs in reducer", action.transactionIds);
-      return {
-        ...state,
-        transactionIdStore: action.transactionIds
-      };
-
     case Wallet.Action.SwitchWallet:
       console.log("getting balance", state);
       return {
@@ -61,7 +54,7 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-
+export default WalletReducers;
 //   Not using this....YET
     // case Wallet.Action.DeleteWallet:
     //   console.log("getting balance", state, action, "state actions");
@@ -71,7 +64,7 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
     //     ...state,
     //     wallets: trimmedWallet
     //   };
-    
+
     // case Wallet.Action.AddWallet:
     //   console.log("adding Wallet", action);
     //   let coinName = action.data.currency;

@@ -9,6 +9,7 @@ import {
 
 const { height, width } = Dimensions.get('window');
 import styles from "../../assets/styles";
+import { connect } from "react-redux";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 // import assets from "../../components/TesterAssets";
@@ -25,7 +26,7 @@ import {
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
-export default class SupplyChainMetrics extends Component {
+class SupplyChainMetrics extends Component {
     navigationOptions = ({ navigation }) => {
         return {
             header: <Header headerName={'Transaction Metrics'} navigation={navigation} />
@@ -80,9 +81,9 @@ export default class SupplyChainMetrics extends Component {
                     backgroundColor='transparent'
                 />
                 <Header headerName={'Asset Name'} navigation={this.props.navigation} />
-              
+
                 <View style={styles.bodyContainer}>
-              
+
                 <TransInfoCard transSide={'Originator'} hercId={'42'} />
                     <HercTextInputWithLabel
                         label={"didchange"}
@@ -92,7 +93,7 @@ export default class SupplyChainMetrics extends Component {
                     />
                     <View style={localStyles.centralBody}>
                         <ScrollView contentContainerStyle={localStyles.scrollView}>
-                            {this.renderMetrics(assets[0].CoreProps)}
+                            {this.renderMetrics(this.props.metrics.CoreProps)}
                         </ScrollView>
                     </View>
                     <BigYellowButton buttonName={"Submit"} onPress={this.testOnPress} />
@@ -102,6 +103,18 @@ export default class SupplyChainMetrics extends Component {
     };
 
 }
+
+const mapStateToProps = (state) => ({
+    metrics: state.AssetReducers.selectedAsset.ipfsDef,
+    logo: state.AssetReducers.selectedAsset.Logo
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setSet: (item) => dispatch(setSet(item))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainMetrics);
+
 
 const localStyles = StyleSheet.create({
     scrollView: {

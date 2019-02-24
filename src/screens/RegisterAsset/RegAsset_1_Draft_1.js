@@ -24,7 +24,7 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-
+          metrics: {}
         }
         this.corePropChange = this.corePropChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
@@ -48,7 +48,7 @@ class RegAsset1 extends Component {
         let metrics = Object.keys(this.state.newAsset.CoreProps);
         let metricInputs = [];
 
-        //  Trying to get the FIRST input to have a red placeholder 
+        //  Trying to get the FIRST input to have a red placeholder
         metrics.map((x, idx) => {
             // let name = x
             idx === 0 ?
@@ -138,8 +138,8 @@ class RegAsset1 extends Component {
         this.props.navigation.navigate("RegAsset2");
     }
 
-    // function to add metric, am considering implementing the modal, but this 
-    // seems to work 
+    // function to add metric, am considering implementing the modal, but this
+    // seems to work
 
     addMetric = () => {
         let newMetricNumber = Object.keys(this.state.newAsset.CoreProps).length + 1;
