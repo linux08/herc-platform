@@ -462,6 +462,7 @@ export function SendTransaction() {
     keys.forEach(key => {
       console.log('jm key', key)
       if (key == 'images' && Object.keys(data['images']).length !== 0) {
+        console.log('jm check 1', data['images'])
         var base64 = data[key].data;
         var dataObject = Object.assign(
           {},
@@ -479,9 +480,10 @@ export function SendTransaction() {
               console.log(error);
             })
         );
-      } else if (data[key].contents) {
+      } else if (data[key].content) {
+        console.log('jm check 2', data[key].content)
         let contentTypeName = {
-          content: encodeURIComponent(data[key].contents),
+          content: encodeURIComponent(data[key].content),
           type: data[key].type,
           name: data[key].name
         };
@@ -504,6 +506,7 @@ export function SendTransaction() {
         Object.keys(data[key]).length != 0 &&
         data[key].constructor === Object
       ) {
+        console.log('jm check 3', data[key])
         var dataObject = Object.assign({}, { key: key }, { data: data[key] }); // {key: 'properties', data: data[key]}
         promiseArray.push(
           axios

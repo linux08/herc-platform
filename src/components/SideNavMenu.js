@@ -73,8 +73,8 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={this.navigateToScreen('MainNavigator')}>
-                                    <Text style={localStyles.title__Text}>Main</Text>
+                                <TouchableHighlight onPress={this.navigateToScreen('WalletNavigator')}>
+                                    <Text style={localStyles.title__Text}>Wallet</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
@@ -101,16 +101,18 @@ class SideMenu extends Component {
                             </View>
                         </View>
 
-                        {/* <View style={localStyles.block}>
+                        <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('TrackAssetList'); }}>
+                                <TouchableHighlight onPress={ this.navigateToScreen('TrackNavigator')}>
                                     <Text style={localStyles.title__Text}>Track</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
+
+                        {/*
 
                         <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>

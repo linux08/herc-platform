@@ -79,7 +79,7 @@ class SupplyChainTX extends Component {
         this.setState({
             isVisible: false,
         })
-        this.props.navigation.navigate('TestSplash');
+        this.props.navigation.navigate('WalletNavigator');
         // this.props.clearState();
 
     }
