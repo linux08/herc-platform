@@ -76,7 +76,7 @@ class SupplyChainSplash extends Component {
             renderItem={item => {
               return (
                 <TouchableHighlight
-                  key={item.item.Name}
+                  key={item.item.key}
                   onPress={() => this.props.SelectedAsset(item.item)}
                 >
                   <AssetCard asset={item.item} />

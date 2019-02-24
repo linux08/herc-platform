@@ -1,17 +1,7 @@
-// import HiprLanding from '../screens/HiprLanding';
-// import Hipr from '../screens/Hipr';
-// import HiprTransactions from '../screens/HiprTransactions';
 
-
-// import QRCapture from '../screens/QRCapture';
-// import QRCapture2 from '../screens/QRCapture2';
-// import WebViewComponent from '../components/WebViewComponent';
-// import DocumentStorage from '../screens/MainApp/DocumentStorage';
-// import DocumentQRScanner from '../screens/MainApp/DocumentQRScanner';
 import React, { Component } from 'react';
 import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from 'react-navigation';
 
-import TestSplash from '../screens/MainApp/TestSplash';
 
 // import HiprLanding from "../screens/HiprLanding";
 // import TxSwiperContainer from "../screens/MainApp/TxSwiperContainer";
@@ -23,7 +13,7 @@ import Settings from "../screens/MainApp/Settings";
 // import WebViewComponent from "../components/WebViewComponent";
 // import DocumentStorage from "../screens/MainApp/DocumentStorage";
 // import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
-
+import Login from "../screens/MainApp/Login";
 import TestSplash from "../screens/MainApp/TestSplash";
 import TrackNavigator from "../features/Track/navigation/TrackNavigation";
 import Header from "../components/Headers/Header";
@@ -33,12 +23,12 @@ import SupplyChainNavigator from "./SupplyChainNavigation";
 import WalletNavigator from "./WalletNavigation";
 
 const MainNavigator = createStackNavigator({
-    // TestSplash: {
-    //     screen: TestSplash,
-    //      navigationOptions: ({ navigation, screenProps }) => ({
-    //         header: <Header headerTitle={'Welcome'} navigation={navigation} />
-    //     })
-    // },
+    TestSplash: {
+        screen: TestSplash,
+         navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'Welcome'} navigation={navigation} />
+        })
+    },
 
     TrackNavigator: {
         screen: TrackNavigator,

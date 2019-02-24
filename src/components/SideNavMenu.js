@@ -101,17 +101,29 @@ class SideMenu extends Component {
                             </View>
                         </View>
 
-                        {/* <View style={localStyles.block}>
+                        <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('TrackAssetList'); }}>
+                                <TouchableHighlight onPress={() => { this.props.onItemSelected('TrackNavigator'); }}>
                                     <Text style={localStyles.title__Text}>Track</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
 
+
+                        <View style={localStyles.block}>
+                            <View style={localStyles.block__bullet}>
+                                <Icon name='circle' color="#d7daeb" size={12} />
+                            </View>
+                            <View style={localStyles.block__textBlock}>
+                                <TouchableHighlight onPress={() => { this.props.onItemSelected('WalletNavigator'); }}>
+                                    <Text style={localStyles.title__Text}>Wallet</Text>
+                                </TouchableHighlight>
+                            </View>
+                        </View>
+                        {/*   
                         <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
                                 <Icon name='circle' color="#d7daeb" size={12} />
@@ -122,18 +134,6 @@ class SideMenu extends Component {
                                 </TouchableHighlight>
                             </View>
                         </View>
-
-                        <View style={localStyles.block}>
-                            <View style={localStyles.block__bullet}>
-                                <Icon name='circle' color="#d7daeb" size={12} />
-                            </View>
-                            <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { this.props.onItemSelected('Wallet'); }}>
-                                    <Text style={localStyles.title__Text}>Wallet</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-
                         <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
                                 <Icon name='circle' color="#d7daeb" size={12} />
