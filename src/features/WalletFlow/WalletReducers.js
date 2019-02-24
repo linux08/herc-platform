@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   transactionIdStore: null
 };
 
-const WalletReducer = (state = INITIAL_STATE, action) => {
+export default WalletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
     case Wallet.Action.UpdateBalances:
