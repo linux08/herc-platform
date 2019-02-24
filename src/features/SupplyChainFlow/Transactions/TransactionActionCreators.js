@@ -479,9 +479,9 @@ export function SendTransaction() {
               console.log(error);
             })
         );
-      } else if (data[key].contents) {
+      }else if (data[key].content) {
         let contentTypeName = {
-          content: encodeURIComponent(data[key].contents),
+          content: encodeURIComponent(data[key].content),
           type: data[key].type,
           name: data[key].name
         };
