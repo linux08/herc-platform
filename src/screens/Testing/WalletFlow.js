@@ -105,6 +105,7 @@ class WalletFlow extends React.Component {
     }
   };
   async _onPressSend() {
+    let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
     let destAddress = this.state.destAddress;
     let sendAmountInEth = new BigNumber(this.state.sendAmount);
@@ -114,7 +115,7 @@ class WalletFlow extends React.Component {
 
     const abcSpendInfo = {
       networkFeeOption: "standard",
-      currencyCode: "HERC",
+      currencyCode: selectedCrypto,
       metadata: {
         name: "Transfer From Herc Wallet",
         category: "Transfer:Wallet:College Fund"
@@ -216,9 +217,14 @@ class WalletFlow extends React.Component {
   };
 
   _displayActivity = (transaction, index) => {
-    console.log(transaction.value, "transaction.valueee")
-    let transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
-    console.log(transactionAmount, "transaction amount")
+    let transactionAmount;
+    if(this.state.displayWallet === "HERC"){
+      //convert the HERC values to appropriate decimal places
+      transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
+    }else if ( this.state.displayWallet === "ETH"){
+      //ETH values are received at correct decimal places
+      transactionAmount = new BigNumber(transaction.value).toFixed(18);
+    }
     if (transaction.from === this.props.ethereumAddress) {
       activityType = "Sent";
     } else if (transaction.to === this.props.ethereumAddress) {
@@ -651,7 +657,7 @@ class WalletFlow extends React.Component {
           isVisible={this.state.displayModalComplete}
           modalCase="complete"
           content={
-            "HERC has been sent successfully." +
+            this.state.selectedCrypto + "has been sent successfully." +
             " Transaction ID: " +
             this.state.transactionID
           }
