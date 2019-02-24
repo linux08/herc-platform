@@ -188,7 +188,8 @@ class WalletFlow extends React.Component {
       displayModalChooseToken: false,
       displayModalSendDetails: false,
       displayModalConfirmation: false,
-      displayModalComplete: false
+      displayModalComplete: false,
+      receiveModalVisible: false
     });
   };
 
@@ -338,8 +339,6 @@ class WalletFlow extends React.Component {
                     flexDirection: "row",
                     marginRight: 5,
                     alignItems: "center"
-                    // borderWidth: 3,
-                    // borderColor: "red"
                   }}
                 >
                   <Text style={localStyles.balanceText}>{currencyValue} </Text>
@@ -630,7 +629,7 @@ class WalletFlow extends React.Component {
             <View style={modalStyles.receiveContainer}>
               <Text style={modalStyles.menuTitle}>Receive Cryptocurrency</Text>
               {this.props.ethereumAddress ? (
-                <QRCode size={200} value={this.props.ethereumAddress} />
+                <QRCode size={180} value={this.props.ethereumAddress} />
               ) : null}
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Text style={modalStyles.menuSubtitle}>
@@ -643,7 +642,7 @@ class WalletFlow extends React.Component {
                   }}
                 >
                   <View style={modalStyles.addressContainer}>
-                    <Text>Address</Text>
+                    <Text style={{ fontSize: 12 }}>Address</Text>
                     <Text style={modalStyles.addressText}>
                       {this.props.ethereumAddress}
                     </Text>
@@ -747,10 +746,6 @@ const localStyles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   balanceInnerRightContainer: {
-    // borderColor: "green",
-    // borderWidth: 3,
-    // flex: 1,
-    // marginLeft: 10,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -760,7 +755,6 @@ const localStyles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
     paddingHorizontal: 10,
-    // marginLeft: 5,
     alignItems: "center"
   },
 
@@ -906,7 +900,6 @@ const modalStyles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#ffffff"
   },
-
   sendCryptoContainer: {
     flexDirection: "column",
     backgroundColor: "#ffffff",
@@ -950,7 +943,7 @@ const modalStyles = StyleSheet.create({
 
   menuTitle: {
     color: "#000000",
-    fontSize: 24,
+    fontSize: 18,
     margin: 10
   },
   menuSubtitle: {
@@ -967,18 +960,16 @@ const modalStyles = StyleSheet.create({
     height: "50%",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    paddingVertical: 10
   },
   addressContainer: {
     backgroundColor: "#f2f3fb",
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 2
+    marginBottom: 5
   },
   addressText: {
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 14
   }
 });
