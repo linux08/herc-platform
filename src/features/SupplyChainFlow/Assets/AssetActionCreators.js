@@ -10,8 +10,8 @@ import {
     WEB_SERVER_API_UPLOAD_DOCUMENT,
     TOKEN_ADDRESS,
     DEVELOPERS
-  } from '../../../components/settings';
-  
+} from '../../../components/settings';
+
 import axios from 'axios';
 import store from "../../../store";
 import firebase from "../../../constants/Firebase";
@@ -32,10 +32,14 @@ export function GetHeaders(userName) {
         assetRef.once("value")
             .then(snapshot => {
                 snapshot.forEach(asset => {
+                    // this gets the unique firebase key for the asset
+                    let pushKey = assetRef.child(asset.key).push();
                     assetHeaders.push(
-                        asset.toJSON()
-                        // ipfsHash: asset.toJSON().ipfsHash,
-                        // chainId: asset.toJSON().chainID
+                        Object.assign({}, asset.toJSON(),
+                            {
+                                key: pushKey.key
+                            }
+                        )
                     );
                 })
             }).then(() => {
