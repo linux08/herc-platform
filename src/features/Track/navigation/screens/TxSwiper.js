@@ -9,7 +9,7 @@ const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
 import { TouchableHighlight, Image, Share, Text, View, Button, StyleSheet } from 'react-native';
 // import { swiperStyles, swiperOverlayLables } from './styles';
 // import swiperStyles from '../../../../assets/swiperStyles';
-import { WebViewComponent } from "./components/WebViewComponent"
+// import { WebViewComponent } from "./components/WebViewComponent"
 
 // function * range (start, end) {
 //   for (let i = start; i <= end; i++) {

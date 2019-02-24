@@ -6,27 +6,43 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from "react-native";
 // import hiprLogo from "../assets/hiprLogo.png";
+const { height, width } = Dimensions.get('window');
+import ColorConstants from '../../../../../constants/ColorConstants';
+import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';
+
+import {assetCardStyles} from './trackComponentStyles';
 
 
 export const SwiperTextFieldWithLabel = props => {
+
   let text = props.text;
   if (text.length > 32) {
     let beginning = text.substring(0, 7);
     let middle = " ... ";
-    let end = text.substring(text.substring(text.length - 8));
+    let end = text.substring(text.length - 9, text.length - 1);
     text = beginning + middle + end;
+    console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
   }
-
   return (
-    <View key={props.label} style={localStyles.textFieldContainer}>
+    <View key={text} style={localStyles.textFieldContainer}>
       <Text style={localStyles.labelText}>{props.label}</Text>
       <Text style={localStyles.textField}>{text}</Text>
     </View>
   );
 };
+
+export const SwiperBigYellowButton = (props) => {
+  return (
+
+    <TouchableHighlight onPress={props.onPress} style={localStyles.registerButton}>
+      <Text style={[localStyles.buttonLabel, { color: 'white' }]}>{props.buttonName}</Text>
+    </TouchableHighlight>
+  )
+}
 
 export function CardCostDisplay(props) {
   return (
@@ -55,6 +71,35 @@ export function CardCostDisplay(props) {
     </View>
   );
 }
+
+
+export const SimpleAssetCard = (props) => {
+  console.log(props, "this is state, looking for the deets passed in")
+  return (
+    <View style={assetCardStyles.assetCard}>
+      
+      <View style={assetCardStyles.assetImageContainer}>
+
+          <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />
+
+      </View>
+
+      <View style={assetCardStyles.cardMain}>
+        <View style={assetCardStyles.cardContentLeft}>
+          <Text style={assetCardStyles.assetLabel}>Asset Name</Text>
+          <Text style={assetCardStyles.assetName}>{props.Name}</Text>
+        </View>
+        <View style={assetCardStyles.cardContentRight}>
+          <Text style={assetCardStyles.assetLabel}>Herc ID</Text>
+          <Text style={assetCardStyles.assetName}>{props.hercId}</Text>
+        </View>
+      </View>
+    </View>
+
+  )
+}
+
+
 
 const localStyles = StyleSheet.create({
   textFieldContainer: {
@@ -178,7 +223,7 @@ const localStyles = StyleSheet.create({
   },
   registerButton: {
     height: heightPercentageToDP(((40 / height) * 100).toString()),
-    width: widthPercentageToDP("90"),
+    width: '75%',
     backgroundColor: ColorConstants.MainGold,
     borderRadius: 8,
     margin: 5,

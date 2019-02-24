@@ -19,7 +19,7 @@ export function BigYellowButton(props) {
     return (
 
         <TouchableHighlight onPress={props.onPress} style={localStyles.registerButton}>
-            <Text style={[localStyles.buttonLabel,{color: 'white'}]}>{props.buttonName}</Text>
+            <Text style={[ localStyles.buttonLabel,{color: 'white'}]}>{props.buttonName}</Text>
         </TouchableHighlight>
     )
 }

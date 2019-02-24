@@ -4,7 +4,7 @@ import { createStackNavigator } from "react-navigation";
 import ExampleSwiper from './screens/ExampleSwiper'
 import TrackSplash from './screens/TrackSplash';
 import TrackSideChoice from './screens/TrackSideChoice';
-import WebView from './screens/WebView';
+import FactomWebView from './screens/FactomWebView';
 
 // import BlockScanner from './screens/BlockScanner';
 import TxSwiper from './screens/TxSwiper';
@@ -31,8 +31,8 @@ const TrackNavigator = createStackNavigator({
         // })
     },
 
-    WebView: {
-        screen: WebView,
+    FactomWebView: {
+        screen: FactomWebView,
         navigationOptions: ({ navigation }) => ({
             header: null
         })

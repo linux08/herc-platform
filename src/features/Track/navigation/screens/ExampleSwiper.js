@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import Swiper from 'react-native-deck-swiper'
 import { Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
-import { HercTextFieldWithLabel, BigYellowButton, CostDisplay } from '../../../../components/SharedComponents';
 import AssetCard from '../../.././../components/AssetCard';
 import { connect } from "react-redux";
 import ColorConstants from '../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../assets/responsiveUI'
 const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
-import { WebViewComponent } from "./components/WebViewComponent"
 const { height, width } = Dimensions.get('window');
 
-import {SwiperTextFieldWithLabel, WebViewComponent} from './components';
+import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from './components';
 // demo purposes only
 // function * range (start, end) {
 //   for (let i = start; i <= end; i++) {
@@ -42,8 +40,9 @@ class ExampleSwiper extends Component {
   }
 
   _goToWebView = (factomChain, factomEntry) => {
-    this.props.navigation.navigate('WebView', {data: {factomChain, factomEntry}});
-    
+    console.log('goto webview')
+    this.props.navigation.navigate('FactomWebView', { data: { factomChain, factomEntry } });
+
     // let url;
     // if (data.factomChain){
     //   url = "https://explorer.factom.com/chains/" + factomChain + "/entries/" + factomEntry
@@ -54,15 +53,15 @@ class ExampleSwiper extends Component {
     //     style={{ margin: 0, padding: 0, flex: 1, width: '100%' }}
     //   />
     // )
-    
+
   }
 
 
 
   renderCard = (card, index) => {
 
-    console.log(card, 'card in rendercard')
-
+    console.log(card, index, 'card in rendercard')
+    let unKey = this.props.SelectedAsset.key;
     let factomChain = this.props.SelectedAsset.hashes.chainId;
     let corePropsHash = this.props.SelectedAsset.hashes.ipfsHash;
     let factomEntry = card.header.factomEntry
@@ -87,24 +86,23 @@ class ExampleSwiper extends Component {
     }
 
     return (
-      <View key={index} style={swiperStyles.card}>
-        <SwiperTextFieldWithLabel text={header.dTime} label={'Created'} />
-     
-        <SwiperTextFieldWithLabel label={'Factom Chain'} text={factomChain} />
+      <View key={unKey} style={swiperStyles.card}>
+        <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />
 
-        <SwiperTextFieldWithLabel text={header.tXLocation} label={'Classification'} />
+        <SwiperTextFieldWithLabel key={factomChain} label={'Factom Chain'} text={factomChain} />
 
-        <SwiperTextFieldWithLabel text={factomChain} label={'Factom Chain'} />
-        <SwiperTextFieldWithLabel text={factomEntry} label={'Factom Entry'} />
+        <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />
 
-        <SwiperTextFieldWithLabel label={'Core Properties'} text={corePropsHash} />
-        {imageHash && <SwiperTextFieldWithLabel label={'Image StorJ'} text={imageHash} />}
-        {metricsHash && <SwiperTextFieldWithLabel label={'Metrics IPFS'} text={metricsHash} />}
-        {documentHash && <SwiperTextFieldWithLabel label={'Document IPFS'} text={documentHash} />}
-        {ediTHash && <SwiperTextFieldWithLabel label={'EDI-T IPFS'} text={ediTHash} />} 
-        <SwiperTextFieldWithLabel label={'Price'} text={[header.price, <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />]} />
+        <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
 
-        <BigYellowButton onPress={() => this._goToWebView(factomChain, factomEntry)} />
+        <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />
+        {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
+        {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
+        {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
+        {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
+        <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />
+
+        <SwiperBigYellowButton buttonName={'View Factom Chain'} key={index} onPress={() => this._goToWebView(factomChain, factomEntry)} />
       </View>
     )
   }
@@ -126,6 +124,7 @@ class ExampleSwiper extends Component {
   render() {
     return (
       <View style={swiperStyles.container}>
+        {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
         <Swiper
           ref={swiper => {
             this.swiper = swiper
@@ -148,6 +147,8 @@ class ExampleSwiper extends Component {
           animateCardOpacity
           swipeBackCard
         >
+          {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
+
           <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' />
         </Swiper>
       </View>
@@ -162,151 +163,7 @@ mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(ExampleSwiper);
 
-const localStyles = StyleSheet.create({
-  textField: {
-    color: ColorConstants.MainBlue,
-    width: '100%',
-    marginLeft: 0,
-    marginRight: 0,
-    // fontSize: 14,
-    paddingLeft: 5,
-    textAlign: 'left',
-    fontSize: 14,
-    borderRadius: 8,
-    // height: heightPercentageToDP('4.95'),
-    paddingBottom: 0
-  },
-  costFieldAmount: {
-    color: ColorConstants.MainBlue,
-    marginRight: 5,
-    paddingLeft: 5,
-    textAlign: 'left',
-    fontSize: 20,
-  },
-  textFieldContainer: {
-    flexDirection: 'column',
-    width: '97%',
-    height: heightPercentageToDP(((50 / height) * 100).toString()),
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: ColorConstants.ElementBG,
-    margin: 5,
-    paddingLeft: 5,
-    borderRadius: 6,
-    // height: heightPercentageToDP(((50 / height) * 100).toString()),
-  },
-  labeledTextInput: {
-    color: ColorConstants.MainBlue,
-    width: '100%',
-    borderRadius: 8,
-    backgroundColor: ColorConstants.ElementBG,
-    margin: 0,
-    fontSize: 17,
 
-  },
-  labelText: {
-    fontSize: 11,
-    color: ColorConstants.MainSubGray,
-    marginLeft: 3,
-    fontWeight: 'normal',
-  },
-
-  PasswordInputContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    backgroundColor: ColorConstants.MainGray,
-    borderRadius: 6,
-    margin: 0,
-    // paddingRight: 10
-
-  },
-  passwordTextInput: {
-    borderRadius: 0,
-    backgroundColor: ColorConstants.ElementBG,
-    margin: 0,
-    flex: 1,
-    fontSize: 17,
-    alignSelf: 'center'
-  },
-
-  costDisplay: {
-    height: heightPercentageToDP(((40 / height) * 100).toString()),
-    width: widthPercentageToDP('90'),
-    backgroundColor: ColorConstants.MainBlue,
-    borderRadius: 8,
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    marginTop: 10,
-    alignSelf: 'center'
-    // marginTop: heightPercentageToDP('20')
-  },
-  eyeballContainer: {
-    justifyContent: 'center',
-    backgroundColor: ColorConstants.ElementBG,
-    paddingBottom: 10
-    // height: heightPercentageToDP('6'),
-  },
-
-  eyeBallButton: {
-    backgroundColor: ColorConstants.ElementBG,
-    marginRight: -1,
-    // marginLeft: 10
-    borderRadius: 0
-  },
-
-
-  textInputContainer: {
-    // flex: 0,
-    width: widthPercentageToDP('90'),
-    height: heightPercentageToDP('6'),
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: ColorConstants.ElementBG,
-    margin: 5,
-    paddingLeft: 5,
-    borderRadius: 8
-  },
-
-
-  buttonLabel: {
-    fontSize: 12,
-    color: ColorConstants.MainSubGray,
-    margin: 5,
-    // marginLeft: '15%',
-    alignSelf: 'center'
-
-  },
-
-  flexRow: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-
-  },
-  registerButton: {
-    height: heightPercentageToDP(((40 / height) * 100).toString()),
-    width: widthPercentageToDP('90'),
-    backgroundColor: ColorConstants.MainGold,
-    borderRadius: 8,
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    marginTop: 10,
-    marginRight: 20,
-    marginLeft: 20,
-    alignSelf: 'center'
-    // marginTop: heightPercentageToDP('20')
-  },
-
-  // width: (width * .9),
-  // height: (height * .056),
-
-
-})
 
 export const swiperStyles = StyleSheet.create({
   container: {

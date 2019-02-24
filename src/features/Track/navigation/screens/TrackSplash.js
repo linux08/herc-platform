@@ -47,14 +47,14 @@ noAssetPassword = ( asset ) => {
         <View style={styles.bodyContainer}>
           <FlatList
             data={assets}
-            keyExtractor={item => item.index}
+            keyExtractor={item => item.key}
             renderItem={(item) => {
               return (
                 <TouchableHighlight
-                  key={item.index}
+                  key={item.key}
                   onPress={() => this.noAssetPassword(item.item)}
                 >
-                  <AssetCard key={item.index} asset={item.item} />
+                  <AssetCard key={item.key} asset={item.item} />
                 </TouchableHighlight>
               );
             }}
