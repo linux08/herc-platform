@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Swiper from 'react-native-deck-swiper'
-import { Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import { Button, StyleSheet, Text, View, Image, Dimensions, Share } from 'react-native'
 import AssetCard from '../../.././../components/AssetCard';
 import { connect } from "react-redux";
 import ColorConstants from '../../../../constants/ColorConstants';
@@ -25,6 +25,7 @@ import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from
 //   )
 
 // }
+
 
 
 
@@ -56,6 +57,55 @@ class ExampleSwiper extends Component {
 
   }
 
+  makeMessage = (cardData) => {
+
+    console.log(cardData, 'in makeing message')
+
+    let data = cardData.data;
+    
+let messageData;
+    for(var key in data){
+      if(data.hasOwnProperty(key)){
+      messageData =  key + ': '+ data[key] + ';' + "\n";
+    }
+  }
+
+console.log(messageData, 'new messageDAta!')    
+
+    let header = cardData.header
+    let location = header.tXLocation.toUpperCase() + " ";
+    let time = header.dTime;
+    let password =  header.password;
+    
+    let title = header.name + " " + location + " Transaction @ " + time + ";" + "\n"
+     
+
+    let price = "Hercs: " + header.price + ";\n";
+    let sig = "Sent from Herc v.1.0"
+
+    let message = title + messageData + "\n" + 'Password: '+ password + "\n" + 'Price: ' + price + "\n " + sig;
+    
+   
+    return [title, message];
+  }
+
+  sharing = (data) => {
+    console.log(data, 'shareDAta')
+    let shareTitle = this.makeMessage(data);
+    console.log(shareTitle, 'shareTitle');
+
+    Share.share({
+      message: shareTitle[1],
+      title: shareTitle[0]
+    },
+      {// Android only:
+        dialogTitle: shareTitle.title,
+        // iOS only:
+        excludedActivityTypes: [
+          'com.apple.UIKit.activity.PostToTwitter'
+        ]
+      })
+  }
 
 
   renderCard = (card, index) => {
@@ -132,7 +182,7 @@ class ExampleSwiper extends Component {
           onSwiped={() => this.onSwiped('general')}
           onSwipedLeft={() => this.onSwiped('left')}
           onSwipedRight={() => this.onSwiped('right')}
-          onSwipedTop={() => this.onSwiped('top')}
+          onSwipedTop={() => this.sharing(this.state.cards[this.state.cardIndex])}
           onSwipedBottom={() => this.onSwiped('bottom')}
           onTapCard={this.swipeLeft}
           cards={this.state.cards}

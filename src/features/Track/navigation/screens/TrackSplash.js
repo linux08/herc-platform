@@ -18,21 +18,21 @@ class TrackSplash extends Component {
     console.log("TrackSplash");
   }
 
-componentWillMount = () => {
-  this.props.GetHeaders();
-}
+  componentWillMount = () => {
+    this.props.GetHeaders();
+  }
 
-noAssetPassword = ( asset ) => {
-  this.props.SelectedAsset(asset);
-  this.props.navigation.navigate('TrackSideChoice')
-}
+  // noAssetPassword = ( asset ) => {
+  //   this.props.SelectedAsset(asset);
+  //   this.props.navigation.navigate('TrackSideChoice')
+  // }
 
 
-  // passwordCorrect = () => {
+  passwordCorrect = () => {
 
-  //   this.props.ShowAssetPasswordModal();
-  //   this.props.navigation.navigate("TrackSideChoice");
-  // };
+    this.props.ShowAssetPasswordModal();
+    this.props.navigation.navigate("TrackSideChoice");
+  };
 
 
   render() {
@@ -52,7 +52,7 @@ noAssetPassword = ( asset ) => {
               return (
                 <TouchableHighlight
                   key={item.key}
-                  onPress={() => this.noAssetPassword(item.item)}
+                  onPress={() => this.props.SelectedAsset(item.item)}
                 >
                   <AssetCard key={item.key} asset={item.item} />
                 </TouchableHighlight>
@@ -60,7 +60,7 @@ noAssetPassword = ( asset ) => {
             }}
           />
 
-        
+
         </View>
 
         <AssetPasswordModal
@@ -84,5 +84,5 @@ const mapDispatchToProps = dispatch => ({
   GetHeaders: () => dispatch(GetHeaders())
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(TrackSplash);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackSplash);
 
