@@ -20,6 +20,7 @@ import co.airbitz.AbcCoreJsUi.AbcCoreJsUiPackage;
 import co.airbitz.fastcrypto.RNFastCryptoPackage;
 import com.rnfs.RNFSPackage;
 import com.facebook.react.ReactApplication;
+import com.entria.views.RNViewOverflowPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new RNViewShotPackage(),
             new MainReactPackage(),
+            new RNViewOverflowPackage(),
             new VectorIconsPackage(),
             new TcpSocketsModule(),
             new RNScreensPackage(),

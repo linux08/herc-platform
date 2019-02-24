@@ -167,6 +167,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-view-overflow')
     compile project(':react-native-view-shot')
     compile project(':react-native-vector-icons')
     compile project(':react-native-tcp')

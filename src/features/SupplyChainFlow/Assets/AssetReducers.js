@@ -22,8 +22,8 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
         case Asset.Action.ShowAssetPasswordModal:
             return {
                 ...state,
-                    showPasswordModal: !state.showPasswordModal
-                }
+                showPasswordModal: !state.showPasswordModal
+            }
 
         case Asset.Action.GotHeaders:
             console.log("getHeader reducer", action)
@@ -46,7 +46,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
                     ...state.selectedAsset,
                     ipfsDef: action.ipfsDef
                 }
-        })
+            })
 
         case Asset.Action.Error:
             return Object.assign({}, {
@@ -58,6 +58,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Asset.Action.SelectedAsset:
+        //  comment out 'show password modal "to fascilitate debugging
 
             return Object.assign({}, state, {
                 ...state,

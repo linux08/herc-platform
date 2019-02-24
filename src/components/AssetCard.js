@@ -44,7 +44,7 @@ export class AssetCard extends Component {
         console.log(this.state, "this is state, looking for the deets passed in")
         let noImageIcon = <Icon name={'picture'} size={33} color={ColorConstants.MainBlue} />
         return (
-            <View style={localStyles.assetCard}>
+            <View key={this.props.index} style={localStyles.assetCard}>
                 <View style={localStyles.assetImageContainer}>
                     {this.state.Logo ?
 

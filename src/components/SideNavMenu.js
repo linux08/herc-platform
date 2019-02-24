@@ -243,17 +243,20 @@ const mapStateToProps = state => ({
     edge_account: state.AccountReducers.edge_account,
 });
 
-// const mapDispatchToProps = dispatch => ({
-//     getAccount: (account) =>
-//         dispatch(getAccount(account)),
-//     getUsername: (edge_account) =>
-//         dispatch(getUsername(edge_account)),
-//     fetchAssets: () => dispatch(fetchAssets()),
-//     getHercId: () => dispatch(getHercId()),
-//     signOut: () => dispatch(signOut()),
-//     fetchData: () => dispatch(fetchData())
-// });
-export default connect(mapStateToProps)(SideMenu);
+const mapDispatchToProps = dispatch => ({
+    getAccount: (account) =>
+        dispatch(getAccount(account)),
+    getUsername: (edge_account) =>
+        dispatch(getUsername(edge_account)),
+    fetchAssets: () => dispatch(fetchAssets()),
+    getHercId: () => dispatch(getHercId()),
+    signOut: () => dispatch(signOut()),
+    fetchData: () => dispatch(fetchData())
+});
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SideMenu);
 
 
 const localStyles = StyleSheet.create({
@@ -324,4 +327,3 @@ const localStyles = StyleSheet.create({
         color: '#8e94af'
     }
 });
-

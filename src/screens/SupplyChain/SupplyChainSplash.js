@@ -1,128 +1,126 @@
 import {
-    StyleSheet,
-    Text,
-    View,
-    StatusBar,
-    Image,
-    ScrollView,
-    TouchableHighlight,
-    FlatList
-} from 'react-native';
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  ScrollView,
+  TouchableHighlight,
+  FlatList
+} from "react-native";
 import styles from "../../assets/styles";
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
 import { AssetCard } from "../../components/AssetCard";
-import { ShowAssetPasswordModal, GettingAssetIpfsDefintion, SelectedAsset } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+import {
+  ShowAssetPasswordModal,
+  GettingAssetIpfsDefintion,
+  SelectedAsset
+} from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 
-import AssetPasswordModal from '../../components/modals/AssetPasswordModal';
+import AssetPasswordModal from "../../components/modals/AssetPasswordModal";
 
-import { GetCurrentHercValue } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+import { GetCurrentHercValue } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class SupplyChainSplash extends Component {
+  constructor(props) {
+    // console.log(this.props.navigation, "navigation??")
+    super(props);
+    console.log("componentTest");
+    // this.checkPassword = this.checkPassword.bind(this);
+  }
 
-    constructor(props) {
-        // console.log(this.props.navigation, "navigation??")
-        super(props);
-        console.log("componentTest")
-        // this.checkPassword = this.checkPassword.bind(this);
-    }
+  componentDidMount = () => {
+    console.log("supplychain splash did mount, go for the prices"),
+      this.props.GetCurrentHercValue();
+  };
 
-    componentDidMount = () => {
-        console.log("supplychain splash did mount, go for the prices"),
-            this.props.GetCurrentHercValue();
+  passwordCorrect = () => {
+    this.props.GetAssetDef(this.props.selectedAsset.hashes.ipfsHash);
+    this.props.ShowAssetPasswordModal();
 
-    }
+    this.props.navigation.navigate("SupplyChainSideChoice");
+  };
 
-  
+  renderAssets = () => {
+    return this.props.assets.map((x, i) => {
+      console.log(x, i);
+      return (
+        <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
+          <AssetCard asset={x} />
+        </TouchableHighlight>
+      );
+    });
+  };
 
-
-
-    passwordCorrect = () => {
-        this.props.GetAssetDef(this.props.selectedAsset.hashes.ipfsHash)
-        this.props.ShowAssetPasswordModal();
-
-        this.props.navigation.navigate('SupplyChainSideChoice')
-    }
-
-    renderAssets = () => {
-
-        return this.props.assets.map((x, i) => {
-            console.log(x, i)
-            return (
-                <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
-                    <AssetCard asset={x} />
+  render() {
+    let assetList = this.renderAssets();
+    return (
+      <View style={styles.baseContainer}>
+        <StatusBar
+          barStyle={"light-content"}
+          translucent={true}
+          backgroundColor="transparent"
+        />
+        <View style={styles.bodyContainer}>
+          <AddAssetButton
+            onPress={() =>
+              this.props.navigation.navigate("RegisterAssetNavigator")
+            }
+          />
+          <FlatList
+            data={this.props.assets}
+            keyExtractor={item => item.Logo}
+            renderItem={item => {
+              return (
+                <TouchableHighlight
+                  key={item.item.Name}
+                  onPress={() => this.props.SelectedAsset(item.item)}
+                >
+                  <AssetCard asset={item.item} />
                 </TouchableHighlight>
-            )
-        }
-        )
-    }
+              );
+            }}
+          />
 
-
-
-    render() {
-
-        let assetList = this.renderAssets();
-        return (
-
-            <View style={styles.baseContainer}>
-                <StatusBar
-                    barStyle={'light-content'}
-                    translucent={true}
-                    backgroundColor='transparent'
-
-                />
-                <View style={styles.bodyContainer}>
-
-                    <AddAssetButton onPress={() => this.props.navigation.navigate('RegisterAssetNavigator')} />
-                    <FlatList
-                        data={this.props.assets}
-                        keyExtractor={item => item.Logo }
-                        renderItem={(item) => {
-                            return (
-                                <TouchableHighlight key={item.item.Name} onPress={() => this.props.SelectedAsset(item.item)}>
-                                    <AssetCard asset={item.item} />
-                                </TouchableHighlight>
-                            )
-                        }}
-
-/>
-
-                        {/* <ScrollView>
+          {/* <ScrollView>
                         {assetList}
                     </ScrollView> */}
+        </View>
 
-                </View>
-    
-                <AssetPasswordModal
-                        // heading={'Enter Asset Password'}
-                        isVisible={this.props.showPasswordModal}
-                        passwordCorrect={this.passwordCorrect}
-                    // ShowPasswordModal={this.props.ShowPasswordModal}
-                    />
-                </View>
-                )
-            }
-        }
-        
-        
+        <AssetPasswordModal
+          // heading={'Enter Asset Password'}
+          isVisible={this.props.showPasswordModal}
+          passwordCorrect={this.passwordCorrect}
+          // ShowPasswordModal={this.props.ShowPasswordModal}
+        />
+      </View>
+    );
+  }
+}
+
 const mapStateToProps = state => ({
-                    assets: state.AssetReducers.assets,
-                selectedAsset: state.AssetReducers.selectedAsset,
-                assetFetched: state.AssetReducers.assetFetched,
-                showPasswordModal: state.AssetReducers.showPasswordModal,
-            });
-            
+  assets: state.AssetReducers.assets,
+  selectedAsset: state.AssetReducers.selectedAsset,
+  assetFetched: state.AssetReducers.assetFetched,
+  showPasswordModal: state.AssetReducers.showPasswordModal
+});
+
 const mapDispatchToProps = dispatch => ({
-                    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
-                SelectedAsset: asset => dispatch(SelectedAsset(asset)),
-                GetAssetDef: assetIpfsHash => dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
-                GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
-            });
-            
-            export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainSplash);
-            
+  ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
+  SelectedAsset: asset => dispatch(SelectedAsset(asset)),
+  GetAssetDef: assetIpfsHash =>
+    dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
+  GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SupplyChainSplash);
+
 // const localStyles = StyleSheet.create({
 
 //     imageSourceContainer: {
@@ -135,7 +133,6 @@ const mapDispatchToProps = dispatch => ({
 //         width: '50%',
 //         height: '50%',
 //         borderWidth: 0,
-
 
 //     },
 
@@ -164,8 +161,6 @@ const mapDispatchToProps = dispatch => ({
 //         // width: heightPercentageToDP('10'),
 
 //     },
-
-
 
 //     activityIndicatorWrapper: {
 //         backgroundColor: '#FFFFFF',
