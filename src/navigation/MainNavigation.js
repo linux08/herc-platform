@@ -33,7 +33,7 @@ const MainNavigator = createStackNavigator({
     TrackNavigator: {
         screen: TrackNavigator,
         navigationOptions: ({ navigation, screenProps }) => ({
-            header: <Header headerTitle={'Welcome'} navigation={navigation} />
+            header: <Header headerTitle={'Track'} navigation={navigation} />
         })
     },
     RegAssetNavigator: {
