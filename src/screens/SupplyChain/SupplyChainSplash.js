@@ -72,7 +72,7 @@ class SupplyChainSplash extends Component {
           />
           <FlatList
             data={this.props.assets}
-            keyExtractor={item => item.Logo}
+            keyExtractor={item => item.key}
             renderItem={item => {
               return (
                 <TouchableHighlight
