@@ -54,7 +54,7 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default WalletReducers;
+
 //   Not using this....YET
     // case Wallet.Action.DeleteWallet:
     //   console.log("getting balance", state, action, "state actions");
