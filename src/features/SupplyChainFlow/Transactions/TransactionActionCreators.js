@@ -257,7 +257,7 @@ export function GetCurrentHercValue(){
 getDynamicHercValue = async () => {
   try {
     let response = await fetch(
-      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5"
+      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDV&range=MINUTE_5"
     );
 
     let highPrice = await response.json();
