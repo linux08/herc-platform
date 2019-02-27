@@ -8,20 +8,20 @@ import {
   TouchableHighlight,
   FlatList
 } from "react-native";
-import styles from "../../assets/styles";
+import styles from "../../../assets/styles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
-import { AssetCard } from "../../components/AssetCard";
+import { AddAssetButton } from "./SupplyChainComponents";
+import { AssetCard } from "../../../components/AssetCard";
 import {
   ShowAssetPasswordModal,
   GettingAssetIpfsDefintion,
   SelectedAsset
-} from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+} from "../Assets/AssetActionCreators";
 
-import AssetPasswordModal from "../../components/modals/AssetPasswordModal";
+import AssetPasswordModal from "../../../components/modals/AssetPasswordModal";
 
-import { GetCurrentHercValue } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
+import { GetCurrentHercValue } from "../Transactions/TransactionActionCreators";
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class SupplyChainSplash extends Component {
@@ -65,11 +65,7 @@ class SupplyChainSplash extends Component {
           backgroundColor="transparent"
         />
         <View style={styles.bodyContainer}>
-          <AddAssetButton
-            onPress={() =>
-              this.props.navigation.navigate("RegisterAssetNavigator")
-            }
-          />
+         
           <FlatList
             data={this.props.assets}
             keyExtractor={item => item.key}
@@ -85,9 +81,6 @@ class SupplyChainSplash extends Component {
             }}
           />
 
-          {/* <ScrollView>
-                        {assetList}
-                    </ScrollView> */}
         </View>
 
         <AssetPasswordModal

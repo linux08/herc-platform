@@ -11,12 +11,12 @@ import styles from "../../assets/styles";
 import { AddAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 import { AssetCard } from "../../components/AssetCard";
 import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceModalActionCreators";
-import CameraSourceModal from "../../components/modals/CameraSourceModal";
+import CameraSourceModal from "../../features/CamSourceModal/Modal/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
 // import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 
-// import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../assets/ColorConstants";
 class RegAsset1 extends Component {
 
     constructor(props) {

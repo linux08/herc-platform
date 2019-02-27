@@ -20,10 +20,15 @@ class RegAssetSplashTest extends Component {
         console.log(this.props, 'this props in regAssetSplash')
     }
 
-
+componentDidMount = () => {
+    console.log('didMount regSplash')
+    this.props.GetHercId();
+}
+    
+    
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
-        this.props.GetHercId();
+        // this.props.GetHercId();
         this.props.navigation.navigate('RegAsset1');
     }
     render() {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, ScrollView, FlatList } from 'react-native';
-import styles from '../../assets/styles';
+import styles from '../../../assets/styles';
 import { connect } from "react-redux";
-import ColorConstants from '../../constants/ColorConstants';
+import ColorConstants from '../../../constants/ColorConstants';
 import Modal from 'react-native-modal';
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
-import { BigYellowButton, HercTextInputWithLabel } from '../../components/SharedComponents';
-import { ShowMetricModal, AddMetrics } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
+import { BigYellowButton, HercTextInputWithLabel } from '../../../components/SharedComponents';
+import { ShowMetricModal, AddMetrics } from '../Transactions/TransactionActionCreators';
 
 class MetricModal extends Component {
     constructor(props) {

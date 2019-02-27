@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, ScrollView, FlatList } from 'react-native';
 import { connect } from "react-redux";
-import styles from '../../assets/styles';
-import ColorConstants from '../../constants/ColorConstants';
-import edits from '../../constants/Edi-T-Sets';
+import styles from '../../../assets/styles';
+import ColorConstants from '../../../constants/ColorConstants';
+import edits from '../../../constants/Edi-T-Sets';
 import Modal from 'react-native-modal';
-import { HercTextFieldWithLabel } from '../../components/SharedComponents'
-import { AddEdiT, ShowEditModal, ClearEdiT } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+import { HercTextFieldWithLabel } from '../../../components/SharedComponents'
+import { AddEdiT, ShowEditModal, ClearEdiT } from '../Transactions/TransactionActionCreators';
 
 class EDI_T_Sets_Modal extends Component {
     constructor(props) {

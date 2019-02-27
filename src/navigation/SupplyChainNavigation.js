@@ -4,10 +4,11 @@ import { createStackNavigator } from "react-navigation";
 import Header from "../components/Headers/Header";
 
 import Camera from "../screens/MainApp/Camera";
-import SupplyChainSplash from "../screens/SupplyChain/SupplyChainSplash";
-import SupplyChainSideChoice from "../screens/SupplyChain/SupplyChainSideChoice";
-import SupplyChainTx from "../screens/SupplyChain/SupplyChainTX_V1";
-import SupplyChainMetrics from  "../screens/SupplyChain/SupplyChainMetrics";
+import SupplyChainSplash from "../features/SupplyChainFlow/screens/SupplyChainSplash";
+import SupplyChainSideChoice from "../features/SupplyChainFlow/screens/SupplyChainSideChoice";
+import SupplyChainTx from "../features/SupplyChainFlow/screens/SupplyChainTX_V1";
+import RegisterAssetNavigator from "./RegisterAssetNavigation";
+
 
 const SupplyChainNavigator = createStackNavigator(
     {
@@ -28,22 +29,10 @@ const SupplyChainNavigator = createStackNavigator(
             // })
 
         },
-        SupplyChainMetrics: {
-            screen: SupplyChainMetrics,
-            // navigationOptions: ({ navigation }) => ({
-            //     header: <Header headerTitle={navigation.state.params.headerName} navigation={navigation} />
-            // })
-
-        },
-
-            // navigationOptions: ({ navigation }) => ({
-            //     header: <Header headerTitle={"will be asset Name"} navigation={navigation} />
-            // })
-
-        // }
-
-
-
+        RegAssetNavigator: {
+            screen: RegisterAssetNavigator
+        }
+       
     },
     {
         initialRouteName: 'SupplyChainSplash',

@@ -102,7 +102,7 @@ async function fetchLocalUri() {
 
 async function setLogoLocation(fetchUri) {
   // const edgeAccount = 'hercstack'; // hardcoding for now, to escape login while testing.
-  const edgeAccount = store.getState().WalletActReducers.edge_account;
+  const edgeAccount = store.getState().AccountReducers.edge_account;
   let newAsset = store.getState().RegAssetReducers.newAsset;
 
   let logoLocation = firebase.storage().ref('assets')
