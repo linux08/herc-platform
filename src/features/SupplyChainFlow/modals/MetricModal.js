@@ -36,7 +36,7 @@ class MetricModal extends Component {
         metrics.forEach((x, i) => {
             metricList.push(
                 <HercTextInputWithLabel
-                    key={x}
+                    key={i}
                     label={x}
                     placeholder={x}
                     name={x}

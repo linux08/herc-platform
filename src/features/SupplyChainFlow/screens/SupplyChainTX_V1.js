@@ -51,6 +51,13 @@ const ORIGNAL_STATE = {
     isVisible: false,
 }
 
+componentWillUnmount = () => {
+    this.setState({
+         isVisible: false
+        })
+}
+
+
 class SupplyChainTX extends Component {
 
     constructor(props) {
@@ -95,23 +102,7 @@ class SupplyChainTX extends Component {
         })
     }
 
-    // clearImage = () => {
-    //     this.setState({
-    //         img: {}
-    //     })
-
-    // }
-    // clearMetrics = () => {
-    //     this.setState({
-    //         metrics: {}
-    //     })
-    // }
-    // clearEDI = () => {
-    //     this.setState({
-    //         edi: {}
-    //     })
-    // }
-
+   
     setEDI = (item) => {
         this.props.addEdit(item);
         this.props.showEditModal();

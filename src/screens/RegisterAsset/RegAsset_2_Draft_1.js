@@ -120,6 +120,7 @@ class RegAsset2 extends Component {
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                     percent={this.props.percent}
+                    content={this.props.content}
                 />
 
             </View>

@@ -196,6 +196,10 @@ class WalletFlow extends React.Component {
   _displayChangeCurrency = () => {
     if (this.state.displayWallet === "HERC") {
       return (
+        // <View style={localStyles.changeCurrencyContainer}>
+        //   <Image style={localStyles.smallIcon} source={hercCoin} />
+        //   <Text style={localStyles.changeCurrencyText}> HERC</Text>
+        // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Icon name="ethereum" size={16} />
           <Text style={localStyles.changeCurrencyText}> ETH</Text>
@@ -203,6 +207,10 @@ class WalletFlow extends React.Component {
       );
     } else {
       return (
+        // <View style={localStyles.changeCurrencyContainer}>
+        //   <Icon name="ethereum" size={16} />
+        //   <Text style={localStyles.changeCurrencyText}> ETH</Text>
+        // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Image style={localStyles.smallIcon} source={hercCoin} />
           <Text style={localStyles.changeCurrencyText}> HERC</Text>

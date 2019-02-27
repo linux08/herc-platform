@@ -16,7 +16,8 @@ import { AssetCard } from "../../../components/AssetCard";
 import {
   ShowAssetPasswordModal,
   GettingAssetIpfsDefintion,
-  SelectedAsset
+  SelectedAsset,
+  GetHeaders
 } from "../Assets/AssetActionCreators";
 
 import AssetPasswordModal from "../../../components/modals/AssetPasswordModal";
@@ -30,6 +31,10 @@ class SupplyChainSplash extends Component {
     super(props);
     console.log("componentTest");
     // this.checkPassword = this.checkPassword.bind(this);
+  }
+  componentWillMount = () => {
+    this.props.GetHeaders();
+
   }
 
   componentDidMount = () => {
@@ -106,7 +111,8 @@ const mapDispatchToProps = dispatch => ({
   SelectedAsset: asset => dispatch(SelectedAsset(asset)),
   GetAssetDef: assetIpfsHash =>
     dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
-  GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
+  GetCurrentHercValue: () => dispatch(GetCurrentHercValue()),
+  GetHeaders: () => dispatch(GetHeaders())
 });
 
 export default connect(
