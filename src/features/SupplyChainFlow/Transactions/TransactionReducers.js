@@ -157,7 +157,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     transactionStarted: true,
                 },
-                percentage: state.percentage + 20,
+                percentage: 0,
                 content: "Your Transaction Is Starting"
             }
 
@@ -168,7 +168,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     TransactionInstantiating: true,
                 },
-                percentage: state.percentage + 20,
+                percentage: state.percentage + 25,
                 content: "Your Transaction Is Prepped To Launch"
             }
 
@@ -180,7 +180,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     factomEntryCompleted: true,
                 },
                 factomEntry: action.factomEntry,
-                percentage: state.percentage + 20,
+                percentage: state.percentage + 25,
                 content: "Factom Entry Is Complete"
             }
 
@@ -191,7 +191,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     writtenToFirebase: true,
                 },
-                percentage: state.percentage + 20,
+                percentage: state.percentage + 25,
                 content: "Written To Database"
             }
 
