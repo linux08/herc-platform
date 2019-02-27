@@ -12,6 +12,7 @@ import styles from "../../assets/styles";
 import ColorConstants from "../../assets/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { GetHercId } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 
 class RegAssetSplashTest extends Component {
     constructor(props) {
@@ -19,9 +20,10 @@ class RegAssetSplashTest extends Component {
         console.log(this.props, 'this props in regAssetSplash')
     }
 
+
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
-
+        this.props.GetHercId();
         this.props.navigation.navigate('RegAsset1');
     }
     render() {
@@ -53,7 +55,7 @@ class RegAssetSplashTest extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    getHercId: () => dispatch(getHercId())
+    GetHercId: () => dispatch(GetHercId())
 })
 export default connect(null, mapDispatchToProps)(RegAssetSplashTest);
 

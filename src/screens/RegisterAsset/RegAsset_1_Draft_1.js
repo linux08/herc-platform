@@ -200,7 +200,7 @@ class RegAsset1 extends Component {
                     </ScrollView>
                     <AddMetricButton onPress={() => this.addMetric()} />
 
-                    <AddPhotoButton onPress={() => this.props.toggleCamSourceModal(true)} />
+                    <AddPhotoButton onPress={() => this.props.ToggleCamSourceModal()} />
 
                     <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
                         <AssetCard asset={this.state.newAsset} />

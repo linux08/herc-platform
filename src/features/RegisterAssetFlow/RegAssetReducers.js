@@ -41,7 +41,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             return Object.assign({}, {
                 HercId: hercId,
                 newAsset: {
-                    ...state.INITIAL_STATE.newAsset,
+                    ...INITIAL_STATE.newAsset,
                     hercId: hercId
                 },
                 flags: {
