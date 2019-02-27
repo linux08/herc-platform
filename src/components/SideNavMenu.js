@@ -33,20 +33,20 @@ class SideMenu extends Component {
 
     }
 
-    // onLogOut = () => {
-    //     firebase.auth().signOut().then(function () {
-    //         // Sign-out successful.
-    //         console.log("Firebase Sign-out successful.")
-    //     }).catch(err => {
-    //         console.log(err)
-    //         // An error happened.
-    //     })
+    onLogOut = () => {
+        firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+            console.log("Firebase Sign-out successful.")
+        }).catch(err => {
+            console.log(err)
+            // An error happened.
+        })
 
-    //     this.props.account.logout(function () {
-    //         console.log('hooray im out!')
-    //     })
-    //     this.props.navigation.navigate('Login');
-    // };
+        this.props.account.logout(function () {
+            console.log('hooray im out!')
+        })
+        this.props.navigation.navigate('Login');
+    };
 
 
     render() {
