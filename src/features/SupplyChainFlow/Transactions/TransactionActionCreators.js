@@ -306,6 +306,7 @@ export function MakePayment(makePaymentObject) {
       );
       dispatch({ type: Trans.Action.TransactionComplete });
     } else {
+      console.log('jm makePaymentObject networkFee', makePaymentObject)
       const burnSpendInfo = {
         networkFeeOption: "standard",
         currencyCode: "HERC",
@@ -554,7 +555,8 @@ export function SendTransaction() {
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
             store.dispatch(TransactionWriteToFirebaseCompleted())
-            dispatch(MakePayment(price));
+            let makePaymentObject = {dataFee: price, networkFee: store.getState().TransactionReducers.networkFee}
+            dispatch(MakePayment(makePaymentObject));
           })
           .catch(err => {
             console.log(err);

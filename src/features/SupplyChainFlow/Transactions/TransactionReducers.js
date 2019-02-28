@@ -169,7 +169,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     TransactionInstantiating: true,
                 },
                 percentage: state.percentage + 25,
-                content: "Your Transaction Is Prepped To Launch"
+                content: "Prepping for Launch"
             }
 
         case Trans.Action.TransactionFactomEntryCompleted:
@@ -181,7 +181,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 },
                 factomEntry: action.factomEntry,
                 percentage: state.percentage + 25,
-                content: "Factom Entry Is Complete"
+                content: "Writing to Decentralized Database "
             }
 
         case Trans.Action.TransactionWriteToFirebaseCompleted:
@@ -192,7 +192,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     writtenToFirebase: true,
                 },
                 percentage: state.percentage + 25,
-                content: "Written To Database"
+                content: "Enacting Payment "
             }
 
         case Trans.Action.TransactionComplete:
@@ -203,7 +203,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     paymentCompleted: true,
                 },
                 percentage: 100,
-                content: "Payment Complete"
+                content: "Complete!"
             }
 
         case Trans.Action.StartTransaction:
