@@ -13,6 +13,7 @@ import {
   Clipboard,
   Alert
 } from "react-native";
+// import styles from "../../../../assets/styles";
 import { connect } from "react-redux";
 import hercCoin from "../../../../assets/icons/hercCoin.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -36,6 +37,7 @@ class BlockScanner extends Component {
   }
 
   componentDidMount = async () => {
+    console.log(this.props)
     this._getMarketCapTotalSupply();
     this._getHoldersCount();
     this._getDynamicHercValue();
@@ -275,13 +277,13 @@ class BlockScanner extends Component {
           >
             <View style={headerStyles.header__container__centeredBox}>
               <View style={headerStyles.header__image__box}>
-                <Image
+                {/* <Image
                   style={headerStyles.assetHeaderLogo}
                   source={{ uri: params.logo }}
-                />
+                /> */}
               </View>
               <View style={headerStyles.header__text__box}>
-                <Text style={headerStyles.headerText}>{params.name}</Text>
+                {/* <Text style={headerStyles.headerText}>{params.name}</Text> */}
               </View>
             </View>
           </TouchableHighlight>
@@ -606,10 +608,10 @@ class BlockScanner extends Component {
 }
 
 const mapStateToProps = state => ({
-  ethereumAddress: state.WalletActReducers.ethereumAddress,
-  data: state.Web3Reducers.data,
-  isFetching: state.Web3Reducers.isFetching,
-  isFetched: state.Web3Reducers.isFetched
+  ethereumAddress: state.WalletReducers.ethereumAddress,
+  // data: state.Web3Reducers.data,
+  // isFetching: state.Web3Reducers.isFetching,
+  // isFetched: state.Web3Reducers.isFetched
 });
 
 const mapDispatchToProps = dispatch => ({
