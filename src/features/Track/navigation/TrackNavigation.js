@@ -31,7 +31,6 @@ const TrackNavigator = createStackNavigator({
         //     header: <Header headerTitle={'Previous Transactions'} navigation={navigation} />
         // })
     },
-
     FactomWebView: {
         screen: FactomWebView,
         navigationOptions: ({ navigation }) => ({
