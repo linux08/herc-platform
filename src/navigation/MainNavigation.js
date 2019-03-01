@@ -39,7 +39,7 @@ const MainNavigator = createStackNavigator({
     RegAssetNavigator: {
         screen: RegAssetNavigator,
         navigationOptions: ({ navigation, screenProps }) => ({
-            header: <Header headerTitle={'RegAsset'} navigation={navigation} />
+            header: <Header headerTitle={'Register Asset'} navigation={navigation} />
         })
     },
     SupplyChainNavigator: {

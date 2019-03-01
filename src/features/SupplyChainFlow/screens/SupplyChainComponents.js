@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 import Icon from "react-native-vector-icons/FontAwesome";
-const hercpngIcon = require('../../assets/icons/hercIcon.png');
-import { HercTextFieldWithLabel } from "../SharedComponents";
+const hercpngIcon = require('../../../assets/icons/hercIcon.png');
+import { HercTextFieldWithLabel } from "../../../components/SharedComponents";
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import ColorConstants from "../../assets/ColorConstants";
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import ColorConstants from "../../../assets/ColorConstants";
+import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
 
 export function AddAssetButton(props) {
     return (

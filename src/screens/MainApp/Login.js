@@ -18,7 +18,6 @@ import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
 import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
  import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
-
 // import { getOrganization } from "../../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
@@ -186,7 +185,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    // getHercId: () => dispatch(getHercId()),
+    GetHercId: () => dispatch(getHercId()),
     GetHeaders: (name) => dispatch(GetHeaders(name)),
     // GetOrganization: () => dispatch(GetOrganization()),
     ClearState: () => dispatch(ClearState()),

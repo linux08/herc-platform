@@ -257,7 +257,7 @@ export function GetCurrentHercValue(){
 getDynamicHercValue = async () => {
   try {
     let response = await fetch(
-      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5"
+      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDV&range=MINUTE_5"
     );
 
     let highPrice = await response.json();
@@ -306,6 +306,7 @@ export function MakePayment(makePaymentObject) {
       );
       dispatch({ type: Trans.Action.TransactionComplete });
     } else {
+      console.log('jm makePaymentObject networkFee', makePaymentObject)
       const burnSpendInfo = {
         networkFeeOption: "standard",
         currencyCode: "HERC",
@@ -462,6 +463,7 @@ export function SendTransaction() {
     keys.forEach(key => {
       console.log('jm key', key)
       if (key == 'images' && Object.keys(data['images']).length !== 0) {
+        console.log('jm check 1', data['images'])
         var base64 = data[key].data;
         var dataObject = Object.assign(
           {},
@@ -479,7 +481,8 @@ export function SendTransaction() {
               console.log(error);
             })
         );
-      }else if (data[key].content) {
+      } else if (data[key].content) {
+        console.log('jm check 2', data[key].content)
         let contentTypeName = {
           content: encodeURIComponent(data[key].content),
           type: data[key].type,
@@ -504,6 +507,7 @@ export function SendTransaction() {
         Object.keys(data[key]).length != 0 &&
         data[key].constructor === Object
       ) {
+        console.log('jm check 3', data[key])
         var dataObject = Object.assign({}, { key: key }, { data: data[key] }); // {key: 'properties', data: data[key]}
         promiseArray.push(
           axios
@@ -551,7 +555,8 @@ export function SendTransaction() {
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
             store.dispatch(TransactionWriteToFirebaseCompleted())
-            dispatch(MakePayment(price));
+            let makePaymentObject = {dataFee: price, networkFee: store.getState().TransactionReducers.networkFee}
+            dispatch(MakePayment(makePaymentObject));
           })
           .catch(err => {
             console.log(err);

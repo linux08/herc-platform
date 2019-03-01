@@ -9,20 +9,20 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 const { height, width } = Dimensions.get("window");
-import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
+import styles from "../../../assets/styles";
+import ColorConstants from "../../../assets/ColorConstants";
 import React, { Component } from "react";
-import { BigYellowButton } from "../../components/SharedComponents";
+import { BigYellowButton } from "../../../components/SharedComponents";
 import { connect } from "react-redux";
-import { StartTransaction } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
-import GetOrSetTransactionPasswordModal from '../../components/modals/GetOrSetTransactionPasswordModal';
-const OrigImage = require("../../assets/SupplyChainAssets/originator.png");
-const RecipImage = require("../../assets/SupplyChainAssets/recipient.png");
+import { StartTransaction } from "../Transactions/TransactionActionCreators";
+import GetOrSetTransactionPasswordModal from '../../../components/modals/GetOrSetTransactionPasswordModal';
+const OrigImage = require("./imageAssets/originator.png");
+const RecipImage = require("./imageAssets/recipient.png");
 import {
   widthPercentageToDP,
   heightPercentageToDP
-} from "../../assets/responsiveUI";
-import { ShowPasswordModal } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
+} from "../../../assets/responsiveUI";
+import { ShowPasswordModal } from "../Transactions/TransactionActionCreators";
 
 class SupplyChainSideChoice extends Component {
   constructor(props) {

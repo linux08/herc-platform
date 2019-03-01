@@ -6,9 +6,8 @@ import TrackSplash from './screens/TrackSplash';
 import TrackSideChoice from './screens/TrackSideChoice';
 import FactomWebView from './screens/FactomWebView';
 
-// import BlockScanner from './screens/BlockScanner';
-import TxSwiper from './screens/TxSwiper';
-  
+import BlockScanner from '../navigation/screens/BlockScanner';
+
 
 import Header from '../../../components/Headers/Header';
 
@@ -16,7 +15,7 @@ const TrackNavigator = createStackNavigator({
 
     TrackSplash: {
         screen: TrackSplash,
-       
+
     },
     TrackSideChoice: {
         screen: TrackSideChoice,
@@ -30,20 +29,19 @@ const TrackNavigator = createStackNavigator({
         //     header: <Header headerTitle={'Previous Transactions'} navigation={navigation} />
         // })
     },
-
     FactomWebView: {
         screen: FactomWebView,
         navigationOptions: ({ navigation }) => ({
             header: null
         })
 
+    },
+    BlockScanner: {
+        screen: BlockScanner,
+        navigationOptions: ({ navigation }) => ({
+            header: <Header headerTitle={'Block Scanner'} navigation={navigation} />
+        })
     }
-    // BlockScanner: {
-    //     screen: BlockScanner,
-    //     navigationOptions: ({ navigation }) => ({
-    //         header: <Header headerTitle={'Block Scanner'} navigation={navigation} />
-    //     })
-    // }
 },
     {
         initalRouteName: 'TrackSplash',

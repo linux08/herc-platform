@@ -137,20 +137,20 @@ console.log(messageData, 'new messageDAta!')
 
     return (
       <View key={unKey} style={swiperStyles.card}>
-        <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />
+         {header.dTime && <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />}
 
         <SwiperTextFieldWithLabel key={factomChain} label={'Factom Chain'} text={factomChain} />
 
-        <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />
+        {header.tXLocation && <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />}
 
         <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
 
-        <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />
+        {corePropsHash && <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
         {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
         {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
         {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
         {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
-        <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />
+        {header.price && <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />}
 
         <SwiperBigYellowButton buttonName={'View Factom Chain'} key={index} onPress={() => this._goToWebView(factomChain, factomEntry)} />
       </View>

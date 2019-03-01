@@ -8,11 +8,11 @@ import {
     Dimensions
 } from 'react-native';
 
-import MetricModal from '../../components/modals/MetricModal';
-import CustomModal from '../../components/modals/CustomModal';
-import CameraSourceModal from '../../components/modals/CameraSourceModal';
-import { ToggleCamSourceModal } from '../../features/CamSourceModal/CamSourceModalActionCreators';
-import EditModal from '../../components/modals/EDI_T_Modal';
+import MetricModal from '../modals/MetricModal';
+import CustomModal from '../../../components/modals/CustomModal';
+import CameraSourceModal from '../../CamSourceModal/Modal/CameraSourceModal';
+import { ToggleCamSourceModal } from '../../CamSourceModal/CamSourceModalActionCreators';
+import EditModal from '../modals/EDI_T_Modal';
 
 import {
     ShowEditModal,
@@ -22,12 +22,12 @@ import {
     AddEdiT,
     AddMetrics,
     AddPhoto,
-} from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+} from '../Transactions/TransactionActionCreators';
 
-import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
+import styles from "../../../assets/styles";
+import ColorConstants from "../../../assets/ColorConstants";
 import React, { Component } from 'react';
-import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "../../components/SupplyChainComponents/SupplyChainComponents";
+import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "./SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 
@@ -39,9 +39,9 @@ const { height, width } = Dimensions.get('window');
 
 import {
     BigYellowButton
-} from "../../components/SharedComponents";
+} from "../../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
+import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
 
 const ORIGNAL_STATE = {
     img: {},
@@ -50,6 +50,13 @@ const ORIGNAL_STATE = {
     metrics: {},
     isVisible: false,
 }
+
+componentWillUnmount = () => {
+    this.setState({
+         isVisible: false
+        })
+}
+
 
 class SupplyChainTX extends Component {
 
@@ -95,23 +102,7 @@ class SupplyChainTX extends Component {
         })
     }
 
-    // clearImage = () => {
-    //     this.setState({
-    //         img: {}
-    //     })
-
-    // }
-    // clearMetrics = () => {
-    //     this.setState({
-    //         metrics: {}
-    //     })
-    // }
-    // clearEDI = () => {
-    //     this.setState({
-    //         edi: {}
-    //     })
-    // }
-
+   
     setEDI = (item) => {
         this.props.addEdit(item);
         this.props.showEditModal();

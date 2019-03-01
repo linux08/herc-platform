@@ -8,20 +8,21 @@ import {
   TouchableHighlight,
   FlatList
 } from "react-native";
-import styles from "../../assets/styles";
+import styles from "../../../assets/styles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AddAssetButton } from "../../components/SupplyChainComponents/SupplyChainComponents.js";
-import { AssetCard } from "../../components/AssetCard";
+import { AddAssetButton } from "./SupplyChainComponents";
+import { AssetCard } from "../../../components/AssetCard";
 import {
   ShowAssetPasswordModal,
   GettingAssetIpfsDefintion,
-  SelectedAsset
-} from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
+  SelectedAsset,
+  GetHeaders
+} from "../Assets/AssetActionCreators";
 
-import AssetPasswordModal from "../../components/modals/AssetPasswordModal";
+import AssetPasswordModal from "../../../components/modals/AssetPasswordModal";
 
-import { GetCurrentHercValue } from "../../features/SupplyChainFlow/Transactions/TransactionActionCreators";
+import { GetCurrentHercValue } from "../Transactions/TransactionActionCreators";
 // import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 class SupplyChainSplash extends Component {
@@ -30,6 +31,10 @@ class SupplyChainSplash extends Component {
     super(props);
     console.log("componentTest");
     // this.checkPassword = this.checkPassword.bind(this);
+  }
+  componentWillMount = () => {
+    this.props.GetHeaders();
+
   }
 
   componentDidMount = () => {
@@ -65,11 +70,7 @@ class SupplyChainSplash extends Component {
           backgroundColor="transparent"
         />
         <View style={styles.bodyContainer}>
-          <AddAssetButton
-            onPress={() =>
-              this.props.navigation.navigate("RegisterAssetNavigator")
-            }
-          />
+         
           <FlatList
             data={this.props.assets}
             keyExtractor={item => item.key}
@@ -85,9 +86,6 @@ class SupplyChainSplash extends Component {
             }}
           />
 
-          {/* <ScrollView>
-                        {assetList}
-                    </ScrollView> */}
         </View>
 
         <AssetPasswordModal
@@ -113,7 +111,8 @@ const mapDispatchToProps = dispatch => ({
   SelectedAsset: asset => dispatch(SelectedAsset(asset)),
   GetAssetDef: assetIpfsHash =>
     dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),
-  GetCurrentHercValue: () => dispatch(GetCurrentHercValue())
+  GetCurrentHercValue: () => dispatch(GetCurrentHercValue()),
+  GetHeaders: () => dispatch(GetHeaders())
 });
 
 export default connect(

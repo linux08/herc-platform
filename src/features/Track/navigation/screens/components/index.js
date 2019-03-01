@@ -30,7 +30,7 @@ export const SwiperTextFieldWithLabel = props => {
   return (
     <View key={text} style={localStyles.textFieldContainer}>
       <Text style={localStyles.labelText}>{props.label}</Text>
-      <Text style={localStyles.textField}>{text}</Text>
+      <Text style={localStyles.textField}>{text || ''}</Text>
     </View>
   );
 };

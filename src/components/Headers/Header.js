@@ -5,6 +5,7 @@ import {
     ImageBackground
 } from "react-native";
 import React, { Component } from "react";
+import WalletIcon from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import menuIcon from 'react-native-vector-icons/Entypo';
 import styles from "./HeaderStyles";
@@ -19,11 +20,15 @@ const bgImage = require("../../assets/main-bg.png")
         super(props);
         console.log(props, this.state, "header stuff")
     }
-    _goBack = () => {
+    _goToWallet = () => {
+      /* ********************************************
+      This used to be a _goBack()
         let navigation = this.props.navigation;
         // let goBackTo = navigation.params.goBackTo
         console.log(navigation, "trying to go back")
         navigation.goBack();
+        ******************************************** */
+        this.props.navigation.navigate('WalletNavigator')
     }
     _toggleSideMenu = () => {
        console.log('ToggleSide');
@@ -39,10 +44,10 @@ const bgImage = require("../../assets/main-bg.png")
                 <ImageBackground source={bgImage} style={styles.bgImage}>
                     <View style={styles.header__container}>
                         <View style={styles.sideHeaders}>
-                            <Icon
-                                onPress={() => this._goBack()}
+                            <WalletIcon
+                                onPress={() => this._goToWallet()}
                                 style={[styles.iconButton, { marginLeft: 20 }]}
-                                name='arrow-left'
+                                name='account-balance-wallet'
                                 color={ColorConstants.MainGold}
                             />
                         </View>

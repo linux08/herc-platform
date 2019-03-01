@@ -35,6 +35,11 @@ class RegAsset2 extends Component {
         }
     }
 
+    componentWillUnmount = () => {
+        this.setState({
+             isVisible: false
+            })
+    }
     toggleModal = () => {
         this.setState({
             isVisible: !this.state.isVisible
@@ -42,10 +47,10 @@ class RegAsset2 extends Component {
     }
 
     allDone = () => {
-        this.setState({
-            isVisible: false,
-        })
-        this.props.navigation.navigate('TestSplash');
+        // this.setState({
+        //     isVisible: false,
+        // })
+        this.props.navigation.navigate('WalletFlow');
         // this.props.clearState();
 
     }
@@ -114,6 +119,8 @@ class RegAsset2 extends Component {
                     onBackdropPress={() => this.toggleModal()}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
+                    percent={this.props.percent}
+                    content={this.props.content}
                 />
 
             </View>

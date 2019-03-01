@@ -157,7 +157,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     transactionStarted: true,
                 },
-                percentage: state.percentage + 20,
+                percentage: 0,
                 content: "Your Transaction Is Starting"
             }
 
@@ -168,8 +168,8 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     TransactionInstantiating: true,
                 },
-                percentage: state.percentage + 20,
-                content: "Your Transaction Is Prepped To Launch"
+                percentage: state.percentage + 25,
+                content: "Prepping for Launch"
             }
 
         case Trans.Action.TransactionFactomEntryCompleted:
@@ -180,8 +180,8 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     factomEntryCompleted: true,
                 },
                 factomEntry: action.factomEntry,
-                percentage: state.percentage + 20,
-                content: "Factom Entry Is Complete"
+                percentage: state.percentage + 25,
+                content: "Writing to Decentralized Database "
             }
 
         case Trans.Action.TransactionWriteToFirebaseCompleted:
@@ -191,8 +191,8 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     ...state.flags,
                     writtenToFirebase: true,
                 },
-                percentage: state.percentage + 20,
-                content: "Written To Database"
+                percentage: state.percentage + 25,
+                content: "Enacting Payment "
             }
 
         case Trans.Action.TransactionComplete:
@@ -203,7 +203,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     paymentCompleted: true,
                 },
                 percentage: 100,
-                content: "Payment Complete"
+                content: "Complete!"
             }
 
         case Trans.Action.StartTransaction:

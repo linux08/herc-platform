@@ -53,7 +53,12 @@ class TrackSideChoice extends Component {
 
   handleSideChoice = () => {
     console.log("handling side choice");
-    this.props.navigation.navigate('TxSwiper')
+    if(this.state.checkSwiper === true){
+      this.props.navigation.navigate('TxSwiper')
+    }
+    if(this.state.checkBlockScanner === true){
+      this.props.navigation.navigate('BlockScanner')
+    }
 
   };
 
