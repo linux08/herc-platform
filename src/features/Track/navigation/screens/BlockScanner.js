@@ -17,6 +17,7 @@ import {
 import { connect } from "react-redux";
 import hercCoin from "../../../../assets/icons/hercCoin.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import {GetCurrentHercValue} from "../../../SupplyChainFlow/Transactions/TransactionActionCreators";
 
 const BigNumber = require("bignumber.js");
 const axios = require("axios");
@@ -38,11 +39,14 @@ class BlockScanner extends Component {
 
   componentDidMount = async () => {
     console.log(this.props)
+    this.props.GetCurrentHercValue()
     this._getMarketCapTotalSupply();
     this._getHoldersCount();
     this._getDynamicHercValue();
     await this._justDoIt();
     this.setState({ loaded: true });
+
+
   };
 
   _writeToClipboard = async data => {
@@ -338,7 +342,8 @@ class BlockScanner extends Component {
                 <View>
                   <View style={[localStyles.contentContainerA_Box_SecRow]}>
                     <Text style={localStyles.hercValue_Text}>
-                      {this.state.hercValue ? "$" + this.state.hercValue : null}
+                      {/* {this.state.hercValue ? "$" + this.state.hercValue : null} */}
+                      {this.props.hercValue}
                     </Text>
                   </View>
                 </View>
@@ -609,12 +614,14 @@ class BlockScanner extends Component {
 
 const mapStateToProps = state => ({
   ethereumAddress: state.WalletReducers.ethereumAddress,
+  hercValue: state.TransactionReducers.hercValue
   // data: state.Web3Reducers.data,
   // isFetching: state.Web3Reducers.isFetching,
   // isFetched: state.Web3Reducers.isFetched
 });
 
 const mapDispatchToProps = dispatch => ({
+  GetCurrentHercValue: () => dispatch(GetCurrentHercValue()),
   // fetchContract: (abi) => dispatch(fetchContract(abi))
 });
 
