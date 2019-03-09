@@ -43,6 +43,7 @@ import {
 } from "../../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
+const BigNumber = require("bignumber.js");
 
 const ORIGNAL_STATE = {
     img: {},
@@ -164,6 +165,7 @@ class SupplyChainTX extends Component {
     }
 
     _displayConfirmationModal = () => {
+        console.log(this.props)
         this.setState({
             displayConfirmationModal: true
         })
@@ -181,6 +183,7 @@ class SupplyChainTX extends Component {
         let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
         let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price: 0;
         let networkFee = this.props.networkFee ? this.props.networkFee : 0;
+        let total = new BigNumber(docPrice).plus(imgPrice).toFixed(18);
 
         // if (this.props.trans.data.documents.price) {
         //     docPrice = this.props.trans.data.documents.price;
@@ -282,7 +285,7 @@ class SupplyChainTX extends Component {
                         <Text style={{marginVertical: 10}}>Network Fee: {networkFee} </Text>
                         <Text style={{marginVertical: 10}}>Document Fee: {docPrice}</Text>
                         <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice}</Text>
-                        <Text style={{marginBottom: "10%"}}>Total: {networkFee + docPrice + imgPrice}</Text>
+                        <Text style={{marginBottom: "10%"}}>Total: {total}</Text>
                         {/* <TouchableHighlight onPress={() => this.submitTransaction()} style={localStyles.editField}>
                             <Text style={localStyles.editLabel}>Submit</Text>
                         </TouchableHighlight> */}
