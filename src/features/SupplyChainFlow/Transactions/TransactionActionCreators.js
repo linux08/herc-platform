@@ -180,7 +180,7 @@ export function AddPhoto(imgObj) {
 
 export function AddDoc(doc) {
   let docSize = doc.size;
-  let docPrice = this._calculateStorjPrice(docSize);
+  let docPrice = _calculateStorjPrice(docSize);
 
   console.log(docPrice, "this is the doc price");
   let document = Object.assign({}, doc, {
@@ -218,9 +218,8 @@ getNetworkFee = currentHercPrice => {
   //Per Use Fee should be $ 0.000032 worth of hercs. The response should be in Hercs.
   //Network Fee is the combined value of security fee and per use fee. The response should be in Hercs.
 
-  let dynamicHercValue = store.getState().TransactionReducers.hercValue;
-
-  console.log("this is the herc value", dynamicHercValue)
+  let dynamicHercValue = currentHercPrice;
+  console.log("this is the dynamic herc value", dynamicHercValue)
   let securityFeeInHercs = 0.000032 / dynamicHercValue;
   let perUseFeeInHercs = 0.000032 / dynamicHercValue;
   let networkFee = securityFeeInHercs + perUseFeeInHercs;

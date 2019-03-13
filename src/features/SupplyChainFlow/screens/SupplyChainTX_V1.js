@@ -174,16 +174,15 @@ class SupplyChainTX extends Component {
     _toggledisplayConfirmationModal = () => {
         this.setState({
             displayConfirmationModal: !this.state.displayConfirmationModal
-        })
-    }
+        })    }
 
 
     render() {
         
         let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
         let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price: 0;
-        let networkFee = this.props.networkFee ? this.props.networkFee : 0;
-        let total = new BigNumber(docPrice).plus(imgPrice).toFixed(18);
+        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
+        let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
 
         // if (this.props.trans.data.documents.price) {
         //     docPrice = this.props.trans.data.documents.price;
