@@ -132,7 +132,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     toggleCamSourceModal: () =>
         dispatch(ToggleCamSourceModal()),
-  
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CameraSourceModal);
 

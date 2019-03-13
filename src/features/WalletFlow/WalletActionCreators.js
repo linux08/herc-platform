@@ -20,13 +20,29 @@ export function GetEthAddress(ethereumAddress) {
   }
 
 
-
+function CheckIfNoHercs(wallet) {
+  console.log('jm fired CheckIfNoHercs')
+  if (!wallet.balances['HERC']){
+    console.log('jm no hercs in this wallet')
+    return {
+      type: Wallet.Action.CheckIfNoHercs,
+      noHercs: true
+    }
+  }
+  else {
+    return {
+      type: Wallet.Action.CheckIfNoHercs,
+      noHercs: false
+    }
+  }
+}
 
 export function GetWallet(wallet) {
-    return {
-        type: Wallet.Action.GetWallet,
-        wallet
-    }
+  store.dispatch(CheckIfNoHercs(wallet))
+  return {
+      type: Wallet.Action.GetWallet,
+      wallet
+  }
 }
 
 export function GetBalance() {
