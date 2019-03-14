@@ -11,6 +11,7 @@ import styles from "../../assets/styles";
 import { AddAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 import { AssetCard } from "../../components/AssetCard";
 import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceModalActionCreators";
+// import CustomModal from '../../../components/modals/CustomModal';
 import CameraSourceModal from "../../features/CamSourceModal/Modal/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
@@ -130,12 +131,30 @@ class RegAsset1 extends Component {
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
     onPressTest = () => {
-        console.log(this.state, "this state after Reg PRess");
         let newAsset = Object.assign({}, this.state)
         console.log(newAsset, "hopefully shallow clone")
-        this.props.AddAsset(this.state.newAsset);
+        // if (!newAsset.newAsset.Logo){
+        //   console.log('jm DO NOT PASS GO')
+        //   // insert Alert modal here
+        //   <CustomModal
+        //       heading={"Oops! This is incomplete."}
+        //       content={"Please include an image with your asset."}
+        //       modalCase="error"
+        //       isVisible={this.state.isVisible}
+        //       onBackdropPress={() => this.toggleModal()}
+        //       closeModal={this.allDone}
+        //       dismissRejectText={"All Done"}
+        //   />
+        // }
+        if (this.props.canRegisterAsset){
+          this.props.AddAsset(this.state.newAsset);
+          this.props.navigation.navigate("RegAsset2");
+        }
+        else {
+          console.error("jm can't register asset!");
+          //throw error customModal now
+        }
 
-        this.props.navigation.navigate("RegAsset2");
     }
 
     // function to add metric, am considering implementing the modal, but this
@@ -235,7 +254,8 @@ class RegAsset1 extends Component {
 }
 const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
-    newAsset: state.RegAssetReducers.newAsset
+    newAsset: state.RegAssetReducers.newAsset,
+    canRegisterAsset: state.RegAssetReducers.canRegisterAsset
 });
 
 const mapDispatchToProps = (dispatch) => ({

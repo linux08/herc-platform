@@ -1,6 +1,7 @@
 
 export const Action = {
     Error: 'Error',
+    CheckWalletMeetsMinimumRequirement: 'CheckWalletMeetsMinimumRequirement',
     ClearState: 'ClearState',
     // ToggleCamSourceModal: 'ToggleCameSourceModal',
 
@@ -14,7 +15,7 @@ export const Action = {
 
     ConfirmStarted: 'ConfirmStarted',
     ConfirmAssetComplete: 'ConfirmAssetComplete',
-   
+
     RegAssetToIpfsStarted: 'RegAssetToIpfsStarted',
     RegAssetToIpfsComplete: 'RegAssetToIpfsComplete',
 

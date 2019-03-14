@@ -16,7 +16,8 @@ import axios from 'axios';
 import hercLogoPillar from "../../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
 import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
- import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
+import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
+import { CheckWalletMeetsMinimumRequirement } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 // import { getOrganization } from "../../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../../components/settings";
@@ -126,6 +127,7 @@ class Login extends Component {
 
             this.props.GetEthAddress(wallet.keys.ethereumAddress)
             this.props.GetWallet(wallet)
+            this.props.CheckWalletMeetsMinimumRequirement(wallet)
             wallet.addCustomToken(tokenHerc)
             wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
             return wallet
@@ -138,6 +140,7 @@ class Login extends Component {
           wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
           this.props.GetEthAddress(wallet.keys.ethereumAddress)
           this.props.GetWallet(wallet)
+          this.props.CheckWalletMeetsMinimumRequirement(wallet)
           wallet.addCustomToken(tokenHerc)
           wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
           this.setState({walletId: wallet.id})
@@ -196,5 +199,6 @@ const mapDispatchToProps = (dispatch) => ({
     GetEthAddress: (ethereumAddress) => dispatch(GetEthAddress(ethereumAddress)),
     GetWallet: (wallet) => dispatch(GetWallet(wallet)),
     GetAccount: (account) => dispatch(GetAccount(account)),
+    CheckWalletMeetsMinimumRequirement: (wallet) => dispatch(CheckWalletMeetsMinimumRequirement(wallet))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

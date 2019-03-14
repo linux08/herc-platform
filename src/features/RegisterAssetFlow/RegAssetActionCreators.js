@@ -7,6 +7,7 @@ import axios from 'axios';
 // const edgeAccount = store.getState().WalletActReducers.edge_account
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
+import BigNumber from "bignumber.js";
 
 import {
   WEB_SERVER_API_IPFS_ADD,
@@ -19,6 +20,43 @@ export function Error(error) {
   return {
     type: Reg.Action.Error,
     Error: error
+  }
+}
+
+export function CheckWalletMeetsMinimumRequirement(wallet) {
+  if (wallet.balances){
+    if (wallet.balances['HERC']){
+      let hercBalance = new BigNumber(wallet.balances['HERC']).times(1e-18)
+      let minimumPrice = new BigNumber(1000)
+      let results = hercBalance.minus(minimumPrice)
+      // console.log('jm do you have enough?', results.isPositive())
+      if (results.isPositive()){
+        return {
+          type: Reg.Action.CheckWalletMeetsMinimumRequirement,
+          canRegisterAsset: true
+        }
+      }
+      else {
+        return {
+          type: Reg.Action.CheckWalletMeetsMinimumRequirement,
+          canRegisterAsset: false
+        }
+      }
+    }
+    else {
+      // NO HERCS! maybe move to wallet reducers
+      return {
+        type: Reg.Action.CheckWalletMeetsMinimumRequirement,
+        canRegisterAsset: false,
+        noHercs: true
+      }
+    }
+  }
+  else {
+    return {
+      type: Reg.Action.CheckWalletMeetsMinimumRequirement,
+      canRegisterAsset: false
+    }
   }
 }
 
@@ -76,11 +114,11 @@ export function AddAsset(newTempAsset) {
 // fire the payment?
 
 //  rearranging the redux a little, trying to simplify
-//  assetForFirebase will be Name, hercID, Logo, Password 
+//  assetForFirebase will be Name, hercID, Logo, Password
 
 export function SettingHeaderInFirebase() {
 
-  // this is the start of registering an asset, this sets 
+  // this is the start of registering an asset, this sets
   // settingHeaderinFirebase and Confirm Started to true.
   fetchLocalUri();
   return {
@@ -195,7 +233,6 @@ async function newAssetToIpfs(assetForIPFS) {
 
 }
 
-
 export function RegAssetToIpfsComplete(hash) {
   return {
     type: Reg.Action.RegAssetToIpfsComplete,
@@ -275,4 +312,3 @@ export function ConfirmAssetComplete() {
     type: Reg.Action.ConfirmAssetComplete
   }
 }
-
