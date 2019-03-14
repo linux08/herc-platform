@@ -39,7 +39,7 @@ import { connect } from 'react-redux';
 const { height, width } = Dimensions.get('window');
 
 import {
-    BigYellowButton
+    BigYellowButton,ModalSubmitButton
 } from "../../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
@@ -289,7 +289,7 @@ class SupplyChainTX extends Component {
                             <Text style={localStyles.editLabel}>Submit</Text>
                         </TouchableHighlight> */}
 
-                        <BigYellowButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
+                        <ModalSubmitButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
                     </View>
 
                 </Modal>
