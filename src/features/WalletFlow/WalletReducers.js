@@ -35,7 +35,6 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
       };
 
     case Wallet.Action.CheckIfNoHercs:
-      console.log('jm in CheckIfNoHercs reducer')
       return {
         ...state,
         noHercs: action.noHercs

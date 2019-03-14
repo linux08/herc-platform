@@ -146,9 +146,15 @@ class RegAsset1 extends Component {
         //       dismissRejectText={"All Done"}
         //   />
         // }
-        this.props.AddAsset(this.state.newAsset);
+        if (this.props.canRegisterAsset){
+          this.props.AddAsset(this.state.newAsset);
+          this.props.navigation.navigate("RegAsset2");
+        }
+        else {
+          console.error("jm can't register asset!");
+          //throw error customModal now
+        }
 
-        this.props.navigation.navigate("RegAsset2");
     }
 
     // function to add metric, am considering implementing the modal, but this
@@ -248,7 +254,8 @@ class RegAsset1 extends Component {
 }
 const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
-    newAsset: state.RegAssetReducers.newAsset
+    newAsset: state.RegAssetReducers.newAsset,
+    canRegisterAsset: state.RegAssetReducers.canRegisterAsset
 });
 
 const mapDispatchToProps = (dispatch) => ({

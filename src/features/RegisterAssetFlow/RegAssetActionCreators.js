@@ -24,13 +24,12 @@ export function Error(error) {
 }
 
 export function CheckWalletMeetsMinimumRequirement(wallet) {
-  console.log('jm simple balance', wallet.balances)
   if (wallet.balances){
     if (wallet.balances['HERC']){
       let hercBalance = new BigNumber(wallet.balances['HERC']).times(1e-18)
       let minimumPrice = new BigNumber(1000)
       let results = hercBalance.minus(minimumPrice)
-      console.log('jm do you have enough?', results.isPositive())
+      // console.log('jm do you have enough?', results.isPositive())
       if (results.isPositive()){
         return {
           type: Reg.Action.CheckWalletMeetsMinimumRequirement,
