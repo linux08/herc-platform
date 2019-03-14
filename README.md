@@ -1,6 +1,6 @@
 # [H]ERC Decentralized Application with Identity Powered by Https://Edge.App
 
-![HERC Wallet](https://i.imgur.com/h0nwznp.png)
+![HERC Wallet](https://i.imgur.com/AG1gBzZ.png)
 
 
 The Full Edge Wallet is:
