@@ -27,6 +27,12 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 }
             })
 
+        case Reg.Action.CheckWalletMeetsMinimumRequirement:
+            return Object.assign({}, {
+                ...state,
+                canRegisterAsset: action.canRegisterAsset
+            })
+
         case Reg.Action.GetHercId:
             return Object.assign({}, {
                 ...state,

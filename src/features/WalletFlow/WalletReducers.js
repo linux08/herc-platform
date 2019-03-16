@@ -34,6 +34,12 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
         ...state
       };
 
+    case Wallet.Action.CheckIfNoHercs:
+      return {
+        ...state,
+        noHercs: action.noHercs
+      }
+
     case Wallet.Action.ClearTransactionStore:
       console.log("jm clearing transactionstore 2/2");
       return {
