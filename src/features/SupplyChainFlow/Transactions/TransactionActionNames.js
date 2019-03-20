@@ -54,4 +54,6 @@ export const Action = {
     MakePayment: 'MakePayment',
     Error: 'Error',
 
+    GetCurrentGasPrice: "GetCurrentGasPrice",
+    GotCurrentGasPrice: 'GotCurrentGasPrice'
 }

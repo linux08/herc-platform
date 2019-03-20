@@ -258,6 +258,12 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 hercValue: action.hercValue
             })
 
+            case Trans.Action.GotCurrentGasPrice:
+            return Object.assign({}, state, {
+                ...state,
+                gasPrice: action.gasPrice
+            })
+
         case Trans.Action.GotNetworkFee:
             return Object.assign({}, state, {
                 ...state,

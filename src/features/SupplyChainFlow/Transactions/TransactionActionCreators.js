@@ -242,6 +242,13 @@ export function GetCurrentHercValue() {
   };
 }
 
+export function GetCurrentGasPrice() {
+  getCurrrentGasPrice();
+  return {
+    type: Trans.Action.GetCurrentGasPrice
+  };
+}
+
 getDynamicHercValue = async () => {
   try {
     let response = await fetch(
@@ -256,31 +263,37 @@ getDynamicHercValue = async () => {
   }
 };
 
-GotDynamicHercValue = hercValue => {
+async function getCurrrentGasPrice(){
+  try {
+    let response = await fetch(
+      "https://ethgasstation.info/json/ethgasAPI.json"
+    );
+
+    let gasPrices = await response.json();
+    console.log(gasPrices.fastest, "dynamic gas price, fastest***");
+    store.dispatch(GotCurrentGasPrice(gasPrices.fastest));
+  } catch (error) {
+    store.dispatch(Error(error));
+  }
+};
+
+
+
+export function GotDynamicHercValue(hercValue){
   getNetworkFee(hercValue);
+  getCurrrentGasPrice();
   return {
     type: Trans.Action.GotDynamicHercValue,
     hercValue
   };
 };
 
-// _getDynamicHercValue = async () => {
-//     return fetch(
-//       "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5",
-//       {
-//         method: "GET"
-//       }
-//     )
-//       .then(response => response.json())
-//       .then(responseJson => {
-//         let responseObject = responseJson;
-//         let highPrice = responseObject.h;
-//         return highPrice;
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   };
+export function GotCurrentGasPrice(gasPrice){
+  return {
+    type: Trans.Action.GotCurrentGasPrice,
+    gasPrice
+  };
+};
 
 export function MakePayment(makePaymentObject) {
   console.log(makePaymentObject, "this is the make payment object")
@@ -468,6 +481,7 @@ export function SendTransaction() {
           axios
             .post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
+              console.log("this is the response from web server api upload*****", response)
               return response;
             }) // {key: 'images', hash: 'QmU1D1eAeSLC5Dt4wVRR'}
             .catch(error => {
