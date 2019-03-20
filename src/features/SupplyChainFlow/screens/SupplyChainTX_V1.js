@@ -183,6 +183,8 @@ class SupplyChainTX extends Component {
         let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price: 0;
         let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
         let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
+        let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
+
 
         // if (this.props.trans.data.documents.price) {
         //     docPrice = this.props.trans.data.documents.price;
@@ -281,10 +283,13 @@ class SupplyChainTX extends Component {
 
                     <View style={styles.bodyContainer}>
                         <Text style={{color: "black", fontSize: 18, marginBottom: "10%"}}> Confirm Transaction</Text>
-                        <Text style={{marginVertical: 10}}>Network Fee: {networkFee} </Text>
-                        <Text style={{marginVertical: 10}}>Document Fee: {docPrice}</Text>
-                        <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice}</Text>
-                        <Text style={{marginBottom: "10%"}}>Total: {total}</Text>
+                        <Text style={{marginVertical: 10}}>Network Fee: {networkFee} HERC</Text>
+                        <Text style={{marginVertical: 10}}>Document Fee: {docPrice} HERC</Text>
+                        <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice} HERC</Text>
+                        <Text style={{marginBottom: "10%"}}>Total: {total} HERC</Text>
+                        <Text style={{marginVertical: 10}}>Gas Price (Fastest in GWEI): {gasPrice} ETH </Text>
+                        <Text style={{marginVertical: 10}}>Gas Supply: 42,000 units </Text>
+                        <Text style={{marginVertical: 10}}>Total Est. TX Cost:  {(42000 * gasPrice) * .000000001 } ETH</Text>
                         {/* <TouchableHighlight onPress={() => this.submitTransaction()} style={localStyles.editField}>
                             <Text style={localStyles.editLabel}>Submit</Text>
                         </TouchableHighlight> */}
@@ -305,7 +310,8 @@ const mapStateToProps = (state) => ({
     trans: state.TransactionReducers.trans,
     content: state.TransactionReducers.content,
     percent: state.TransactionReducers.percentage,
-    networkFee: state.TransactionReducers.networkFee
+    networkFee: state.TransactionReducers.networkFee,
+    gasPrice: state.TransactionReducers.gasPrice
 })
 
 const mapDispatchToProps = (dispatch) => ({
