@@ -5,7 +5,8 @@ import {
     StatusBar,
     Image,
     TouchableWithoutFeedback,
-    Dimensions
+    Dimensions,
+    TouchableHighlight
 } from 'react-native';
 
 import MetricModal from '../modals/MetricModal';
@@ -13,7 +14,7 @@ import CustomModal from '../../../components/modals/CustomModal';
 import CameraSourceModal from '../../CamSourceModal/Modal/CameraSourceModal';
 import { ToggleCamSourceModal } from '../../CamSourceModal/CamSourceModalActionCreators';
 import EditModal from '../modals/EDI_T_Modal';
-
+import Modal from 'react-native-modal';
 import {
     ShowEditModal,
     ShowMetricModal,
@@ -38,10 +39,11 @@ import { connect } from 'react-redux';
 const { height, width } = Dimensions.get('window');
 
 import {
-    BigYellowButton
+    BigYellowButton,ModalSubmitButton
 } from "../../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
+const BigNumber = require("bignumber.js");
 
 const ORIGNAL_STATE = {
     img: {},
@@ -49,12 +51,13 @@ const ORIGNAL_STATE = {
     edi: {},
     metrics: {},
     isVisible: false,
+    displayConfirmationModal: false
 }
 
 componentWillUnmount = () => {
     this.setState({
-         isVisible: false
-        })
+        isVisible: false
+    })
 }
 
 
@@ -102,7 +105,7 @@ class SupplyChainTX extends Component {
         })
     }
 
-   
+
     setEDI = (item) => {
         this.props.addEdit(item);
         this.props.showEditModal();
@@ -132,7 +135,7 @@ class SupplyChainTX extends Component {
     }
 
     setPic = (snappedImg) => {
-        console.log("setting a taken image");
+        console.log("setting a taken image, this is the data******", snappedImg);
         this.props.addPhoto(snappedImg)
     }
 
@@ -161,8 +164,33 @@ class SupplyChainTX extends Component {
 
     }
 
+    _displayConfirmationModal = () => {
+        console.log(this.props)
+        this.setState({
+            displayConfirmationModal: true
+        })
+    }
+
+    _toggledisplayConfirmationModal = () => {
+        this.setState({
+            displayConfirmationModal: !this.state.displayConfirmationModal
+        })    }
+
 
     render() {
+        
+        let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
+        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price: 0;
+        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
+        let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
+
+        // if (this.props.trans.data.documents.price) {
+        //     docPrice = this.props.trans.data.documents.price;
+        // }
+
+        // if (this.props.trans.data.image.price) {
+        //     imgPrice = this.props.trans.data.image.price;
+        // }
         return (
 
             <View style={styles.baseContainer}>
@@ -201,7 +229,7 @@ class SupplyChainTX extends Component {
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Submit"} onPress={this.submitTransaction} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this._displayConfirmationModal} />
                     </View>
                 </View>
 
@@ -236,11 +264,35 @@ class SupplyChainTX extends Component {
                     content={this.props.content}
                     modalCase="progress"
                     isVisible={this.state.isVisible}
-                    onBackdropPress={() => this.toggleModal()}
+                    onBackdropPress={() => this._toggleModal()}
                     percent={this.props.percent}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                 />
+
+                <Modal
+                    style={styles.baseModal}
+                    backdropColor={'rgba(0,0,0,0.5)'}
+                    animationIn={'slideInRight'}
+                    animationOut={'slideOutRight'}
+                    isVisible={this.state.displayConfirmationModal}
+                    onRequestClose={() => { this._toggledisplayConfirmationModal() }}
+                    onBackButtonPress={() => { this._toggledisplayConfirmationModal() }}>
+
+                    <View style={styles.bodyContainer}>
+                        <Text style={{color: "black", fontSize: 18, marginBottom: "10%"}}> Confirm Transaction</Text>
+                        <Text style={{marginVertical: 10}}>Network Fee: {networkFee} </Text>
+                        <Text style={{marginVertical: 10}}>Document Fee: {docPrice}</Text>
+                        <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice}</Text>
+                        <Text style={{marginBottom: "10%"}}>Total: {total}</Text>
+                        {/* <TouchableHighlight onPress={() => this.submitTransaction()} style={localStyles.editField}>
+                            <Text style={localStyles.editLabel}>Submit</Text>
+                        </TouchableHighlight> */}
+
+                        <ModalSubmitButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
+                    </View>
+
+                </Modal>
 
 
             </View>
@@ -252,7 +304,8 @@ const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     trans: state.TransactionReducers.trans,
     content: state.TransactionReducers.content,
-    percent: state.TransactionReducers.percentage
+    percent: state.TransactionReducers.percentage,
+    networkFee: state.TransactionReducers.networkFee
 })
 
 const mapDispatchToProps = (dispatch) => ({

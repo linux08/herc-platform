@@ -56,8 +56,8 @@ class MetricModal extends Component {
                 animationIn={'slideInRight'}
                 animationOut={'slideOutRight'}
                 isVisible={visibility}
-                onRequestClose={() => { console.log("modal closed") }}
-
+                onRequestClose={() => { this.props.ShowMetricModal() }}
+                onBackButtonPress={ ()=> {this.props.ShowMetricModal()} }
             >
 
                 <View style={styles.bodyContainer}>
