@@ -52,31 +52,8 @@ class WalletFlow extends React.Component {
 
   componentDidMount = async () => {
     console.log(this.props, "these are the props****");
-    if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
-      let light = await this.props.wallet.getEnabledTokens();
-      let enabledTokens = light.reverse();
-      console.log("###########" + enabledTokens);
-      this.setState(
-        {
-          availableTokens: enabledTokens,
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
-      );
-    } else {
-      let enabledTokens = Object.keys(this.props.watchBalance).reverse();
-      console.log("###########" + enabledTokens);
-      this.setState(
-        {
-          availableTokens: enabledTokens,
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
-      );
-    }
-
-    await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
-    this.setInterval(() => console.log(this.state.transactions), 1000);
+    // await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
+    // this.setInterval(() => console.log(this.state.transactions), 1000);
   };
 
   _updateWallet = () => {
@@ -597,7 +574,7 @@ class WalletFlow extends React.Component {
                     </Text>
                   </View>
                   {/* ***THIS IS THE DOLLARS VALUE WORTH OF CRYPTO**
-                  
+
                   <View>
                     <Text style={modalStyles.menuSubtitle}>US Dollars</Text>
                     <Text

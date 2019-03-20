@@ -21,6 +21,7 @@ export function GetEthAddress(ethereumAddress) {
 
 
 function CheckIfNoHercs(wallet) {
+  store.dispatch(GetEnabledTokens(wallet))
   if (!wallet.balances['HERC']){
     return {
       type: Wallet.Action.CheckIfNoHercs,
@@ -47,6 +48,31 @@ export function GetBalance() {
     return {
         type: Wallet.Action.GetBalance
     }
+}
+
+export function GetEnabledTokens(wallet){
+  let enabledTokens = Object.keys(wallet.watchBalance).reverse();
+  console.log('jm ET2', enabledTokens);
+  return {
+      type: Wallet.Action.GetEnabledTokens,
+      enabledTokens: enabledTokens
+  }
+  // if (!wallet.watchBalance || !wallet.watchBalance.ETH) {
+  //   let light = await wallet.getEnabledTokens();
+  //   let enabledTokens = light.reverse();
+  //   console.log('jm ET', enabledTokens);
+  //   return {
+  //       type: Wallet.Action.GetEnabledTokens,
+  //       enabledTokens: enabledTokens
+  //   }
+  // } else {
+  //   let enabledTokens = Object.keys(wallet.watchBalance).reverse();
+  //   console.log('jm ET2', enabledTokens);
+  //   return {
+  //       type: Wallet.Action.GetEnabledTokens,
+  //       enabledTokens: enabledTokens
+  //   }
+  // }
 }
 
 

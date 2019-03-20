@@ -34,6 +34,14 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
         ...state
       };
 
+    case  Wallet.Action.GetEnabledTokens:
+      console.log("jm GetEnabledTokens", action.enabledTokens);
+      return Object.assign({}, state, {
+        ...state,
+          enabledTokens: action.enabledTokens
+      });
+
+
     case Wallet.Action.CheckIfNoHercs:
       return {
         ...state,
