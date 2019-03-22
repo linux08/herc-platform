@@ -287,9 +287,9 @@ class SupplyChainTX extends Component {
                         <Text style={{marginVertical: 10}}>Document Fee: {docPrice} HERC</Text>
                         <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice} HERC</Text>
                         <Text style={{marginBottom: "10%"}}>Total: {total} HERC</Text>
-                        <Text style={{marginVertical: 10}}>Gas Price (Fastest in GWEI): {gasPrice} ETH </Text>
-                        <Text style={{marginVertical: 10}}>Gas Supply: 42,000 units </Text>
-                        <Text style={{marginVertical: 10}}>Total Est. TX Cost:  {(42000 * gasPrice) * .000000001 } ETH</Text>
+                        <Text style={{marginVertical: 10}}>Gas Price (Average in GWEI): {gasPrice} ETH </Text>
+                        <Text style={{marginVertical: 10}}>Gas Supply: 80,000 units </Text>
+                        <Text style={{marginVertical: 10}}>Total Est. TX Cost:  {(80000 * gasPrice) * .000000001 } ETH</Text>
                         {/* <TouchableHighlight onPress={() => this.submitTransaction()} style={localStyles.editField}>
                             <Text style={localStyles.editLabel}>Submit</Text>
                         </TouchableHighlight> */}

@@ -270,8 +270,9 @@ async function getCurrrentGasPrice(){
     );
 
     let gasPrices = await response.json();
-    console.log(gasPrices.fastest, "dynamic gas price, fastest***");
-    store.dispatch(GotCurrentGasPrice(gasPrices.fastest));
+    console.log(gasPrices, "dynamic gas prices ALL***");
+    let gasPriceAverageInWei = gasPrices.average * .1 
+    store.dispatch(GotCurrentGasPrice(gasPriceAverageInWei));
   } catch (error) {
     store.dispatch(Error(error));
   }
