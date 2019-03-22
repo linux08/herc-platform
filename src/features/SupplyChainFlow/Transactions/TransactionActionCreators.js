@@ -4,7 +4,7 @@ import {
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
   WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
-  WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_UPLOAD_DOCUMENT,
   TOKEN_ADDRESS,
   DEVELOPERS
 } from "../../../components/settings";
@@ -503,7 +503,7 @@ export function SendTransaction() {
         promiseArray.push(
           axios
             .post(
-              WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT,
+              WEB_SERVER_API_UPLOAD_DOCUMENT,
               JSON.stringify(dataObject)
             )
             .then(response => {
