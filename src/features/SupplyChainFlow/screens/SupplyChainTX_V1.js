@@ -39,7 +39,7 @@ import { connect } from 'react-redux';
 const { height, width } = Dimensions.get('window');
 
 import {
-    BigYellowButton,ModalSubmitButton
+    BigYellowButton, ModalSubmitButton
 } from "../../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
@@ -174,13 +174,14 @@ class SupplyChainTX extends Component {
     _toggledisplayConfirmationModal = () => {
         this.setState({
             displayConfirmationModal: !this.state.displayConfirmationModal
-        })    }
+        })
+    }
 
 
     render() {
-        
+
         let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
-        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price: 0;
+        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
         let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
         let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
         let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
@@ -282,24 +283,18 @@ class SupplyChainTX extends Component {
                     onBackButtonPress={() => { this._toggledisplayConfirmationModal() }}>
 
                     <View style={styles.bodyContainer}>
-                        <Text style={{color: "black", fontSize: 18, marginBottom: "10%"}}> Confirm Transaction</Text>
-                        <Text style={{marginVertical: 10}}>Network Fee: {networkFee} HERC</Text>
-                        <Text style={{marginVertical: 10}}>Document Fee: {docPrice} HERC</Text>
-                        <Text style={{marginVertical: 10}}>Photo Fee: {imgPrice} HERC</Text>
-                        <Text style={{marginBottom: "10%"}}>Total: {total} HERC</Text>
-                        <Text style={{marginVertical: 10}}>Gas Price (Average in GWEI): {gasPrice} ETH </Text>
-                        <Text style={{marginVertical: 10}}>Gas Supply: 80,000 units </Text>
-                        <Text style={{marginVertical: 10}}>Total Est. TX Cost:  {(80000 * gasPrice) * .000000001 } ETH</Text>
-                        {/* <TouchableHighlight onPress={() => this.submitTransaction()} style={localStyles.editField}>
-                            <Text style={localStyles.editLabel}>Submit</Text>
-                        </TouchableHighlight> */}
+                        <Text style={{ color: "black", fontSize: 18, marginBottom: "10%" }}> Confirm Transaction</Text>
+                        <Text style={{ marginVertical: 10 }}>Network Fee: {networkFee} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Document Fee: {docPrice} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Photo Fee: {imgPrice} HERC</Text>
+                        <Text style={{ marginBottom: "10%" }}>Total: {total} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Gas Price (Average): {gasPrice} GWEI </Text>
+                        <Text style={{ marginVertical: 10 }}>Gas Supply: 80,000 </Text>
+                        <Text style={{ marginVertical: 10 }}>Total Est. TX Cost:  {(80000 * gasPrice) * .000000001} ETH</Text>
 
                         <ModalSubmitButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
                     </View>
-
                 </Modal>
-
-
             </View>
         )
     }

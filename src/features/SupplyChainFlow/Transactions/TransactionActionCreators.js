@@ -5,6 +5,7 @@ import {
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
   WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
   WEB_SERVER_API_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_UPLOAD_IMAGE,
   TOKEN_ADDRESS,
   DEVELOPERS
 } from "../../../components/settings";
@@ -480,7 +481,7 @@ export function SendTransaction() {
         console.log("jm check image dataObject", dataObject);
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
+            .post(WEB_SERVER_API_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
               console.log("this is the response from web server api upload*****", response)
               return response;

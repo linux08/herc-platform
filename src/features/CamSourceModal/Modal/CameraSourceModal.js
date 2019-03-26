@@ -2,6 +2,7 @@ import {
     StyleSheet,
     Text,
     View,
+    ImageStore
 } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
@@ -13,16 +14,16 @@ import ColorConstants from '../../../constants/ColorConstants';
 // import { NavigationActions } from 'react-navigation';
 var ImagePicker = require('react-native-image-picker');
 
+
 class CameraSourceModal extends Component {
     constructor(props) {
         super(props);
     }
     goToCamera = () => {
         this.props.toggleCamSourceModal(false);
-        const options = {
-            base64: true,
-        }
-        ImagePicker.launchCamera(options,(response) => {
+        let options = {}
+
+        ImagePicker.launchCamera(options, (response) => {
 
             if (response.didCancel) {
                 console.log('ImageUpload Camera: User cancelled image picker');
@@ -34,21 +35,34 @@ class CameraSourceModal extends Component {
                 console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
             }
             else {
-                let img = {
-                    name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
-                    imageString: "data:image/jpg;base64," + response.data,
-                    size: response.fileSize,
-                    uri: response.uri
-                }
-                this.props.setPic(img);
+
+                let uri = response.uri;
+
+                ImageStore.getBase64ForTag(
+                    uri,
+                    (base64image) => {
+                        let img = {
+                            name: response.fileName,
+                            imageString: base64image,
+                            size: response.fileSize,
+                            uri: response.uri,
+                            type: response.type
+                        }
+                        this.props.setPic(img);
+                    },
+                    (error) => {
+                        console.error(error)
+                    }
+                )
             };
         })
     }
 
     _pickImage = () => {
         this.props.toggleCamSourceModal();
+        let options = {}
 
-        ImagePicker.launchImageLibrary({}, (response) => {
+        ImagePicker.launchImageLibrary(options, (response) => {
 
             if (response.didCancel) {
                 console.log('ImageUpload Camera: User cancelled image picker');
@@ -60,20 +74,30 @@ class CameraSourceModal extends Component {
                 console.log('ImageUpload Camera: User tapped custom button: ', response.customButton);
             }
             else {
-                let img = {
-                    name: response.uri.substring(response.uri.lastIndexOf('/') + 1, response.uri.length),
-                    imageString: "data:image/jpg;base64," + response.data,
-                    size: response.fileSize,
-                    uri: response.uri
-                }
-                this.props.setPic(img);
+                let uri = response.uri;
+
+                ImageStore.getBase64ForTag(
+                    uri,
+                    (base64image) => {
+                        let img = {
+                            name: response.fileName,
+                            imageString: base64image,
+                            size: response.fileSize,
+                            uri: response.uri,
+                            type: response.type
+                        }
+                        this.props.setPic(img);
+                    },
+                    (error) => {
+                        console.error(error)
+                    }
+                )
             };
         })
     };
 
 
     render() {
-        console.log(this.props, 'render in camsource');
 
         return (
             <Modal
