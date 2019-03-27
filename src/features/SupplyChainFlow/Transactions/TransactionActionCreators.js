@@ -5,6 +5,7 @@ import {
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
   WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
   WEB_SERVER_API_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_UPLOAD_IMAGE,
   TOKEN_ADDRESS,
   DEVELOPERS
 } from "../../../components/settings";
@@ -270,8 +271,9 @@ async function getCurrrentGasPrice(){
     );
 
     let gasPrices = await response.json();
-    console.log(gasPrices.fastest, "dynamic gas price, fastest***");
-    store.dispatch(GotCurrentGasPrice(gasPrices.fastest));
+    console.log(gasPrices, "dynamic gas prices ALL***");
+    let gasPriceAverageInWei = gasPrices.average * .1 
+    store.dispatch(GotCurrentGasPrice(gasPriceAverageInWei));
   } catch (error) {
     store.dispatch(Error(error));
   }
@@ -479,7 +481,7 @@ export function SendTransaction() {
         console.log("jm check image dataObject", dataObject);
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
+            .post(WEB_SERVER_API_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
               console.log("this is the response from web server api upload*****", response)
               return response;
