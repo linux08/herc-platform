@@ -1,4 +1,54 @@
-# [H]ERC Decentralized Application with Identity Powered by Https://Edge.App
+#  This branch:
+#  UI OverHaul!
+## I've changed the loading screen to save time styling components. 
+
+## `1.12.2019 - 1.31.2018`
+###  UI Refactor
+ (🎩 @stefanbemelmans)
+  
+🔨 Improvements
+
+`herc-edge-login`
+*  Frame - Wire - Polish 
+*  fix image map in Register Asset
+*  fix image map in TX  
+*  Supply Chain Image Component
+*  EDI Component
+*  Document Component
+*  Metrics Component
+*  EDI Modal
+*  Metrics Modal
+*  All Component States have update/edit/cancel functionality
+*  All Components reactive
+*  Navigation standards finalized
+*  Supply Chain Side Choice Page
+*  Register Flow; Supply Chain Flow; maybe wallet is ready for Wires
+*  Upgraded Navigation, Flows are separated into individual navigation stacks
+*  Converted the SVG icon into a PNG icon
+*  Majority of the Components and buttons are built
+
+## `1.1.2019 - 1.11.2018`
+### UI Refactor
+ (🎩 @stefanbemelmans)
+  
+🔨 Improvements
+
+`herc-edge-login` 
+
+*  Begin standardizing UI and component styles
+    *  Started with RegAsset Flow
+        *  Password Input
+        *  Text Input
+        *  Base Body
+        *  Base Content
+        *  Header
+        *  Modals
+*  Evaluating react-native-transitions 
+
+*  Begin refactor of the navigation. This requires a significant update of the current navigation library.
+
+*  Resarched and discovered a solution to responsive UI components
+<!-- # [H]ERC Decentralized Application with Identity Powered by Https://Edge.App
 
 ![HERC Wallet](https://i.imgur.com/AG1gBzZ.png)
 
@@ -139,4 +189,4 @@ Parlimentary or Significant changes to HERC protocol's smart contracts, architec
 ### Coding Conventions
 As we have found from other projects such as 0x and other Ethereum based platforms we use a custom set of [TSLint](https://palantir.github.io/tslint/) rules to enforce our coding conventions. 
 
-In order to see style violation erros, install a tsliner for your text editor. e.g Atom's [atom-typescript](https://atom.io/packages/atom-typescript)
+In order to see style violation erros, install a tsliner for your text editor. e.g Atom's [atom-typescript](https://atom.io/packages/atom-typescript) -->
