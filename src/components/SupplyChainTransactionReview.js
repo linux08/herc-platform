@@ -1,9 +1,21 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Image, TouchableHighlight, Alert, ScrollView, YellowBox, Modal, ActivityIndicator, Button } from 'react-native';
-import { connect } from 'react-redux';
-import { createStackNavigator } from 'react-navigation';
-import styles from '../assets/styles';
-import submit from "./buttons/submit.png"; // todo: turn into vector
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+  Alert,
+  ScrollView,
+  YellowBox,
+  Modal,
+  Linking,
+  ActivityIndicator,
+  Button
+} from "react-native";
+import { connect } from "react-redux";
+import { StackNavigator } from "react-navigation";
+import styles from "../assets/styles";
 import { sendTrans } from "../actions/AssetActions";
 import { storeTransactionIds, clearTransactionStore } from "../actions/WalletActActions";
 import fee from "../assets/hercLogoPillar.png";
@@ -92,54 +104,54 @@ class SupplyChainTransactionReview extends Component {
   }
 
 
-  // _checkBalance() {
-  //   if (!this.state.balance) {
-  //     return;
-  //   }
-  //   if (DEVELOPERS.includes(this.props.edgeAccount)){
-  //     console.log("You are a developer. jm")
+  _checkBalance() {
+    if (!this.state.balance) {
+      return;
+    }
+    if (DEVELOPERS.includes(this.props.edgeAccount)){
+      console.log("You are a developer. jm")
 
-  //     this._changeModalVisibility(true);
-  //     this._sendTrans()
-  //   } else {
-  //     console.log("You are NOT a developer. jm")
-  //     // let docPrice = parseFloat(this._getDocPrice());
-  //     // let imgPrice = parseFloat(this._getImgPrice());
-  //     // let networkFee = parseFloat(this._getNetworkFee());
-  //     // let docImgFee = docPrice + imgPrice
-  //     // let total = docPrice + imgPrice + networkFee;
-  //     // let convertingTotal= new BigNumber(total); // don't have to times 1e18 because its already hercs
-  //     let balance = new BigNumber(this.state.balance);
+      this._changeModalVisibility(true);
+      this._sendTrans()
+    } else {
+      console.log("You are NOT a developer. jm")
+      // let docPrice = parseFloat(this._getDocPrice());
+      // let imgPrice = parseFloat(this._getImgPrice());
+      // let networkFee = parseFloat(this._getNetworkFee());
+      // let docImgFee = docPrice + imgPrice
+      // let total = docPrice + imgPrice + networkFee;
+      // let convertingTotal= new BigNumber(total); // don't have to times 1e18 because its already hercs
+      let balance = new BigNumber(this.state.balance);
 
-  //     // let docImgFeePrepped = (docImgFee * Math.pow(10,18)).toFixed(0);
-  //     // let networkFeePrepped = (networkFee * Math.pow(10,18)).toFixed(0);
-  //     let docImgFeePrepped = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).multipliedBy(1000000000000000000).toFixed(0);
-  //     let networkFeePrepped = new BigNumber(this._getNetworkFee()).multipliedBy(1000000000000000000).toFixed(0);
-  //     let totalBN = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).plus(this._getNetworkFee());
-  //     let newbalance = balance.minus(totalBN);
+      // let docImgFeePrepped = (docImgFee * Math.pow(10,18)).toFixed(0);
+      // let networkFeePrepped = (networkFee * Math.pow(10,18)).toFixed(0);
+      let docImgFeePrepped = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).multipliedBy(1000000000000000000).toFixed(0);
+      let networkFeePrepped = new BigNumber(this._getNetworkFee()).multipliedBy(1000000000000000000).toFixed(0);
+      let totalBN = new BigNumber(this._getDocPrice()).plus(this._getImgPrice()).plus(this._getNetworkFee());
+      let newbalance = balance.minus(totalBN);
 
-  //     console.log("Do you have enough? jm", newbalance.isPositive());
+      console.log("Do you have enough? jm", newbalance.isPositive());
 
-  //     if (newbalance.isNegative()) {
-  //       Alert.alert(
-  //         "Insufficient Funds",
-  //         "Balance: " + this.state.balance + " HERC",
-  //         [
-  //           {
-  //             text: "Top Up Hercs",
-  //             onPress: () => Linking.openURL("https://purchase.herc.one/"),
-  //             style: "cancel"
-  //           },
-  //           { text: "Ok", onPress: () => console.log("OK Pressed") }
-  //         ],
-  //         { cancelable: true }
-  //       );
-  //     } else {
-  //       this._changeModalVisibility(true);
-  //       this._sendTrans();
-  //     }
-  //   }
-  // }
+      if (newbalance.isNegative()) {
+        Alert.alert(
+          "Insufficient Funds",
+          "Balance: " + this.state.balance + " HERC",
+          [
+            {
+              text: "Top Up Hercs",
+              onPress: () => Linking.openURL("https://purchase.herc.one/"),
+              style: "cancel"
+            },
+            { text: "Ok", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: true }
+        );
+      } else {
+        this._changeModalVisibility(true);
+        this._sendTrans();
+      }
+    }
+  }
 
   _changeModalVisibility = visible => {
     this.setState({
@@ -162,144 +174,144 @@ class SupplyChainTransactionReview extends Component {
     this.props.sendTrans(sendTransObj);
   }
 
-  // _getNetworkFee = () => {
-  //   //Security Fee should be $ 0.000032 worth of hercs. The response should be in hercs.
-  //   //Per Use Fee should be $ 0.000032 worth of hercs. The response should be in Hercs.
-  //   //Network Fee is the combined value of security fee and per use fee. The response should be in Hercs.
-  //   if (this.state.hercValue) {
-  //     let dynamicHercValue = this.state.hercValue;
-  //     let securityFeeInHercs = 0.000032 / dynamicHercValue;
-  //     let perUseFeeInHercs = 0.000032 / dynamicHercValue;
-  //     let networkFee = securityFeeInHercs + perUseFeeInHercs;
-  //     let convertingNetworkFee = new BigNumber(networkFee);
-  //     let newNetworkFee = convertingNetworkFee.toFixed(18);
-  //     return newNetworkFee;
-  //   }
-  // };
+  _getNetworkFee = () => {
+    //Security Fee should be $ 0.000032 worth of hercs. The response should be in hercs.
+    //Per Use Fee should be $ 0.000032 worth of hercs. The response should be in Hercs.
+    //Network Fee is the combined value of security fee and per use fee. The response should be in Hercs.
+    if (this.state.hercValue) {
+      let dynamicHercValue = this.state.hercValue;
+      let securityFeeInHercs = 0.000032 / dynamicHercValue;
+      let perUseFeeInHercs = 0.000032 / dynamicHercValue;
+      let networkFee = securityFeeInHercs + perUseFeeInHercs;
+      let convertingNetworkFee = new BigNumber(networkFee);
+      let newNetworkFee = convertingNetworkFee.toFixed(18);
+      return newNetworkFee;
+    }
+  };
 
-  // _getDynamicHercValue = async () => {
-  //   return fetch(
-  //     "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5",
-  //     {
-  //       method: "GET"
-  //     }
-  //   )
-  //     .then(response => response.json())
-  //     .then(responseJson => {
-  //       let responseObject = responseJson;
-  //       let highPrice = responseObject.h;
-  //       return highPrice;
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
-  // };
+  _getDynamicHercValue = async () => {
+    return fetch(
+      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5",
+      {
+        method: "GET"
+      }
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        let responseObject = responseJson;
+        let highPrice = responseObject.h;
+        return highPrice;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
-  // _getDocPrice = () => {
-  //   let transDat = this.props.transDat;
-  //   if (transDat.documents) {
-  //     let dynamicHercValue = this.state.hercValue;
-  //     let docPrice = 0.000032 / dynamicHercValue;
-  //     let convertingPrice = new BigNumber(docPrice);
-  //     let newDocPrice = convertingPrice.toFixed(18);
-  //     return newDocPrice;
-  //   } else {
-  //     let docPrice = 0;
-  //     return docPrice;
-  //   }
-  // };
+  _getDocPrice = () => {
+    let transDat = this.props.transDat;
+    if (transDat.documents) {
+      let dynamicHercValue = this.state.hercValue;
+      let docPrice = 0.000032 / dynamicHercValue;
+      let convertingPrice = new BigNumber(docPrice);
+      let newDocPrice = convertingPrice.toFixed(18);
+      return newDocPrice;
+    } else {
+      let docPrice = 0;
+      return docPrice;
+    }
+  };
 
-  // _getImgPrice = () => {
-  //   // as of 12/30/18 Image Fee (storj .000000002/kB)
-  //   let transDat = this.props.transDat;
-  //   let dynamicHercValue = this.state.hercValue;
+  _getImgPrice = () => {
+    // as of 12/30/18 Image Fee (storj .000000002/kB)
+    let transDat = this.props.transDat;
+    let dynamicHercValue = this.state.hercValue;
 
-  //   if (transDat.images) {
-  //     console.log(
-  //       "made it into the transdat images and here is the dynamic herc value from state",
-  //       dynamicHercValue
-  //     );
-  //     let imgPrice =
-  //       ((transDat.images.size / 1024) * 0.00000002) / dynamicHercValue;
-  //     let newImgPrice = imgPrice.toFixed(18);
-  //     console.log(newImgPrice, "this is the new img price on line 285");
-  //     return newImgPrice;
-  //   } else {
-  //     let imgPrice = 0;
-  //     console.log(
-  //       "this is in the else statement imgPrice should be 0",
-  //       imgPrice
-  //     );
-  //     return imgPrice;
-  //   }
-  // };
+    if (transDat.images) {
+      console.log(
+        "made it into the transdat images and here is the dynamic herc value from state",
+        dynamicHercValue
+      );
+      let imgPrice =
+        ((transDat.images.size / 1024) * 0.00000002) / dynamicHercValue;
+      let newImgPrice = imgPrice.toFixed(18);
+      console.log(newImgPrice, "this is the new img price on line 285");
+      return newImgPrice;
+    } else {
+      let imgPrice = 0;
+      console.log(
+        "this is in the else statement imgPrice should be 0",
+        imgPrice
+      );
+      return imgPrice;
+    }
+  };
 
-  // _hasImage = transObj => {
-  //   let hercValue = this.state.hercValue;
-  //   if (transObj.images) {
-  //     let imgPrice = ((transObj.images.size / 1024) * 0.00000002) / hercValue;
-  //     return (
-  //       <View style={localStyles.imgContainer}>
-  //         <Text style={localStyles.TransactionReviewTime}>Images</Text>
-  //         <Image
-  //           style={localStyles.thumb}
-  //           source={{ uri: transObj.images.image }}
-  //         />
-  //         <Text style={localStyles.revPropVal}>
-  //           {(transObj.images.size / 1024).toFixed(3)} kb
-  //         </Text>
-  //         <View style={localStyles.feeContainer}>
-  //           <Image style={localStyles.hercPillarIcon} source={fee} />
-  //           <Text style={localStyles.teePrice}>{imgPrice.toFixed(18)}</Text>
-  //         </View>
-  //       </View>
-  //     );
-  //   }
-  //   return <Text style={localStyles.revPropVal}>No Images</Text>;
-  // };
+  _hasImage = transObj => {
+    let hercValue = this.state.hercValue;
+    if (transObj.images) {
+      let imgPrice = ((transObj.images.size / 1024) * 0.00000002) / hercValue;
+      return (
+        <View style={localStyles.imgContainer}>
+          <Text style={localStyles.TransactionReviewTime}>Images</Text>
+          <Image
+            style={localStyles.thumb}
+            source={{ uri: transObj.images.image }}
+          />
+          <Text style={localStyles.revPropVal}>
+            {(transObj.images.size / 1024).toFixed(3)} kb
+          </Text>
+          <View style={localStyles.feeContainer}>
+            <Image style={localStyles.hercPillarIcon} source={fee} />
+            <Text style={localStyles.teePrice}>{imgPrice.toFixed(18)}</Text>
+          </View>
+        </View>
+      );
+    }
+    return <Text style={localStyles.revPropVal}>No Images</Text>;
+  };
 
-  // _hasDocuments = transObj => {
-  //   let hercValue = this.state.hercValue;
-  //   if (transObj.documents) {
-  //     let docPrice = 0.000032 / hercValue;
-  //     return (
-  //       <View style={localStyles.docContainer}>
-  //         <Text style={localStyles.TransactionReviewTime}>Documents</Text>
-  //         <Text style={localStyles.text}>{transObj.documents.name}</Text>
-  //         <Text style={localStyles.text}>
-  //           {(transObj.documents.size / 1024).toFixed(3)} kb
-  //         </Text>
-  //         <View style={localStyles.feeContainer}>
-  //           <Image style={localStyles.hercPillarIcon} source={fee} />
-  //           <Text style={localStyles.teePrice}>{docPrice.toFixed(18)}</Text>
-  //         </View>
-  //       </View>
-  //     );
-  //   }
-  //   return <Text style={localStyles.revPropVal}>No Documents</Text>;
-  // };
+  _hasDocuments = transObj => {
+    let hercValue = this.state.hercValue;
+    if (transObj.documents) {
+      let docPrice = 0.000032 / hercValue;
+      return (
+        <View style={localStyles.docContainer}>
+          <Text style={localStyles.TransactionReviewTime}>Documents</Text>
+          <Text style={localStyles.text}>{transObj.documents.name}</Text>
+          <Text style={localStyles.text}>
+            {(transObj.documents.size / 1024).toFixed(3)} kb
+          </Text>
+          <View style={localStyles.feeContainer}>
+            <Image style={localStyles.hercPillarIcon} source={fee} />
+            <Text style={localStyles.teePrice}>{docPrice.toFixed(18)}</Text>
+          </View>
+        </View>
+      );
+    }
+    return <Text style={localStyles.revPropVal}>No Documents</Text>;
+  };
 
-  // _hasList = transObj => {
-  //   if (transObj.properties) {
-  //     list = Object.keys(transObj.properties).map((name, idx) => {
-  //       return (
-  //         <View key={idx} style={localStyles.revPropField}>
-  //           <Text style={localStyles.TransactionReviewName}>{name}:</Text>
-  //           <Text style={localStyles.revPropVal}>
-  //             {transObj.properties[name]}
-  //           </Text>
-  //         </View>
-  //       );
-  //     });
-  //     return (
-  //       <View style={localStyles.listContainer}>
-  //         <Text style={localStyles.TransactionReviewTime}>Properties</Text>
-  //         {list}
-  //       </View>
-  //     );
-  //   }
-  //   return <Text style={localStyles.revPropVal}>No Properties</Text>;
-  // };
+  _hasList = transObj => {
+    if (transObj.properties) {
+      list = Object.keys(transObj.properties).map((name, idx) => {
+        return (
+          <View key={idx} style={localStyles.revPropField}>
+            <Text style={localStyles.TransactionReviewName}>{name}:</Text>
+            <Text style={localStyles.revPropVal}>
+              {transObj.properties[name]}
+            </Text>
+          </View>
+        );
+      });
+      return (
+        <View style={localStyles.listContainer}>
+          <Text style={localStyles.TransactionReviewTime}>Properties</Text>
+          {list}
+        </View>
+      );
+    }
+    return <Text style={localStyles.revPropVal}>No Properties</Text>;
+  };
 
   _goToMenu = () => {
     this._changeModalVisibility(false);
