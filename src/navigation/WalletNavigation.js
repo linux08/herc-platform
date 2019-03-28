@@ -3,7 +3,7 @@ import { createStackNavigator } from "react-navigation";
 
 import Header from "../components/Headers/Header";
 
-import WalletFlow from "../screens/Testing/WalletFlow";
+import WalletFlow from "../screens/MainApp/WalletFlow";
 const WalletNavigator = createStackNavigator(
     {
         WalletFlow: {

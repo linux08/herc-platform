@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Clipboard,
+  ActivityIndicator,
   Linking
 } from "react-native";
 import React from "react";
@@ -38,7 +39,9 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      transactionID: ""
+      transactionID: "",
+      isVisible: false,
+      loading: true
     };
   }
 
@@ -50,34 +53,60 @@ class WalletFlow extends React.Component {
     )
   });
 
-  componentDidMount = async () => {
-    console.log(this.props, "these are the props****");
-    if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
+  componentWillUnmount = () => {
+    this.setState({
+         isVisible: false
+        })
+  }
+
+  componentWillMount = async () => {
+    console.log(this.props, "jm these are the props****");
+    try{
       let light = await this.props.wallet.getEnabledTokens();
       let enabledTokens = light.reverse();
-      console.log("###########" + enabledTokens);
       this.setState(
         {
-          availableTokens: enabledTokens,
           displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
-      );
-    } else {
-      let enabledTokens = Object.keys(this.props.watchBalance).reverse();
-      console.log("###########" + enabledTokens);
-      this.setState(
-        {
-          availableTokens: enabledTokens,
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
+        }
       );
     }
-
-    await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
-    this.setInterval(() => console.log(this.state.transactions), 1000);
+    catch(e){
+      let enabledTokens = ['HERC', 'ETH']
+      this.setState(
+        {
+          displayWallet: enabledTokens[0] // initiate with HERC wallet
+        }
+      );
+    }
   };
+
+  initiateWallet = () => {
+    console.log('jm this.props.ethereumAddress should be here', this.props.ethereumAddress);
+    this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
+    if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
+      if (this.props.wallet) {
+        let displayWallet = this.state.displayWallet;
+        console.log(
+          "Display Wallet: ",
+          this.props.wallet.balances[displayWallet]
+        );
+        let tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+          .times(1e-18)
+          .toFixed(18);
+        this.setState({tempBalance: tempBalance})
+        return tempBalance
+      }
+    } else {
+      let displayWallet = this.state.displayWallet;
+      let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+        .times(1e-18)
+        .toFixed(18);
+      this.setState({tempBalance: tempBalance})
+      return tempBalance
+    }
+  }
 
   _updateWallet = () => {
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
@@ -92,7 +121,6 @@ class WalletFlow extends React.Component {
         )
           .times(1e-18)
           .toFixed(18);
-        console.log(tempBalance, "***temp balance***");
         return tempBalance;
         // return "0.000000"; //don't assume it is 0
       }
@@ -333,7 +361,19 @@ class WalletFlow extends React.Component {
   };
 
   render() {
-    let currencyValue = this._updateWallet();
+    let currencyValue;
+    if (!this.props.ethereumAddress) {
+      return (
+        <View style={localStyles.modalBackground}>
+          <ActivityIndicator animating={true} size="large" color="#000000" />
+        </View>
+      )
+  }
+    if (this.state.tempBalance) {
+      currencyValue = this._updateWallet();
+    } else {
+      currencyValue = this.initiateWallet();
+    }
 
     return (
       <View style={localStyles.walletContainer}>
@@ -597,7 +637,7 @@ class WalletFlow extends React.Component {
                     </Text>
                   </View>
                   {/* ***THIS IS THE DOLLARS VALUE WORTH OF CRYPTO**
-                  
+
                   <View>
                     <Text style={modalStyles.menuSubtitle}>US Dollars</Text>
                     <Text
@@ -704,6 +744,12 @@ export default connect(
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({
+  modalBackground: {
+      flex:1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffffff'
+  },
   walletContainer: {
     flex: 1,
     backgroundColor: "#0b0368",
