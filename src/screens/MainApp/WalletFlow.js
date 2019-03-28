@@ -95,8 +95,8 @@ class WalletFlow extends React.Component {
         )
           .times(1e-18)
           .toFixed(18);
-        console.log(tempBalance, "***temp balance***");
         this.setState({tempBalance: tempBalance})
+        return tempBalance
       }
     } else {
       let displayWallet = this.state.displayWallet;
@@ -104,6 +104,7 @@ class WalletFlow extends React.Component {
         .times(1e-18)
         .toFixed(18);
       this.setState({tempBalance: tempBalance})
+      return tempBalance
     }
   }
 
@@ -120,7 +121,6 @@ class WalletFlow extends React.Component {
         )
           .times(1e-18)
           .toFixed(18);
-        console.log(tempBalance, "***temp balance***");
         return tempBalance;
         // return "0.000000"; //don't assume it is 0
       }
@@ -361,17 +361,18 @@ class WalletFlow extends React.Component {
   };
 
   render() {
+    let currencyValue;
     if (!this.props.ethereumAddress) {
       return (
         <View style={localStyles.modalBackground}>
           <ActivityIndicator animating={true} size="large" color="#000000" />
         </View>
-        )
-    }
+      )
+  }
     if (this.state.tempBalance) {
-      this._updateWallet();
+      currencyValue = this._updateWallet();
     } else {
-      this.initiateWallet();
+      currencyValue = this.initiateWallet();
     }
 
     return (
@@ -388,7 +389,7 @@ class WalletFlow extends React.Component {
                     alignItems: "center"
                   }}
                 >
-                  <Text style={localStyles.balanceText}>{this.state.tempBalance} </Text>
+                  <Text style={localStyles.balanceText}>{currencyValue} </Text>
                   {this.state.displayWallet === "HERC" ? (
                     <Image style={localStyles.icon} source={hercCoin} />
                   ) : (
