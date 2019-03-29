@@ -29,8 +29,7 @@ class MetricModal extends Component {
     }
 
     renderMetrics = (coreProps) => {
-
-        let metrics = Object.keys(coreProps);
+        let metrics = Object.values(coreProps);
         let numOfMetrics = metrics.length;
         let metricList = [];
         metrics.forEach((x, i) => {
