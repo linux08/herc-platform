@@ -74,10 +74,10 @@ export function CardCostDisplay(props) {
 
 
 export const SimpleAssetCard = (props) => {
-  console.log(props, "this is state, looking for the deets passed in")
+  console.log(props, "jm this is state, looking for the deets passed in")
   return (
     <View style={assetCardStyles.assetCard}>
-      
+
       <View style={assetCardStyles.assetImageContainer}>
 
           <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />

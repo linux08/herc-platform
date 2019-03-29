@@ -134,6 +134,10 @@ class RegAsset1 extends Component {
     onPressTest = () => {
         let newAsset = Object.assign({}, this.state)
         console.log(newAsset, "hopefully shallow clone")
+        if (!newAsset.newAsset.Logo){
+          this.setState({ showImageErrorModal: true })
+        }
+
         // if (!newAsset.newAsset.Logo){
         //   console.log('jm DO NOT PASS GO')
         //   // insert Alert modal here
@@ -151,11 +155,9 @@ class RegAsset1 extends Component {
         if (this.props.canRegisterAsset){
           this.props.AddAsset(this.state.newAsset);
           this.props.navigation.navigate("RegAsset2");
+        } else {
+          console.log('jm this.props.canRegisterAsset is undefined/false');
         }
-        else {
-          this.setState({ showImageErrorModal: true })
-        }
-
     }
 
     // function to add metric, am considering implementing the modal, but this
