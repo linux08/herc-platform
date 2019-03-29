@@ -11,7 +11,7 @@ import styles from "../../assets/styles";
 import { AddAsset } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
 import { AssetCard } from "../../components/AssetCard";
 import { ToggleCamSourceModal } from "../../features/CamSourceModal/CamSourceModalActionCreators";
-// import CustomModal from '../../../components/modals/CustomModal';
+import CustomModal from '../../components/modals/CustomModal';
 import CameraSourceModal from "../../features/CamSourceModal/Modal/CameraSourceModal";
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
@@ -25,6 +25,7 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
+          showImageErrorModal: false,
           metrics: {}
         }
         this.corePropChange = this.corePropChange.bind(this);
@@ -146,13 +147,13 @@ class RegAsset1 extends Component {
         //       dismissRejectText={"All Done"}
         //   />
         // }
+        console.log('jm check canRegisterAsset flag', this.props.canRegisterAsset);
         if (this.props.canRegisterAsset){
           this.props.AddAsset(this.state.newAsset);
           this.props.navigation.navigate("RegAsset2");
         }
         else {
-          console.error("jm can't register asset!");
-          //throw error customModal now
+          this.setState({ showImageErrorModal: true })
         }
 
     }
@@ -239,6 +240,15 @@ class RegAsset1 extends Component {
                     routeName={'RegAsset1'}
                     setPic={this.setPic}
                 />
+
+                <CustomModal
+                    content={"Please include an image with your asset."}
+                    modalCase="error"
+                    isVisible={this.state.showImageErrorModal}
+                    onBackdropPress={() => {this.setState({showImageErrorModal: false}) }}
+                    closeModal={() => {this.setState({showImageErrorModal: false}) }}
+                    dismissRejectText={"OK"}
+                    />
 
                 {/* <CustomModal
                     heading={"Your thing is Happening"}
