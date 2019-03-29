@@ -55,13 +55,28 @@ class WalletFlow extends React.Component {
 
   componentWillUnmount = () => {
     this.setState({
-         isVisible: false
-        })
+      isVisible: false
+    })
   }
 
   componentWillMount = async () => {
-    console.log(this.props, "jm these are the props****");
-    try{
+
+    Alert.alert(
+      "Welcome to HERCULES",
+      "Registering an asset requires 1000 HERC. Click the button below to purchase additional HERC.",
+      [
+        {
+          text: "Already Have!",
+          onPress: () => {console.log("clicked already have!")}
+        },
+        {
+          text: "Purchase",
+          onPress: () => { Linking.openURL("https://purchase.herc.one") }
+        }
+    ]
+    );
+
+    try {
       let light = await this.props.wallet.getEnabledTokens();
       let enabledTokens = light.reverse();
       this.setState(
@@ -70,7 +85,7 @@ class WalletFlow extends React.Component {
         }
       );
     }
-    catch(e){
+    catch (e) {
       let enabledTokens = ['HERC', 'ETH']
       this.setState(
         {
@@ -95,7 +110,7 @@ class WalletFlow extends React.Component {
         )
           .times(1e-18)
           .toFixed(18);
-        this.setState({tempBalance: tempBalance})
+        this.setState({ tempBalance: tempBalance })
         return tempBalance
       }
     } else {
@@ -103,7 +118,7 @@ class WalletFlow extends React.Component {
       let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
         .times(1e-18)
         .toFixed(18);
-      this.setState({tempBalance: tempBalance})
+      this.setState({ tempBalance: tempBalance })
       return tempBalance
     }
   }
@@ -255,10 +270,10 @@ class WalletFlow extends React.Component {
 
   _displayActivity = (transaction, index) => {
     let transactionAmount;
-    if(this.state.displayWallet === "HERC"){
+    if (this.state.displayWallet === "HERC") {
       //convert the HERC values to appropriate decimal places
       transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
-    }else if ( this.state.displayWallet === "ETH"){
+    } else if (this.state.displayWallet === "ETH") {
       //ETH values are received at correct decimal places
       transactionAmount = new BigNumber(transaction.value).toFixed(18);
     }
@@ -296,7 +311,7 @@ class WalletFlow extends React.Component {
           </Text>
           <Text style={{ fontWeight: "bold" }}>
             {transactionAmount}
-             {this.state.displayWallet}
+            {this.state.displayWallet}
           </Text>
         </View>
         <Text
@@ -368,7 +383,7 @@ class WalletFlow extends React.Component {
           <ActivityIndicator animating={true} size="large" color="#000000" />
         </View>
       )
-  }
+    }
     if (this.state.tempBalance) {
       currencyValue = this._updateWallet();
     } else {
@@ -393,8 +408,8 @@ class WalletFlow extends React.Component {
                   {this.state.displayWallet === "HERC" ? (
                     <Image style={localStyles.icon} source={hercCoin} />
                   ) : (
-                    <Icon name="ethereum" size={26} />
-                  )}
+                      <Icon name="ethereum" size={26} />
+                    )}
                 </View>
               </View>
               <View style={localStyles.balanceInnerRightContainer}>
@@ -423,8 +438,8 @@ class WalletFlow extends React.Component {
           <ScrollView>
             {typeof this.state.transactions !== "undefined"
               ? this.state.transactions.map((transaction, index) =>
-                  this._displayActivity(transaction, index)
-                )
+                this._displayActivity(transaction, index)
+              )
               : null}
           </ScrollView>
         </View>
@@ -718,7 +733,7 @@ class WalletFlow extends React.Component {
           modalCase="error"
           content="Something went wrong."
           dismissRejectText="Try again"
-          closeModal={() => {}}
+          closeModal={() => { }}
         />
       </View>
     );
@@ -745,10 +760,10 @@ export default connect(
 
 const localStyles = StyleSheet.create({
   modalBackground: {
-      flex:1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#ffffff'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   walletContainer: {
     flex: 1,
