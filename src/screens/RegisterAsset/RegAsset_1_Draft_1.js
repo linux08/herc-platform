@@ -157,6 +157,7 @@ class RegAsset1 extends Component {
           this.props.navigation.navigate("RegAsset2");
         } else {
           console.log('jm this.props.canRegisterAsset is undefined/false');
+          Alert.alert("Your account does not meet the minimum amount\nto register an asset.");
         }
     }
 
@@ -167,7 +168,7 @@ class RegAsset1 extends Component {
         let newMetricNumber = Object.keys(this.state.newAsset.CoreProps).length + 1;
         console.log("CoreProps Length: ", newMetricNumber)
         if (newMetricNumber >= 16) {
-            Alert("NO More CoreProps");
+            Alert.alert("NO More CoreProps");
         } else {
             let newMetricName = "Metric" + newMetricNumber;
 

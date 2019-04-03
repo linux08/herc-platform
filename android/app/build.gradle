@@ -104,7 +104,7 @@ android {
         applicationId "com.HERC"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 3
+        versionCode 4
         versionName "0.10.1"
         multiDexEnabled true
         ndk {
