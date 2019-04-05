@@ -15,6 +15,10 @@ import ColorConstants from '../../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';
 
 import {assetCardStyles} from './trackComponentStyles';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
+const myIcon = <Icon name="copy" size={10} color="black" />;
 
 
 export const SwiperTextFieldWithLabel = props => {
@@ -30,7 +34,10 @@ export const SwiperTextFieldWithLabel = props => {
   return (
     <View key={text} style={localStyles.textFieldContainer}>
       <Text style={localStyles.labelText}>{props.label}</Text>
+      <View style={{flexDirection:"row"}}>
       <Text style={localStyles.textField}>{text || ''}</Text>
+      {myIcon}
+      </View>
     </View>
   );
 };
@@ -111,22 +118,22 @@ const localStyles = StyleSheet.create({
     backgroundColor: ColorConstants.ElementBG,
     margin: 5,
     paddingLeft: 5,
-    borderRadius: 6
+    borderRadius: 6,
     // height: heightPercentageToDP(((50 / height) * 100).toString()),
   },
 
   textField: {
     color: ColorConstants.MainBlue,
-    width: "100%",
-    marginLeft: 0,
-    marginRight: 0,
+    // width: "100%",
+    // marginLeft: 0,
+    // marginRight: 0,
     // fontSize: 14,
     paddingLeft: 5,
     textAlign: "left",
     fontSize: 14,
-    borderRadius: 8,
+    // borderRadius: 8,
     // height: heightPercentageToDP('4.95'),
-    paddingBottom: 0
+    // paddingBottom: 0
   },
   costFieldAmount: {
     color: ColorConstants.MainBlue,
@@ -226,11 +233,10 @@ const localStyles = StyleSheet.create({
     width: '75%',
     backgroundColor: ColorConstants.MainGold,
     borderRadius: 8,
-    margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    padding: 5,
-    marginTop: 10,
+    marginTop: "1%",
+    marginBottom: "1%",
     marginRight: 20,
     marginLeft: 20,
     alignSelf: "center"

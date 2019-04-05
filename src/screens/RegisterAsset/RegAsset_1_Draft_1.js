@@ -217,7 +217,7 @@ class RegAsset1 extends Component {
                         placeholderTextColor="crimson"
                     />
 
-                    <ScrollView style={{ alignSelf: "center", width: "103%", maxHeight: '40%' }}>
+                    <ScrollView style={{ alignSelf: "center", width: "103%", maxHeight: '30%' }}>
                         {metricInputs}
                     </ScrollView>
                     <AddMetricButton onPress={() => this.addMetric()} />

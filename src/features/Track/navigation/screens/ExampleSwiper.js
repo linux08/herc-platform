@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Swiper from 'react-native-deck-swiper'
-import { Button, StyleSheet, Text, View, Image, Dimensions, Share } from 'react-native'
+import { Button, StyleSheet, Text, View, Image, Dimensions, Share, TouchableHighlight, Clipboard, Alert } from 'react-native'
 import AssetCard from '../../.././../components/AssetCard';
 import { connect } from "react-redux";
 import ColorConstants from '../../../../constants/ColorConstants';
@@ -9,6 +9,8 @@ const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
 const { height, width } = Dimensions.get('window');
 
 import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from './components';
+import { AlertAddAlert } from 'material-ui/svg-icons';
+
 // demo purposes only
 // function * range (start, end) {
 //   for (let i = start; i <= end; i++) {
@@ -26,9 +28,6 @@ import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from
 
 // }
 
-
-
-
 class ExampleSwiper extends Component {
   constructor(props) {
     super(props)
@@ -36,7 +35,8 @@ class ExampleSwiper extends Component {
       cards: Object.keys(this.props.transactions).map(x => this.props.transactions[x]),
       swipedAllCards: false,
       swipeDirection: '',
-      cardIndex: 0
+      cardIndex: 0,
+
     }
   }
 
@@ -62,30 +62,30 @@ class ExampleSwiper extends Component {
     console.log(cardData, 'in makeing message')
 
     let data = cardData.data;
-    
-let messageData;
-    for(var key in data){
-      if(data.hasOwnProperty(key)){
-      messageData =  key + ': '+ data[key] + ';' + "\n";
-    }
-  }
 
-console.log(messageData, 'new messageDAta!')    
+    let messageData;
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        messageData = key + ': ' + data[key] + ';' + "\n";
+      }
+    }
+
+    console.log(messageData, 'new messageDAta!')
 
     let header = cardData.header
     let location = header.tXLocation.toUpperCase() + " ";
     let time = header.dTime;
-    let password =  header.password;
-    
+    let password = header.password;
+
     let title = header.name + " " + location + " Transaction @ " + time + ";" + "\n"
-     
+
 
     let price = "Hercs: " + header.price + ";\n";
     let sig = "Sent from Herc v.1.0"
 
-    let message = title + messageData + "\n" + 'Password: '+ password + "\n" + 'Price: ' + price + "\n " + sig;
-    
-   
+    let message = title + messageData + "\n" + 'Password: ' + password + "\n" + 'Price: ' + price + "\n " + sig;
+
+
     return [title, message];
   }
 
@@ -105,6 +105,29 @@ console.log(messageData, 'new messageDAta!')
           'com.apple.UIKit.activity.PostToTwitter'
         ]
       })
+  }
+
+  _copyIPFSHashToClipboard = (data) => {
+    let ipfsDirectLink = "https://ipfs.io/ipfs/" + data;
+    Clipboard.setString(ipfsDirectLink);
+    this._alertCopied(ipfsDirectLink);
+  }
+
+  _copyFactomHashToClipboard = (chainID, entryID) => {
+    let factomDirectLink = "https://explorer.factom.com/chains/" + chainID + "/entries/" + entryID;
+    Clipboard.setString(factomDirectLink);
+    this._alertCopied(factomDirectLink);
+  }
+
+  _copyNonHashToClipboard = (data) => {
+    Clipboard.setString(data);
+    this._alertCopied(data);
+  }
+
+  _alertCopied = (text) => {
+    Alert.alert(
+      'Copied', text
+    );
   }
 
 
@@ -137,19 +160,52 @@ console.log(messageData, 'new messageDAta!')
 
     return (
       <View key={unKey} style={swiperStyles.card}>
-         {header.dTime && <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />}
+        {header.dTime && <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />}
 
-        <SwiperTextFieldWithLabel key={factomChain} label={'Factom Chain'} text={factomChain} />
+        <TouchableHighlight onLongPress={() => this._copyNonHashToClipboard(factomChain)} style={{ width: "97%" }}>
+          <View>
+            <SwiperTextFieldWithLabel key={factomChain} label={'Factom Chain'} text={factomChain} />
+          </View>
+        </TouchableHighlight>
 
-        {header.tXLocation && <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />}
+        {/* line below is currently not applicable */}
+        {/* {header.tXLocation && <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />} */}
 
-        <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
 
-        {corePropsHash && <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
-        {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
-        {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
-        {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
-        {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
+        <TouchableHighlight onLongPress={() => this._copyFactomHashToClipboard(factomChain, factomEntry)} style={{ width: "97%" }}>
+          <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
+        </TouchableHighlight>
+
+        <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }} >
+          <View>
+            {corePropsHash && <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }}>
+          <View>
+            {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(metricsHash)} style={{ width: "97%" }} >
+          <View>
+            {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(documentHash)} style={{ width: "97%" }}>
+          <View>
+            {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(ediTHash)} style={{ width: "97%" }}>
+          <View>
+            {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
+          </View>
+        </TouchableHighlight>
+
         {header.price && <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />}
 
         <SwiperBigYellowButton buttonName={'View Factom Chain'} key={index} onPress={() => this._goToWebView(factomChain, factomEntry)} />
@@ -199,7 +255,7 @@ console.log(messageData, 'new messageDAta!')
         >
           {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
 
-          <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' />
+          {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
       </View>
     )
@@ -232,11 +288,10 @@ export const swiperStyles = StyleSheet.create({
     backgroundColor: ColorConstants.MainGray,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
 
     alignSelf: 'center',
     alignContent: "center",
