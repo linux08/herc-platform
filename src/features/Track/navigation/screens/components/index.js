@@ -14,14 +14,15 @@ const { height, width } = Dimensions.get('window');
 import ColorConstants from '../../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';
 
-import {assetCardStyles} from './trackComponentStyles';
+import { assetCardStyles } from './trackComponentStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const myIcon = <Icon name="copy" size={10} color="black" />;
 
 
 export const SwiperTextFieldWithLabel = props => {
+
+  let myIcon = <View />;
 
   let text = props.text;
   if (text.length > 32) {
@@ -29,14 +30,17 @@ export const SwiperTextFieldWithLabel = props => {
     let middle = " ... ";
     let end = text.substring(text.length - 9, text.length - 1);
     text = beginning + middle + end;
+
+    myIcon = <Icon name="copy" size={10} color="black" />;
+
     console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
   }
   return (
     <View key={text} style={localStyles.textFieldContainer}>
       <Text style={localStyles.labelText}>{props.label}</Text>
-      <View style={{flexDirection:"row"}}>
-      <Text style={localStyles.textField}>{text || ''}</Text>
-      {myIcon}
+      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%"}}>
+        <Text style={localStyles.textField}>{text || ''}</Text>
+        {myIcon}
       </View>
     </View>
   );
@@ -87,7 +91,7 @@ export const SimpleAssetCard = (props) => {
 
       <View style={assetCardStyles.assetImageContainer}>
 
-          <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />
+        <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />
 
       </View>
 
