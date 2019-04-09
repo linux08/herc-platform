@@ -257,6 +257,10 @@ class ExampleSwiper extends Component {
 
           {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
+        <View style={{justifyContent: "space-around", flexDirection: "row", width: "100%", borderColor: "blue", borderWidth: 3 }}>
+        <Text style={{borderColor: "red", borderWidth: 3 }}>Below left</Text>
+        <Text style={{borderColor: "green", borderWidth: 3 }}>Below right</Text>
+        </View>
       </View>
     )
   }
@@ -273,13 +277,16 @@ export default connect(mapStateToProps)(ExampleSwiper);
 
 export const swiperStyles = StyleSheet.create({
   container: {
-
-    height: '100%',
-    width: '100%',
+    borderColor: "yellow",
+    borderWidth: 3,
+    // height: '100%',
+    // width: '100%',
     backgroundColor: ColorConstants.MainBlue,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    display: 'flex'
+    // alignItems: "center",
+    justifyContent: "flex-end",
+    // display: 'flex',
+    flexDirection: "column",
+    flex: 1
   },
 
   card: {
