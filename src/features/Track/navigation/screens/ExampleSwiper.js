@@ -10,6 +10,10 @@ const { height, width } = Dimensions.get('window');
 
 import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from './components';
 import { AlertAddAlert } from 'material-ui/svg-icons';
+import { Icon } from 'native-base';
+const swiperShareIcon = require("../../images/swiperShare.png");
+import FeatherIcons from 'react-native-vector-icons/Feather';
+
 
 // demo purposes only
 // function * range (start, end) {
@@ -63,10 +67,10 @@ class ExampleSwiper extends Component {
 
     let data = cardData.data;
 
-    let messageData;
+    let messageData = [];
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
-        messageData = key + ': ' + data[key] + ';' + "\n";
+        messageData.push(key + ': ' + "https://ipfs.io/ipfs/" + data[key] + ';' + "\n")
       }
     }
 
@@ -80,7 +84,7 @@ class ExampleSwiper extends Component {
     let title = header.name + " " + " Transaction @ " + time + ";" + "\n"
 
 
-    let price = "Hercs: " + header.price + ";\n";
+    let price = + header.price + "Herc" + ";\n";
     let sig = "Sent from Herc v.1.0"
 
     let message = title + messageData + "\n" + 'Password: ' + password + "\n" + 'Price: ' + price + "\n " + sig;
@@ -269,18 +273,24 @@ class ExampleSwiper extends Component {
 
           {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
-        <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", borderColor: "blue", borderWidth: 3, height: "15%" }}>
-          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeLeft()}>
-            <Text style={{ borderColor: "red", borderWidth: 3, alignSelf: "center" }}>Below left</Text>
+        <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", height: "15%" }}>
+          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeLeft()}>
+            {/* <Text style={{ borderColor: "red", borderWidth: 3, alignSelf: "center" }}>Below left</Text> */}
+            <FeatherIcons name="corner-up-left" size={30} />
           </TouchableHighlight>
           {/* <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeDown()}>
             <Text tyle={{ borderColor: "green", borderWidth: 3 }} s>TOS</Text>
           </TouchableHighlight> */}
-          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeUp()}>
-            <Text tyle={{ borderColor: "blue", borderWidth: 3 }}>Share</Text>
+          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeUp()}>
+            {/* <Text tyle={{ borderColor: "blue", borderWidth: 3 }}>Share</Text> */}
+            {/* <View style={{ borderColor: "red", borderWidth: 3, height: 150, width: 100, justifyContent: "center" }}> */}
+            {/* <Icon source={swiperShareIcon} style={{ resizeMode: "contain", height: 100, width: 100 }} /> */}
+            <FeatherIcons name="share-2" size={30} />
+            {/* </View> */}
           </TouchableHighlight>
-          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeRight()}>
-            <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text>
+          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeRight()}>
+            {/* <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text> */}
+            <FeatherIcons name="corner-up-right" size={30} />
           </TouchableHighlight>
         </View>
       </View>
@@ -299,8 +309,8 @@ export default connect(mapStateToProps)(ExampleSwiper);
 
 export const swiperStyles = StyleSheet.create({
   container: {
-    borderColor: "yellow",
-    borderWidth: 3,
+    // borderColor: "yellow",
+    // borderWidth: 3,
     // height: '100%',
     // width: '100%',
     backgroundColor: ColorConstants.MainBlue,
@@ -312,8 +322,8 @@ export const swiperStyles = StyleSheet.create({
   },
 
   card: {
-    borderColor: "red",
-    borderWidth: 3,
+    // borderColor: "red",
+    // borderWidth: 3,
     width: '98%',
     height: '80%',
     backgroundColor: ColorConstants.MainGray,
