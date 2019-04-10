@@ -14,7 +14,9 @@ export const assetCardStyles = StyleSheet.create({
       margin: 5,
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'center'
+      alignItems: 'center',
+      borderColor: "red",
+      borderWidth: 3
     },
     assetImageContainer: {
       height: '90%',

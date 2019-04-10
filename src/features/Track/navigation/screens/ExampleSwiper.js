@@ -73,11 +73,11 @@ class ExampleSwiper extends Component {
     console.log(messageData, 'new messageDAta!')
 
     let header = cardData.header
-    let location = header.tXLocation.toUpperCase() + " ";
+    // let location = header.tXLocation.toUpperCase() + " ";
     let time = header.dTime;
     let password = header.password;
 
-    let title = header.name + " " + location + " Transaction @ " + time + ";" + "\n"
+    let title = header.name + " " + " Transaction @ " + time + ";" + "\n"
 
 
     let price = "Hercs: " + header.price + ";\n";
@@ -227,6 +227,18 @@ class ExampleSwiper extends Component {
     this.swiper.swipeLeft()
   };
 
+  swipeDown = () => {
+    this.swiper.swipeBottom()
+  };
+
+  swipeUp = () => {
+    this.swiper.swipeTop()
+  };
+
+  swipeRight = () => {
+    this.swiper.swipeRight()
+  };
+
   render() {
     return (
       <View style={swiperStyles.container}>
@@ -243,10 +255,10 @@ class ExampleSwiper extends Component {
           onTapCard={this.swipeLeft}
           cards={this.state.cards}
           cardIndex={this.state.cardIndex}
-          cardVerticalMargin={80}
+          // cardVerticalMargin={80}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
-          stackSize={3}
+          stackSize={2}
           stackSeparation={15}
           overlayLabels={swiperOverlayLables}
           animateOverlayLabelsOpacity
@@ -257,9 +269,19 @@ class ExampleSwiper extends Component {
 
           {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
-        <View style={{justifyContent: "space-around", flexDirection: "row", width: "100%", borderColor: "blue", borderWidth: 3 }}>
-        <Text style={{borderColor: "red", borderWidth: 3 }}>Below left</Text>
-        <Text style={{borderColor: "green", borderWidth: 3 }}>Below right</Text>
+        <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", borderColor: "blue", borderWidth: 3, height: "15%" }}>
+          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeLeft()}>
+            <Text style={{ borderColor: "red", borderWidth: 3, alignSelf: "center" }}>Below left</Text>
+          </TouchableHighlight>
+          {/* <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeDown()}>
+            <Text tyle={{ borderColor: "green", borderWidth: 3 }} s>TOS</Text>
+          </TouchableHighlight> */}
+          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeUp()}>
+            <Text tyle={{ borderColor: "blue", borderWidth: 3 }}>Share</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeRight()}>
+            <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text>
+          </TouchableHighlight>
         </View>
       </View>
     )
@@ -290,20 +312,22 @@ export const swiperStyles = StyleSheet.create({
   },
 
   card: {
+    borderColor: "red",
+    borderWidth: 3,
     width: '98%',
-    height: '85%',
+    height: '80%',
     backgroundColor: ColorConstants.MainGray,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingLeft: 20,
     paddingRight: 20,
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
 
-    alignSelf: 'center',
+    alignSelf: "flex-end",
     alignContent: "center",
     top: -2,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   text: {
     color: '#F3c736',
