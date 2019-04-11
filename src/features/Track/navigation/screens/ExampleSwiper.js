@@ -274,24 +274,26 @@ class ExampleSwiper extends Component {
           {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
         <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", height: "15%" }}>
-          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeLeft()}>
-            {/* <Text style={{ borderColor: "red", borderWidth: 3, alignSelf: "center" }}>Below left</Text> */}
-            <FeatherIcons name="corner-up-left" size={30} />
-          </TouchableHighlight>
-          {/* <TouchableHighlight style={{justifyContent: "center" }} onPress={() => this.swipeDown()}>
-            <Text tyle={{ borderColor: "green", borderWidth: 3 }} s>TOS</Text>
-          </TouchableHighlight> */}
-          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeUp()}>
-            {/* <Text tyle={{ borderColor: "blue", borderWidth: 3 }}>Share</Text> */}
-            {/* <View style={{ borderColor: "red", borderWidth: 3, height: 150, width: 100, justifyContent: "center" }}> */}
-            {/* <Icon source={swiperShareIcon} style={{ resizeMode: "contain", height: 100, width: 100 }} /> */}
-            <FeatherIcons name="share-2" size={30} />
-            {/* </View> */}
-          </TouchableHighlight>
-          <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeRight()}>
-            {/* <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text> */}
-            <FeatherIcons name="corner-up-right" size={30} />
-          </TouchableHighlight>
+
+          <View style={{ justifyContent: "center" }}>
+            <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeLeft()}>
+              <FeatherIcons name="corner-up-left" size={30} />
+            </TouchableHighlight>
+          </View>
+
+          <View style={{ justifyContent: "center" }}>
+            <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeUp()}>
+              <FeatherIcons name="share-2" size={30} />
+            </TouchableHighlight>
+          </View>
+
+          <View style={{ justifyContent: "center" }}>
+            <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.swipeRight()}>
+              {/* <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text> */}
+              <FeatherIcons name="corner-up-right" size={30} />
+            </TouchableHighlight>
+          </View>
+          
         </View>
       </View>
     )

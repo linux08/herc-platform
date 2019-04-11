@@ -31,7 +31,7 @@ export const SwiperTextFieldWithLabel = props => {
     let end = text.substring(text.length - 9, text.length - 1);
     text = beginning + middle + end;
 
-    myIcon = <Icon name="copy" size={10} color="black" />;
+    myIcon = <Icon name="copy" size={12} color="black" />;
 
     console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
   }
