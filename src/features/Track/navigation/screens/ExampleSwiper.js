@@ -95,6 +95,9 @@ class ExampleSwiper extends Component {
 
   sharing = (data) => {
     console.log(data, 'shareDAta')
+    console.log("has the cards array changed? ", this.state.cards);
+    console.log("what is the current card index?" , this.state.cardIndex)
+    console.log("is this the correct share data? " ,this.state.cards[this.state.cardIndex])
     let shareTitle = this.makeMessage(data);
     console.log(shareTitle, 'shareTitle');
 
@@ -137,7 +140,7 @@ class ExampleSwiper extends Component {
 
   renderCard = (card, index) => {
 
-    console.log(card, index, 'card in rendercard')
+    console.log(card, 'card in rendercard')
     let unKey = this.props.SelectedAsset.key;
     let factomChain = this.props.SelectedAsset.hashes.chainId;
     let corePropsHash = this.props.SelectedAsset.hashes.ipfsHash;
@@ -217,8 +220,14 @@ class ExampleSwiper extends Component {
     )
   }
 
-  onSwiped = (type) => {
-    console.log(`on swiped ${type}`)
+  onSwiped = (index) => {
+    currentCard = this.state.cards[index];
+    this.setState({
+      cardIndex: this.state.cardIndex + 1
+    })  
+
+    console.log("swipe acknowledged, card index is now ", this.state.cardIndex );
+    console.log("these are the cards", this.state.cards )
   }
 
   onSwipedAllCards = () => {
@@ -229,21 +238,27 @@ class ExampleSwiper extends Component {
 
   swipeLeft = () => {
     this.swiper.swipeLeft()
+    this.onSwiped(this.state.cardIndex);
   };
 
   swipeDown = () => {
     this.swiper.swipeBottom()
+    // this.onSwiped(this.state.cardIndex);
   };
 
-  swipeUp = () => {
-    this.swiper.swipeTop()
+  swipeUp = async () => {
+    // this.swiper.swipeTop()
+    this.sharing(this.state.cards[this.state.cardIndex]);
+    this.onSwiped(this.state.cardIndex);
   };
 
   swipeRight = () => {
     this.swiper.swipeRight()
+    // this.onSwiped(this.state.cardIndex);
   };
 
   render() {
+    let cardIndex = this.state.cardIndex;
     return (
       <View style={swiperStyles.container}>
         {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
@@ -251,14 +266,14 @@ class ExampleSwiper extends Component {
           ref={swiper => {
             this.swiper = swiper
           }}
-          onSwiped={() => this.onSwiped('general')}
+          onSwiped={() => console.log("swiped acknowledged")}
           onSwipedLeft={() => this.onSwiped('left')}
           onSwipedRight={() => this.onSwiped('right')}
-          onSwipedTop={() => this.sharing(this.state.cards[this.state.cardIndex])}
+          onSwipedTop={() => this.swipeUp()}
           onSwipedBottom={() => this.onSwiped('bottom')}
-          onTapCard={this.swipeLeft}
+          onTapCard={this.swipeUp}
           cards={this.state.cards}
-          cardIndex={this.state.cardIndex}
+          cardIndex={cardIndex}
           // cardVerticalMargin={80}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
@@ -268,6 +283,8 @@ class ExampleSwiper extends Component {
           animateOverlayLabelsOpacity
           animateCardOpacity
           swipeBackCard
+          // onIndexChanged={this.onIndexChanged.bind(this)}
+          // onMomentumScrollEnd={this.onScrollEnd}
         >
           {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
 
@@ -293,7 +310,7 @@ class ExampleSwiper extends Component {
               <FeatherIcons name="corner-up-right" size={30} />
             </TouchableHighlight>
           </View>
-          
+
         </View>
       </View>
     )

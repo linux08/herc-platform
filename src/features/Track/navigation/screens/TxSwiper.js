@@ -100,8 +100,9 @@ class TxSwiper extends Component {
   }
 
   swipeTop = (index) => {
-    this.sharing(this.state.cards[index]);
-    this.makeMessage(this.state.cards[currentCard].data);
+    console.log("this is swipeTop index ",index)
+    // this.sharing(this.state.cards[index]);
+    // this.makeMessage(this.state.cards[currentCard].data);
   }
 
   swipeBottom = () => {
