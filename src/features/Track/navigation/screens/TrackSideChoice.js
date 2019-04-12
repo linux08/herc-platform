@@ -52,15 +52,46 @@ class TrackSideChoice extends Component {
   };
 
   handleSideChoice = () => {
-    console.log("handling side choice");
-    if(this.state.checkSwiper === true){
+    console.log("checking transaction quantity", this.props.transactions);
+    if (this.state.checkSwiper === true) {
       this.props.navigation.navigate('TxSwiper')
     }
-    if(this.state.checkBlockScanner === true){
+    if (this.state.checkBlockScanner === true) {
       this.props.navigation.navigate('BlockScanner')
     }
 
   };
+
+  _transactionCheck = () => {
+    if (this.props.transactions) {
+      return (<View>
+        <View
+          style={[
+            localStyles.choiceImageContainer,
+            {
+              backgroundColor: this.state.checkSwiper
+                ? ColorConstants.MainGold
+                : ColorConstants.ElementBG
+            }
+          ]}
+        >
+          {this.state.checkSwiper && (
+            <View style={localStyles.checkBoxContainer}>
+              <Icon name={"check"} size={18} color={"white"} />
+            </View>
+          )}
+          <TouchableWithoutFeedback onPress={this.onPressSwiper}>
+            <Image source={swiperImage} style={localStyles.choiceImage} />
+          </TouchableWithoutFeedback>
+        </View>
+        <Text style={[localStyles.labelTitle, { fontWeight: "normal" }]}>
+          Trasaction Swiper
+      </Text>
+      </View>)
+    } else {
+      return null;
+    }
+  }
 
   render() {
     let { height, width } = Dimensions.get("window");
@@ -77,28 +108,9 @@ class TrackSideChoice extends Component {
 
           <View style={localStyles.choiceContainer}>
             <View style={localStyles.choiceSelection}>
-              <View
-                style={[
-                  localStyles.choiceImageContainer,
-                  {
-                    backgroundColor: this.state.checkSwiper
-                      ? ColorConstants.MainGold
-                      : ColorConstants.ElementBG
-                  }
-                ]}
-              >
-                {this.state.checkSwiper && (
-                  <View style={localStyles.checkBoxContainer}>
-                    <Icon name={"check"} size={18} color={"white"} />
-                  </View>
-                )}
-                <TouchableWithoutFeedback onPress={this.onPressSwiper}>
-                  <Image source={swiperImage} style={localStyles.choiceImage} />
-                </TouchableWithoutFeedback>
-              </View>
-              <Text style={[localStyles.labelTitle, { fontWeight: "normal" }]}>
-                Trasaction Swiper
-                </Text>
+              {/* BUGFIX - only shows transaction button if there is a transaction history for the selected asset */}
+              {this._transactionCheck()}
+
             </View>
             {/* Right Side Below */}
             <View style={localStyles.choiceSelection}>
@@ -141,7 +153,7 @@ class TrackSideChoice extends Component {
 
 const mapStateToProps = (state) => ({
   selectedAsset: state.AssetReducers.selectedAsset,
-
+  transactions: state.AssetReducers.selectedAsset.transactions
 });
 
 export default connect(
