@@ -14,24 +14,6 @@ import { Icon } from 'native-base';
 const swiperShareIcon = require("../../images/swiperShare.png");
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
-
-// demo purposes only
-// function * range (start, end) {
-//   for (let i = start; i <= end; i++) {
-//     yield i
-//   }
-// }
-
-// const SwiperTextFieldWithLabel = (props) => {
-//   return (
-//     <View key={props.label} style={localStyles.textFieldContainer}>
-//       <Text style={localStyles.labelText}>{props.label}</Text>
-//       <Text style={localStyles.textField}>{props.text}</Text>
-//     </View>
-//   )
-
-// }
-
 class ExampleSwiper extends Component {
   constructor(props) {
     super(props)
@@ -40,33 +22,15 @@ class ExampleSwiper extends Component {
       swipedAllCards: false,
       swipeDirection: '',
       cardIndex: 0,
-
     }
   }
 
   _goToWebView = (factomChain, factomEntry) => {
-    console.log('goto webview')
     this.props.navigation.navigate('FactomWebView', { data: { factomChain, factomEntry } });
-
-    // let url;
-    // if (data.factomChain){
-    //   url = "https://explorer.factom.com/chains/" + factomChain + "/entries/" + factomEntry
-    // }
-    // return (
-    //   <WebView
-    //     source={{ uri: url }}
-    //     style={{ margin: 0, padding: 0, flex: 1, width: '100%' }}
-    //   />
-    // )
-
   }
 
   makeMessage = (cardData) => {
-
-    console.log(cardData, 'in makeing message')
-
     let data = cardData.data;
-
     let messageData = [];
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
@@ -74,34 +38,22 @@ class ExampleSwiper extends Component {
       }
     }
 
-    console.log(messageData, 'new messageDAta!')
-
     let header = cardData.header
+    //location is not yet implemented, but this is an example
     // let location = header.tXLocation.toUpperCase() + " ";
     let time = header.dTime;
     let password = header.password;
-
     let title = header.name + " " + " Transaction @ " + time + ";" + "\n"
-
-
     let price = + header.price + "Herc" + ";\n";
     let sig = "Sent from Herc v.1.0"
-
     let message = title + messageData + "\n" + 'Password: ' + password + "\n" + 'Price: ' + price + "\n " + sig;
-
-
     return [title, message];
   }
 
   sharing = (data) => {
-    console.log(data, 'shareDAta')
-    console.log("has the cards array changed? ", this.state.cards);
-    console.log("what is the current card index?", this.state.cardIndex)
-    console.log("is this the correct share data? ", this.state.cards[this.state.cardIndex])
+   
     if (data) {
       let shareTitle = this.makeMessage(data);
-      console.log(shareTitle, 'shareTitle');
-
       Share.share({
         message: shareTitle[1],
         title: shareTitle[0]
@@ -114,7 +66,6 @@ class ExampleSwiper extends Component {
           ]
         })
     }
-
   }
 
   _copyIPFSHashToClipboard = (data) => {
@@ -140,11 +91,9 @@ class ExampleSwiper extends Component {
     );
   }
 
-
   renderCard = (card, index) => {
 
     if (card) {
-      console.log(card, 'card in rendercard')
       let unKey = this.props.SelectedAsset.key;
       let factomChain = this.props.SelectedAsset.hashes.chainId;
       let corePropsHash = this.props.SelectedAsset.hashes.ipfsHash;
@@ -182,29 +131,24 @@ class ExampleSwiper extends Component {
           {/* line below is currently not applicable */}
           {/* {header.tXLocation && <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />} */}
 
-
           <TouchableHighlight onLongPress={() => this._copyFactomHashToClipboard(factomChain, factomEntry)} style={{ width: "97%" }}>
             <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
           </TouchableHighlight>
-
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }} >
             <View>
               {corePropsHash && <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
             </View>
           </TouchableHighlight>
-
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }}>
             <View>
               {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
             </View>
           </TouchableHighlight>
-
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(metricsHash)} style={{ width: "97%" }} >
             <View>
               {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
             </View>
           </TouchableHighlight>
-
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(documentHash)} style={{ width: "97%" }}>
             <View>
               {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
@@ -216,9 +160,7 @@ class ExampleSwiper extends Component {
               {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
             </View>
           </TouchableHighlight>
-
           {header.price && <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />}
-
           <SwiperBigYellowButton buttonName={'View Factom Chain'} key={index} onPress={() => this._goToWebView(factomChain, factomEntry)} />
         </View>
       )
@@ -227,9 +169,6 @@ class ExampleSwiper extends Component {
 
   onSwiped = (direction) => {
     console.log("this isthe direction of swipe ", direction)
-
-
-    // console.log("swipe acknowledged, card index is now ", this.state.cardIndex);
   }
 
   updateCardIndex = () => {
@@ -246,25 +185,17 @@ class ExampleSwiper extends Component {
   };
 
   swipeLeft = () => {
-    // this.swiper.swipeLeft()
-    // this.onSwiped(this.state.cardIndex);
     this.updateCardIndex();
   };
 
   swipeRight = () => {
-    // this.swiper.swipeRight()
-    // this.onSwiped(this.state.cardIndex);
     this.updateCardIndex();
   };
 
   swipeDown = () => {
-    // this.swiper.swipeBottom()
-    // this.onSwiped(this.state.cardIndex);
   };
 
   swipeUp = async () => {
-    // this.swiper.swipeTop()
-    // this.onSwiped(this.state.cardIndex);
     this.sharing(this.state.cards[this.state.cardIndex]);
     this.updateCardIndex();
   };
@@ -304,7 +235,6 @@ class ExampleSwiper extends Component {
           onTapCard={this.swipeUp}
           cards={this.state.cards}
           cardIndex={cardIndex}
-          // cardVerticalMargin={80}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
           stackSize={2}
@@ -313,30 +243,21 @@ class ExampleSwiper extends Component {
           animateOverlayLabelsOpacity
           animateCardOpacity
           swipeBackCard
-        // onIndexChanged={this.onIndexChanged.bind(this)}
-        // onMomentumScrollEnd={this.onScrollEnd}
         >
-          {/* <SimpleAssetCard asset={this.props.SelectedAsset} /> */}
-
-          {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
-        </Swiper>
+            </Swiper>
         <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", height: "15%" }}>
-
           <View style={{ justifyContent: "center" }}>
             <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.handleButtonLeft()}>
               <FeatherIcons name="corner-up-left" size={30} />
             </TouchableHighlight>
           </View>
-
           <View style={{ justifyContent: "center" }}>
             <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.handleButtonUp()}>
               <FeatherIcons name="share-2" size={30} />
             </TouchableHighlight>
           </View>
-
           <View style={{ justifyContent: "center" }}>
             <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.handleButtonRight()}>
-              {/* <Text tyle={{ borderColor: "yellow", borderWidth: 3 }}>Right</Text> */}
               <FeatherIcons name="corner-up-right" size={30} />
             </TouchableHighlight>
           </View>
@@ -358,21 +279,13 @@ export default connect(mapStateToProps)(ExampleSwiper);
 
 export const swiperStyles = StyleSheet.create({
   container: {
-    // borderColor: "yellow",
-    // borderWidth: 3,
-    // height: '100%',
-    // width: '100%',
     backgroundColor: ColorConstants.MainBlue,
-    // alignItems: "center",
     justifyContent: "flex-end",
-    // display: 'flex',
     flexDirection: "column",
     flex: 1
   },
 
   card: {
-    // borderColor: "red",
-    // borderWidth: 3,
     width: '98%',
     height: '80%',
     backgroundColor: ColorConstants.MainGray,
@@ -380,13 +293,11 @@ export const swiperStyles = StyleSheet.create({
     borderTopRightRadius: 20,
     paddingLeft: 20,
     paddingRight: 20,
-    // alignItems: "center",
     justifyContent: "center",
 
     alignSelf: "flex-end",
     alignContent: "center",
     top: -2,
-    // marginBottom: 10,
   },
   text: {
     color: '#F3c736',
