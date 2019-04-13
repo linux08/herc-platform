@@ -193,6 +193,7 @@ class ExampleSwiper extends Component {
   };
 
   swipeDown = () => {
+    this.updateCardIndex();
   };
 
   swipeUp = async () => {
@@ -231,7 +232,7 @@ class ExampleSwiper extends Component {
           onSwipedLeft={() => this.swipeLeft()}
           onSwipedRight={() => this.swipeRight()}
           onSwipedTop={() => this.swipeUp()}
-          onSwipedBottom={() => this.onSwiped('bottom')}
+          onSwipedBottom={() => this.swipeDown()}
           onTapCard={this.swipeUp}
           cards={this.state.cards}
           cardIndex={cardIndex}
