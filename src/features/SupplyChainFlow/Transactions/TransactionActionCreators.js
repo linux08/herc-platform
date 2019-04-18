@@ -253,7 +253,7 @@ export function GetCurrentGasPrice() {
 getDynamicHercValue = async () => {
   try {
     let response = await fetch(
-      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDV&range=MINUTE_5"
+      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDVW&range=MINUTE"
     );
 
     let highPrice = await response.json();
@@ -554,8 +554,13 @@ export function SendTransaction() {
           .then(response => {
             store.dispatch(TransactionFactomEntryCompleted(response.data));
             //response.data = entryHash
-            var dataObject = {};
-            hashlist.map(hash => (dataObject[hash.key] = hash.hash));
+            var dataObject = { urls: {} };
+            hashlist.map(hash => (
+              dataObject[hash.key] = hash.hash,
+              dataObject.urls[hash.key] = hash.customUrl
+              ));
+
+              console.log("this is the dataobject post mapping from hashlist",dataObject)
             var firebaseHeader = Object.assign({}, header, {
               factomEntry: response.data
             });
