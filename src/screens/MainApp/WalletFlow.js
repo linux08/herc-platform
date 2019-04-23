@@ -570,6 +570,12 @@ class WalletFlow extends React.Component {
                   }
                   value={this.state.destAddress}
                 />
+
+                  <TouchableHighlight onPress={()=> console.log("clicked on image")} style={{marginTop: "3%", marginBottom: "3%" }}>
+                  <Icon name="qrcode-scan" size={24} />
+                  </TouchableHighlight>
+  
+
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
@@ -975,7 +981,7 @@ const modalStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     width: "100%",
-    height: "40%",
+    height: "50%",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10
   },
