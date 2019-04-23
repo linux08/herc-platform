@@ -81,6 +81,14 @@ export function CreditTrans(amount) {
     }
 }
 
+export function GetQRData(QRData) {
+  console.log("in wallet actions, this is the data", QRData )
+  return {
+    type: Wallet.Action.GetQRData,
+    QRData
+  }
+}
+
 
 export function CheckBalance(price) {
 let wallet = store.getState().WalletReducers.wallet

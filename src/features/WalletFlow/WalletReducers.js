@@ -7,6 +7,14 @@ const INITIAL_STATE = {
 export default WalletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
+    case Wallet.Action.GetQRData:
+    console.log("this is the action.QRData in wqallet reducers", action.QRData);
+
+    return Object.assign({}, state, {
+      ...state,
+      QRData: action.QRData
+    });
+
     case Wallet.Action.UpdateBalances:
       console.log("UPDATEBALANCES: chance getting balance", action.newBalances);
       return {

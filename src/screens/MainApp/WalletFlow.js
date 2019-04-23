@@ -21,6 +21,8 @@ import QRCode from "react-qr-code";
 import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
+import { RNCamera } from "react-native-camera";
+
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
@@ -67,13 +69,13 @@ class WalletFlow extends React.Component {
       [
         {
           text: "Already Have!",
-          onPress: () => {console.log("clicked already have!")}
+          onPress: () => { console.log("clicked already have!") }
         },
         {
           text: "Purchase",
           onPress: () => { Linking.openURL("https://purchase.herc.one") }
         }
-    ]
+      ]
     );
 
     try {
@@ -131,6 +133,10 @@ class WalletFlow extends React.Component {
           "Display Wallet: ",
           this.props.wallet.balances[displayWallet]
         );
+        console.log(
+          "Display Wallet: ",
+          this.props
+        );
         let tempBalance = new BigNumber(
           this.props.wallet.balances[displayWallet]
         )
@@ -147,7 +153,9 @@ class WalletFlow extends React.Component {
       return tempBalance;
     }
   };
+
   async _onPressSend() {
+    console.log(this.props)
     let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
     let destAddress = this.state.destAddress;
@@ -571,10 +579,9 @@ class WalletFlow extends React.Component {
                   value={this.state.destAddress}
                 />
 
-                  <TouchableHighlight onPress={()=> console.log("clicked on image")} style={{marginTop: "3%", marginBottom: "3%" }}>
-                  <Icon name="qrcode-scan" size={24} />
-                  </TouchableHighlight>
-  
+                <TouchableHighlight onPress={() => this.setState({displayModalSendDetails: false}, ()=> this.props.navigation.navigate('WalletSendQRScanner'))} style={{ marginTop: "3%", marginBottom: "3%" }}>
+                  <Icon name="qrcode-scan" size={26} />
+                </TouchableHighlight>
 
                 <TextInput
                   style={localStyles.textInput}
@@ -756,7 +763,8 @@ const mapStateToProps = state => ({
   //     state.WalletReducers.wallet.currencyInfo.currencyCode
   //     ],
   account: state.WalletReducers.account,
-  watchBalance: state.WalletReducers.watchBalance
+  watchBalance: state.WalletReducers.watchBalance,
+  QRData: state.WalletReducers.QRData
 });
 
 export default connect(

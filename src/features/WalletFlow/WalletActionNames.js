@@ -13,6 +13,6 @@ DeleteWallet: 'DeleteWallet',
 ClearTransactionStore: 'ClearTransactionStore',
 SwitchWallet: 'SwitchWallet',
 AddWallet: 'AddWallet',
-
+GetQRData: 'GetQRData'
 
 }
