@@ -19,6 +19,12 @@ export function GetEthAddress(ethereumAddress) {
     };
   }
 
+export function GetDestinationAddress(destinationAddress) {
+    return {
+      type: Wallet.Action.GetDestinationAddress,
+      destinationAddress
+    };
+  }
 
 function CheckIfNoHercs(wallet) {
   if (!wallet.balances['HERC']){
@@ -57,6 +63,13 @@ export function ClearTransactionStore() {
   };
 }
 
+export function ToggleDisplayQRScanner(value) {
+    return {
+        type: Wallet.Action.ToggleDisplayQRScanner,
+        value
+
+    }
+}
 
 export function SwitchWallet(walletName) {
     return {

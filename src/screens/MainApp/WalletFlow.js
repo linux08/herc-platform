@@ -21,13 +21,14 @@ import QRCode from "react-qr-code";
 import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
+import QRCameraModal from "../../components/modals/QRCameraModal";
+import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      destAddress: "",
       sendAmount: "",
       displayWallet: "",
       availableTokens: [],
@@ -150,9 +151,9 @@ class WalletFlow extends React.Component {
   async _onPressSend() {
     let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
-    let destAddress = this.state.destAddress;
+    let destinationAddress = this.props.destinationAddress;
     let sendAmountInEth = new BigNumber(this.state.sendAmount);
-    if (!destAddress) Alert.alert("Missing Destination Address");
+    if (!destinationAddress) Alert.alert("Missing Destination Address");
     if (!sendAmountInEth) Alert.alert("Invalid Send Amount");
     let sendAmountInWei = sendAmountInEth.times(1e18).toString();
 
@@ -165,7 +166,7 @@ class WalletFlow extends React.Component {
       },
       spendTargets: [
         {
-          publicAddress: destAddress,
+          publicAddress: destinationAddress,
           nativeAmount: sendAmountInWei
         }
       ]
@@ -227,6 +228,7 @@ class WalletFlow extends React.Component {
   };
 
   _closeAllModals = () => {
+    this.props.ToggleDisplayQRScanner(false)
     this.setState({
       displayModalChooseToken: false,
       displayModalSendDetails: false,
@@ -559,25 +561,30 @@ class WalletFlow extends React.Component {
               </Text>
 
               <View style={modalStyles.send2LowerContainer}>
-                <TextInput
-                  style={localStyles.textInput}
-                  underlineColorAndroid="transparent"
-                  placeholder="Destination Address"
-                  onChangeText={destAddress =>
-                    this.setState({ destAddress }, () =>
-                      console.log("destination address", this.state.destAddress)
-                    )
-                  }
-                  value={this.state.destAddress}
-                />
+                <View style={localStyles.QRcontainer}>
+                  <TextInput
+                    style={localStyles.textInput}
+                    underlineColorAndroid="transparent"
+                    placeholder="Destination Address"
+                    onChangeText={destinationAddress =>
+                      this.props.GetDestinationAddress(destinationAddress)
+                    }
+                    value={this.props.destinationAddress}
+                  />
+                  <Icon
+                      name="qrcode-scan" size={20}
+                      onPress={() => {
+                        this.props.ToggleDisplayQRScanner(true)
+                      }}
+                    />
+                </View>
+
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
                   placeholder="Amount"
                   onChangeText={sendAmount =>
-                    this.setState({ sendAmount }, () =>
-                      console.log("sendAmount", this.state.sendAmount)
-                    )
+                    this.setState({ sendAmount })
                   }
                   value={this.state.sendAmount}
                 />
@@ -615,7 +622,7 @@ class WalletFlow extends React.Component {
                 <View style={{ width: "90%" }}>
                   <Text style={{ textAlign: "left" }}>Address</Text>
                   <Text style={{ color: "gold" }}>
-                    {this.state.destAddress}
+                    {this.props.destinationAddress}
                   </Text>
                 </View>
 
@@ -728,6 +735,20 @@ class WalletFlow extends React.Component {
             this.setState({ displayModalComplete: false });
           }}
         />
+        <QRCameraModal
+          isVisible={this.props.displayModalQR}
+          closeModal={() => {
+            this.props.ToggleDisplayQRScanner(false)
+        }
+        }
+          onBackButtonPress={() => {
+            this.props.ToggleDisplayQRScanner(false)
+            this.setState({
+            displayModalSendDetails: true
+          })
+        }
+        }
+        />
         <CustomModal
           isVisible={false}
           modalCase="error"
@@ -750,15 +771,29 @@ const mapStateToProps = state => ({
   //     state.WalletReducers.wallet.currencyInfo.currencyCode
   //     ],
   account: state.WalletReducers.account,
-  watchBalance: state.WalletReducers.watchBalance
+  watchBalance: state.WalletReducers.watchBalance,
+  displayModalQR: state.WalletReducers.ToggleDisplayQRScanner
 });
+
+const mapDispatchToProps = (dispatch) => ({
+    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
+    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
+})
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({
+  QRcontainer: {
+    width: "90%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: "#f2f3fb"
+  },
   modalBackground: {
     flex: 1,
     alignItems: 'center',
