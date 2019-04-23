@@ -229,6 +229,7 @@ class WalletFlow extends React.Component {
 
   _closeAllModals = () => {
     this.props.ToggleDisplayQRScanner(false)
+    this.props.GetDestinationAddress('')
     this.setState({
       displayModalChooseToken: false,
       displayModalSendDetails: false,
@@ -739,10 +740,12 @@ class WalletFlow extends React.Component {
           isVisible={this.props.displayModalQR}
           closeModal={() => {
             this.props.ToggleDisplayQRScanner(false)
+            this.props.GetDestinationAddress('')
         }
         }
           onBackButtonPress={() => {
             this.props.ToggleDisplayQRScanner(false)
+            this.props.GetDestinationAddress('')
             this.setState({
             displayModalSendDetails: true
           })
@@ -772,6 +775,7 @@ const mapStateToProps = state => ({
   //     ],
   account: state.WalletReducers.account,
   watchBalance: state.WalletReducers.watchBalance,
+  destinationAddress: state.WalletReducers.destinationAddress,
   displayModalQR: state.WalletReducers.ToggleDisplayQRScanner
 });
 
