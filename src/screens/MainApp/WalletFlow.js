@@ -9,6 +9,7 @@ import {
   Alert,
   Clipboard,
   ActivityIndicator,
+  PermissionsAndroid,
   Linking
 } from "react-native";
 import React from "react";
@@ -23,6 +24,7 @@ import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
 import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
+import Geolocation from 'react-native-geolocation-service';
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
@@ -54,6 +56,34 @@ class WalletFlow extends React.Component {
     )
   });
 
+  _requestFineLocationPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Herc Enable Location",
+            message:
+              "Herc needs access to your location " +
+              "to provide attestation of your supply chain data."
+          }
+        );
+        if (granted){
+          Geolocation.getCurrentPosition(
+            (position) => {
+              console.log("jm Geolocation Position:", position);
+            },
+            (error) => {
+              console.log("jm Geolocation Error: ", error.code, error.message);
+            }
+          );
+        }
+        return granted;
+      } catch (err) {
+        console.error("Failed to request permission: jm", err);
+        return null;
+      }
+    }
+
   componentWillUnmount = () => {
     this.setState({
       isVisible: false
@@ -61,6 +91,16 @@ class WalletFlow extends React.Component {
   }
 
   componentWillMount = async () => {
+    this._requestFineLocationPermission();
+    console.log("jm Geolocation:", Geolocation)
+        Geolocation.getCurrentPosition(
+          (position) => {
+            console.log("jm Geolocation Position:", position);
+          },
+          (error) => {
+            console.log("jm Geolocation Error: ", error.code, error.message);
+          }
+        );
 
     Alert.alert(
       "Welcome to HERCULES",
