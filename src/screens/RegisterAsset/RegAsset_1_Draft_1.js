@@ -3,6 +3,7 @@ import {
     View,
     StatusBar,
     Alert,
+    Share
 } from 'react-native';
 const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
 import React, { Component } from 'react';
@@ -16,6 +17,8 @@ import CameraSourceModal from "../../features/CamSourceModal/Modal/CameraSourceM
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
 // import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
+import firebase from "../../constants/Firebase";
+const rootRef = firebase.database().ref();
 
 import ColorConstants from "../../assets/ColorConstants";
 class RegAsset1 extends Component {
@@ -26,7 +29,8 @@ class RegAsset1 extends Component {
         console.log("In RegAsset1", props)
         this.state = {
           showImageErrorModal: false,
-          metrics: {}
+          metrics: {},
+          content: ""
         }
         this.corePropChange = this.corePropChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
@@ -148,34 +152,49 @@ class RegAsset1 extends Component {
         })
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
-    onPressTest = () => {
+
+    async CheckIfUserIsCurrent(username) {
+      const snapshot = await rootRef.child("users").child(username).once("value");
+      console.log('jm exists?', username, snapshot.exists())
+        if (snapshot.exists() == true){
+          console.log('jm true')
+          return true
+        } else {
+          console.log('jm false')
+          return false
+        }
+      }
+
+    onPressTest = async () => {
         let newAsset = Object.assign({}, this.state)
-        console.log(newAsset, "hopefully shallow clone")
-        if (!newAsset.newAsset.Logo){
-          this.setState({ showImageErrorModal: true })
+        let userExists = await this.CheckIfUserIsCurrent(this.state.newAsset.Password)
+
+        if (userExists === true){
+          console.log(newAsset, "hopefully shallow clone")
+          if (!newAsset.newAsset.Logo){
+            this.setState({ content: "Please include an image with your asset."})
+            this.setState({ showImageErrorModal: true })
+          } else {
+            if (this.props.canRegisterAsset){
+              this.props.AddAsset(this.state.newAsset);
+              this.props.navigation.navigate("RegAsset2");
+            } else {
+              this.setState({ content: "Your account does not meet the minimum amount to register an asset."})
+              this.setState({ showImageErrorModal: true })
+            }
+          }
+        } else {
+          Alert.alert(
+          'The user [' + this.state.newAsset.Password +'] is not a Hercules User.',
+          'Would you like to invite them?' ,
+          [
+            {text: 'Later', onPress: () => console.log('OK Pressed'), style: 'later'},
+            {text: 'Send Invite ', onPress: () => this._sendInvite()},
+          ],
+          { cancelable: false }
+        )
         }
 
-        // if (!newAsset.newAsset.Logo){
-        //   console.log('jm DO NOT PASS GO')
-        //   // insert Alert modal here
-        //   <CustomModal
-        //       heading={"Oops! This is incomplete."}
-        //       content={"Please include an image with your asset."}
-        //       modalCase="error"
-        //       isVisible={this.state.isVisible}
-        //       onBackdropPress={() => this.toggleModal()}
-        //       closeModal={this.allDone}
-        //       dismissRejectText={"All Done"}
-        //   />
-        // }
-        console.log('jm check canRegisterAsset flag', this.props.canRegisterAsset);
-        if (this.props.canRegisterAsset){
-          this.props.AddAsset(this.state.newAsset);
-          this.props.navigation.navigate("RegAsset2");
-        } else {
-          console.log('jm this.props.canRegisterAsset is undefined/false');
-          Alert.alert("Your account does not meet the minimum amount\nto register an asset.");
-        }
     }
 
     // function to add metric, am considering implementing the modal, but this
@@ -262,7 +281,7 @@ class RegAsset1 extends Component {
                 />
 
                 <CustomModal
-                    content={"Please include an image with your asset."}
+                    content={this.state.content}
                     modalCase="error"
                     isVisible={this.state.showImageErrorModal}
                     onBackdropPress={() => {this.setState({showImageErrorModal: false}) }}
@@ -292,6 +311,6 @@ const mapDispatchToProps = (dispatch) => ({
     AddAsset: (newAsset) => dispatch(AddAsset(newAsset)),
     // getHercId: () => dispatch(getHercId()),
     ToggleCamSourceModal: () =>
-        dispatch(ToggleCamSourceModal()),
+        dispatch(ToggleCamSourceModal())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);

@@ -20,6 +20,6 @@ export const Action = {
     RegAssetToIpfsComplete: 'RegAssetToIpfsComplete',
 
     RegAssetIpfsHashToFactomStarted: 'RegAssetIpfsToFactomStarted',
-    RegAssetIpfsHashToFactomComplete: 'RegAssetFactomComplete',
+    RegAssetIpfsHashToFactomComplete: 'RegAssetFactomComplete'
 
 }

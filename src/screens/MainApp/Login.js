@@ -88,7 +88,7 @@ class Login extends Component {
         .then(response => { return response })
         .catch(error => { console.log(error) })
       )
-
+      console.log('jm keys?', account.allKeys[1].keys.ethereumAddress);
       promiseArray.push(axios.post(WEB_SERVER_API_USERS, {
         username: account.username,
         address: account.allKeys[1].keys.ethereumAddress
