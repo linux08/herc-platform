@@ -61,21 +61,20 @@ class WalletFlow extends React.Component {
   }
 
   componentWillMount = async () => {
+    let userExists = this.props.navigation.getParam('userExists', 'true')
+    console.log('jm userExists? ', userExists, typeof(userExists), 'can register?', this.props.canRegisterAsset)
 
-    Alert.alert(
-      "Welcome to HERCULES",
-      "Registering an asset requires 1000 HERC. Click the button below to purchase additional HERC.",
-      [
-        {
-          text: "Already Have!",
-          onPress: () => {console.log("clicked already have!")}
-        },
-        {
-          text: "Purchase",
-          onPress: () => { Linking.openURL("https://purchase.herc.one") }
+    if (userExists === 'false'){
+      Alert.alert(
+            'Welcome! We detected that this is your first time.',
+            'To power our app, you need to have hercs!' ,
+            [
+              {text: 'Later', onPress: () => console.log('OK Pressed'), style: 'later'},
+              {text: 'Buy Now', onPress: () => Linking.openURL("https://purchase.herc.one/")},
+            ],
+            { cancelable: true }
+          )
         }
-    ]
-    );
 
     try {
       let light = await this.props.wallet.getEnabledTokens();
@@ -773,6 +772,7 @@ const mapStateToProps = state => ({
   //     state.WalletReducers.wallet.balances[
   //     state.WalletReducers.wallet.currencyInfo.currencyCode
   //     ],
+  canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
   account: state.WalletReducers.account,
   watchBalance: state.WalletReducers.watchBalance,
   destinationAddress: state.WalletReducers.destinationAddress,

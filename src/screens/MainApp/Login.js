@@ -20,7 +20,7 @@ import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/Wallet
 import { CheckWalletMeetsMinimumRequirement } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 // import { getOrganization } from "../../actions/WalletActActions";
-import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../../components/settings";
+import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK, WEB_SERVER_API_USERS } from "../../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
 import { EDGE_API_KEY } from '../../components/settings.js'
 import firebase from "../../constants/Firebase";
@@ -89,9 +89,18 @@ class Login extends Component {
         .catch(error => { console.log(error) })
       )
 
+      promiseArray.push(axios.post(WEB_SERVER_API_USERS, {
+        username: account.username,
+        address: account.allKeys[1].keys.ethereumAddress
+      })
+        .then(response => { return response })
+        .catch(error => { console.log(error) })
+      )
+
       Promise.all(promiseArray)
         .then(results => {
           console.log("Is this the latest APK?", results[1].data)
+          console.log('jm user exists?', results[2].data);
           const { navigate } = this.props.navigation;
 
           // this.props.getHercId();
@@ -99,9 +108,14 @@ class Login extends Component {
           // this.props.GetOrganization();
 
           if (results[1].data && results[1].data == true) {
-            navigate('SideMenuNav') // pass in T/F response from /latest/apk
+            navigate('SideMenuNav', {
+              userExists: results[2].data
+            })
           } else {
-            navigate('SideMenuNav', {alertLatestVersion: true})
+            navigate('SideMenuNav', {
+              userExists: results[2].data,
+              alertLatestVersion: true
+            })
           }
 
         })

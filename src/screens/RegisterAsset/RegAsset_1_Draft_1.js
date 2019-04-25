@@ -39,6 +39,23 @@ class RegAsset1 extends Component {
         this.setState({
             newAsset
         })
+
+        if (this.props.canRegisterAsset === false){
+          Alert.alert(
+            "Welcome to HERCULES",
+            "Registering an asset requires 1000 HERC. Click the button below to purchase additional HERC.",
+            [
+              {
+                text: "Already Have!",
+                onPress: () => {console.log("clicked already have!")}
+              },
+              {
+                text: "Purchase",
+                onPress: () => { Linking.openURL("https://purchase.herc.one") }
+              }
+            ]
+          );
+        }
     }
 
     // componentDidMount =() => {
