@@ -102,10 +102,8 @@ let account = store.getState().AccountReducers.account
     if (DEVELOPERS.includes(this.props.edgeAccount)) {
         // this is a developer
         console.log("You are a developer. jm")
-    //   dispatch(godMode)
     } else {
         console.log("jm checkbalance()", this.props.wallet.balances.HERC)
-        // debugger;
         // this is a non-developer
         console.log("You are NOT a developer. jm")
         let price = new BigNumber(1000)

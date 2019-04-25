@@ -179,11 +179,13 @@ class RegAsset1 extends Component {
       }
 
     onPressTest = async () => {
-        let newAsset = Object.assign({}, this.state)
+        let newAsset = Object.assign({}, this.state, {"CreatedBy": this.props.assetCreator})
+        console.log('jm shallow clone of new Asset', newAsset);
+        console.log('jm other clone?', this.state.newAsset);
+
         let userExists = await this.CheckIfUserIsCurrent(this.state.newAsset.Password)
 
         if (userExists === true){
-          console.log(newAsset, "hopefully shallow clone")
           if (!newAsset.newAsset.Logo){
             this.setState({ content: "Please include an image with your asset."})
             this.setState({ showImageErrorModal: true })
@@ -317,7 +319,8 @@ class RegAsset1 extends Component {
 const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     newAsset: state.RegAssetReducers.newAsset,
-    canRegisterAsset: state.RegAssetReducers.canRegisterAsset
+    canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
+    assetCreator: state.AccountReducers.edge_account
 });
 
 const mapDispatchToProps = (dispatch) => ({

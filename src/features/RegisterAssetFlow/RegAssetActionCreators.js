@@ -180,7 +180,7 @@ function makeAndSetHeader(logoUrl) {
     hercId: newAsset.hercId,
     Name: newAsset.Name,
     Logo: logoUrl,
-    Password: newAsset.Password
+    Password: newAsset.Password,
   }
   console.log("making and setting header", newAsset)
 
