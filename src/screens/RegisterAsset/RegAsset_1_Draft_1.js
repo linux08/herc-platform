@@ -153,7 +153,7 @@ class RegAsset1 extends Component {
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
 
-    async CheckIfUserIsCurrent(username) {
+    CheckIfUserIsCurrent = async (username) => {
       const snapshot = await rootRef.child("users").child(username).once("value");
       console.log('jm exists?', username, snapshot.exists())
         if (snapshot.exists() == true){
@@ -163,6 +163,19 @@ class RegAsset1 extends Component {
           console.log('jm false')
           return false
         }
+      }
+
+      _sendInvite = async () => {
+        Share.share(
+          {
+            message: "Hey! Join Herc Today",
+            url: "https://play.google.com/store/apps/details?id=com.HERC",
+            title: "A Leading Supply Chain Protocol Tool"
+          },
+          {
+            dialogTitle: "Send a Hercules Invitation"
+          }
+        );
       }
 
     onPressTest = async () => {
