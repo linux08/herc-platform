@@ -37,6 +37,7 @@ export function AddPhotoButton(props) {
                 color={ColorConstants.MainBlue}
                 name='camera'
                 onPress={props.onPress}
+                size={20}
             >
             </Icon>
             <Text style={localStyles.buttonLabel}>Add a Photo</Text>
@@ -57,6 +58,7 @@ export function AddMetricButton(props) {
                     color={ColorConstants.MainBlue}
                     name='plus-circle'
                     onPress={props.onPress}
+                    size={20}
                 >
                 </Icon>
 
