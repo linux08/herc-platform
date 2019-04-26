@@ -49,6 +49,7 @@ const bgImage = require("../../assets/main-bg.png")
                                 style={[styles.iconButton, { marginLeft: 20 }]}
                                 name='account-balance-wallet'
                                 color={ColorConstants.MainGold}
+                                size={20}
                             />
                         </View>
                         <Text style={styles.headerText}>{this.props.headerTitle}</Text>
@@ -57,6 +58,7 @@ const bgImage = require("../../assets/main-bg.png")
                                 style={[styles.iconButton, { marginRight: 20 }]}
                                 name='gear'
                                 color={ColorConstants.MainGold}
+                                size={20}
                             />
                         </View>
                     </View>
