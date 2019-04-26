@@ -175,12 +175,14 @@ function createAndSendIpfsAsset(newAsset) {
 
 function makeAndSetHeader(logoUrl) {
   let newAsset = store.getState().RegAssetReducers.newAsset;
+  let createdBy = store.getState().AccountReducers.edge_account;
 
   const fbAsset = {
     hercId: newAsset.hercId,
     Name: newAsset.Name,
     Logo: logoUrl,
     Password: newAsset.Password,
+    CreatedBy: createdBy
   }
   console.log("making and setting header", newAsset)
 

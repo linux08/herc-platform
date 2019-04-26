@@ -179,10 +179,7 @@ class RegAsset1 extends Component {
       }
 
     onPressTest = async () => {
-        let newAsset = Object.assign({}, this.state, {"CreatedBy": this.props.assetCreator})
-        console.log('jm shallow clone of new Asset', newAsset);
-        console.log('jm other clone?', this.state.newAsset);
-
+        let newAsset = Object.assign({}, this.state)
         let userExists = await this.CheckIfUserIsCurrent(this.state.newAsset.Password)
 
         if (userExists === true){
