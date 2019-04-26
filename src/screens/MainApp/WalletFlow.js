@@ -61,8 +61,10 @@ class WalletFlow extends React.Component {
   }
 
   componentWillMount = async () => {
+    // var item = await this.props.account.dataStore.getItem("one.herc", "hercUserID");
+    // console.log('jm is uuid in account datastore?',item);
+
     let userExists = this.props.navigation.getParam('userExists', 'true')
-    console.log('jm userExists? ', userExists, typeof(userExists), 'can register?', this.props.canRegisterAsset)
 
     if (userExists === 'false'){
       Alert.alert(
@@ -773,7 +775,7 @@ const mapStateToProps = state => ({
   //     state.WalletReducers.wallet.currencyInfo.currencyCode
   //     ],
   canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
-  account: state.WalletReducers.account,
+  account: state.AccountReducers.account,
   watchBalance: state.WalletReducers.watchBalance,
   destinationAddress: state.WalletReducers.destinationAddress,
   displayModalQR: state.WalletReducers.ToggleDisplayQRScanner

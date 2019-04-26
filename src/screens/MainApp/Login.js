@@ -64,7 +64,6 @@ class Login extends Component {
       tokens: [ "HERC", "HERCULES" ]
     };
     if (!this.state.account) {
-      console.log('jm account', account);
       this.setState({account})
       this.props.GetAccount(account);
       this.props.GetUsername(account.username);
@@ -102,14 +101,14 @@ class Login extends Component {
         .then(async results => {
           console.log("Is this the latest APK?", results[1].data)
           console.log('jm user exists?', results[2].data.response);
-          if (results[2].data.response !== true){
-            await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
-            // var item = await account.dataStore.getItem("one.herc", "hercUserID");
-            // console.log('jm check if item is in account?',item);
-          }
-          const { navigate } = this.props.navigation;
 
           this.props.GetHeaders(this.props.username);
+
+          if (results[2].data.response !== true){
+            await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
+          } 
+
+          const { navigate } = this.props.navigation;
 
           if (results[1].data && results[1].data == true) {
             navigate('SideMenuNav', {
