@@ -127,7 +127,6 @@ const localStyles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1
     },
-
     modalBackground: {
         width: widthPercentageToDP('90'),
         height: heightPercentageToDP('40'),
@@ -139,7 +138,6 @@ const localStyles = StyleSheet.create({
         padding: 5,
         marginHorizontal: 10,
     },
-
     buttonContainer: {
         width: '100%',
         padding: 10,
@@ -147,7 +145,6 @@ const localStyles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-
     },
     button: {
         height: 30,
@@ -181,5 +178,4 @@ const localStyles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center'
     }
-
 });

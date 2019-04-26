@@ -166,16 +166,19 @@ class RegAsset1 extends Component {
       }
 
       _sendInvite = async () => {
-        Share.share(
-          {
-            message: "Hey! Join Herc Today",
-            url: "https://play.google.com/store/apps/details?id=com.HERC",
-            title: "A Leading Supply Chain Protocol Tool"
-          },
-          {
-            dialogTitle: "Send a Hercules Invitation"
-          }
-        );
+        try {
+          const result = Share.share({
+              message: "Join Herc Today | A Leading Blockchain Supply Chain Protocol\nhttps://play.google.com/store/apps/details?id=com.HERC",
+              url: "https://play.google.com/store/apps/details?id=com.HERC",
+              title: "A Leading Supply Chain Protocol Tool"
+            },
+            {
+              dialogTitle: "Send a Hercules Invitation"
+            }
+          );
+        } catch (e) {
+          alert(e.message)
+        }
       }
 
     onPressTest = async () => {
