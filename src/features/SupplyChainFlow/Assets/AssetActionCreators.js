@@ -25,25 +25,32 @@ export function ShowAssetPasswordModal(isViz) {
     }
 }
 
-export function GetHeaders(userName) {
-    console.log('gettingHeaders,')
+export function GetHeaders() {
+    var username = store.getState().AccountReducers.edge_account
+    console.log('jm gettingHeaders:', username)
+
     return dispatch => {
         let assetHeaders = [];
         assetRef.once("value")
             .then(snapshot => {
                 snapshot.forEach(asset => {
                     // this gets the unique firebase key for the asset
+
                     let pushKey = assetRef.child(asset.key).push();
-                    assetHeaders.push(
-                        Object.assign({}, asset.toJSON(),
-                            {
-                                key: pushKey.key
-                            }
-                        )
-                    );
+                    if (asset.toJSON().Password === username || asset.toJSON().CreatedBy === username){
+                      assetHeaders.push(
+                          Object.assign({}, asset.toJSON(),
+                              {
+                                  key: pushKey.key
+                              }
+                          )
+                      );
+                    }
                 })
-            }).then(() => {
-                dispatch(GotHeaders(assetHeaders))
+            })
+            .then(() => {
+              console.log('jm assetHeaders', assetHeaders);
+              dispatch(GotHeaders(assetHeaders))
             })
     }
 }

@@ -65,12 +65,13 @@ class Login extends Component {
     };
     if (!this.state.account) {
       this.setState({account})
+      var username = account.username
       this.props.GetAccount(account);
-      this.props.GetUsername(account.username);
+      this.props.GetUsername(username);
 
       let promiseArray = []
 
-      promiseArray.push(axios.get(WEB_SERVER_API_TOKEN + account.username)
+      promiseArray.push(axios.get(WEB_SERVER_API_TOKEN + username)
         .then(response => {
           let token = response.data
           this.props.AuthToken(token)
@@ -90,7 +91,7 @@ class Login extends Component {
       )
       console.log('jm keys?', account.allKeys[1].keys.ethereumAddress);
       promiseArray.push(axios.post(WEB_SERVER_API_USERS, {
-        username: account.username,
+        username: username,
         address: account.allKeys[1].keys.ethereumAddress
       })
         .then(response => { return response })
@@ -102,11 +103,11 @@ class Login extends Component {
           console.log("Is this the latest APK?", results[1].data)
           console.log('jm user exists?', results[2].data.response);
 
-          this.props.GetHeaders(this.props.username);
+          this.props.GetHeaders();
 
           if (results[2].data.response !== true){
             await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
-          } 
+          }
 
           const { navigate } = this.props.navigation;
 

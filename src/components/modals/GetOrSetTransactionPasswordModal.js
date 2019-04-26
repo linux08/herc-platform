@@ -63,7 +63,7 @@ class GetOrSetTransactionPasswordModal extends Component {
     }
 
 goToSupplyChainTrans = () => {
-    this.props.ShowPasswordModal(); 
+    this.props.ShowPasswordModal();
     this.props.navigation.navigate('SupplyChainTX')
 }
 
@@ -150,15 +150,13 @@ const localStyles = StyleSheet.create({
 
     },
     button: {
-        height: 20,
-        width: 70,
+        height: 30,
+        width: 80,
         backgroundColor: ColorConstants.MainGray,
+        marginVertical: 5,
         marginHorizontal: 20,
-        alignSelf: 'center',
-
-
+        alignSelf: 'center'
     },
-
     pad10: {
         padding: 5
     },
