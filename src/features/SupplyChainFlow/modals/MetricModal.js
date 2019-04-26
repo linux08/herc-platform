@@ -29,8 +29,7 @@ class MetricModal extends Component {
     }
 
     renderMetrics = (coreProps) => {
-
-        let metrics = Object.keys(coreProps);
+        let metrics = Object.values(coreProps);
         let numOfMetrics = metrics.length;
         let metricList = [];
         metrics.forEach((x, i) => {
@@ -56,8 +55,8 @@ class MetricModal extends Component {
                 animationIn={'slideInRight'}
                 animationOut={'slideOutRight'}
                 isVisible={visibility}
-                onRequestClose={() => { console.log("modal closed") }}
-
+                onRequestClose={() => { this.props.ShowMetricModal() }}
+                onBackButtonPress={ ()=> {this.props.ShowMetricModal()} }
             >
 
                 <View style={styles.bodyContainer}>

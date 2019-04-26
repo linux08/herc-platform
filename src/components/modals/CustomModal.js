@@ -11,14 +11,14 @@ import Modal from 'react-native-modal';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import ProgressCircle from 'react-native-progress-circle';
 
-// Usage Instructions : 
+// Usage Instructions :
 /**
  * ## Six modalCase values:{'complete', 'error','confirm','progress','imageSouce','add'}
  * ## Example usage:
- *  <CustomModal modalCase="error" 
-        closeModal= {()=>{this.setState({isVisible:false})}} 
-        isVisible={this.state.isVisible} 
-        content="Your content here." 
+ *  <CustomModal modalCase="error"
+        closeModal= {()=>{this.setState({isVisible:false})}}
+        isVisible={this.state.isVisible}
+        content="Your content here."
         dismissRejectText="Close" / >
 
     ##Props for different cases:

@@ -14,10 +14,15 @@ const { height, width } = Dimensions.get('window');
 import ColorConstants from '../../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';
 
-import {assetCardStyles} from './trackComponentStyles';
+import { assetCardStyles } from './trackComponentStyles';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
 
 
 export const SwiperTextFieldWithLabel = props => {
+
+  let myIcon = <View />;
 
   let text = props.text;
   if (text.length > 32) {
@@ -25,12 +30,18 @@ export const SwiperTextFieldWithLabel = props => {
     let middle = " ... ";
     let end = text.substring(text.length - 9, text.length - 1);
     text = beginning + middle + end;
+
+    myIcon = <Icon name="copy" size={12} color="black" />;
+
     console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
   }
   return (
     <View key={text} style={localStyles.textFieldContainer}>
       <Text style={localStyles.labelText}>{props.label}</Text>
-      <Text style={localStyles.textField}>{text || ''}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%"}}>
+        <Text style={localStyles.textField}>{text || ''}</Text>
+        {myIcon}
+      </View>
     </View>
   );
 };
@@ -74,13 +85,13 @@ export function CardCostDisplay(props) {
 
 
 export const SimpleAssetCard = (props) => {
-  console.log(props, "this is state, looking for the deets passed in")
+  console.log(props, "jm this is state, looking for the deets passed in")
   return (
     <View style={assetCardStyles.assetCard}>
-      
+
       <View style={assetCardStyles.assetImageContainer}>
 
-          <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />
+        <Image source={{ uri: props.Logo }} style={assetCardStyles.assetImage} />
 
       </View>
 
@@ -111,22 +122,22 @@ const localStyles = StyleSheet.create({
     backgroundColor: ColorConstants.ElementBG,
     margin: 5,
     paddingLeft: 5,
-    borderRadius: 6
+    borderRadius: 6,
     // height: heightPercentageToDP(((50 / height) * 100).toString()),
   },
 
   textField: {
     color: ColorConstants.MainBlue,
-    width: "100%",
-    marginLeft: 0,
-    marginRight: 0,
+    // width: "100%",
+    // marginLeft: 0,
+    // marginRight: 0,
     // fontSize: 14,
     paddingLeft: 5,
     textAlign: "left",
     fontSize: 14,
-    borderRadius: 8,
+    // borderRadius: 8,
     // height: heightPercentageToDP('4.95'),
-    paddingBottom: 0
+    // paddingBottom: 0
   },
   costFieldAmount: {
     color: ColorConstants.MainBlue,
@@ -226,11 +237,10 @@ const localStyles = StyleSheet.create({
     width: '75%',
     backgroundColor: ColorConstants.MainGold,
     borderRadius: 8,
-    margin: 5,
     justifyContent: "center",
     alignItems: "center",
-    padding: 5,
-    marginTop: 10,
+    marginTop: "1%",
+    marginBottom: "1%",
     marginRight: 20,
     marginLeft: 20,
     alignSelf: "center"

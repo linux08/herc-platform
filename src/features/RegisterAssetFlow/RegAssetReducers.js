@@ -11,7 +11,8 @@ const INITIAL_STATE = {
     HercId: "",
     percentage: 0,
     content: "Your Asset is Being Created",
-    flags: {}
+    flags: {},
+    canRegisterAsset: false
 }
 
 const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
@@ -28,9 +29,11 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Reg.Action.CheckWalletMeetsMinimumRequirement:
+            const canRegisterAsset = action.canRegisterAsset
+            console.log('jm canRegisterAsset', canRegisterAsset);
             return Object.assign({}, {
                 ...state,
-                canRegisterAsset: action.canRegisterAsset
+                canRegisterAsset: canRegisterAsset
             })
 
         case Reg.Action.GetHercId:
@@ -45,6 +48,7 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
             console.log("gotHercIDreducers", action);
             let hercId = action.hercId;
             return Object.assign({}, {
+                ...state,
                 HercId: hercId,
                 newAsset: {
                     ...INITIAL_STATE.newAsset,

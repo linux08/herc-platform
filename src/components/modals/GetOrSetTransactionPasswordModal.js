@@ -63,7 +63,7 @@ class GetOrSetTransactionPasswordModal extends Component {
     }
 
 goToSupplyChainTrans = () => {
-    this.props.ShowPasswordModal(); 
+    this.props.ShowPasswordModal();
     this.props.navigation.navigate('SupplyChainTX')
 }
 
@@ -127,7 +127,6 @@ const localStyles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1
     },
-
     modalBackground: {
         width: widthPercentageToDP('90'),
         height: heightPercentageToDP('40'),
@@ -139,7 +138,6 @@ const localStyles = StyleSheet.create({
         padding: 5,
         marginHorizontal: 10,
     },
-
     buttonContainer: {
         width: '100%',
         padding: 10,
@@ -147,18 +145,15 @@ const localStyles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-
     },
     button: {
-        height: 20,
-        width: 70,
+        height: 30,
+        width: 80,
         backgroundColor: ColorConstants.MainGray,
+        marginVertical: 5,
         marginHorizontal: 20,
-        alignSelf: 'center',
-
-
+        alignSelf: 'center'
     },
-
     pad10: {
         padding: 5
     },
@@ -183,5 +178,4 @@ const localStyles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center'
     }
-
 });

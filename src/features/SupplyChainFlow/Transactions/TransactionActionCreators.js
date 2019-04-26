@@ -4,12 +4,13 @@ import {
   WEB_SERVER_API_FACTOM_CHAIN_ADD,
   WEB_SERVER_API_FACTOM_ENTRY_ADD,
   WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
-  WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_UPLOAD_DOCUMENT,
+  WEB_SERVER_API_UPLOAD_IMAGE,
   TOKEN_ADDRESS,
   DEVELOPERS
-} from '../../../components/settings';
+} from "../../../components/settings";
 
-const BigNumber = require('bignumber.js');
+const BigNumber = require("bignumber.js");
 import * as Trans from "./TransactionActionNames";
 import axios from "axios";
 import store from "../../../store";
@@ -54,7 +55,7 @@ export function ClearMetrics() {
 export function ShowMetricModal() {
   return {
     type: Trans.Action.ShowMetricModal
-  }
+  };
 }
 // export function ShowCamSourceModal() {
 //   return {
@@ -65,24 +66,21 @@ export function ShowMetricModal() {
 export function ShowPasswordModal() {
   return {
     type: Trans.Action.ShowPasswordModal
-  }
+  };
 }
-
 
 export function ShowEditModal() {
   return {
     type: Trans.Action.ShowEditModal
-  }
+  };
 }
 
 export function SetNewOriginTransPassword(password) {
-  console.log('settingNewOGPass')
+  console.log("settingNewOGPass");
   return {
     type: Trans.Action.SetNewOriginTransPassword,
     password
-  }
-
-
+  };
 }
 export function StartTransaction(place) {
   // if (place === "Recipient") {
@@ -156,11 +154,8 @@ export function AddMetrics(newMetrics) {
 }
 
 export function AddPhoto(imgObj) {
-  let dynamicHercValue = store.getState().TransactionReducers.hercValue;
-  let imgPrice = (
-    ((imgObj.size / 1024) * 0.00000002) /
-    dynamicHercValue
-  ).toFixed(18);
+  let imgSize = imgObj.size;
+  let imgPrice = this._calculateStorjPrice(imgSize);
   return {
     type: Trans.Action.AddPhoto,
     images: {
@@ -173,33 +168,22 @@ export function AddPhoto(imgObj) {
   };
 }
 
-//   getImgPrice = () => {
-// as of 12/30/18 Image Fee (storj .000000002/kB)
-// let transDat = this.props.transDat;
-// let dynamicHercValue = this.state.hercValue;
+// _calculateImgPrice = imgObj => {
+//   let dynamicHercValue = store.getState().TransactionReducers.hercValue;
+//   let imgSize = imgObj.size;
+//   let imgPrice = (
+//     (imgSize / 1024) *
+//     (0.0000000477 * (1 / dynamicHercValue))
+//   ).toFixed(18);
 
-// if (transDat.images) {
-//       console.log(
-//         "made it into the transdat images and here is the dynamic herc value from state",
-//         dynamicHercValue
-//       );
-//       let imgPrice =
-//         ((transDat.images.size / 1024) * 0.00000002) / dynamicHercValue;
-//       let newImgPrice = imgPrice.toFixed(18);
-//       console.log(newImgPrice, "this is the new img price on line 285");
-//       return newImgPrice;
-//     } else {
-//       let imgPrice = 0;
-//       console.log(
-//         "this is in the else statement imgPrice should be 0",
-//         imgPrice
-//       );
-//       return imgPrice;
-//     }
-//   };
+//   return imgPrice;
+// };
 
 export function AddDoc(doc) {
-  let docPrice = getDocPrice();
+  let docSize = doc.size;
+  let docPrice = _calculateStorjPrice(docSize);
+
+  console.log(docPrice, "this is the doc price");
   let document = Object.assign({}, doc, {
     ...doc,
     price: docPrice
@@ -211,10 +195,14 @@ export function AddDoc(doc) {
   };
 }
 
-getDocPrice = () => {
+_calculateStorjPrice = (size) => {
   let dynamicHercValue = store.getState().TransactionReducers.hercValue;
-  let docPrice = 0.000032 / dynamicHercValue;
-  let convertingPrice = new BigNumber(docPrice);
+  let storjPrice = (
+    (size / 1024) *
+    (0.0000000477 * (1 / dynamicHercValue))
+  ).toFixed(18);
+
+  let convertingPrice = new BigNumber(storjPrice);
   let newDocPrice = convertingPrice.toFixed(18);
   return newDocPrice;
 };
@@ -232,6 +220,7 @@ getNetworkFee = currentHercPrice => {
   //Network Fee is the combined value of security fee and per use fee. The response should be in Hercs.
 
   let dynamicHercValue = currentHercPrice;
+  console.log("this is the dynamic herc value", dynamicHercValue)
   let securityFeeInHercs = 0.000032 / dynamicHercValue;
   let perUseFeeInHercs = 0.000032 / dynamicHercValue;
   let networkFee = securityFeeInHercs + perUseFeeInHercs;
@@ -247,17 +236,24 @@ GotNetworkFee = fee => {
   };
 };
 
-export function GetCurrentHercValue(){
+export function GetCurrentHercValue() {
   getDynamicHercValue();
   return {
     type: Trans.Action.GetCurrentHercValue
   };
-};
+}
+
+export function GetCurrentGasPrice() {
+  getCurrrentGasPrice();
+  return {
+    type: Trans.Action.GetCurrentGasPrice
+  };
+}
 
 getDynamicHercValue = async () => {
   try {
     let response = await fetch(
-      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDV&range=MINUTE_5"
+      "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCUSDVW&range=MINUTE"
     );
 
     let highPrice = await response.json();
@@ -268,33 +264,47 @@ getDynamicHercValue = async () => {
   }
 };
 
-GotDynamicHercValue = hercValue => {
+async function getCurrrentGasPrice(){
+  try {
+    let response = await fetch(
+      "https://ethgasstation.info/json/ethgasAPI.json"
+    );
+
+    let gasPrices = await response.json();
+    console.log(gasPrices, "dynamic gas prices ALL***");
+    let gasPriceAverageInWei = gasPrices.average * .1 
+    store.dispatch(GotCurrentGasPrice(gasPriceAverageInWei));
+  } catch (error) {
+    store.dispatch(Error(error));
+  }
+};
+
+
+
+export function GotDynamicHercValue(hercValue){
   getNetworkFee(hercValue);
+  getCurrrentGasPrice();
   return {
     type: Trans.Action.GotDynamicHercValue,
     hercValue
   };
 };
 
-// _getDynamicHercValue = async () => {
-//     return fetch(
-//       "https://chart.anthemgold.com/service-1.0-SNAPSHOT/PRICE?symbol=HERCCOMMERCIAL&range=MINUTE_5",
-//       {
-//         method: "GET"
-//       }
-//     )
-//       .then(response => response.json())
-//       .then(responseJson => {
-//         let responseObject = responseJson;
-//         let highPrice = responseObject.h;
-//         return highPrice;
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   };
+export function GotCurrentGasPrice(gasPrice){
+  return {
+    type: Trans.Action.GotCurrentGasPrice,
+    gasPrice
+  };
+};
 
 export function MakePayment(makePaymentObject) {
+  console.log(makePaymentObject, "this is the make payment object")
+
+  let docImgFeePrepped = new BigNumber(makePaymentObject.dataFee).multipliedBy(1000000000000000000).toFixed(0);
+  let networkFeePrepped = new BigNumber(makePaymentObject.networkFee).multipliedBy(1000000000000000000).toFixed(0);
+  
+
+
   return async dispatch => {
     console.log("jm makePaymentObject", makePaymentObject);
     if (DEVELOPERS.includes(store.getState().AccountReducers.edge_account)) {
@@ -306,7 +316,7 @@ export function MakePayment(makePaymentObject) {
       );
       dispatch({ type: Trans.Action.TransactionComplete });
     } else {
-      console.log('jm makePaymentObject networkFee', makePaymentObject)
+      console.log("jm makePaymentObject networkFee", makePaymentObject);
       const burnSpendInfo = {
         networkFeeOption: "standard",
         currencyCode: "HERC",
@@ -317,7 +327,7 @@ export function MakePayment(makePaymentObject) {
         spendTargets: [
           {
             publicAddress: TOKEN_ADDRESS,
-            nativeAmount: makePaymentObject.networkFee
+            nativeAmount: networkFeePrepped
           }
         ]
       };
@@ -331,7 +341,7 @@ export function MakePayment(makePaymentObject) {
         spendTargets: [
           {
             publicAddress: "0x1a2a618f83e89efbd9c9c120ab38c1c2ec9c4e76",
-            nativeAmount: makePaymentObject.dataFee
+            nativeAmount: docImgFeePrepped
           }
         ]
       };
@@ -373,56 +383,56 @@ export function MakePayment(makePaymentObject) {
 
 export function TransactionStarted() {
   return {
-    type: Trans.Action.TransactionStarted,
-  }
+    type: Trans.Action.TransactionStarted
+  };
 }
-
 
 export function TransactionInstantiating() {
   return {
-    type: Trans.Action.TransactionInstantiating,
-  }
+    type: Trans.Action.TransactionInstantiating
+  };
 }
 
 export function TransactionFactomEntryCompleted(factomEntry) {
   return {
     type: Trans.Action.TransactionFactomEntryCompleted,
     factomEntry: factomEntry
-  }
+  };
 }
 
 export function TransactionWriteToFirebaseCompleted() {
   return {
-    type: Trans.Action.TransactionWriteToFirebaseCompleted,
-  }
+    type: Trans.Action.TransactionWriteToFirebaseCompleted
+  };
 }
 
 export function TransactionComplete() {
   return {
-    type: Trans.Action.TransactionComplete,
-  }
+    type: Trans.Action.TransactionComplete
+  };
 }
 
-
 export function SendTransaction() {
-  console.log('jm started SendTransaction')
+  console.log("jm started SendTransaction");
   return dispatch => {
     // dispatch({ type: SEND_TRANS }); //brings up MODAL
-    store.dispatch(TransactionStarted())
+    store.dispatch(TransactionStarted());
 
     let transObject = store.getState().TransactionReducers.trans;
     let price = 0;
-    if( transObject.data.images.price ){
-      price = price + transObject.data.images.price
+    if (transObject.data.images.price) {
+      console.log("this is the transObject data images price", transObject.data.images.price)
+      price =  new BigNumber(transObject.data.images.price).plus(price).toFixed(18);
     }
-    if( transObject.data.documents.price ){
-      price = price + transObject.data.documents.price
+    if (transObject.data.documents.price) {
+      console.log("this is the transObject data images price", transObject.data.documents.price)
+      price = new BigNumber(transObject.data.documents.price).plus(price).toFixed(18);
     }
     let header = Object.assign({}, transObject.header, {
       ...transObject.header,
       price: price
     }); //tXlocation, hercId, price, name
-    console.log('jm price', price, "\nheader:", header)
+    console.log("jm price", price, "\nheader:", header);
 
     let data = transObject.data; //documents, images, metrics, edit
     /*
@@ -455,26 +465,25 @@ export function SendTransaction() {
     let keys = Object.keys(data); // ["metrics", "images", "documents", "ediT"]
     let promiseArray = [];
 
-    console.log('jm data', data, "\nkeys", keys)
-
-
+    console.log("jm data", data, "\nkeys", keys);
 
     //Checks if documents, metrics, images and EDIT was added
     keys.forEach(key => {
-      console.log('jm key', key)
-      if (key == 'images' && Object.keys(data['images']).length !== 0) {
-        console.log('jm check 1', data['images'])
+      console.log("jm key", key);
+      if (key == "images" && Object.keys(data["images"]).length !== 0) {
+        console.log("jm check 1", data["images"]);
         var base64 = data[key].data;
         var dataObject = Object.assign(
           {},
           { key: key },
           { data: encodeURIComponent(base64) }
         );
-        console.log('jm check image dataObject', dataObject)
+        console.log("jm check image dataObject", dataObject);
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_STORJ_UPLOAD_IMAGE, JSON.stringify(dataObject))
+            .post(WEB_SERVER_API_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
+              console.log("this is the response from web server api upload*****", response)
               return response;
             }) // {key: 'images', hash: 'QmU1D1eAeSLC5Dt4wVRR'}
             .catch(error => {
@@ -482,7 +491,7 @@ export function SendTransaction() {
             })
         );
       } else if (data[key].content) {
-        console.log('jm check 2', data[key].content)
+        console.log("jm check 2", data[key].content);
         let contentTypeName = {
           content: encodeURIComponent(data[key].content),
           type: data[key].type,
@@ -495,7 +504,10 @@ export function SendTransaction() {
         );
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_STORJ_UPLOAD_DOCUMENT, JSON.stringify(dataObject))
+            .post(
+              WEB_SERVER_API_UPLOAD_DOCUMENT,
+              JSON.stringify(dataObject)
+            )
             .then(response => {
               return response;
             })
@@ -507,7 +519,7 @@ export function SendTransaction() {
         Object.keys(data[key]).length != 0 &&
         data[key].constructor === Object
       ) {
-        console.log('jm check 3', data[key])
+        console.log("jm check 3", data[key]);
         var dataObject = Object.assign({}, { key: key }, { data: data[key] }); // {key: 'properties', data: data[key]}
         promiseArray.push(
           axios
@@ -524,7 +536,7 @@ export function SendTransaction() {
 
     let chainId = store.getState().AssetReducers.selectedAsset.hashes.chainId;
 
-    store.dispatch(TransactionInstantiating())
+    store.dispatch(TransactionInstantiating());
 
     Promise.all(promiseArray)
       .then(results => {
@@ -540,7 +552,7 @@ export function SendTransaction() {
         axios
           .post(WEB_SERVER_API_FACTOM_ENTRY_ADD, JSON.stringify(factomEntry))
           .then(response => {
-            store.dispatch(TransactionFactomEntryCompleted(response.data))
+            store.dispatch(TransactionFactomEntryCompleted(response.data));
             //response.data = entryHash
             var dataObject = {};
             hashlist.map(hash => (dataObject[hash.key] = hash.hash));
@@ -554,8 +566,11 @@ export function SendTransaction() {
               .child(Date.now())
               .set({ data: dataObject, header: firebaseHeader });
             console.log("2/2 ....finished writing to firebase. jm");
-            store.dispatch(TransactionWriteToFirebaseCompleted())
-            let makePaymentObject = {dataFee: price, networkFee: store.getState().TransactionReducers.networkFee}
+            store.dispatch(TransactionWriteToFirebaseCompleted());
+            let makePaymentObject = {
+              dataFee: price,
+              networkFee: store.getState().TransactionReducers.networkFee
+            };
             dispatch(MakePayment(makePaymentObject));
           })
           .catch(err => {
@@ -577,13 +592,12 @@ export function getQRData(data) {
 }
 
 export function StoreTransactionIds(transactionIds) {
-  console.log('jm storing transaction IDs', transactionIds)
+  console.log("jm storing transaction IDs", transactionIds);
   return {
     type: Trans.Action.StoreTransactionIds,
     transactionIds
   };
 }
-
 
 // this is needed swiper!
 // export function GetAssetTransactions(assetKey) {

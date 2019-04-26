@@ -175,12 +175,14 @@ function createAndSendIpfsAsset(newAsset) {
 
 function makeAndSetHeader(logoUrl) {
   let newAsset = store.getState().RegAssetReducers.newAsset;
+  let createdBy = store.getState().AccountReducers.edge_account;
 
   const fbAsset = {
     hercId: newAsset.hercId,
     Name: newAsset.Name,
     Logo: logoUrl,
-    Password: newAsset.Password
+    Password: newAsset.Password,
+    CreatedBy: createdBy
   }
   console.log("making and setting header", newAsset)
 
@@ -215,10 +217,7 @@ async function newAssetToIpfs(assetForIPFS) {
 
   store.dispatch(RegAssetToIpfsStarted());
   let asset = assetForIPFS;
-  console.log(asset, "trying to send to IPFS")
-  // let username = store.getState().WalletActReducers.edge_account
   var dataObject = { key: 'asset', data: asset }
-  console.log(dataObject, "this is whats going")
   try {
     let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
     console.log("1/3 ipfsHash: ", response)

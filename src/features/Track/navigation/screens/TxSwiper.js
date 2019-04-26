@@ -27,7 +27,6 @@ class TxSwiper extends Component {
       isSwipingBack: false,
       cardIndex: 0,
     }
-    console.log('TxSwiperConstructor', props)
   }
 
 
@@ -37,9 +36,6 @@ class TxSwiper extends Component {
   // }
 
   renderCard = (card, index) => {
-
-    console.log(card, 'card in rendercard')
-
     let factomChain = this.props.SelectedAsset.hashes.chainId;
     let corePropsHash = this.props.SelectedAsset.hashes.ipfsHash;
     let factomEntry = card.header.factomEntry
@@ -84,17 +80,8 @@ class TxSwiper extends Component {
     )
   }
 
-  // renderCard = (card, index) => {
-  //   return (
-  //     <View style={swiperStyles.card}>
-  //       <Text style={swiperStyles.text}>{card} - {index}</Text>
-  //     </View>
-  //   )
-  // };
-
 
   onSwipedAllCards = () => {
-    console.log('Swiped all cards');
     this.setState({
       swipedAllCards: true,
       cardIndex: 0
@@ -103,19 +90,19 @@ class TxSwiper extends Component {
 
   onSwiped = (index) => {
     currentCard = this.state.cards[index];
-    console.log("index", index, "and currentCard", currentCard)
     this.setState({
       cardIndex: this.state.cardIndex + 1
     })
   }
 
   onTap = (index) => {
-    console.log(index, 'ontap')
+    console.log('ontap')
   }
 
   swipeTop = (index) => {
-    this.sharing(this.state.cards[index]);
-    this.makeMessage(this.state.cards[currentCard].data);
+    console.log("this is swipeTop index ",index)
+    // this.sharing(this.state.cards[index]);
+    // this.makeMessage(this.state.cards[currentCard].data);
   }
 
   swipeBottom = () => {
@@ -124,71 +111,25 @@ class TxSwiper extends Component {
     // navigate('HiprLanding');
   }
 
-  // makeMessage = (cardData) => {
-  //   let header = cardData.header
-  //   let data = cardData.data
-  //   let time = header.dTime;
-  //   let location = header.tXLocation.toUpperCase() + " ";
-  //   let properties = data.properties ? Object.keys(data.properties).length + " Properties;\n" : "";
-  //   let images = data.images ? data.images.length + " Image(s);\n" : "";
-  //   let documents = data.documents ? data.documents.length + " Document(s);\n" : "";
-  //   let price = "Hercs: " + header.price + ";\n";
-  //   let sig = "Sent from Herc v.1.0"
-  //   let edit = "";
-  //   let password = header.password ? header.password : "No password";
-  //   if (data.ediT) {
-  //     edit = "EDI-T Value: " + data.ediT.value;
-
-  //   }
-  //   let title = header.name + " " + location + " Transaction @ " + time + ";";
-  //   let message = title + "\n" +
-  //     properties + edit + images + documents + price + password + " " + sig;
-  //   console.log(title, "title", message, "message")
-  //   return [title, message];
-  // }
-
-
-  // sharing = (data) => {
-  //   let shareTitle = this.makeMessage(data);
-  //   Share.share({
-  //     message: shareTitle[1],
-  //     title: shareTitle[0]
-  //   },
-  //     {// Android only:
-  //       dialogTitle: shareTitle[0],
-  //       // iOS only:
-  //       excludedActivityTypes: [
-  //         'com.apple.UIKit.activity.PostToTwitter'
-  //       ]
-  //     })
-  // }
-
   render() {
     let cardIndex = this.state.cardIndex;
-    // let cards = Object.keys(this.props.transactions).map(x => this.props.transactions[x]);
     return (
       <View swiperStyles={swiperStyles.baseContainer}>
-
-        {/* <AssetCard asset={this.props.SelectedAsset} /> */}
-
-
-
         <Swiper
           backgroundColor={ColorConstants.MainSubCrownBlue}
-          // marginBottom={}
           ref={swiper => {
             this.swiper = swiper
           }}
 
           keyExtractor={card => card.header.price}
-          
+
           renderCard={(card) => this.renderCard(card)}
-          
+
           cards={this.state.cards}
           cardIndex={cardIndex}
-         
+
           onSwiped={() => this.onSwiped(cardIndex)}
-          onTapCard={() => this.onTap(cardIndex)}
+          // onTapCard
           onSwipedAll={() => this.onSwipedAllCards()}
           onSwipedTop={() => this.swipeTop(cardIndex)}
           onSwipedLeft={() => this.swipeLeft}
@@ -202,8 +143,6 @@ class TxSwiper extends Component {
           animateOverlayLabelsOpacity
           animateCardOpacity
         >
-
-          {/* <Button onPress={() => this.swiper.swipeBack()} title='Swipe Back' /> */}
         </Swiper>
       </View>
     )

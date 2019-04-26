@@ -24,6 +24,15 @@ export function BigYellowButton(props) {
     )
 }
 
+export function ModalSubmitButton(props) {
+    return (
+
+        <TouchableHighlight onPress={props.onPress} style={localStyles.modal__Submitbutton}>
+            <Text style={[ localStyles.buttonLabel,{color: 'white'}]}>Submit</Text>
+        </TouchableHighlight>
+    )
+}
+
 export function CostDisplay(props) {
 
     return (
@@ -307,7 +316,21 @@ const localStyles = StyleSheet.create({
         alignSelf: 'center'
         // marginTop: heightPercentageToDP('20')
     },
-
+    modal__Submitbutton: {
+        height: heightPercentageToDP(((40 / height) * 100).toString()),
+        width: "90%",
+        backgroundColor: ColorConstants.MainGold,
+        borderRadius: 8,
+        margin: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+        marginTop: 10,
+        marginRight: 20,
+        marginLeft: 20,
+        alignSelf: 'center'
+        // marginTop: heightPercentageToDP('20')
+    },
     // width: (width * .9),
     // height: (height * .056),
 

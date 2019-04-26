@@ -20,7 +20,7 @@ import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/Wallet
 import { CheckWalletMeetsMinimumRequirement } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
 // import { getOrganization } from "../../actions/WalletActActions";
-import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK } from "../../components/settings";
+import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK, WEB_SERVER_API_USERS } from "../../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
 import { EDGE_API_KEY } from '../../components/settings.js'
 import firebase from "../../constants/Firebase";
@@ -65,12 +65,13 @@ class Login extends Component {
     };
     if (!this.state.account) {
       this.setState({account})
+      var username = account.username
       this.props.GetAccount(account);
-      this.props.GetUsername(account.username);
+      this.props.GetUsername(username);
 
       let promiseArray = []
 
-      promiseArray.push(axios.get(WEB_SERVER_API_TOKEN + account.username)
+      promiseArray.push(axios.get(WEB_SERVER_API_TOKEN + username)
         .then(response => {
           let token = response.data
           this.props.AuthToken(token)
@@ -88,20 +89,37 @@ class Login extends Component {
         .then(response => { return response })
         .catch(error => { console.log(error) })
       )
+      console.log('jm keys?', account.allKeys[1].keys.ethereumAddress);
+      promiseArray.push(axios.post(WEB_SERVER_API_USERS, {
+        username: username,
+        address: account.allKeys[1].keys.ethereumAddress
+      })
+        .then(response => { return response })
+        .catch(error => { console.log(error) })
+      )
 
       Promise.all(promiseArray)
-        .then(results => {
+        .then(async results => {
           console.log("Is this the latest APK?", results[1].data)
+          console.log('jm user exists?', results[2].data.response);
+
+          this.props.GetHeaders();
+
+          if (results[2].data.response !== true){
+            await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
+          }
+
           const { navigate } = this.props.navigation;
 
-          // this.props.getHercId();
-          this.props.GetHeaders(this.props.username);
-          // this.props.GetOrganization();
-
           if (results[1].data && results[1].data == true) {
-            navigate('SideMenuNav') // pass in T/F response from /latest/apk
+            navigate('SideMenuNav', {
+              userExists: results[2].data.response
+            })
           } else {
-            navigate('SideMenuNav', {alertLatestVersion: true})
+            navigate('SideMenuNav', {
+              userExists: results[2].data.response,
+              alertLatestVersion: true
+            })
           }
 
         })

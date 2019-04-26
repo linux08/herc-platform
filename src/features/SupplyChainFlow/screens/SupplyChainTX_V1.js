@@ -5,7 +5,10 @@ import {
     StatusBar,
     Image,
     TouchableWithoutFeedback,
-    Dimensions
+    Dimensions,
+    TouchableHighlight,
+    Alert,
+    Linking
 } from 'react-native';
 
 import MetricModal from '../modals/MetricModal';
@@ -13,7 +16,7 @@ import CustomModal from '../../../components/modals/CustomModal';
 import CameraSourceModal from '../../CamSourceModal/Modal/CameraSourceModal';
 import { ToggleCamSourceModal } from '../../CamSourceModal/CamSourceModalActionCreators';
 import EditModal from '../modals/EDI_T_Modal';
-
+import Modal from 'react-native-modal';
 import {
     ShowEditModal,
     ShowMetricModal,
@@ -38,10 +41,11 @@ import { connect } from 'react-redux';
 const { height, width } = Dimensions.get('window');
 
 import {
-    BigYellowButton
+    BigYellowButton, ModalSubmitButton
 } from "../../../components/SharedComponents";
 
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
+const BigNumber = require("bignumber.js");
 
 const ORIGNAL_STATE = {
     img: {},
@@ -49,12 +53,13 @@ const ORIGNAL_STATE = {
     edi: {},
     metrics: {},
     isVisible: false,
+    displayConfirmationModal: false
 }
 
 componentWillUnmount = () => {
     this.setState({
-         isVisible: false
-        })
+        isVisible: false
+    })
 }
 
 
@@ -63,17 +68,6 @@ class SupplyChainTX extends Component {
     constructor(props) {
         super(props);
         this.state = ORIGNAL_STATE;
-
-        // this.showEditModal = this.showEditModal.bind(this);
-        // this.showMetricModal = this.showMetricModal.bind(this);
-
-        // this._pickImage = this._pickImage.bind(this);
-        // this.setPic = this.setPic.bind(this);
-        // this.setEDI = this.setEDI.bind(this);
-        // this.setMetrics = this.setMetrics.bind(this);
-
-        // this.clearEDI = this.clearEDI.bind(this);
-        // this.clearMetrics = this.clearMetrics.bind(this);
     }
 
     toggleModal = () => {
@@ -102,7 +96,7 @@ class SupplyChainTX extends Component {
         })
     }
 
-   
+
     setEDI = (item) => {
         this.props.addEdit(item);
         this.props.showEditModal();
@@ -132,7 +126,7 @@ class SupplyChainTX extends Component {
     }
 
     setPic = (snappedImg) => {
-        console.log("setting a taken image");
+        console.log("setting a taken image, this is the data******", snappedImg);
         this.props.addPhoto(snappedImg)
     }
 
@@ -147,12 +141,38 @@ class SupplyChainTX extends Component {
     }
 
     submitTransaction = () => {
-        console.log("this will be Transaction Start!");
-        console.log(this.state, 'state here');
-        this.props.sendTransaction()
-        this.setState({
-            isVisible: true
-        })
+        let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
+        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
+        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
+        let totalHercCost = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
+        let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
+        let totalEthCost = gasPrice;
+        let hercBalance = new BigNumber(this.props.wallet.balances.HERC).multipliedBy(.000000000000000001).toFixed(18);
+
+        if (isNaN(hercBalance) || hercBalance < totalHercCost) {
+            this.setState({
+                isVisible: false,
+                displayConfirmationModal: false
+            })
+            Alert.alert(
+                'Not enough funds',
+                'Please purchase more Hercs or add ETH to your wallet',
+                [
+                    {
+                        text: 'Top Up Hercs',
+                        onPress: () => { Linking.openURL("https://purchase.herc.one") }
+                    },
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false },
+            );
+        }
+        else if (hercBalance > totalHercCost) {
+            this.setState({
+                isVisible: true
+            })
+            this.props.sendTransaction()
+        }
     }
 
 
@@ -161,8 +181,27 @@ class SupplyChainTX extends Component {
 
     }
 
+    _displayConfirmationModal = () => {
+        this.setState({
+            displayConfirmationModal: true
+        })
+    }
+
+    _toggledisplayConfirmationModal = () => {
+        this.setState({
+            displayConfirmationModal: !this.state.displayConfirmationModal
+        })
+    }
+
 
     render() {
+
+        let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
+        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
+        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
+        let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
+        let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
+
         return (
 
             <View style={styles.baseContainer}>
@@ -201,7 +240,7 @@ class SupplyChainTX extends Component {
 
                     </View>
                     <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Submit"} onPress={this.submitTransaction} />
+                        <BigYellowButton buttonName={"Submit"} onPress={this._displayConfirmationModal} />
                     </View>
                 </View>
 
@@ -236,13 +275,34 @@ class SupplyChainTX extends Component {
                     content={this.props.content}
                     modalCase="progress"
                     isVisible={this.state.isVisible}
-                    onBackdropPress={() => this.toggleModal()}
+                    onBackdropPress={() => this._toggleModal()}
                     percent={this.props.percent}
                     closeModal={this.allDone}
                     dismissRejectText={"All Done"}
                 />
 
+                <Modal
+                    style={styles.baseModal}
+                    backdropColor={'rgba(0,0,0,0.5)'}
+                    animationIn={'slideInRight'}
+                    animationOut={'slideOutRight'}
+                    isVisible={this.state.displayConfirmationModal}
+                    onRequestClose={() => { this._toggledisplayConfirmationModal() }}
+                    onBackButtonPress={() => { this._toggledisplayConfirmationModal() }}>
 
+                    <View style={styles.bodyContainer}>
+                        <Text style={{ color: "black", fontSize: 18, marginBottom: "10%" }}> Confirm Transaction</Text>
+                        <Text style={{ marginVertical: 10 }}>Network Fee: {networkFee} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Document Fee: {docPrice} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Photo Fee: {imgPrice} HERC</Text>
+                        <Text style={{ marginBottom: "10%" }}>Total: {total} HERC</Text>
+                        <Text style={{ marginVertical: 10 }}>Gas Price (Average): {gasPrice} GWEI </Text>
+                        <Text style={{ marginVertical: 10 }}>Gas Supply: 80,000 </Text>
+                        <Text style={{ marginVertical: 10 }}>Total Est. TX Cost:  {(80000 * gasPrice) * .000000001} ETH</Text>
+
+                        <ModalSubmitButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
+                    </View>
+                </Modal>
             </View>
         )
     }
@@ -252,7 +312,10 @@ const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     trans: state.TransactionReducers.trans,
     content: state.TransactionReducers.content,
-    percent: state.TransactionReducers.percentage
+    percent: state.TransactionReducers.percentage,
+    networkFee: state.TransactionReducers.networkFee,
+    gasPrice: state.TransactionReducers.gasPrice,
+    wallet: state.WalletReducers.wallet,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -296,7 +359,6 @@ const localStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: ColorConstants.MainGray,
-        // margin: 5
     },
 
     pageBottom: {
@@ -309,8 +371,4 @@ const localStyles = StyleSheet.create({
         alignSelf: 'center',
         padding: 20,
     },
-
-
-
-
 })

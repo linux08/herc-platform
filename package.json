@@ -1,13 +1,13 @@
 {
   "name": "HERC",
-  "version": "0.9.5",
+  "version": "0.10.2",
   "private": true,
   "description": "HERC: Decentralized Supply Chain Application",
   "homepage": "https://herc.one",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "git@github.com:HERCone/herc-edge-login.git"
+    "url": "git@github.com:HERCone/herc-platform.git"
   },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -49,6 +49,7 @@
     "react-native-linear-gradient": "^2.0.0",
     "react-native-modal": "^7.0.2",
     "react-native-progress-circle": "^2.0.1",
+    "react-native-qrcode-scanner": "^1.1.2",
     "react-native-randombytes": "^3.5.0",
     "react-native-screens": "^1.0.0-alpha.22",
     "react-native-simple-radio-button": "^2.7.3",
