@@ -31,7 +31,7 @@ export const Action = {
     AddDoc: 'AddDoc',
     AddMetrics: 'AddMetrics',
     AddEdiT: 'AddEdiT',
-
+    AddGeoLocation: 'AddGeoLocation',
 
     SendTransaction: 'SendTransaction',
     IpfsComplete: 'IpfsComplete',
@@ -55,5 +55,7 @@ export const Action = {
     Error: 'Error',
 
     GetCurrentGasPrice: "GetCurrentGasPrice",
-    GotCurrentGasPrice: 'GotCurrentGasPrice'
+    GotCurrentGasPrice: 'GotCurrentGasPrice',
+
+    
 }

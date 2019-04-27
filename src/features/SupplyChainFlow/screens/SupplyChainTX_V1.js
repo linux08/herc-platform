@@ -25,12 +25,13 @@ import {
     AddEdiT,
     AddMetrics,
     AddPhoto,
+    AddGeoLocation,
 } from '../Transactions/TransactionActionCreators';
 
 import styles from "../../../assets/styles";
 import ColorConstants from "../../../assets/ColorConstants";
 import React, { Component } from 'react';
-import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent } from "./SupplyChainComponents";
+import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent, GeoLocationTransactionComponent } from "./SupplyChainComponents";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 var RNFS = require('react-native-fs')
 
@@ -47,11 +48,15 @@ import {
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
 const BigNumber = require("bignumber.js");
 
+import Geolocation from 'react-native-geolocation-service';
+
+
 const ORIGNAL_STATE = {
     img: {},
     doc: {},
     edi: {},
     metrics: {},
+    geoLocation: {},
     isVisible: false,
     displayConfirmationModal: false
 }
@@ -60,6 +65,10 @@ componentWillUnmount = () => {
     this.setState({
         isVisible: false
     })
+}
+
+componentDidMount = () => {
+    console.log("this is the trans", this.props.trans)
 }
 
 
@@ -140,6 +149,20 @@ class SupplyChainTX extends Component {
         })
     }
 
+    _setLocation = () => {
+        console.log("setting geo location");
+        Geolocation.getCurrentPosition(
+            (position) => {
+              this.props.addGeoLocation(position)
+            },
+            (error) => {
+              console.log("jm Geolocation Error: ", error.code, error.message);
+            }
+          );
+
+          console.log("this is the props.trans", this.props.trans.data.geoLocation.coords);
+    }
+
     submitTransaction = () => {
         let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
         let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
@@ -193,6 +216,8 @@ class SupplyChainTX extends Component {
         })
     }
 
+    
+
 
     render() {
 
@@ -236,6 +261,11 @@ class SupplyChainTX extends Component {
                             onPress={() => this.props.showMetricModal()}
                             iconName='clipboard'
                             metrics={this.props.trans.data.metrics}
+                        />
+
+                        <GeoLocationTransactionComponent
+                        onPress={() => this._setLocation()}
+                        geoLocation={this.props.trans.data.geoLocation.coords}
                         />
 
                     </View>
@@ -316,6 +346,7 @@ const mapStateToProps = (state) => ({
     networkFee: state.TransactionReducers.networkFee,
     gasPrice: state.TransactionReducers.gasPrice,
     wallet: state.WalletReducers.wallet,
+    geoLocation: state.TransactionReducers.geoLocation
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -329,6 +360,8 @@ const mapDispatchToProps = (dispatch) => ({
 
     showEditModal: () => dispatch(ShowEditModal()),
     addEdit: (ediItem) => dispatch(AddEdiT(editItem)),
+
+    addGeoLocation: (location) => dispatch(AddGeoLocation(location)),
 
 
     sendTransaction: () => dispatch(SendTransaction()),
@@ -355,7 +388,7 @@ const localStyles = StyleSheet.create({
     },
     transactionComponentListContainer: {
         width: '100%',
-        height: heightPercentageToDP('50'),
+        // height: heightPercentageToDP('50'),
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: ColorConstants.MainGray,
@@ -365,10 +398,9 @@ const localStyles = StyleSheet.create({
         height: '20%',
         backgroundColor: ColorConstants.MainGray,
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
         alignSelf: 'center',
-        padding: 20,
     },
 })

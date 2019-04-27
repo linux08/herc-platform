@@ -195,6 +195,19 @@ export function AddDoc(doc) {
   };
 }
 
+export function AddGeoLocation (coordinates) {
+  console.log("adding geo location, in tx creators", coordinates)
+
+  let geoLocation = Object.assign({}, coordinates, {
+    ...coordinates
+  });
+
+  return {
+    type: Trans.Action.AddGeoLocation,
+    geoLocation
+  }
+}
+
 _calculateStorjPrice = (size) => {
   let dynamicHercValue = store.getState().TransactionReducers.hercValue;
   let storjPrice = (

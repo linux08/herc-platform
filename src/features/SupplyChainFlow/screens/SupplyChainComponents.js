@@ -21,7 +21,7 @@ export function AddAssetButton(props) {
 
         <View style={localStyles.addAssetButton}>
 
-            <Text style={{color: 'white'}}>Create New</Text>
+            <Text style={{ color: 'white' }}>Create New</Text>
             <View style={localStyles.cameraIconContainer}>
                 <Icon
                     color={'white'}
@@ -41,7 +41,7 @@ export function AddAssetButton(props) {
 export function TransInfoCard(props) {
     return (
         <View style={localStyles.transInfoCard}>
-         <Text style={localStyles.textBold}>{props.header.name}</Text>
+            <Text style={localStyles.textBold}>{props.header.name}</Text>
             <Text style={localStyles.textBold}>{props.header.txSide}</Text>
             <View style={localStyles.flexEndRow}>
                 <Text style={[localStyles.textNormal, { fontSize: 12, marginRight: 10 }]}>HERC ID</Text>
@@ -88,7 +88,7 @@ export function CameraTransactionComponent(props) {
                 </View>
 
                 :
-                <Text style={localStyles.textNormal}>"Add Photo"</Text>
+                <Text style={localStyles.textNormal}>Add Photo</Text>
             }
 
         </View>
@@ -153,7 +153,7 @@ export function DocTransactionComponent(props) {
                     </View>
                 </View>
                 :
-                <Text style={localStyles.textNormal}>"Add Documents"</Text>
+                <Text style={localStyles.textNormal}>Add Documents</Text>
             }
 
         </View>
@@ -163,7 +163,7 @@ export function DocTransactionComponent(props) {
 }
 /// rendering the metrics UX
 export function MetricTransactionComponent(props) {
-  // metrics:{}
+    // metrics:{}
     let bgColor = Object.keys(props.metrics).length != 0 ? ColorConstants.ElementBG : ColorConstants.MainGray;
     let iconColor = Object.keys(props.metrics).length != 0 ? ColorConstants.MainGold : 'black';
     console.log(props, "metric transaction component")
@@ -187,8 +187,37 @@ export function MetricTransactionComponent(props) {
                 <Text style={localStyles.textNormal}>Add Metrics</Text>
             }
         </View>
+    )
+}
 
-
+export function GeoLocationTransactionComponent(props) {
+    // metrics:{}
+    let bgColor = ColorConstants.MainGray;
+    let iconColor = 'black';
+    console.log(props, "location transaction component")
+    return (
+        <View style={localStyles.transactionComponentContainer}>
+            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                <Icon
+                    style={[localStyles.componentIcon, { color: iconColor }]}
+                    name='location-arrow'
+                    onPress={props.onPress}
+                >
+                </Icon>
+            </View>
+            <View>
+                {props.geoLocation ? 
+                <View>
+                    <Text style={localStyles.textNormal}>Alt:{props.geoLocation.altitude}</Text>
+                    <Text style={localStyles.textNormal}>Lat: {props.geoLocation.latitude}</Text>
+                    <Text style={localStyles.textNormal}>Lon:{props.geoLocation.longitude}</Text>
+                </View> :
+                    <Text style={localStyles.textNormal}>
+                        Add Location
+                    </Text>
+                }
+            </View>
+        </View>
     )
 }
 

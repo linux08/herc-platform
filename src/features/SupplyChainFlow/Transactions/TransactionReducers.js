@@ -19,6 +19,7 @@ const INITIAL_STATE = {
             images: {},
             documents: {},
             ediT: {},
+            geoLocation: {}
         }
     },
     transactionIdStore: null,
@@ -89,6 +90,18 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     data: {
                         ...state.trans.data,
                         metrics: {}
+                    }
+                }
+            })
+
+            case Trans.Action.ClearGeoLocation:
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        geoLocation: {}
                     }
                 }
             })
@@ -337,6 +350,20 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                     }
                 }
 
+            })
+
+            case Trans.Action.AddGeoLocation:
+
+            return Object.assign({}, state, {
+                ...state,
+
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        geoLocation: action.geoLocation
+                    }
+                }
             })
 
 
