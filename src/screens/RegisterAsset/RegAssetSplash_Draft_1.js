@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 
 import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 import React, { Component } from 'react';
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import { GetHercId } from "../../features/RegisterAssetFlow/RegAssetActionCreators";
@@ -24,8 +24,8 @@ componentDidMount = () => {
     console.log('didMount regSplash')
     this.props.GetHercId();
 }
-    
-    
+
+
     onPress = () => {
         console.log("pressing to go in RegAssetSplashDraft1");
         // this.props.GetHercId();
@@ -46,7 +46,7 @@ componentDidMount = () => {
                     <Text style={localStyles.copyHeader}>
                         Register your value chain asset for full lifecycle management with a complete view.
                      </Text>
-                    
+
                     <Text style={localStyles.copyBody}>
                         Upon registry you can create full asset history, define, organize and track metrics, conduct asset deployment, and measure asset performance.
                     </Text>

@@ -11,7 +11,7 @@ import {
 const { height, width } = Dimensions.get('window');
 const hercpngIcon = require('../assets/icons/hercIcon.png');
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ColorConstants from "../assets/ColorConstants";
+import ColorConstants from "../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
 
 // props =  buttonName, onPress
@@ -217,7 +217,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: ColorConstants.ElementBG,
         margin: 0,
         fontSize: 17,
-       
+
     },
     labelText: {
         fontSize: 12,
@@ -271,7 +271,7 @@ const localStyles = StyleSheet.create({
         borderRadius: 0
     },
 
-    
+
     textInputContainer: {
         // flex: 0,
         width: widthPercentageToDP('90'),
@@ -283,7 +283,7 @@ const localStyles = StyleSheet.create({
         paddingLeft: 5,
         borderRadius: 8
     },
-   
+
 
     buttonLabel: {
         fontSize: 12,

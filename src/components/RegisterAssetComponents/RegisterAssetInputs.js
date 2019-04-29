@@ -13,7 +13,7 @@ const { height, width } = Dimensions.get('window');
 
 const hercpngIcon = require('../../assets/icons/hercIcon.png');
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 
 
@@ -80,7 +80,7 @@ const localStyles = StyleSheet.create({
 
     },
 
-  
+
     registerButton: {
         height: heightPercentageToDP(((40 / height) * 100).toString()),
         width: widthPercentageToDP('90'),

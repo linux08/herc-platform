@@ -1,6 +1,6 @@
 "use strict";
 import { StyleSheet, Platform } from "react-native";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 
 
 module.exports = StyleSheet.create({

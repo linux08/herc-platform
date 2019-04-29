@@ -5,7 +5,7 @@ import {
     Text,
     Image
 } from 'react-native';
-import ColorConstants from "../assets/ColorConstants";
+import ColorConstants from "../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
 import Icon from "react-native-vector-icons/AntDesign";
 
@@ -51,7 +51,7 @@ export class AssetCard extends Component {
                         <Image source={{ uri: this.state.Logo }} style={localStyles.assetImage} />
 
                         : noImageIcon
-                    } 
+                    }
                 </View>
 
                 <View style={localStyles.cardMain}>
@@ -136,6 +136,3 @@ const localStyles = StyleSheet.create({
 
 
 })
-
-
-

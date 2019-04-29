@@ -9,7 +9,6 @@ import {
   TouchableHighlight,
   Dimensions
 } from "react-native";
-// import hiprLogo from "../assets/hiprLogo.png";
 const { height, width } = Dimensions.get('window');
 import ColorConstants from '../../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';

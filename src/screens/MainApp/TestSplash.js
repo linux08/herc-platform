@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';

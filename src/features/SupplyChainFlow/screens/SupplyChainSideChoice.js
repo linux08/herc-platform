@@ -10,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 const { height, width } = Dimensions.get("window");
 import styles from "../../../assets/styles";
-import ColorConstants from "../../../assets/ColorConstants";
+import ColorConstants from "../../../constants/ColorConstants";
 import React, { Component } from "react";
 import { BigYellowButton } from "../../../components/SharedComponents";
 import { connect } from "react-redux";
@@ -78,7 +78,7 @@ goToSupplyChainTX = () => {
  handleSideChoice = () => {
     console.log("handling side choice");
     this.props.ShowPasswordModal()
-    
+
   };
 
   render() {
@@ -158,7 +158,7 @@ goToSupplyChainTX = () => {
             place={this.state.place}
             passwordHandled={this.passwordHandled}
             />
-        
+
       </View>
     );
   }

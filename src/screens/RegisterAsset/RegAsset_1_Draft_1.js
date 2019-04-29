@@ -20,7 +20,7 @@ import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../
 import firebase from "../../constants/Firebase";
 const rootRef = firebase.database().ref();
 
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 class RegAsset1 extends Component {
 
     constructor(props) {

@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import menuIcon from 'react-native-vector-icons/Entypo';
 import styles from "./HeaderStyles";
 import { createStackNavigator } from "react-navigation";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 const bgImage = require("../../assets/main-bg.png")
 
 
