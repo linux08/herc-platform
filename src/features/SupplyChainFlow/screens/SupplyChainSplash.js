@@ -11,8 +11,10 @@ import {
 import styles from "../../../assets/styles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import ColorConstants from '../../../constants/ColorConstants'
 import { AddAssetButton } from "./SupplyChainComponents";
 import { AssetCard } from "../../../components/AssetCard";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   // ShowAssetPasswordModal,
   GettingAssetIpfsDefintion,
@@ -50,8 +52,10 @@ class SupplyChainSplash extends Component {
   */
 
   renderAssets = () => {
+    console.log('jm bruce lee', Object.keys(this.props.assets).length);
+
     return this.props.assets.map((x, i) => {
-      console.log(x, i);
+      console.log('jm', x, i);
       return (
         <TouchableHighlight key={i} onPress={() => this.onSelectAsset(i)}>
           <AssetCard asset={x} />
@@ -62,44 +66,65 @@ class SupplyChainSplash extends Component {
 
   render() {
     let assetList = this.renderAssets();
-    return (
-      <View style={styles.baseContainer}>
+    if (Object.keys(this.props.assets).length < 1) {
+      return (
+        <View style={styles.bigScreenMessage}>
+          <Text>You do not have access to any assets right now.</Text>
+          <TouchableHighlight
+          onPress={() => {this.props.navigation.navigate("RegAssetSplash1")}}
+          >
+          <View style={[{ flexDirection: 'row', alignItems:'center' }]}>
+            <Text>Create one</Text>
+            <Icon
+              name={"plus-circle-outline" }
+              size={32}
+              color={ColorConstants.MainBlue}
+            />
+          </View>
+          </TouchableHighlight>
+        </View>
+      )
+    }
+    else {
+      return (
+        <View style={styles.baseContainer}>
         <StatusBar
-          barStyle={"light-content"}
-          translucent={true}
-          backgroundColor="transparent"
+        barStyle={"light-content"}
+        translucent={true}
+        backgroundColor="transparent"
         />
         <View style={styles.bodyContainer}>
 
-          <FlatList
-            data={this.props.assets}
-            keyExtractor={item => item.key}
-            renderItem={item => {
-              return (
-                <TouchableHighlight
-                  key={item.item.key}
-                  onPress={() => {
-                    this.props.SelectedAsset(item.item)
-                    this.props.GetAssetDef(item.item.hashes.ipfsHash)
-                    this.props.navigation.navigate("SupplyChainSideChoice")
-                  }}
-                >
-                  <AssetCard asset={item.item} />
-                </TouchableHighlight>
-              );
+        <FlatList
+        data={this.props.assets}
+        keyExtractor={item => item.key}
+        renderItem={item => {
+          return (
+            <TouchableHighlight
+            key={item.item.key}
+            onPress={() => {
+              this.props.SelectedAsset(item.item)
+              this.props.GetAssetDef(item.item.hashes.ipfsHash)
+              this.props.navigation.navigate("SupplyChainSideChoice")
             }}
-          />
+            >
+            <AssetCard asset={item.item} />
+            </TouchableHighlight>
+          );
+        }}
+        />
 
         </View>
 
-      {/*  <AssetPasswordModal
+        {/*  <AssetPasswordModal
           // heading={'Enter Asset Password'}
           isVisible={this.props.showPasswordModal}
           passwordCorrect={this.passwordCorrect}
           // ShowPasswordModal={this.props.ShowPasswordModal}
-        /> */}
-      </View>
-    );
+          /> */}
+          </View>
+        );
+    }
   }
 }
 
