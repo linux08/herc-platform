@@ -9,17 +9,17 @@ import {
 } from 'react-native';
 import React, { Component } from 'react';
 // import { LoginScreen } from 'edge-login-ui-rn';
+import AsyncStorage from '@react-native-community/async-storage';
 import { LoginScreen } from 'herc-edge-login-ui-rn';
 import { YellowBox } from 'react-native';
 import { connect } from "react-redux";
 import axios from 'axios';
 import hercLogoPillar from "../../assets/hercLogoPillar.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
-import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
+import { GetUsername, GetAccount, AuthToken, GetOrganization, UserFirstTimeLogin } from '../../features/AccountFlow/AccountActionCreators';
 import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 import { CheckWalletMeetsMinimumRequirement } from '../../features/RegisterAssetFlow/RegAssetActionCreators';
 import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
-// import { getOrganization } from "../../actions/WalletActActions";
 import { WEB_SERVER_API_TOKEN, WEB_SERVER_API_LATEST_APK, WEB_SERVER_API_USERS } from "../../components/settings";
 import { makeEdgeContext } from 'edge-core-js';
 import { EDGE_API_KEY } from '../../components/settings.js'
@@ -39,10 +39,8 @@ class Login extends Component {
       wallet: null
     }
   makeEdgeContext({
-    // Replace this with your own API key from https://developer.airbitz.co:
     apiKey: EDGE_API_KEY,
     appId: 'one.herc',
-    // appId: 'com.mydomain.myapp',
     vendorName: 'Chain Net',
     vendorImageUrl: 'https://s3.us-east-2.amazonaws.com/hercmedia/hLogo.png',
     plugins: [ethereumCurrencyPluginFactory]
@@ -55,7 +53,7 @@ class Login extends Component {
 
   onLogin = async (error = null, account) => {
     let tokenHerc = {
-      currencyName: 'Hercules', // 0x6251583e7d997df3604bc73b9779196e94a090ce
+      currencyName: 'Hercules',
       contractAddress: '0x6251583e7D997DF3604bc73B9779196e94A090Ce',
       currencyCode: 'HERC',
       multiplier: '1000000000000000000'
@@ -107,8 +105,14 @@ class Login extends Component {
 
           if (results[2].data.response !== true){
             await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
+            this.props.UserFirstTimeLogin('true')
           }
 
+          try {
+            await AsyncStorage.setItem('@HercFirstTimeUser', 'true')
+         } catch (e) {
+           console.log('jm error: AsyncStorage', e);
+         }
           const { navigate } = this.props.navigation;
 
           if (results[1].data && results[1].data == true) {
@@ -210,7 +214,7 @@ const mapDispatchToProps = (dispatch) => ({
     GetHeaders: (name) => dispatch(GetHeaders(name)),
     // GetOrganization: () => dispatch(GetOrganization()),
     ClearState: () => dispatch(ClearState()),
-
+    UserFirstTimeLogin: (userFirstTimeLogin) => dispatch(UserFirstTimeLogin(userFirstTimeLogin)),
     UpdateBalances: (newBalances) => dispatch(UpdateBalances(newBalances)),
     GetUsername: (edge_account) => dispatch(GetUsername(edge_account)),
     AuthToken: (auth_token) => dispatch(AuthToken(auth_token)),

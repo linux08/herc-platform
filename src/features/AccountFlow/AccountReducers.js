@@ -3,12 +3,12 @@
 import firebase from "../../constants/Firebase";
 const rootRef = firebase.database().ref();
 const INITIAL_STATE = {
-
+  UserFirstTimeLogin: false
 }
 
 const AccountReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        
+
         case Account.Action.AuthToken:
             let token = action.token;
             // console.log('Token captured in reducer', token);
@@ -31,6 +31,12 @@ const AccountReducer = (state = INITIAL_STATE, action) => {
                 edge_account: edge_account
             })
 
+        case Account.Action.UserFirstTimeLogin:
+            let userFirstTimeLogin = action.UserFirstTimeLogin;
+            return Object.assign({}, state, {
+                ...state,
+                userFirstTimeLogin: userFirstTimeLogin
+            })
 
 
         case Account.Action.GotOrganization:

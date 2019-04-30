@@ -43,3 +43,10 @@ export function GotOrganization(organizationName){
         organizationName
     }
   }
+
+  export function UserFirstTimeLogin(userFirstTimeLogin){
+      return {
+          type: Account.Action.UserFirstTimeLogin,
+          userFirstTimeLogin
+      }
+    }

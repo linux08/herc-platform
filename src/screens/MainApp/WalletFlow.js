@@ -46,14 +46,6 @@ class WalletFlow extends React.Component {
     };
   }
 
-  static navigationOptions = () => ({
-    headerTitle: (
-      <View style={localStyles.headerBox}>
-        <Text style={localStyles.headerText}>Wallet</Text>
-      </View>
-    )
-  });
-
   componentWillUnmount = () => {
     this.setState({
       isVisible: false
@@ -364,7 +356,7 @@ class WalletFlow extends React.Component {
         }
       })
       .catch(error => {
-        console.error(error);
+        console.log('jm fetch api error:', api, error);
       });
   };
 
@@ -381,6 +373,13 @@ class WalletFlow extends React.Component {
 
   render() {
     let currencyValue;
+    {/*if(this.props.UserFirstTimeLogin === false){
+      return(
+        <View style={styles.bigScreenMessage}>
+          <OnboardingWithCTA />
+        </View>
+      )
+    }*/}
     if (!this.props.ethereumAddress) {
       return (
         <View style={localStyles.modalBackground}>
@@ -770,6 +769,7 @@ const mapStateToProps = state => ({
   // currencyCode: state.WalletReducers.wallet.currencyInfo.currencyCode,
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
+  UserFirstTimeLogin: state.AccountReducers.UserFirstTimeLogin,
   // balanceInWei:
   //     state.WalletReducers.wallet.balances[
   //     state.WalletReducers.wallet.currencyInfo.currencyCode

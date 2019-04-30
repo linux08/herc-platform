@@ -22,6 +22,8 @@ module.exports = StyleSheet.create({
     display: 'flex'
   },
   bigScreenMessage:{
+    width: widthPercentageToDP('100'),
+    height: heightPercentageToDP('100'),
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
