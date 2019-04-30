@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">[H]ERC</string>
+    <!-- <string name="app_id">{your app id from google play console - 10-12 digit number}</string> -->
 </resources>

@@ -23,6 +23,8 @@ import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
 import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
+import Geolocation from 'react-native-geolocation-service';
+
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
@@ -59,6 +61,22 @@ class WalletFlow extends React.Component {
       isVisible: false
     })
   }
+
+  componentDidMount() {
+    // Instead of navigator.geolocation, just use Geolocation.
+    if (hasLocationPermission) {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                console.log(position);
+            },
+            (error) => {
+                // See error code charts below.
+                console.log(error.code, error.message);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }
+}
 
   componentWillMount = async () => {
     // var item = await this.props.account.dataStore.getItem("one.herc", "hercUserID");

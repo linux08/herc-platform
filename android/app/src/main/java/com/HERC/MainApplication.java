@@ -3,6 +3,7 @@ package com.HERC;
 import com.entria.views.RNViewOverflowPackage;
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.shokimble.rngoogleplaygameservices.RNGooglePlayGameServicesPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -20,6 +21,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new RNViewShotPackage(),
             new MainReactPackage(),
+            new RNGooglePlayGameServicesPackage(),
             new RNScreensPackage(),
             new RNDeviceInfo(),
             new LinearGradientPackage(),
@@ -49,7 +52,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RandomBytesPackage(),
             new RNFSPackage(),
             new RNFastCryptoPackage(),
-            new RNViewOverflowPackage()
+            new RNViewOverflowPackage(),
+            new RNFusedLocationPackage()
       );
     }
 

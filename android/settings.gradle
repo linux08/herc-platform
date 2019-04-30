@@ -1,4 +1,6 @@
 rootProject.name = 'HERC'
+include ':react-native-google-play-game-services'
+project(':react-native-google-play-game-services').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-play-game-services/android')
 include ':react-native-screens'
 project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
 include ':react-native-view-overflow'
@@ -31,4 +33,6 @@ include ':react-native-fast-crypto'
 project(':react-native-fast-crypto').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fast-crypto/android')
 include ':react-native-view-shot'
 project(':react-native-view-shot').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-view-shot/android')
+include ':react-native-geolocation-service'
+project(':react-native-geolocation-service').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-geolocation-service/android')
 include ':app'
