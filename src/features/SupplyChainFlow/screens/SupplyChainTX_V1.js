@@ -25,6 +25,11 @@ import {
     AddEdiT,
     AddMetrics,
     AddPhoto,
+    ClearState,
+    ClearImages,
+    ClearDocuments,
+    ClearEdiT,
+    ClearMetrics
 } from '../Transactions/TransactionActionCreators';
 
 import styles from "../../../assets/styles";
@@ -80,9 +85,8 @@ class SupplyChainTX extends Component {
         this.setState({
             isVisible: false,
         })
+        this._clearTransactionData();
         this.props.navigation.navigate('WalletNavigator');
-        // this.props.clearState();
-
     }
 
     clearAll = () => {
@@ -191,6 +195,15 @@ class SupplyChainTX extends Component {
         this.setState({
             displayConfirmationModal: !this.state.displayConfirmationModal
         })
+    }
+
+    _clearTransactionData = () => {
+        //Bugfix Zube Card #722
+        //*MH* clear transaction data from redux store
+        this.props.ClearImages();
+        this.props.ClearDocuments();
+        this.props.ClearEdiT();
+        this.props.ClearMetrics();
     }
 
 
@@ -334,6 +347,11 @@ const mapDispatchToProps = (dispatch) => ({
     sendTransaction: () => dispatch(SendTransaction()),
 
     ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
+
+    ClearImages: () => dispatch(ClearImages()),
+    ClearDocuments: () => dispatch(ClearDocuments()),
+    ClearEdiT: () => dispatch(ClearEdiT()),
+    ClearMetrics: () => dispatch(ClearMetrics())
 
 })
 
