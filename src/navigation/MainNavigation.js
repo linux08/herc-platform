@@ -68,7 +68,7 @@ const MainNavigator = createStackNavigator({
 
 },
     {
-        initialRouteName: 'OnboardingNavigator',
+        initialRouteName: 'WalletNavigator',
         headerMode: 'screen'
     }
 
