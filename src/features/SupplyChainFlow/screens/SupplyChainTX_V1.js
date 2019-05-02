@@ -233,7 +233,10 @@ class SupplyChainTX extends Component {
                         />
 
                         <MetricTransactionComponent
-                            onPress={() => this.props.showMetricModal()}
+                            onPress={() => {
+                                this.props.showMetricModal()
+                                console.log("MADE A CHANGE METRICS", this.props.trans.data.metrics)
+                            }}
                             iconName='clipboard'
                             metrics={this.props.trans.data.metrics}
                         />
@@ -355,7 +358,7 @@ const localStyles = StyleSheet.create({
     },
     transactionComponentListContainer: {
         width: '100%',
-        height: heightPercentageToDP('50'),
+        height: heightPercentageToDP('70'),
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: ColorConstants.MainGray,
@@ -369,6 +372,6 @@ const localStyles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         alignSelf: 'center',
-        padding: 20,
+        flex: 1
     },
 })
