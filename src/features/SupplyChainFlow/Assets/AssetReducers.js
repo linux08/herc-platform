@@ -63,7 +63,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 ...state,
                 assetFetched: true,
-                showPasswordModal: true, //no need for password modal anymore
+                // showPasswordModal: true, //no need for password modal anymore
                 selectedAsset: action.selectAsset
             })
 

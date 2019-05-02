@@ -29,7 +29,6 @@ class TrackSplash extends Component {
 
 
   passwordCorrect = () => {
-
     this.props.ToggleAssetPasswordModal();
     this.props.navigation.navigate("TrackSideChoice");
   };
@@ -52,7 +51,11 @@ class TrackSplash extends Component {
               return (
                 <TouchableHighlight
                   key={item.key}
-                  onPress={() => this.props.SelectedAsset(item.item)}
+                  onPress={() => {
+                    this.props.SelectedAsset(item.item)
+                    this.props.navigation.navigate("TrackSideChoice");
+                  }
+                  }
                 >
                   <AssetCard key={item.key} asset={item.item} />
                 </TouchableHighlight>
@@ -85,4 +88,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackSplash);
-
