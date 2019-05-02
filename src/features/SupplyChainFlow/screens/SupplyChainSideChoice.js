@@ -32,19 +32,13 @@ class SupplyChainSideChoice extends Component {
     this.state = {
       checkOrig: false,
       checkRecip: false,
-      place: "",
-      pwModalIsVisible: false
+      place: ""
+      // pwModalIsVisible: false
 
     };
     this.passwordHandled = this.passwordHandled.bind(this);
     // this.localOnChange = this.localOnChange.bind(this);
     // this.pwChange = this.pwChange.bind(this);
-  }
-
-  toggleModal = () => {
-      this.setState({
-          pwModalIsVisible: !this.state.pwModalIsVisible
-      })
   }
 
   onPressOrig = () => {
@@ -68,7 +62,7 @@ class SupplyChainSideChoice extends Component {
 
   passwordHandled = () => {
       this.props.StartTransaction(this.state.place);
-      this.props.ShowPasswordModal();
+      // this.props.ShowPasswordModal();
       this.props.navigation.navigate('SupplyChainTx');
   }
 
@@ -76,9 +70,7 @@ goToSupplyChainTX = () => {
 }
 
  handleSideChoice = () => {
-    console.log("handling side choice");
     this.props.ShowPasswordModal()
-
   };
 
   render() {
@@ -150,7 +142,7 @@ goToSupplyChainTX = () => {
           <View style={localStyles.pageBottom}>
             <BigYellowButton
               buttonName={"Next"}
-              onPress={() => this.handleSideChoice()}
+              onPress={() => this.passwordHandled()}
             />
           </View>
         </View>
