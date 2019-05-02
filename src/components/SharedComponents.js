@@ -109,7 +109,7 @@ export class HercTextInputWithLabel extends Component {
         super(props);
     }
     render() {
-        console.log(this.props.name, "textInputWithLabel, lookingfor localOnChange")
+        console.log(this.props, "textInputWithLabel, lookingfor localOnChange")
         let name = this.props.name;
         return (
 
@@ -124,6 +124,7 @@ export class HercTextInputWithLabel extends Component {
                     underlineColorAndroid='transparent'
                     multiline={false}
                     scrollEnabled={false}
+                    // value={this.props.v}
                 />
             </View>
         )
@@ -317,18 +318,15 @@ const localStyles = StyleSheet.create({
         // marginTop: heightPercentageToDP('20')
     },
     modal__Submitbutton: {
-        height: heightPercentageToDP(((40 / height) * 100).toString()),
-        width: "90%",
+        height: heightPercentageToDP(((30 / height) * 100).toString()),
+        width: widthPercentageToDP('90'),
         backgroundColor: ColorConstants.MainGold,
         borderRadius: 8,
-        margin: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 5,
-        marginTop: 10,
-        marginRight: 20,
-        marginLeft: 20,
-        alignSelf: 'center'
+        marginTop: "3%",
+        alignSelf: 'center',
+        marginBottom: "2%"
         // marginTop: heightPercentageToDP('20')
     },
     // width: (width * .9),

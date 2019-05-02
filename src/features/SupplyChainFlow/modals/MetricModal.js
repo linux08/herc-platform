@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import ColorConstants from '../../../constants/ColorConstants';
 import Modal from 'react-native-modal';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
-import { BigYellowButton, HercTextInputWithLabel } from '../../../components/SharedComponents';
+import { BigYellowButton, HercTextInputWithLabel, ModalSubmitButton } from '../../../components/SharedComponents';
 import { ShowMetricModal, AddMetrics } from '../Transactions/TransactionActionCreators';
 
 class MetricModal extends Component {
@@ -29,6 +29,7 @@ class MetricModal extends Component {
     }
 
     renderMetrics = (coreProps) => {
+        console.log(coreProps, "this")
         let metrics = Object.values(coreProps);
         let numOfMetrics = metrics.length;
         let metricList = [];
@@ -37,7 +38,7 @@ class MetricModal extends Component {
                 <HercTextInputWithLabel
                     key={i}
                     label={x}
-                    placeholder={x}
+                    placeholder={this.props.trans.x}
                     name={x}
                     localOnChange={this.onMetricUpdate}
                 />
@@ -68,7 +69,7 @@ class MetricModal extends Component {
 
                     <ScrollView contentContainerStyle={localStyles.scrollView}>
                         {this.renderMetrics(this.props.metrics)}
-                        <BigYellowButton buttonName={"Submit"} onPress={this.submitMetrics} />
+                        <ModalSubmitButton buttonName={"Submit"} onPress={this.submitMetrics} />
                     </ScrollView>
 
                   {/*  <FlatList
@@ -92,7 +93,8 @@ class MetricModal extends Component {
 
 const mapStateToProps = (state) => ({
     metrics: state.AssetReducers.selectedAsset.ipfsDef.CoreProps,
-    assetName: state.AssetReducers.selectedAsset.Name
+    assetName: state.AssetReducers.selectedAsset.Name,
+    trans: state.TransactionReducers.trans,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -106,7 +108,8 @@ const localStyles = StyleSheet.create({
   scrollView: {
       width: widthPercentageToDP('80'),
       justifyContent: 'center',
-      height: heightPercentageToDP('60')
+      marginVertical: 1
+    //   height: heightPercentageToDP('60')
   },
     editField: {
         height: 50,

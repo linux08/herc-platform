@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    ScrollView,
     StyleSheet,
     View,
     TextInput,
@@ -21,7 +22,7 @@ export function AddAssetButton(props) {
 
         <View style={localStyles.addAssetButton}>
 
-            <Text style={{color: 'white'}}>Create New</Text>
+            <Text style={{ color: 'white' }}>Create New</Text>
             <View style={localStyles.cameraIconContainer}>
                 <Icon
                     color={'white'}
@@ -41,7 +42,7 @@ export function AddAssetButton(props) {
 export function TransInfoCard(props) {
     return (
         <View style={localStyles.transInfoCard}>
-         <Text style={localStyles.textBold}>{props.header.name}</Text>
+            <Text style={localStyles.textBold}>{props.header.name}</Text>
             <Text style={localStyles.textBold}>{props.header.txSide}</Text>
             <View style={localStyles.flexEndRow}>
                 <Text style={[localStyles.textNormal, { fontSize: 12, marginRight: 10 }]}>HERC ID</Text>
@@ -163,10 +164,26 @@ export function DocTransactionComponent(props) {
 }
 /// rendering the metrics UX
 export function MetricTransactionComponent(props) {
-  // metrics:{}
+    // metrics:{}
     let bgColor = Object.keys(props.metrics).length != 0 ? ColorConstants.ElementBG : ColorConstants.MainGray;
     let iconColor = Object.keys(props.metrics).length != 0 ? ColorConstants.MainGold : 'black';
     console.log(props, "metric transaction component")
+    let jsonifyMetrics = JSON.stringify(props.metrics);
+    let metrics = props.metrics;
+
+    console.log(Object.keys(metrics).length, " tis is the metrics.length")
+
+    let printMetrics = (metrics) => {
+        let metricsInJSX = [];
+        for (const [key, val] of Object.entries(metrics)) {
+            metricsInJSX.push(
+                <Text style={localStyles.textNormal}>{key}: {val}</Text>
+            )
+        }
+
+        return metricsInJSX;
+    }
+
     return (
 
         <View style={localStyles.transactionComponentContainer}>
@@ -178,10 +195,11 @@ export function MetricTransactionComponent(props) {
                 >
                 </Icon>
             </View>
-            {props.metrics ?
+            {Object.keys(metrics).length > 0 ?
                 <View style={localStyles.transComponentInfo}>
-
-                    <Text style={localStyles.textNormal}>Update Metrics</Text>
+                    <ScrollView>
+                        {printMetrics(metrics)}
+                    </ScrollView>
                 </View>
                 :
                 <Text style={localStyles.textNormal}>Add Metrics</Text>
