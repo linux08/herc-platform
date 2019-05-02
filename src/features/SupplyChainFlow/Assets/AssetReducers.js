@@ -19,7 +19,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
         case Asset.Action.ClearState:
             return INITIAL_STATE
 
-        case Asset.Action.ShowAssetPasswordModal:
+        case Asset.Action.ToggleAssetPasswordModal:
             return {
                 ...state,
                 showPasswordModal: !state.showPasswordModal
@@ -63,7 +63,7 @@ const AssetReducers = (state = INITIAL_STATE, action) => {
             return Object.assign({}, state, {
                 ...state,
                 assetFetched: true,
-                // showPasswordModal: true, //no need for password modal anymore
+                showPasswordModal: true, //no need for password modal anymore
                 selectedAsset: action.selectAsset
             })
 

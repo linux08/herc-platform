@@ -16,7 +16,7 @@ import { AddAssetButton } from "./SupplyChainComponents";
 import { AssetCard } from "../../../components/AssetCard";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
-  // ShowAssetPasswordModal,
+  // ToggleAssetPasswordModal,
   GettingAssetIpfsDefintion,
   SelectedAsset,
   GetHeaders
@@ -45,7 +45,7 @@ class SupplyChainSplash extends Component {
   /* //deprecated PasswordModal
   passwordCorrect = () => {
     this.props.GetAssetDef(this.props.selectedAsset.hashes.ipfsHash);
-    this.props.ShowAssetPasswordModal();
+    this.props.ToggleAssetPasswordModal();
 
     this. props.navigation.navigate("SupplyChainSideChoice");
   };
@@ -136,7 +136,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
+  // ToggleAssetPasswordModal: () => dispatch(ToggleAssetPasswordModal()),
   SelectedAsset: asset => dispatch(SelectedAsset(asset)),
   GetAssetDef: assetIpfsHash =>
     dispatch(GettingAssetIpfsDefintion(assetIpfsHash)),

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { AssetCard } from "../../../../components/AssetCard";
 import {
-  ShowAssetPasswordModal,
+  ToggleAssetPasswordModal,
   SelectedAsset,
   GetHeaders
 } from "../../../SupplyChainFlow/Assets/AssetActionCreators";
@@ -30,7 +30,7 @@ class TrackSplash extends Component {
 
   passwordCorrect = () => {
 
-    this.props.ShowAssetPasswordModal();
+    this.props.ToggleAssetPasswordModal();
     this.props.navigation.navigate("TrackSideChoice");
   };
 
@@ -79,7 +79,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
+  ToggleAssetPasswordModal: () => dispatch(ToggleAssetPasswordModal()),
   SelectedAsset: asset => dispatch(SelectedAsset(asset)),
   GetHeaders: () => dispatch(GetHeaders())
 });

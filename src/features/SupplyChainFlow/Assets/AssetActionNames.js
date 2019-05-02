@@ -4,7 +4,7 @@
 export const Action = {
     ClearState: 'ClearState',
 
-    ShowAssetPasswordModal: 'ShowAssetPasswordModal',
+    ToggleAssetPasswordModal: 'ToggleAssetPasswordModal',
     GetHeaders: 'GetHeaders',
     GotHeaders: 'GotHeaders',
 
