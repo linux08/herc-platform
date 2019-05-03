@@ -188,7 +188,7 @@ function makeAndSetHeader(logoUrl) {
 
   try {
 
-    assetRef.child(newAsset.Name).set(fbAsset,
+    assetRef.push(fbAsset,
       function (error) {
         store.dispatch(Error(error))
       });
