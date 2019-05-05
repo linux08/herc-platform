@@ -172,6 +172,13 @@ function createAndSendIpfsAsset(newAsset) {
 
 }
 
+function GotNewAssetFirebaseId(firebaseId){
+  return {
+    type: Reg.Action.GotNewAssetFirebaseId,
+    firebaseId: firebaseId
+  };
+}
+
 
 function makeAndSetHeader(logoUrl) {
   let newAsset = store.getState().RegAssetReducers.newAsset;
@@ -188,10 +195,8 @@ function makeAndSetHeader(logoUrl) {
 
   try {
 
-    assetRef.push(fbAsset,
-      function (error) {
-        store.dispatch(Error(error))
-      });
+    var newAssetFirebaseRef = assetRef.push(fbAsset)
+    store.dispatch(GotNewAssetFirebaseId(newAssetFirebaseRef.key))
     store.dispatch(SettingHeaderComplete());
     store.dispatch(IncreaseHercId());
   }
@@ -272,6 +277,7 @@ async function ipfsToFactom(hash) {
 }
 
 export function hashesToFirebase(hashes) {
+  let firebaseId = store.getState().RegAssetReducers.firebaseId
   let newAssetName = store.getState().RegAssetReducers.newAsset.Name;
   let dataObject = Object.assign({}, {
     chainId: hashes.chainId,
@@ -283,7 +289,7 @@ export function hashesToFirebase(hashes) {
   console.log("3/3 going into firebase: ", dataObject, "name: ", newAssetName);
   try {
     rootRef.child('assets')
-      .child(newAssetName)
+      .child(firebaseId)
       .child('hashes')
       .set(dataObject)
       .then(() =>

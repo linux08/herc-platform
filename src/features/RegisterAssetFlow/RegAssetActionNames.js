@@ -12,6 +12,7 @@ export const Action = {
     AddAsset: 'AddAsset',
     SettingHeaderInFirebase: 'SettingHeaderInFirebase',
     SettingHeaderComplete: 'SettingHeaderComplete',
+    GotNewAssetFirebaseId: 'GotNewAssetFirebaseId',
 
     ConfirmStarted: 'ConfirmStarted',
     ConfirmAssetComplete: 'ConfirmAssetComplete',

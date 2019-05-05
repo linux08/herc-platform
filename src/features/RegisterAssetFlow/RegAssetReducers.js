@@ -73,6 +73,12 @@ const RegisterAssetReducers = (state = INITIAL_STATE, action) => {
                 INITIAL_STATE
             }
 
+        case Reg.Action.GotNewAssetFirebaseId:
+          return{
+            ...state,
+            firebaseId: action.firebaseId
+          }
+
 
         case Reg.Action.AddAsset:
             console.log(action, "addassetredux");
