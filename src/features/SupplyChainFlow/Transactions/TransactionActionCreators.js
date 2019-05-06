@@ -272,7 +272,7 @@ async function getCurrrentGasPrice(){
 
     let gasPrices = await response.json();
     console.log(gasPrices, "dynamic gas prices ALL***");
-    let gasPriceAverageInWei = gasPrices.average * .1 
+    let gasPriceAverageInWei = gasPrices.average * .1
     store.dispatch(GotCurrentGasPrice(gasPriceAverageInWei));
   } catch (error) {
     store.dispatch(Error(error));
@@ -298,15 +298,12 @@ export function GotCurrentGasPrice(gasPrice){
 };
 
 export function MakePayment(makePaymentObject) {
-  console.log(makePaymentObject, "this is the make payment object")
 
   let docImgFeePrepped = new BigNumber(makePaymentObject.dataFee).multipliedBy(1000000000000000000).toFixed(0);
   let networkFeePrepped = new BigNumber(makePaymentObject.networkFee).multipliedBy(1000000000000000000).toFixed(0);
-  
-
+  const factomEntryHash = store.getState().TransactionReducers.factomEntry
 
   return async dispatch => {
-    console.log("jm makePaymentObject", makePaymentObject);
     if (DEVELOPERS.includes(store.getState().AccountReducers.edge_account)) {
       dispatch(
         StoreTransactionIds({
@@ -316,13 +313,13 @@ export function MakePayment(makePaymentObject) {
       );
       dispatch({ type: Trans.Action.TransactionComplete });
     } else {
-      console.log("jm makePaymentObject networkFee", makePaymentObject);
       const burnSpendInfo = {
         networkFeeOption: "standard",
         currencyCode: "HERC",
         metadata: {
           name: "Transfer From Herc Wallet",
-          category: "Transfer:Wallet:Network Fee"
+          category: "Transfer:Wallet:Network Fee",
+          factomEntry: factomEntryHash
         },
         spendTargets: [
           {
@@ -336,7 +333,8 @@ export function MakePayment(makePaymentObject) {
         currencyCode: "HERC",
         metadata: {
           name: "Transfer From Herc Wallet",
-          category: "Transfer:Wallet:Data Fee"
+          category: "Transfer:Wallet:Data Fee",
+          factomEntry: factomEntryHash
         },
         spendTargets: [
           {
