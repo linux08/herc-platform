@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import React, { Component } from "react";
-import MainNavigation from "./navigation/MainNavigation";
+import LoginNav from "./navigation/MainNavigation";
 import { Provider } from "react-redux";
 import store from "./store";
 import { Platform, StyleSheet, Text, View, Button, YellowBox } from "react-native";
@@ -25,22 +25,10 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <MainNavigation />
+        <LoginNav />
       </Provider>
       );
     }
   }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  }
-});
+
