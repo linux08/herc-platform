@@ -28,23 +28,26 @@ class MetricModal extends Component {
 
     }
 
-    renderMetrics = (coreProps) => {
-        console.log(coreProps, "this")
-        let metrics = Object.values(coreProps);
-        let numOfMetrics = metrics.length;
-        let metricList = [];
-        metrics.forEach((x, i) => {
-            metricList.push(
-                <HercTextInputWithLabel
-                    key={i}
-                    label={x}
-                    placeholder={this.props.trans.x}
-                    name={x}
-                    localOnChange={this.onMetricUpdate}
-                />
-            )
-        })
-        return metricList;
+    renderMetrics = (ipfsDef) => {
+        if(ipfsDef){
+            console.log(ipfsDef.CoreProps, "this")
+            let metrics = Object.values(ipfsDef.CoreProps);
+            console.log(metrics);
+        //     let numOfMetrics = metrics.length;
+            let metricList = [];
+            metrics.forEach((x, i) => {
+                metricList.push(
+                    <HercTextInputWithLabel
+                        key={i}
+                        label={x}
+                        placeholder={this.props.trans.x}
+                        name={x}
+                        localOnChange={this.onMetricUpdate}
+                    />
+                )
+            })
+            return metricList;
+        }
     };
 
 
@@ -92,7 +95,7 @@ class MetricModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    metrics: state.AssetReducers.selectedAsset.ipfsDef.CoreProps,
+    metrics: state.AssetReducers.selectedAsset.ipfsDef,
     assetName: state.AssetReducers.selectedAsset.Name,
     trans: state.TransactionReducers.trans,
 });
