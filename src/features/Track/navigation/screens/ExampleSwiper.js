@@ -8,7 +8,7 @@ import { widthPercentageToDP, heightPercentageToDP } from '../../../../assets/re
 const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
 const { height, width } = Dimensions.get('window');
 
-import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SimpleAssetCard } from './components';
+import { SwiperTextFieldWithLabel, SwiperBigYellowButton, SwiperTextFieldWithLabelAndCopy, SwiperTextFieldWithLabelAndHercIcon, SimpleAssetCard } from './components';
 import { AlertAddAlert } from 'material-ui/svg-icons';
 import { Icon } from 'native-base';
 const swiperShareIcon = require("../../images/swiperShare.png");
@@ -51,7 +51,7 @@ class ExampleSwiper extends Component {
   }
 
   sharing = (data) => {
-   
+
     if (data) {
       let shareTitle = this.makeMessage(data);
       Share.share({
@@ -74,15 +74,16 @@ class ExampleSwiper extends Component {
     this._alertCopied(ipfsDirectLink);
   }
 
-  _copyFactomHashToClipboard = (chainID, entryID) => {
+  _copyFactomEntryViewToClipboard = (chainID, entryID) => {
     let factomDirectLink = "https://explorer.factom.com/chains/" + chainID + "/entries/" + entryID;
     Clipboard.setString(factomDirectLink);
     this._alertCopied(factomDirectLink);
   }
 
-  _copyNonHashToClipboard = (data) => {
-    Clipboard.setString(data);
-    this._alertCopied(data);
+  _copyFactomChainViewToClipboard = (chainID) => {
+    let factomDirectLink = "https://explorer.factom.com/chains/" + chainID;
+    Clipboard.setString(factomDirectLink);
+    this._alertCopied(factomDirectLink);
   }
 
   _alertCopied = (text) => {
@@ -92,7 +93,6 @@ class ExampleSwiper extends Component {
   }
 
   renderCard = (card, index) => {
-
     if (card) {
       let unKey = this.props.SelectedAsset.key;
       let factomChain = this.props.SelectedAsset.hashes.chainId;
@@ -100,7 +100,7 @@ class ExampleSwiper extends Component {
       let factomEntry = card.header.factomEntry
       let data = card.data;
       let header = card.header;
-      let metricsHash, ediTHash, documentHash, imageHash;
+      let metricsHash, ediTHash, documentHash, imageHash, price;
 
       if (data.hasOwnProperty('ediT')) {
         ediTHash = data.ediT;
@@ -118,40 +118,48 @@ class ExampleSwiper extends Component {
         metricsHash = data.metrics;
       }
 
+      if (header.hasOwnProperty('price')) {
+        price = header.price.toString();
+      }
+
       return (
         <View key={unKey} style={swiperStyles.card}>
           {header.dTime && <SwiperTextFieldWithLabel key={'Created'} text={header.dTime} label={'Created'} />}
 
-          <TouchableHighlight onLongPress={() => this._copyNonHashToClipboard(factomChain)} style={{ width: "97%" }}>
+          <TouchableHighlight onLongPress={() => this._copyFactomChainViewToClipboard(factomChain)} style={{ width: "97%" }}>
             <View>
-              <SwiperTextFieldWithLabel key={factomChain} label={'Factom Chain'} text={factomChain} />
+              <SwiperTextFieldWithLabelAndCopy key={factomChain} label={'Factom Chain'} text={factomChain} />
             </View>
           </TouchableHighlight>
 
           {/* line below is currently not applicable */}
           {/* {header.tXLocation && <SwiperTextFieldWithLabel key={'Classification'} text={header.tXLocation} label={'Classification'} />} */}
 
-          <TouchableHighlight onLongPress={() => this._copyFactomHashToClipboard(factomChain, factomEntry)} style={{ width: "97%" }}>
-            <SwiperTextFieldWithLabel key={factomEntry} text={factomEntry} label={'Factom Entry'} />
+          <TouchableHighlight onLongPress={() => this._copyFactomEntryViewToClipboard(factomChain, factomEntry)} style={{ width: "97%" }}>
+            <SwiperTextFieldWithLabelAndCopy key={factomEntry} text={factomEntry} label={'Factom Entry'} />
           </TouchableHighlight>
+
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }} >
             <View>
-              {corePropsHash && <SwiperTextFieldWithLabel key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
+              {corePropsHash && <SwiperTextFieldWithLabelAndCopy key={corePropsHash} label={'Core Properties'} text={corePropsHash} />}
             </View>
           </TouchableHighlight>
+
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(imageHash)} style={{ width: "97%" }}>
             <View>
-              {imageHash && <SwiperTextFieldWithLabel key={imageHash} label={'Image StorJ'} text={imageHash} />}
+              {imageHash && <SwiperTextFieldWithLabelAndCopy key={imageHash} label={'Image StorJ'} text={imageHash} />}
             </View>
           </TouchableHighlight>
+
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(metricsHash)} style={{ width: "97%" }} >
             <View>
-              {metricsHash && <SwiperTextFieldWithLabel key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
+              {metricsHash && <SwiperTextFieldWithLabelAndCopy key={metricsHash} label={'Metrics IPFS'} text={metricsHash} />}
             </View>
           </TouchableHighlight>
+
           <TouchableHighlight onLongPress={() => this._copyIPFSHashToClipboard(documentHash)} style={{ width: "97%" }}>
             <View>
-              {documentHash && <SwiperTextFieldWithLabel key={documentHash} label={'Document IPFS'} text={documentHash} />}
+              {documentHash && <SwiperTextFieldWithLabelAndCopy key={documentHash} label={'Document IPFS'} text={documentHash} />}
             </View>
           </TouchableHighlight>
 
@@ -160,7 +168,9 @@ class ExampleSwiper extends Component {
               {ediTHash && <SwiperTextFieldWithLabel key={ediTHash} label={'EDI-T IPFS'} text={ediTHash} />}
             </View>
           </TouchableHighlight>
-          {header.price && <SwiperTextFieldWithLabel key={header.price} label={'Price'} text={[header.price, <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 40, width: 40, borderRadius: 20, resizeMode: 'contain' }} />]} />}
+          <View>
+            {price && <SwiperTextFieldWithLabelAndHercIcon key={price} label={'Price'} text={price} />}
+          </View>
           <SwiperBigYellowButton buttonName={'View Factom Chain'} key={index} onPress={() => this._goToWebView(factomChain, factomEntry)} />
         </View>
       )
@@ -202,19 +212,19 @@ class ExampleSwiper extends Component {
   };
 
   handleButtonLeft = () => {
-    if(this.state.swipedAllCards === false){
+    if (this.state.swipedAllCards === false) {
       this.swiper.swipeLeft();
     }
   }
 
-  handleButtonRight =() => {
-    if(this.state.swipedAllCards === false){
+  handleButtonRight = () => {
+    if (this.state.swipedAllCards === false) {
       this.swiper.swipeRight();
     }
   }
 
   handleButtonUp = () => {
-    if(this.state.swipedAllCards === false){
+    if (this.state.swipedAllCards === false) {
       this.swiper.swipeTop();
     }
   }
@@ -245,7 +255,7 @@ class ExampleSwiper extends Component {
           animateCardOpacity
           swipeBackCard
         >
-            </Swiper>
+        </Swiper>
         <View style={{ justifyContent: "space-around", flexDirection: "row", width: "100%", height: "15%" }}>
           <View style={{ justifyContent: "center" }}>
             <TouchableHighlight style={{ justifyContent: "center" }} onPress={() => this.handleButtonLeft()}>

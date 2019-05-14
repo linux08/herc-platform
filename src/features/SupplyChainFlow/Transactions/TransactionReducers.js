@@ -58,28 +58,28 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.ClearImages:
-        return Object.assign({}, {
-            ...state,
-            trans: {
-                ...state.trans,
-                data: {
-                    ...state.trans.data,
-                    images: {}
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        images: {}
+                    }
                 }
-            }
-        })
+            })
 
         case Trans.Action.ClearDocuments:
-        return Object.assign({}, {
-            ...state,
-            trans: {
-                ...state.trans,
-                data: {
-                    ...state.trans.data,
-                    documents: {}
+            return Object.assign({}, {
+                ...state,
+                trans: {
+                    ...state.trans,
+                    data: {
+                        ...state.trans.data,
+                        documents: {}
+                    }
                 }
-            }
-        })
+            })
 
         case Trans.Action.ClearMetrics:
             return Object.assign({}, {
@@ -221,7 +221,8 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                         hercId: tRans.header.hercId,
                         name: tRans.header.name,
                         price: tRans.header.price,
-                        dTime: tRans.header.dTime
+                        dTime: tRans.header.dTime,
+                        assetID: tRans.header.assetID
                     }
                 },
             })
@@ -258,7 +259,7 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                 hercValue: action.hercValue
             })
 
-            case Trans.Action.GotCurrentGasPrice:
+        case Trans.Action.GotCurrentGasPrice:
             return Object.assign({}, state, {
                 ...state,
                 gasPrice: action.gasPrice
@@ -279,11 +280,11 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
             })
 
         case Trans.Action.StoreTransactionIds:
-          console.log("jm transactionIDs in reducer", action.transactionIds);
-          return Object.assign({}, state, {
-              ...state,
-              transactionIdStore: action.transactionIds
-          })
+            console.log("jm transactionIDs in reducer", action.transactionIds);
+            return Object.assign({}, state, {
+                ...state,
+                transactionIdStore: action.transactionIds
+            })
 
         case Trans.Action.AddPhoto:
 
@@ -320,7 +321,6 @@ const TransactionReducers = (state = INITIAL_STATE, action) => {
                         ...state.trans.data,
                         metrics: action.data
                     }
-
                 }
             })
 

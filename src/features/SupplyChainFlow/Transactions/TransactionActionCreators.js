@@ -94,6 +94,7 @@ export function StartTransaction(place) {
       hercId: asset.hercId,
       // password: this.state.password,
       name: asset.Name,
+      assetID: asset.assetID,
       tXLocation: place,
       price: 0.000125, //this is the bare starter price i'm going with which is (128b / 1024) x 0.001
       dTime: new Date().toDateString()
@@ -533,6 +534,7 @@ export function SendTransaction() {
     });
 
     let chainId = store.getState().AssetReducers.selectedAsset.hashes.chainId;
+    let assetID = store.getState().AssetReducers.selectedAsset.assetID;
 
     store.dispatch(TransactionInstantiating());
 
@@ -559,7 +561,7 @@ export function SendTransaction() {
             });
             rootRef
               .child("assets")
-              .child(firebaseHeader.name)
+              .child(assetID)
               .child("transactions")
               .child(Date.now())
               .set({ data: dataObject, header: firebaseHeader });

@@ -119,7 +119,8 @@ const localStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingRight: '10%',
-        paddingLeft: '10%'
+        paddingLeft: '10%',
+        alignSelf: "center"
     },
 
   })

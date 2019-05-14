@@ -36,12 +36,13 @@ export function GetHeaders() {
                 snapshot.forEach(asset => {
                     // this gets the unique firebase key for the asset
 
-                    let pushKey = assetRef.child(asset.key).push();
+                    // let pushKey = assetRef.child(asset.key).push();
                     if (asset.toJSON().Password === username || asset.toJSON().CreatedBy === username){
-                      assetHeaders.push(
+                     
+                        assetHeaders.push(
                           Object.assign({}, asset.toJSON(),
                               {
-                                  key: pushKey.key
+                                  assetID: asset.key
                               }
                           )
                       );

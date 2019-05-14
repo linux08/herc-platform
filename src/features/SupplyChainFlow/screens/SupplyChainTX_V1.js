@@ -86,7 +86,7 @@ class SupplyChainTX extends Component {
             isVisible: false,
         })
         this._clearTransactionData();
-        this.props.navigation.navigate('WalletNavigator');
+        this.props.navigation.navigate('WalletFlow');
     }
 
     clearAll = () => {
@@ -278,13 +278,16 @@ class SupplyChainTX extends Component {
                     clearEDI={this.props.clearEDI}
                 />
 
-                <MetricModal
+                {this.props.trans.data.metrics ? <MetricModal
                     visibility={this.props.modals.metricModal}
                     metrics={this.props.trans.data.metrics}
                     clearMetrics={this.clearMetrics}
                     localOnChange={this.setMetrics}
                     changeModal={this.showMetricModal}
-                />
+                /> : null}
+
+
+
 
                 <CustomModal
                     heading={"Your Transaction Is Being Written To The Blockchain"}
