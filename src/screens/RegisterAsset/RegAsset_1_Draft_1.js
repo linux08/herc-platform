@@ -149,7 +149,8 @@ class RegAsset1 extends Component {
                 Logo: img.imageString,
                 LogoUri: img.uri
             }
-        })
+        }, ()=> console.log(this.state.newAsset, " this is the newAsset"))
+        console.log(img, " this is img in setPic+++")
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
 
