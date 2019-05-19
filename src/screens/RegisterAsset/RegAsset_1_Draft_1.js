@@ -18,6 +18,7 @@ import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../component
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
 // import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
 import firebase from "../../constants/Firebase";
+import BigNumber from "bignumber.js";
 const rootRef = firebase.database().ref();
 
 import ColorConstants from "../../constants/ColorConstants";
@@ -184,19 +185,25 @@ class RegAsset1 extends Component {
     onPressTest = async () => {
         let newAsset = Object.assign({}, this.state)
         let userExists = await this.CheckIfUserIsCurrent(this.state.newAsset.Password)
+        let hercBalance = this.props.hercBalance;
+        let hercBalancePrepped = new BigNumber(hercBalance).times(1e-18);
+        let minimumPrice = new BigNumber(1000);
+        let results = hercBalancePrepped.minus(minimumPrice);
+        console.log(results.isPositive(), "line 192 ***")
 
         if (userExists === true) {
-            if (!newAsset.newAsset.Logo) {
-                this.setState({ content: "Please include an image with your asset." })
-                this.setState({ showImageErrorModal: true })
-            } else {
-                if (this.props.canRegisterAsset) {
+            if (newAsset.newAsset.Logo) {
+                if (results.isPositive()) {
+                    console.log("result is positive line 200 ***")
                     this.props.AddAsset(this.state.newAsset);
                     this.props.navigation.navigate("RegAsset2");
                 } else {
                     this.setState({ content: "Your account does not meet the minimum amount to register an asset." })
                     this.setState({ showImageErrorModal: true })
                 }
+            } else {
+                this.setState({ content: "Please include an image with your asset." })
+                this.setState({ showImageErrorModal: true })
             }
         } else {
             Alert.alert(
@@ -253,7 +260,7 @@ class RegAsset1 extends Component {
                     backgroundColor='transparent'
                 />
                 <View style={styles.bodyContainer}>
-                    <ScrollView style={{ alignSelf: "center", width: "103%"}}>
+                    <ScrollView style={{ alignSelf: "center", width: "103%" }}>
                         <HercTextInputWithLabel
                             name='Asset Name'
                             label='Asset Name'
@@ -325,7 +332,8 @@ const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     newAsset: state.RegAssetReducers.newAsset,
     canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
-    assetCreator: state.AccountReducers.edge_account
+    assetCreator: state.AccountReducers.edge_account,
+    hercBalance: state.WalletReducers.wallet.balances.HERC
 });
 
 const mapDispatchToProps = (dispatch) => ({
