@@ -11,6 +11,14 @@ import menuIcon from 'react-native-vector-icons/Entypo';
 import styles from "./HeaderStyles";
 import { createStackNavigator } from "react-navigation";
 import ColorConstants from "../../constants/ColorConstants";
+import { connect } from "react-redux";
+import {
+    ClearImages,
+    ClearDocuments,
+    ClearEdiT,
+    ClearMetrics } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+
+
 const bgImage = require("../../assets/main-bg.png")
 
 
@@ -28,12 +36,22 @@ const bgImage = require("../../assets/main-bg.png")
         console.log(navigation, "trying to go back")
         navigation.goBack();
         ******************************************** */
-        this.props.navigation.navigate('WalletNavigator')
+        this.props.navigation.navigate('WalletFlow');
+        this._clearTransactionData();
     }
     _toggleSideMenu = () => {
        console.log('ToggleSide');
 
         this.props.navigation.toggleDrawer();
+    }
+
+    _clearTransactionData = () => {
+        //Bugfix Zube Card #722
+        //*MH* clear transaction data from redux store
+        this.props.ClearImages();
+        this.props.ClearDocuments();
+        this.props.ClearEdiT();
+        this.props.ClearMetrics();
     }
 
     render() {
@@ -67,4 +85,15 @@ const bgImage = require("../../assets/main-bg.png")
         );
     }
 }
-export default Header;
+
+const mapDispatchToProps = dispatch => ({
+    ClearImages: () => dispatch(ClearImages()),
+    ClearDocuments: () => dispatch(ClearDocuments()),
+    ClearEdiT: () => dispatch(ClearEdiT()),
+    ClearMetrics: () => dispatch(ClearMetrics())
+})
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Header);
