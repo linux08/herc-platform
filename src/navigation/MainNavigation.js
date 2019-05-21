@@ -58,7 +58,7 @@ const MainNavigator = createStackNavigator({
     RegAsset1: {
         screen: RegAsset1,
         navigationOptions: ({ navigation }) => ({
-            header: <Header headerTitle={'Register Asset1'} navigation={navigation} />
+            header: <Header headerTitle={'Register Asset'} navigation={navigation} />
         })
     },
     RegAsset2: {
