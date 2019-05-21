@@ -12,15 +12,17 @@ type Props = {
 
 const styles = StyleSheet.create({
   logo: {
-    position: 'relative',
     resizeMode: 'contain',
     width: '80%',
+    height: '40%'
   },
   container: {
-    position: 'relative',
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: '100%'
+    width: '100%',
+    height: "30%",
+    borderWidth: 3,
+    borderColor: 'green'
   },
 });
 

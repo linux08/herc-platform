@@ -33,15 +33,15 @@ export default class LandingScreenComponent extends Component<Props, State> {
     return (
       <View style={LandingScreenStyle.inner}>
         <View style={LandingScreenStyle.featureBox}>
-          <LogoImageHeader style={LandingScreenStyle.logoHeader} />
-          <View style={LandingScreenStyle.featureBoxContent}>
+           <LogoImageHeader style={LandingScreenStyle.logoHeader} />
+         <View style={LandingScreenStyle.featureBoxContent}>
             <View style={LandingScreenStyle.featureBoxDescription}>
               <Text style={LandingScreenStyle.tagText}>
                 {s.strings.landing_tagline}
               </Text>
             </View>
           </View>
-          <View style={LandingScreenStyle.featureBoxButtons}>
+          {/* <View style={LandingScreenStyle.featureBoxButtons}>
             <Button
               onPress={this.onStartCreate.bind(this)}
               label={s.strings.landing_create_account_button}
@@ -60,11 +60,11 @@ export default class LandingScreenComponent extends Component<Props, State> {
               upStyle={LandingScreenStyle.loginButton.upStyle}
               upTextStyle={LandingScreenStyle.loginButton.upTextStyle}
             />
-            <View>
+            <View style ={{borderWidth: 3, borderColor: "red", height: "80%", alignContent: "center", justifyContent: "center" }}>
               <Text style={{color: 'white'}}>Secured By</Text>
-              <Image source={Assets.EDGE_LOGO_BIG} />
-            </View>
-          </View>
+              <Image style ={{borderWidth: 3, borderColor: "red",resizeMode: "contain", alignSelf: "center" }}source={Assets.EDGE_LOGO_BIG} />
+            </View>*/}
+          {/* </View>  */}
         </View>
       </View>
     )
