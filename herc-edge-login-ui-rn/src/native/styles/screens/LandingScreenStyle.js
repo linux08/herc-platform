@@ -17,23 +17,21 @@ const LandingScreenStyle = {
     height: '100%'
   },
   featureBox: {
-    position: 'relative',
+    // position: 'relative',
     top: '2%',
     width: '100%',
     height: '97%',
-    borderColor: 'blue',
-    borderWidth: 3
   },
   logoHeader: Styles.LogoHeaderScaledStyle,
   featureBoxContent: {
     // height: scale(186), 306- 125 - remaining space.
     width: '100%',
     flexDirection: 'column',
-    height: '20%',
+    height: '10%',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    borderColor: "yellow",
-    borderWidth: 3
+    // borderColor: "yellow",
+    // borderWidth: 3
   },
   featureBoxDescription: {
     // height: scale(186), 306- 125 - remaining space.

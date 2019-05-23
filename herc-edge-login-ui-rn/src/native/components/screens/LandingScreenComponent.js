@@ -8,6 +8,7 @@ import s from '../../../common/locales/strings.js'
 import * as Assets from '../../assets/'
 import { LogoImageHeader } from '../abSpecific'
 import { BackgroundImage, Button } from '../common'
+import { scale } from '../../../common/util';
 
 type Props = {
   styles: Object,
@@ -41,7 +42,7 @@ export default class LandingScreenComponent extends Component<Props, State> {
               </Text>
             </View>
           </View>
-          {/* <View style={LandingScreenStyle.featureBoxButtons}>
+          <View style={LandingScreenStyle.featureBoxButtons}>
             <Button
               onPress={this.onStartCreate.bind(this)}
               label={s.strings.landing_create_account_button}
@@ -60,11 +61,11 @@ export default class LandingScreenComponent extends Component<Props, State> {
               upStyle={LandingScreenStyle.loginButton.upStyle}
               upTextStyle={LandingScreenStyle.loginButton.upTextStyle}
             />
-            <View style ={{borderWidth: 3, borderColor: "red", height: "80%", alignContent: "center", justifyContent: "center" }}>
+            <View style ={{alignContent: "center", justifyContent: "center" }}>
               <Text style={{color: 'white'}}>Secured By</Text>
-              <Image style ={{borderWidth: 3, borderColor: "red",resizeMode: "contain", alignSelf: "center" }}source={Assets.EDGE_LOGO_BIG} />
-            </View>*/}
-          {/* </View>  */}
+              <Image style ={{resizeMode: "contain", alignSelf: "center", height: scale(32) }}source={Assets.EDGE_LOGO_BIG} />
+            </View>
+          </View> 
         </View>
       </View>
     )

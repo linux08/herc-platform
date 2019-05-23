@@ -7,7 +7,7 @@ const MaterialInput = {
   container: {
     position: 'relative',
     width: Constants.LOGIN_LABEL_WIDTH,
-    minHeight: scale(Constants.LOGIN_LABEL_HEIGHT)
+    // minHeight: scale(Constants.LOGIN_LABEL_HEIGHT)
   },
   baseColor: Constants.WHITE,
   tintColor: Constants.ACCENT_MINT,
