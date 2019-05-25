@@ -7,11 +7,11 @@ import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } fr
 // import TxSwiperContainer from "../screens/MainApp/TxSwiperContainer";
 // import TxSwiper from "../components/TxSwiper";
 // import Wallet from "../";
-import Settings from "../screens/MainApp/Settings";
+// import Settings from "../screens/MainApp/Settings";
 // import QRCapture from "../screens/QRCapture";
 // import QRCapture2 from "../screens/QRCapture2";
 // import WebViewComponent from "../components/WebViewComponent";
-// import DocumentStorage from "../screens/MainApp/DocumentStorage";
+import DocumentStorage from "../screens/DocumentStorage/DocumentStorage";
 // import DocumentQRScanner from "../screens/MainApp/DocumentQRScanner";
 import Login from "../screens/MainApp/Login";
 import TestSplash from "../screens/MainApp/TestSplash";
@@ -124,6 +124,12 @@ const MainNavigator = createStackNavigator({
             header: null
         })
     },
+    DocumentStorage: {
+        screen: DocumentStorage,
+        navigationOptions: ({ navigation, screenProps }) => ({
+            header: <Header headerTitle={'Document Storage'}/>
+        })
+    }
 
     // BlockScanner: {
     //     screen: Blockscanner

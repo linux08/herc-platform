@@ -26,7 +26,7 @@ import {
 } from "react-native-document-picker";
 var RNFS = require("react-native-fs");
 import QRCode from "react-qr-code";
-import styles from "../../assets/styles";
+import styles from "../../../src/assets/styles";
 import { RNCamera } from "react-native-camera";
 import axios from "axios";
 import { WEB_SERVER_API_SHORTEN_URL } from "../../components/settings";
@@ -35,6 +35,8 @@ import BigNumber from "bignumber.js";
 // import { addDocStorage, sendTrans } from "../../actions/AssetActions";
 import { TOKEN_ADDRESS } from "../../components/settings";
 import { captureRef } from "react-native-view-shot";
+
+console.log()
 
 console.disableYellowBox = true;
 
@@ -53,75 +55,75 @@ class DocumentStorage extends React.Component {
     showLoader: true
   };
 
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state;
-    let headerStyles = StyleSheet.create({
-      header__container: {
-        display: "flex",
-        height: 80,
-        alignSelf: "center",
-        flex: 1,
-        alignContent: "center",
-        alignItems: "center",
-        marginTop: 40,
-        paddingBottom: 20
-      },
-      header__container__centeredBox: {
-        height: "100%",
-        alignItems: "center",
-        flexDirection: "row"
-      },
-      header__text__box: {
-        height: "100%",
-        marginBottom: 5,
-        marginLeft: 12
-      },
-      header__image__box: {
-        height: "100%",
-        borderRadius: 100
-      },
-      assetHeaderLogo: {
-        height: 35,
-        width: 35,
-        borderRadius: 50
-      },
-      headerText: {
-        fontFamily: "dinPro",
-        fontSize: 26,
-        alignSelf: "center",
-        fontWeight: "bold",
-        color: "black",
-        textAlign: "center",
-        marginTop: 2
-      }
-    });
+  // static navigationOptions = ({ navigation }) => {
+  //   const { params } = navigation.state;
+  //   let headerStyles = StyleSheet.create({
+  //     header__container: {
+  //       display: "flex",
+  //       height: 80,
+  //       alignSelf: "center",
+  //       flex: 1,
+  //       alignContent: "center",
+  //       alignItems: "center",
+  //       marginTop: 40,
+  //       paddingBottom: 20
+  //     },
+  //     header__container__centeredBox: {
+  //       height: "100%",
+  //       alignItems: "center",
+  //       flexDirection: "row"
+  //     },
+  //     header__text__box: {
+  //       height: "100%",
+  //       marginBottom: 5,
+  //       marginLeft: 12
+  //     },
+  //     header__image__box: {
+  //       height: "100%",
+  //       borderRadius: 100
+  //     },
+  //     assetHeaderLogo: {
+  //       height: 35,
+  //       width: 35,
+  //       borderRadius: 50
+  //     },
+  //     headerText: {
+  //       fontFamily: "dinPro",
+  //       fontSize: 26,
+  //       alignSelf: "center",
+  //       fontWeight: "bold",
+  //       color: "black",
+  //       textAlign: "center",
+  //       marginTop: 2
+  //     }
+  //   });
 
-    return {
-      headerTitle: (
-        <View style={headerStyles.header__container}>
-          <TouchableHighlight
-            style={{ justifyContent: "center" }}
-            onPress={() => navigation.navigate("MenuOptions")}
-          >
-            <View style={headerStyles.header__container__centeredBox}>
-              <View style={headerStyles.header__image__box} />
-              <View style={headerStyles.header__text__box}>
-                <Text style={headerStyles.headerText}>Document Storage</Text>
-              </View>
-            </View>
-          </TouchableHighlight>
-        </View>
-      ),
-      headerTitleStyle: {
-        height: 50,
-        width: 200,
-        alignSelf: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-        marginLeft: 20
-      }
-    };
-  };
+  //   return {
+  //     headerTitle: (
+  //       <View style={headerStyles.header__container}>
+  //         <TouchableHighlight
+  //           style={{ justifyContent: "center" }}
+  //           onPress={() => navigation.navigate("MenuOptions")}
+  //         >
+  //           <View style={headerStyles.header__container__centeredBox}>
+  //             <View style={headerStyles.header__image__box} />
+  //             <View style={headerStyles.header__text__box}>
+  //               <Text style={headerStyles.headerText}>Document Storage</Text>
+  //             </View>
+  //           </View>
+  //         </TouchableHighlight>
+  //       </View>
+  //     ),
+  //     headerTitleStyle: {
+  //       height: 50,
+  //       width: 200,
+  //       alignSelf: "center",
+  //       justifyContent: "center",
+  //       flexDirection: "row",
+  //       marginLeft: 20
+  //     }
+  //   };
+  // };
 
   componentDidMount() {
     this._requestExternalStoragePermission();
@@ -559,7 +561,7 @@ class DocumentStorage extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1, backgroundColor: "#091141" }}>
         <View style={[styles.containerCenter, { flex: 1 }]}>
           <TouchableHighlight
             style={{ marginTop: 10 }}
@@ -575,7 +577,8 @@ class DocumentStorage extends React.Component {
                 borderRadius: 5,
                 textAlign: "center",
                 justifyContent: "center",
-                alignContent: "center"
+                alignContent: "center",
+                alignSelf:"center"
               }}
             >
               Select Document
@@ -753,7 +756,8 @@ class DocumentStorage extends React.Component {
                     borderRadius: 5,
                     textAlign: "center",
                     justifyContent: "center",
-                    alignContent: "center"
+                    alignContent: "center",
+                    alignSelf: "center"
                   }}
                 >
                   Scan A QR
@@ -763,7 +767,7 @@ class DocumentStorage extends React.Component {
           )}
 
           {this.state.uploadDoc === true ? null : (
-            <ScrollView style={{ height: "50%" }}>
+            <ScrollView style={{ height: "70%" }}>
               <View style={{ marginTop: "20%", alignItems: "center" }}>
                 {this.state.uploadHistory ? (
                   <Text
@@ -795,7 +799,7 @@ class DocumentStorage extends React.Component {
               source={hercLogo}
               style={{
                 resizeMode: "center",
-                height: 50,
+                height: "100%",
                 width: "50%",
                 alignSelf: "center"
               }}
@@ -809,10 +813,12 @@ class DocumentStorage extends React.Component {
 
 const localStyles = StyleSheet.create({
   container: {
-    borderColor: "red",
-    borderWidth: 3,
+    // borderColor: "red",
+    // borderWidth: 3,
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    backgroundColor: "#091141",
+    justifyContent: "center"
   },
   preview: {
     flex: 1
@@ -939,9 +945,9 @@ const localStyles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   documentStorage: state.DocumentStorage,
-  wallet: state.WalletActReducers.wallet,
-  watchBalance: state.WalletActReducers.watchBalance,
-  account: state.WalletActReducers.account
+  wallet: state.WalletReducers.wallet,
+  watchBalance: state.WalletReducers.watchBalance,
+  account: state.AccountReducers.account
 });
 
 const mapDispatchToProps = dispatch => ({

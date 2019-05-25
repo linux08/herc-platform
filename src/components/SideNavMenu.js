@@ -18,7 +18,8 @@ import {
     ClearImages,
     ClearDocuments,
     ClearEdiT,
-    ClearMetrics } from '../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+    ClearMetrics
+} from '../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 class SideMenu extends Component {
 
@@ -58,12 +59,12 @@ class SideMenu extends Component {
         const resetAction = StackActions.reset({
             index: 1,
             actions: [
-            NavigationActions.navigate({routeName:'WalletFlow'}),
-            NavigationActions.navigate({routeName:'TrackSplash'})
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'TrackSplash' })
             ],
-          });
-          this.props.navigation.dispatch(resetAction);
-          this._clearTransactionData();
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
 
     }
 
@@ -71,24 +72,24 @@ class SideMenu extends Component {
         const resetAction = StackActions.reset({
             index: 1,
             actions: [
-            NavigationActions.navigate({routeName:'WalletFlow'}),
-            NavigationActions.navigate({routeName:'RegAssetSplashTest'})
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'RegAssetSplashTest' })
             ],
-          });
-          this.props.navigation.dispatch(resetAction);
-          this._clearTransactionData();
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
     }
 
     _supplyChainSelected = () => {
         const resetAction = StackActions.reset({
             index: 1,
             actions: [
-            NavigationActions.navigate({routeName:'WalletFlow'}),
-            NavigationActions.navigate({routeName:'SupplyChainSplash'})
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'SupplyChainSplash' })
             ],
-          });
-          this.props.navigation.dispatch(resetAction);
-          this._clearTransactionData();
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
     }
 
     _WalletSelected = () => {
@@ -98,8 +99,8 @@ class SideMenu extends Component {
         //     NavigationActions.navigate({routeName:'WalletFlow'})            ],
         //   });
         //   this.props.navigation.dispatch(resetAction);
-          this.props.navigation.navigate('WalletFlow');
-          this._clearTransactionData();
+        this.props.navigation.navigate('WalletFlow');
+        this._clearTransactionData();
     }
 
     _clearTransactionData = () => {
@@ -110,6 +111,19 @@ class SideMenu extends Component {
         this.props.ClearEdiT();
         this.props.ClearMetrics();
     }
+
+    _documentStorageSelected = () => {
+        console.log("document storage selected")
+        // const resetAction = StackActions.reset({
+        //     index: 1,
+        //     actions: [
+        //     NavigationActions.navigate({routeName:'WalletFlow'})            ],
+        //   });
+        //   this.props.navigation.dispatch(resetAction);
+        this.props.navigation.navigate('DocumentStorage');
+        this._clearTransactionData();
+    }
+
 
     render() {
         return (
@@ -168,7 +182,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={ this._trackSelected}>
+                                <TouchableHighlight onPress={this._trackSelected}>
                                     <Text style={localStyles.title__Text}>Track</Text>
                                 </TouchableHighlight>
                             </View>
@@ -219,6 +233,19 @@ class SideMenu extends Component {
                                 </TouchableHighlight>
                             </View>
                         </View> */}
+
+
+                        <View style={localStyles.block}>
+                            <View style={localStyles.block__bullet}>
+                                <Icon name='circle' color="#d7daeb" size={12} />
+                            </View>
+                            <View style={localStyles.block__textBlock}>
+                                <TouchableHighlight onPress={this._documentStorageSelected}>
+                                    <Text style={localStyles.title__Text}>Documents</Text>
+                                </TouchableHighlight>
+                            </View>
+                        </View>
+
 
                         <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
