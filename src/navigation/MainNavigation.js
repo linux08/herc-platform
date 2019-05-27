@@ -127,7 +127,7 @@ const MainNavigator = createStackNavigator({
     DocumentStorage: {
         screen: DocumentStorage,
         navigationOptions: ({ navigation, screenProps }) => ({
-            header: <Header headerTitle={'Document Storage'}/>
+            header: <Header headerTitle={'Document Storage'} navigation={navigation}/>
         })
     }
 
