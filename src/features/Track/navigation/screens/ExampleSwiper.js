@@ -3,6 +3,7 @@ import Swiper from 'react-native-deck-swiper'
 import { Button, StyleSheet, Text, View, Image, Dimensions, Share, TouchableHighlight, Clipboard, Alert } from 'react-native'
 import AssetCard from '../../.././../components/AssetCard';
 import { connect } from "react-redux";
+import { VERSION } from '../../.././../components/settings.js'
 import ColorConstants from '../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../assets/responsiveUI'
 const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
@@ -44,9 +45,9 @@ class ExampleSwiper extends Component {
     let time = header.dTime;
     let password = header.password;
     let title = header.name + " " + " Transaction @ " + time + ";" + "\n"
-    let price = + header.price + "Herc" + ";\n";
-    let sig = "Sent from Herc v.1.0"
-    let message = title + messageData + "\n" + 'Password: ' + password + "\n" + 'Price: ' + price + "\n " + sig;
+    let price = + header.price + " Herc" + ";\n";
+    let sig = "Sent from Herc v" + VERSION
+    let message = title + messageData + "\n" + 'Permissible: ' + password + "\n" + 'Price: ' + price + "\n " + sig;
     return [title, message];
   }
 
