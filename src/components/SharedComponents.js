@@ -19,16 +19,15 @@ export function BigYellowButton(props) {
     return (
 
         <TouchableHighlight onPress={props.onPress} style={localStyles.registerButton}>
-            <Text style={[ localStyles.buttonLabel,{color: 'white'}]}>{props.buttonName}</Text>
+            <Text style={[localStyles.buttonLabelText, { color: 'white' }]}>{props.buttonName}</Text>
         </TouchableHighlight>
     )
 }
 
 export function ModalSubmitButton(props) {
     return (
-
         <TouchableHighlight onPress={props.onPress} style={localStyles.modal__Submitbutton}>
-            <Text style={[ localStyles.buttonLabel,{color: 'white'}]}>Submit</Text>
+            <Text style={{ color: 'white', fontSize: heightPercentageToDP(1.8) }}>Submit</Text>
         </TouchableHighlight>
     )
 }
@@ -40,7 +39,7 @@ export function CostDisplay(props) {
             <Text style={localStyles.labelText}>Amount</Text>
 
             <View style={localStyles.flexRow}>
-                <Text style={[localStyles.costFieldAmount, { color: 'white'}]}>{props.amount}</Text>
+                <Text style={[localStyles.costFieldAmount, { color: 'white' }]}>{props.amount}</Text>
                 <Image source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain' }} />
             </View>
         </View>
@@ -112,20 +111,22 @@ export class HercTextInputWithLabel extends Component {
         console.log(this.props, "textInputWithLabel, lookingfor localOnChange")
         let name = this.props.name;
         return (
-
-            <View style={[localStyles.textFieldContainer, { paddingTop: 10, paddingBottom: 2 }]}>
-
-                <Text style={localStyles.labelText}>{this.props.label}</Text>
-                <TextInput
-                    name={this.props.name}
-                    placeholder={this.props.placeholder}
-                    onChangeText={(change) => this.props.localOnChange(change, name)}
-                    style={localStyles.labeledTextInput}
-                    underlineColorAndroid='transparent'
-                    multiline={false}
-                    scrollEnabled={false}
+            <View style={localStyles.textFieldContainer}>
+                <View>
+                    <Text style={localStyles.labelText}>{this.props.label}:</Text>
+                </View>
+                <View style={{width: "100%"}}>
+                    <TextInput
+                        name={this.props.name}
+                        placeholder={this.props.placeholder}
+                        onChangeText={(change) => this.props.localOnChange(change, name)}
+                        style={localStyles.labeledTextInput}
+                        underlineColorAndroid='transparent'
+                        multiline={false}
+                        scrollEnabled={false}
                     // value={this.props.v}
-                />
+                    />
+                </View>
             </View>
         )
     }
@@ -153,7 +154,7 @@ export class BasePasswordInput extends Component {
             <View style={[localStyles.textFieldContainer, { paddingTop: 10, paddingBottom: 2 }]}>
                 <Text style={localStyles.labelText}>{this.props.label}</Text>
                 <View style={localStyles.PasswordInputContainer}>
-{/* localStyles.passwordTextInput */}
+                    {/* localStyles.passwordTextInput */}
                     <TextInput style={localStyles.passwordTextInput}
                         placeholder={this.props.placeholder}
                         placeholder-text-color={ColorConstants.MainBlue}
@@ -185,30 +186,29 @@ const localStyles = StyleSheet.create({
         marginLeft: 0,
         marginRight: 0,
         // fontSize: 14,
-        paddingLeft: 5,
         textAlign: 'left',
-        fontSize: 17,
+        fontSize: heightPercentageToDP(2),
         borderRadius: 8,
         // height: heightPercentageToDP('4.95'),
-        paddingBottom:0
+        paddingBottom: 0
     },
     costFieldAmount: {
         color: ColorConstants.MainBlue,
         marginRight: 5,
         paddingLeft: 5,
         textAlign: 'left',
-        fontSize: 20,
+        fontSize: heightPercentageToDP(2),
     },
     textFieldContainer: {
         flexDirection: 'column',
-        width:  widthPercentageToDP('90'),
-        height: heightPercentageToDP(((50 / height) * 100).toString()),
+        width: "100%",
+        // height: heightPercentageToDP(((50 / height) * 100).toString()),
         justifyContent: 'center',
         alignItems: 'flex-start',
         backgroundColor: ColorConstants.ElementBG,
         margin: 5,
-        paddingLeft: 5,
         borderRadius: 6,
+        alignSelf: "center",
         // height: heightPercentageToDP(((50 / height) * 100).toString()),
     },
     labeledTextInput: {
@@ -217,12 +217,11 @@ const localStyles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: ColorConstants.ElementBG,
         margin: 0,
-        fontSize: 17,
-
+        fontSize: heightPercentageToDP(3),
     },
     labelText: {
-        fontSize: 12,
-        color: ColorConstants.MainSubGray,
+        fontSize: heightPercentageToDP(1.5),
+        color: "black",
         marginLeft: 3,
         fontWeight: 'normal',
     },
@@ -241,7 +240,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: ColorConstants.ElementBG,
         margin: 0,
         flex: 1,
-        fontSize: 17,
+        fontSize: heightPercentageToDP(1.8),
         alignSelf: 'center'
     },
 
@@ -286,12 +285,13 @@ const localStyles = StyleSheet.create({
     },
 
 
-    buttonLabel: {
-        fontSize: 12,
+    buttonLabelText: {
+        fontSize: heightPercentageToDP(1.5),
         color: ColorConstants.MainSubGray,
         margin: 5,
         // marginLeft: '15%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+
 
     },
 
@@ -318,15 +318,14 @@ const localStyles = StyleSheet.create({
         // marginTop: heightPercentageToDP('20')
     },
     modal__Submitbutton: {
-        height: heightPercentageToDP(((30 / height) * 100).toString()),
-        width: widthPercentageToDP('90'),
+        height: "5%",
+        width: widthPercentageToDP('70'),
         backgroundColor: ColorConstants.MainGold,
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: "3%",
         alignSelf: 'center',
-        marginBottom: "2%"
+        alignItems: "center"
         // marginTop: heightPercentageToDP('20')
     },
     // width: (width * .9),

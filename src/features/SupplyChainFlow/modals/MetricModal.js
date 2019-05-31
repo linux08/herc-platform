@@ -61,14 +61,15 @@ class MetricModal extends Component {
                 isVisible={visibility}
                 onRequestClose={() => { this.props.ShowMetricModal() }}
                 onBackButtonPress={ ()=> {this.props.ShowMetricModal()} }
+                onBackdropPress={()=> {this.props.ShowMetricModal()}}
             >
 
                 <View style={styles.bodyContainer}>
-                    <Text style={localStyles.editLabel}>{this.props.assetName} Metrics</Text>
-                    <Text onPress={() => this.props.ShowMetricModal()}  style={localStyles.editLabel}>Close Modal</Text>
-                    <TouchableHighlight onPress={this.props.clearMetrics} style={localStyles.editField}>
+                    <Text style={localStyles.editLabel}>{this.props.assetName} Data Points</Text>
+                    <Text onPress={() => this.props.ShowMetricModal()}  style={localStyles.editLabel}>Close Window</Text>
+                    {/* <TouchableHighlight onPress={this.props.clearMetrics} style={localStyles.editField}>
                         <Text style={localStyles.editLabel}>Clear Metrics</Text>
-                    </TouchableHighlight>
+                    </TouchableHighlight> */}
 
                     <ScrollView contentContainerStyle={localStyles.scrollView}>
                         {this.renderMetrics(this.props.metrics)}
@@ -110,8 +111,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(MetricModal);
 const localStyles = StyleSheet.create({
   scrollView: {
       width: widthPercentageToDP('80'),
-      justifyContent: 'center',
-      marginVertical: 1
+      justifyContent:"flex-start",
+      marginTop:"5%",
+      height:"100%"
     //   height: heightPercentageToDP('60')
   },
     editField: {
@@ -132,11 +134,12 @@ const localStyles = StyleSheet.create({
 
     modalTitle: {
         height: 50,
-        fontSize: 30,
+        fontSize: heightPercentageToDP("5%"),
         alignSelf: "center",
         fontWeight: "bold",
         color: ColorConstants.MainBlue,
-        textAlign: "center"
+        textAlign: "center",
+        // color: "red"
     },
     editLabel: {
         fontSize: 21,
