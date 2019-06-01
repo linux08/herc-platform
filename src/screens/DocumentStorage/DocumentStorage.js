@@ -26,14 +26,14 @@ import {
 } from "react-native-document-picker";
 var RNFS = require("react-native-fs");
 import QRCode from "react-qr-code";
-import styles from "../../assets/styles";
+import styles from "../../../src/assets/styles";
 import { RNCamera } from "react-native-camera";
 import axios from "axios";
 import { WEB_SERVER_API_SHORTEN_URL } from "../../components/settings";
 import store from "../../store";
 import BigNumber from "bignumber.js";
 // import { addDocStorage, sendTrans } from "../../actions/AssetActions";
-import { TOKEN_ADDRESS } from "../../components/settings";
+import { TOKEN_ADDRESS, WEB_SERVER_API_UPLOAD_DOCUMENT } from "../../components/settings";
 import { captureRef } from "react-native-view-shot";
 
 console.disableYellowBox = true;
@@ -53,75 +53,75 @@ class DocumentStorage extends React.Component {
     showLoader: true
   };
 
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state;
-    let headerStyles = StyleSheet.create({
-      header__container: {
-        display: "flex",
-        height: 80,
-        alignSelf: "center",
-        flex: 1,
-        alignContent: "center",
-        alignItems: "center",
-        marginTop: 40,
-        paddingBottom: 20
-      },
-      header__container__centeredBox: {
-        height: "100%",
-        alignItems: "center",
-        flexDirection: "row"
-      },
-      header__text__box: {
-        height: "100%",
-        marginBottom: 5,
-        marginLeft: 12
-      },
-      header__image__box: {
-        height: "100%",
-        borderRadius: 100
-      },
-      assetHeaderLogo: {
-        height: 35,
-        width: 35,
-        borderRadius: 50
-      },
-      headerText: {
-        fontFamily: "dinPro",
-        fontSize: 26,
-        alignSelf: "center",
-        fontWeight: "bold",
-        color: "black",
-        textAlign: "center",
-        marginTop: 2
-      }
-    });
+  // static navigationOptions = ({ navigation }) => {
+  //   const { params } = navigation.state;
+  //   let headerStyles = StyleSheet.create({
+  //     header__container: {
+  //       display: "flex",
+  //       height: 80,
+  //       alignSelf: "center",
+  //       flex: 1,
+  //       alignContent: "center",
+  //       alignItems: "center",
+  //       marginTop: 40,
+  //       paddingBottom: 20
+  //     },
+  //     header__container__centeredBox: {
+  //       height: "100%",
+  //       alignItems: "center",
+  //       flexDirection: "row"
+  //     },
+  //     header__text__box: {
+  //       height: "100%",
+  //       marginBottom: 5,
+  //       marginLeft: 12
+  //     },
+  //     header__image__box: {
+  //       height: "100%",
+  //       borderRadius: 100
+  //     },
+  //     assetHeaderLogo: {
+  //       height: 35,
+  //       width: 35,
+  //       borderRadius: 50
+  //     },
+  //     headerText: {
+  //       fontFamily: "dinPro",
+  //       fontSize: 26,
+  //       alignSelf: "center",
+  //       fontWeight: "bold",
+  //       color: "black",
+  //       textAlign: "center",
+  //       marginTop: 2
+  //     }
+  //   });
 
-    return {
-      headerTitle: (
-        <View style={headerStyles.header__container}>
-          <TouchableHighlight
-            style={{ justifyContent: "center" }}
-            onPress={() => navigation.navigate("MenuOptions")}
-          >
-            <View style={headerStyles.header__container__centeredBox}>
-              <View style={headerStyles.header__image__box} />
-              <View style={headerStyles.header__text__box}>
-                <Text style={headerStyles.headerText}>Document Storage</Text>
-              </View>
-            </View>
-          </TouchableHighlight>
-        </View>
-      ),
-      headerTitleStyle: {
-        height: 50,
-        width: 200,
-        alignSelf: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-        marginLeft: 20
-      }
-    };
-  };
+  //   return {
+  //     headerTitle: (
+  //       <View style={headerStyles.header__container}>
+  //         <TouchableHighlight
+  //           style={{ justifyContent: "center" }}
+  //           onPress={() => navigation.navigate("MenuOptions")}
+  //         >
+  //           <View style={headerStyles.header__container__centeredBox}>
+  //             <View style={headerStyles.header__image__box} />
+  //             <View style={headerStyles.header__text__box}>
+  //               <Text style={headerStyles.headerText}>Document Storage</Text>
+  //             </View>
+  //           </View>
+  //         </TouchableHighlight>
+  //       </View>
+  //     ),
+  //     headerTitleStyle: {
+  //       height: 50,
+  //       width: 200,
+  //       alignSelf: "center",
+  //       justifyContent: "center",
+  //       flexDirection: "row",
+  //       marginLeft: 20
+  //     }
+  //   };
+  // };
 
   componentDidMount() {
     this._requestExternalStoragePermission();
@@ -152,17 +152,18 @@ class DocumentStorage extends React.Component {
         if (res) {
           if (error) Alert.alert("Something Went Wrong! Error: " + error);
           // Android
-          RNFS.readFile(res.uri, "base64").then(contents => {
-            this.setState({
-              document: {
-                uri: res.uri,
-                name: res.fileName,
-                size: res.fileSize,
-                type: res.type,
-                content: contents
-              }
+          RNFS.readFile(res.uri, "base64")
+            .then(contents => {
+              this.setState({
+                document: {
+                  uri: res.uri,
+                  name: res.fileName,
+                  size: res.fileSize,
+                  type: res.type,
+                  content: contents
+                },
+              }, () => console.log(this.state, "after selected"));
             });
-          });
         }
       }
     );
@@ -191,20 +192,75 @@ class DocumentStorage extends React.Component {
   };
 
   _uploadFile = async uri => {
-    let docName = this.state.document.name;
-    let storageRef = firebase.storage().ref();
-    let testTextRef = storageRef.child(docName);
-    let testTextDocRef = storageRef.child("documents/" + docName);
+    console.log(this.state, "this is the doc storage state ***")
+    // let docName = this.state.document.name;
+    // let storageRef = firebase.storage().ref();
+    // let testTextRef = storageRef.child(docName);
+    // let testTextDocRef = storageRef.child("documents/" + docName);
     var bindedThis = this;
     //****this is where the file needs to be converted and push to storage */
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const snapshot = await testTextDocRef
-      .put(blob)
-      .then(snapshot => {
-        return snapshot.ref.getDownloadURL();
+
+    /*req.body:{{
+      uri: "", 
+      name: "", 
+      size: "", 
+      type: "", 
+      content: "base 64 string here" } }
+    */
+
+    /*
+    req.body: {
+      key: 'documents',
+      data: {
+        content: "base 64 string here",
+        name: "",
+        type: "",
+        name: ""
+      }
+    }
+    */
+
+    // let dataObject = this.state.document;
+
+    let contentTypeName = {
+      content: encodeURIComponent(this.state.document.content),
+      type: this.state.type,
+      name: this.state.name
+    };
+
+
+    var dataObject = Object.assign(
+      {},
+      { key: "documents" },
+      { data: contentTypeName }
+    );
+
+    console.log(dataObject, "data object ***")
+
+    axios
+      .post(
+        WEB_SERVER_API_UPLOAD_DOCUMENT,
+        JSON.stringify(dataObject)
+      )
+      .then(response => {
+        console.log(response, "this is the response ***");
+        return "https://ipfs.io/ipfs/" + response.data.hash;
       })
+      // .catch(error => {
+      //   console.log(error);
+      // })
+
+      // const response = await fetch(uri);
+      // const blob = await response.blob();
+      // const snapshot = await testTextDocRef
+      //   .put(blob)
+      //   .then(snapshot => {
+      //     return snapshot.ref.getDownloadURL();
+      //   })
+
+      // below is where we get shortened url
       .then(downloadURL => {
+        console.log(downloadURL, "download URL *** ")
         axios
           .post(WEB_SERVER_API_SHORTEN_URL, {
             longURL: downloadURL
@@ -264,6 +320,7 @@ class DocumentStorage extends React.Component {
   };
 
   _updateHistory = () => {
+    console.log(this.state, "update history has ran ***")
     //after a successful document upload to Firebase Storage, this function updates the history for each user. This information is stored on Firebase DB
     let filename = this.state.document.name;
     let userID = this.props.account.username;
@@ -382,16 +439,16 @@ class DocumentStorage extends React.Component {
 
       Alert.alert(
         "Doc Fee: " +
-          this._getDocPrice().toString() +
-          " HERC \nBurn Amount: " +
-          this._getBurnPrice().toString() +
-          " HERC",
+        this._getDocPrice().toString() +
+        " HERC \nBurn Amount: " +
+        this._getBurnPrice().toString() +
+        " HERC",
         "Total: " +
-          total.toFixed(6) +
-          " HERC" +
-          "\nETH Gas Cost(est.): " +
-          "0.000223 ETH" +
-          "\nDo you authorize this payment?",
+        total.toFixed(6) +
+        " HERC" +
+        "\nETH Gas Cost(est.): " +
+        "0.000223 ETH" +
+        "\nDo you authorize this payment?",
         [
           {
             text: "No",
@@ -492,7 +549,7 @@ class DocumentStorage extends React.Component {
         );
 
         if (burnTransaction.txid && dataFeeTransaction.txid) {
-          this._sendTrans();
+          this._executeUpload();
         }
       } catch (e) {
         let tempBalance = new BigNumber(this.props.watchBalance["ETH"]);
@@ -506,10 +563,6 @@ class DocumentStorage extends React.Component {
         );
       }
     }
-  }
-
-  _sendTrans() {
-    this._executeUpload();
   }
 
   _getDocPrice = () => {
@@ -559,48 +612,16 @@ class DocumentStorage extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1, backgroundColor: "#091141" }}>
         <View style={[styles.containerCenter, { flex: 1 }]}>
-          <TouchableHighlight
-            style={{ marginTop: 10 }}
-            onPress={() => this._pickDocument()}
-          >
-            <Text
-              style={{
-                color: "white",
-                backgroundColor: "#4c99ed",
-                width: 200,
-                lineHeight: 30,
-                height: 30,
-                borderRadius: 5,
-                textAlign: "center",
-                justifyContent: "center",
-                alignContent: "center"
-              }}
+          <View style={{ height: "95%" }}>
+            <TouchableHighlight
+              style={{ marginTop: 10 }}
+              onPress={() => this._pickDocument()}
             >
-              Select Document
-            </Text>
-          </TouchableHighlight>
-          {this.state.document.name ? (
-            <Text style={{ color: "silver", flexWrap: "wrap" }}>
-              {" "}
-              file name: {this.state.document.name}{" "}
-            </Text>
-          ) : null}
-          {this.state.document.size ? (
-            <View>
-              <Text style={{ color: "silver", flexWrap: "wrap" }}>
-                {" "}
-                file size: {this.state.document.size} kB
-              </Text>
-            </View>
-          ) : null}
-          {this.state.document.name ? (
-            <TouchableHighlight onPress={() => this._onPressSubmit()}>
               <Text
                 style={{
                   color: "white",
-                  marginTop: 10,
                   backgroundColor: "#4c99ed",
                   width: 200,
                   lineHeight: 30,
@@ -608,144 +629,33 @@ class DocumentStorage extends React.Component {
                   borderRadius: 5,
                   textAlign: "center",
                   justifyContent: "center",
-                  alignContent: "center"
+                  alignContent: "center",
+                  alignSelf: "center"
                 }}
               >
-                Upload
-              </Text>
+                Select Document
+            </Text>
             </TouchableHighlight>
-          ) : null}
-
-          <View style={{ alignContent: "center", alignItems: "center" }}>
-            <View
-              style={{
-                padding: 10,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignContent: "center",
-                alignItems: "center"
-              }}
-              collapsable={false}
-            >
-              {this.state.document.downloadURL ? (
-                <View
-                  style={{
-                    width: 200,
-                    alignContent: "center",
-                    justifyContent: "center",
-                    backgroundColor: "white",
-                    borderWidth: 10,
-                    borderColor: "white"
-                  }}
-                  ref={view => {
-                    this._container = view;
-                  }}
-                >
-                  {this._activityIdicatorOrQRCode()}
-                  <Text
-                    style={{
-                      color: "black",
-                      flexWrap: "wrap",
-                      textAlign: "center"
-                    }}
-                  >
-                    {" "}
-                    {this.state.document.name}{" "}
-                  </Text>
-                </View>
-              ) : null}
-
-              {this.state.document.downloadURL ? (
-                <Text
-                  style={{
-                    color: "silver",
-                    flexWrap: "wrap",
-                    textAlign: "center"
-                  }}
-                >
-                  {" "}
-                  {this.state.downloadURL}{" "}
-                </Text>
-              ) : null}
-            </View>
-            {this.state.document.downloadURL ? (
+            {this.state.document.name ? (
+              <Text style={{ color: "silver", flexWrap: "wrap", alignSelf: "center" }}>
+                {" "}
+                file name: {this.state.document.name}{" "}
+              </Text>
+            ) : null}
+            {this.state.document.size ? (
               <View>
-                <TouchableHighlight onPress={this._saveToCameraRollAsync}>
-                  <Text
-                    style={{
-                      color: "white",
-                      marginTop: 10,
-                      backgroundColor: "#4c99ed",
-                      width: 200,
-                      lineHeight: 30,
-                      height: 30,
-                      borderRadius: 5,
-                      textAlign: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }}
-                  >
-                    Save QR
-                  </Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  onPress={() => {
-                    this._writeToClipboard(this.state.document.downloadURL);
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      marginTop: 10,
-                      backgroundColor: "#4c99ed",
-                      width: 200,
-                      lineHeight: 30,
-                      height: 30,
-                      borderRadius: 5,
-                      textAlign: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }}
-                  >
-                    Copy
-                  </Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  onPress={() => {
-                    this._share();
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      marginTop: 10,
-                      backgroundColor: "#4c99ed",
-                      width: 200,
-                      lineHeight: 30,
-                      height: 30,
-                      borderRadius: 5,
-                      textAlign: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }}
-                  >
-                    Share
-                  </Text>
-                </TouchableHighlight>
+                <Text style={{ color: "silver", flexWrap: "wrap", alignSelf: "center" }}>
+                  {" "}
+                  file size: {this.state.document.size} kB
+              </Text>
               </View>
             ) : null}
-          </View>
-
-          {this.state.uploadDoc === true ? null : (
-            <View style={{ alignContent: "center" }}>
-              <Text style={{ color: "white", textAlign: "center" }}>OR</Text>
-              <TouchableHighlight
-                style={{ marginTop: 10, marginBottom: 10 }}
-                onPress={() => this._takePic()}
-              >
+            {this.state.document.name ? (
+              <TouchableHighlight onPress={() => this._onPressSubmit()}>
                 <Text
                   style={{
                     color: "white",
+                    marginTop: 10,
                     backgroundColor: "#4c99ed",
                     width: 200,
                     lineHeight: 30,
@@ -753,51 +663,198 @@ class DocumentStorage extends React.Component {
                     borderRadius: 5,
                     textAlign: "center",
                     justifyContent: "center",
-                    alignContent: "center"
+                    alignContent: "center",
+                    alignSelf: "center"
                   }}
                 >
-                  Scan A QR
-                </Text>
+                  Upload
+              </Text>
               </TouchableHighlight>
-            </View>
-          )}
+            ) : null}
 
-          {this.state.uploadDoc === true ? null : (
-            <ScrollView style={{ height: "50%" }}>
-              <View style={{ marginTop: "20%", alignItems: "center" }}>
-                {this.state.uploadHistory ? (
+            <View style={{ alignContent: "center", alignItems: "center" }}>
+              <View
+                style={{
+                  padding: 10,
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center"
+                }}
+                collapsable={false}
+              >
+                {this.state.document.downloadURL ? (
+                  <View
+                    style={{
+                      width: 200,
+                      alignContent: "center",
+                      justifyContent: "center",
+                      backgroundColor: "white",
+                      borderWidth: 10,
+                      borderColor: "white"
+                    }}
+                    ref={view => {
+                      this._container = view;
+                    }}
+                  >
+                    {this._activityIdicatorOrQRCode()}
+                    <Text
+                      style={{
+                        color: "black",
+                        flexWrap: "wrap",
+                        textAlign: "center"
+                      }}
+                    >
+                      {" "}
+                      {this.state.document.name}{" "}
+                    </Text>
+                  </View>
+                ) : null}
+
+                {this.state.document.downloadURL ? (
+                  <Text
+                    style={{
+                      color: "silver",
+                      flexWrap: "wrap",
+                      textAlign: "center"
+                    }}
+                  >
+                    {" "}
+                    {this.state.downloadURL}{" "}
+                  </Text>
+                ) : null}
+              </View>
+              {this.state.document.downloadURL ? (
+                <View>
+                  <TouchableHighlight onPress={this._saveToCameraRollAsync}>
+                    <Text
+                      style={{
+                        color: "white",
+                        marginTop: 10,
+                        backgroundColor: "#4c99ed",
+                        width: 200,
+                        lineHeight: 30,
+                        height: 30,
+                        borderRadius: 5,
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      Save QR
+                  </Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={() => {
+                      this._writeToClipboard(this.state.document.downloadURL);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        marginTop: 10,
+                        backgroundColor: "#4c99ed",
+                        width: 200,
+                        lineHeight: 30,
+                        height: 30,
+                        borderRadius: 5,
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      Copy
+                  </Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={() => {
+                      this._share();
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        marginTop: 10,
+                        backgroundColor: "#4c99ed",
+                        width: 200,
+                        lineHeight: 30,
+                        height: 30,
+                        borderRadius: 5,
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      Share
+                  </Text>
+                  </TouchableHighlight>
+                </View>
+              ) : null}
+            </View>
+
+            {this.state.uploadDoc === true ? null : (
+              <View style={{ alignContent: "center" }}>
+                <Text style={{ color: "white", textAlign: "center" }}>OR</Text>
+                <TouchableHighlight
+                  style={{ marginTop: 10, marginBottom: 10 }}
+                  onPress={() => this._takePic()}
+                >
                   <Text
                     style={{
                       color: "white",
-                      fontSize: 18,
+                      backgroundColor: "#4c99ed",
+                      width: 200,
+                      lineHeight: 30,
+                      height: 30,
+                      borderRadius: 5,
                       textAlign: "center",
-                      marginVertical: 10
+                      justifyContent: "center",
+                      alignContent: "center",
+                      alignSelf: "center"
                     }}
                   >
-                    HISTORY
+                    Scan A QR
+                </Text>
+                </TouchableHighlight>
+                {this.state.uploadDoc === true ? null : (
+                  <ScrollView style={{ height: "100%" }}>
+                    <View style={{ marginTop: "10%", alignItems: "center" }}>
+                      {this.state.uploadHistory ? (
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            textAlign: "center",
+                            marginVertical: 10
+                          }}
+                        >
+                          HISTORY
                   </Text>
-                ) : null}
-                {this._showUploadHistory()}
+                      ) : null}
+                      {this._showUploadHistory()}
+                    </View>
+                  </ScrollView>
+                )}
               </View>
-            </ScrollView>
-          )}
+            )}
+          </View>
           <View
             style={{
-              flexDirection: "column",
-              flex: 1,
+              flexDirection: "row",
+              height: "5%",
               margin: 2,
               width: "100%",
               justifyContent: "flex-end",
-              backgroundColor: "#091141"
+              backgroundColor: "#091141",
             }}
           >
             <Image
               source={hercLogo}
               style={{
-                resizeMode: "center",
-                height: 50,
-                width: "50%",
-                alignSelf: "center"
+                resizeMode: "contain",
+                height: "100%",
+                width: "100%",
+                alignSelf: "flex-end"
               }}
             />
           </View>
@@ -809,10 +866,10 @@ class DocumentStorage extends React.Component {
 
 const localStyles = StyleSheet.create({
   container: {
-    borderColor: "red",
-    borderWidth: 3,
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    backgroundColor: "#091141",
+    justifyContent: "center"
   },
   preview: {
     flex: 1
@@ -939,9 +996,9 @@ const localStyles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   documentStorage: state.DocumentStorage,
-  wallet: state.WalletActReducers.wallet,
-  watchBalance: state.WalletActReducers.watchBalance,
-  account: state.WalletActReducers.account
+  wallet: state.WalletReducers.wallet,
+  watchBalance: state.WalletReducers.watchBalance,
+  account: state.AccountReducers.account
 });
 
 const mapDispatchToProps = dispatch => ({
