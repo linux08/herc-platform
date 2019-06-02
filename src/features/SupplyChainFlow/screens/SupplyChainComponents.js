@@ -89,7 +89,7 @@ export function CameraTransactionComponent(props) {
                 </View>
 
                 :
-                <Text style={localStyles.textNormal}>"Add Photo"</Text>
+                <Text style={localStyles.textNormal}>Add Photo</Text>
             }
 
         </View>
@@ -154,7 +154,7 @@ export function DocTransactionComponent(props) {
                     </View>
                 </View>
                 :
-                <Text style={localStyles.textNormal}>"Add Documents"</Text>
+                <Text style={localStyles.textNormal}>Add Documents</Text>
             }
 
         </View>
@@ -202,7 +202,7 @@ export function MetricTransactionComponent(props) {
                     </ScrollView>
                 </View>
                 :
-                <Text style={localStyles.textNormal}>Add Metrics</Text>
+                <Text style={localStyles.textNormal}>Add Data Point Values</Text>
             }
         </View>
 
@@ -333,6 +333,4 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-
-
 })

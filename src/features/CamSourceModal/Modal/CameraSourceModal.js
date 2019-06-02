@@ -223,7 +223,7 @@ const modalStyles = StyleSheet.create({
         width: '30%',
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         backgroundColor: ColorConstants.MainGray
     },
     camSourceIcon: {

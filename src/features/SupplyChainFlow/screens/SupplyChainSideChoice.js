@@ -184,10 +184,9 @@ const localStyles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: ColorConstants.MainGray,
     // backgroundColor: 'blue',
-    padding: 10,
     // paddingTop: 30,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     width: "100%",
     height: heightPercentageToDP("30")
   },
