@@ -225,6 +225,10 @@ class SupplyChainTX extends Component {
                 />
                 <View style={styles.bodyContainer}>
                     <TransInfoCard header={this.props.trans.header} />
+                    <Text style={{fontSize: 12}}>
+                        Enter the data and related pictures for your Supply Chain record. 
+                    </Text>
+                    <Text style={{fontSize: 10}}> Note: Once submitted, this data is not editable and will remain on the Blockchain. </Text>
 
                     <View style={localStyles.transactionComponentListContainer}>
 
@@ -379,7 +383,7 @@ const localStyles = StyleSheet.create({
     },
     transactionComponentListContainer: {
         width: '100%',
-        height: heightPercentageToDP('70'),
+        height: heightPercentageToDP('60'),
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: ColorConstants.MainGray,
