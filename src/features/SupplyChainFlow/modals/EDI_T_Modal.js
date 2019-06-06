@@ -35,6 +35,7 @@ class EDI_T_Sets_Modal extends Component {
                 isVisible={this.props.visible}
                 onRequestClose={() => { console.log("modal closed") }}
                 onBackdropPress={() => this.props.ShowEditModal()}
+                onBackButtonPress={ ()=> this.props.ShowEditModal()}
             >
                 <View style={styles.bodyContainer}>
                     <Text onPress={() => this.props.ShowEditModal()} style={localStyles.editLabel}>Close EDI-T Sets</Text>

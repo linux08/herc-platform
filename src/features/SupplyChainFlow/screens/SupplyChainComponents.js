@@ -65,15 +65,16 @@ export function CameraTransactionComponent(props) {
                         source={{ uri: props.image.data }} />
                 </TouchableHighlight>
                 :
+                <TouchableHighlight onPress={props.onPress}>
+                    <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
+                        <Icon
+                            style={localStyles.componentIcon}
+                            name='camera'
+                        >
+                        </Icon>
+                    </View>
+                </TouchableHighlight>
 
-                <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
-                    <Icon
-                        style={localStyles.componentIcon}
-                        name='camera'
-                        onPress={props.onPress}
-                    >
-                    </Icon>
-                </View>
             }
             {props.image.name ?
                 <View style={localStyles.transComponentInfo}>
@@ -105,14 +106,17 @@ export function EdiTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='pencil'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='pencil'
+                    // onPress={props.onPress}
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
+
             {props.edi.name ?
                 <View style={localStyles.transComponentInfo}>
                     <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
@@ -133,14 +137,16 @@ export function DocTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='file-text'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='file-text'
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
+
             {props.doc.name ?
                 <View style={localStyles.transComponentInfo}>
                     <View>
@@ -187,14 +193,16 @@ export function MetricTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='clipboard'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='clipboard'
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
+
             {Object.keys(metrics).length > 0 ?
                 <View style={localStyles.transComponentInfo}>
                     <ScrollView>
@@ -291,7 +299,7 @@ const localStyles = StyleSheet.create({
 
     transactionComponentContainer: {
         // 20% = 159.42857142857142 on Galaxy S9
-        height: heightPercentageToDP('11.5'),
+        height: heightPercentageToDP('10.0'),
         width: '100%',
         backgroundColor: ColorConstants.ElementBG,
         borderRadius: 6,

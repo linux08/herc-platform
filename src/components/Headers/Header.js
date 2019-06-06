@@ -16,31 +16,32 @@ import {
     ClearImages,
     ClearDocuments,
     ClearEdiT,
-    ClearMetrics } from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
+    ClearMetrics
+} from '../../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
 
 const bgImage = require("../../assets/main-bg.png")
 
 
 
- class Header extends Component {
+class Header extends Component {
     constructor(props) {
         super(props);
         console.log(props, this.state, "header stuff")
     }
     _goToWallet = () => {
-      /* ********************************************
-      This used to be a _goBack()
-        let navigation = this.props.navigation;
-        // let goBackTo = navigation.params.goBackTo
-        console.log(navigation, "trying to go back")
-        navigation.goBack();
-        ******************************************** */
+        /* ********************************************
+        This used to be a _goBack()
+          let navigation = this.props.navigation;
+          // let goBackTo = navigation.params.goBackTo
+          console.log(navigation, "trying to go back")
+          navigation.goBack();
+          ******************************************** */
         this.props.navigation.navigate('WalletFlow');
         this._clearTransactionData();
     }
     _toggleSideMenu = () => {
-       console.log('ToggleSide');
+        console.log('ToggleSide');
 
         this.props.navigation.toggleDrawer();
     }
@@ -62,19 +63,19 @@ const bgImage = require("../../assets/main-bg.png")
                 <ImageBackground source={bgImage} style={styles.bgImage}>
                     <View style={styles.header__container}>
                         <View style={styles.sideHeaders}>
-                            <WalletIcon
-                                onPress={() => this._goToWallet()}
+                            <Icon onPress={this._toggleSideMenu}
                                 style={[styles.iconButton, { marginLeft: 20 }]}
-                                name='account-balance-wallet'
+                                name='gear'
                                 color={ColorConstants.MainGold}
                                 size={20}
                             />
                         </View>
                         <Text style={styles.headerText}>{this.props.headerTitle}</Text>
                         <View style={styles.sideHeaders}>
-                            <Icon onPress={this._toggleSideMenu}
+                            <WalletIcon
+                                onPress={() => this._goToWallet()}
                                 style={[styles.iconButton, { marginRight: 20 }]}
-                                name='gear'
+                                name='account-balance-wallet'
                                 color={ColorConstants.MainGold}
                                 size={20}
                             />
