@@ -76,7 +76,7 @@ class Login extends Component {
           })
       } else {
         account.createCurrencyWallet('wallet:ethereum', {
-          name: 'Herc Wallet',
+          name: 'HERC Wallet',
           fiatCurrencyCode: 'iso:USD'
         }).then(async wallet => {
           wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
