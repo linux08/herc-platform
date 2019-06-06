@@ -52,6 +52,44 @@ class Login extends Component {
 
 
   onLogin = async (error = null, account) => {
+    if (!this.state.walletId) {
+      // Check if there is a wallet, if not create it
+      let walletInfo = account.getFirstWalletInfo('wallet:ethereum')
+      if (walletInfo) {
+        this.setState({walletId: walletInfo.id})
+        account.waitForCurrencyWallet(walletInfo.id)
+          .then(async wallet => {
+            wallet.watch('balances', (newBalances) =>
+            {
+              console.log('NewBalances in login.js: jm', newBalances)
+              this.props.UpdateBalances(newBalances)
+            }
+          );
+            const tokens = await wallet.getEnabledTokens()
+
+            this.props.GetEthAddress(wallet.keys.ethereumAddress)
+            this.props.GetWallet(wallet)
+            this.props.CheckWalletMeetsMinimumRequirement(wallet)
+            wallet.addCustomToken(tokenHerc)
+            wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
+            return wallet
+          })
+      } else {
+        account.createCurrencyWallet('wallet:ethereum', {
+          name: 'Herc Wallet',
+          fiatCurrencyCode: 'iso:USD'
+        }).then(async wallet => {
+          wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
+          this.props.GetEthAddress(wallet.keys.ethereumAddress)
+          this.props.GetWallet(wallet)
+          this.props.CheckWalletMeetsMinimumRequirement(wallet)
+          wallet.addCustomToken(tokenHerc)
+          wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
+          this.setState({walletId: wallet.id})
+        })
+      }
+    }
+
     let tokenHerc = {
       currencyName: 'Hercules',
       contractAddress: '0x6251583e7D997DF3604bc73B9779196e94A090Ce',
@@ -84,15 +122,21 @@ class Login extends Component {
       )
 
       promiseArray.push(axios.get(WEB_SERVER_API_LATEST_APK)
-        .then(response => { return response })
+        .then(response => {
+          return response
+        })
         .catch(error => { console.log(error) })
       )
+
       console.log('jm keys?', account.allKeys[1].keys.ethereumAddress);
+
       promiseArray.push(axios.post(WEB_SERVER_API_USERS, {
         username: username,
         address: account.allKeys[1].keys.ethereumAddress
       })
-        .then(response => { return response })
+        .then(response => {
+          return response
+      })
         .catch(error => { console.log(error) })
       )
 
@@ -103,11 +147,10 @@ class Login extends Component {
 
           this.props.GetHeaders();
 
-          if (results[2].data.response !== true){
+          if (results[2].data.response !== true) {
             await account.dataStore.setItem("one.herc", "hercUserID", results[2].data.id);
             this.props.UserFirstTimeLogin('true')
           }
-
           try {
             await AsyncStorage.setItem('@HercFirstTimeUser', 'true')
          } catch (e) {
@@ -130,44 +173,6 @@ class Login extends Component {
         .catch(err => {
           console.log(err)
         })
-
-    }
-    if (!this.state.walletId) {
-      // Check if there is a wallet, if not create it
-      let walletInfo = account.getFirstWalletInfo('wallet:ethereum')
-      if (walletInfo) {
-        this.setState({walletId: walletInfo.id})
-        account.waitForCurrencyWallet(walletInfo.id)
-          .then(async wallet => {
-            wallet.watch('balances', (newBalances) =>
-            {
-              console.log('NewBalances in login.js: jm', newBalances)
-              this.props.UpdateBalances(newBalances)
-            }
-          );
-            const tokens = await wallet.getEnabledTokens()
-
-            this.props.GetEthAddress(wallet.keys.ethereumAddress)
-            this.props.GetWallet(wallet)
-            this.props.CheckWalletMeetsMinimumRequirement(wallet)
-            wallet.addCustomToken(tokenHerc)
-            wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
-            return wallet
-          })
-      } else {
-        account.createCurrencyWallet('wallet:ethereum', {
-          name: 'My First Wallet',
-          fiatCurrencyCode: 'iso:USD'
-        }).then(async wallet => {
-          wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
-          this.props.GetEthAddress(wallet.keys.ethereumAddress)
-          this.props.GetWallet(wallet)
-          this.props.CheckWalletMeetsMinimumRequirement(wallet)
-          wallet.addCustomToken(tokenHerc)
-          wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
-          this.setState({walletId: wallet.id})
-        })
-      }
     }
   }
 
