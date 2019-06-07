@@ -32,7 +32,7 @@ type State = {
   focusOn: string
 }
 export default class PinLogInScreenComponent extends Component<Props, State> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       pin: '',
@@ -41,7 +41,7 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
       focusOn: 'pin'
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.username) {
       this.props.launchUserLoginWithTouchId({ username: this.props.username })
     }
@@ -73,7 +73,7 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
     }
     return null
   }
-  render () {
+  render() {
     const { PinLoginScreenStyle } = this.props.styles
     return (
       <View style={PinLoginScreenStyle.container}>
@@ -86,7 +86,7 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
     )
   }
 
-  renderOverImage () {
+  renderOverImage() {
     const { PinLoginScreenStyle } = this.props.styles
     if (this.props.loginSuccess) {
       return null
@@ -105,10 +105,11 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
     )
   }
 
-  renderBottomHalf (style: Object) {
+  renderBottomHalf(style: Object) {
     if (this.state.focusOn === 'pin') {
       return (
         <View style={style.innerView}>
+          <Text style={{color: "white"}}>Please Enter Pin</Text>
           <Button
             onPress={this.showDrop.bind(this)}
             label={this.props.username}
@@ -120,14 +121,14 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
           <FourDigitInputConnector style={style.fourPin} />
           <Button
             onPress={this.exitPin.bind(this)}
-            label={s.strings.exit_pin}
+            label={"Return to Login"}
             downStyle={style.exitButton.downStyle}
             downTextStyle={style.exitButton.downTextStyle}
             upStyle={style.exitButton.upStyle}
             upTextStyle={style.exitButton.upTextStyle}
           />
           <View>
-            <Text style={{color: 'white'}}>Secured By</Text>
+            <Text style={{ color: 'white' }}>Secured By</Text>
             <Image source={Assets.EDGE_LOGO_BIG} />
           </View>
         </View>
@@ -143,11 +144,11 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
       </View>
     )
   }
-  exitPin () {
+  exitPin() {
     this.props.gotoLoginPage()
   }
 
-  renderItems (item: Object) {
+  renderItems(item: Object) {
     const { PinLoginScreenStyle } = this.props.styles
     return (
       <UserListItem
@@ -158,21 +159,21 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
       />
     )
   }
-  deleteUser (arg: string) {
+  deleteUser(arg: string) {
     this.setState({
       focusOn: 'pin',
       username: arg
     })
     this.props.launchDeleteModal()
   }
-  selectUser (arg: string) {
+  selectUser(arg: string) {
     this.props.launchUserLoginWithTouchId({ username: arg })
     this.props.changeUser(arg)
     this.setState({
       focusOn: 'pin'
     })
   }
-  showDrop () {
+  showDrop() {
     if (this.props.usersWithPin.length < 2) {
       return
     }
@@ -180,7 +181,7 @@ export default class PinLogInScreenComponent extends Component<Props, State> {
       focusOn: 'List'
     })
   }
-  hideDrop () {
+  hideDrop() {
     console.log('fooobarsas')
     this.setState({
       focusOn: 'pin'
