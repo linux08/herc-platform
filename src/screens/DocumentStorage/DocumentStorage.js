@@ -34,7 +34,7 @@ import store from "../../store";
 import BigNumber from "bignumber.js";
 // import { addDocStorage, sendTrans } from "../../actions/AssetActions";
 import { TOKEN_ADDRESS, WEB_SERVER_API_UPLOAD_DOCUMENT } from "../../components/settings";
-// import { captureRef } from "react-native-view-shot";
+import { captureRef } from "react-native-view-shot";
 
 console.disableYellowBox = true;
 
