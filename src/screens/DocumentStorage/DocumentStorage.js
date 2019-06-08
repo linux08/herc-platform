@@ -351,7 +351,7 @@ class DocumentStorage extends React.Component {
     const uploadHist = this.state.uploadHistory;
     if (uploadHist) {
       let dataObjects = Object.keys(this.state.uploadHistory);
-      return dataObjects.map((curr, ind) => {
+      return dataObjects.slice(0).reverse().map((curr, ind) => {
         const dataObjectKeys = this.state.uploadHistory;
         const date = dataObjectKeys[curr].date;
         const filename = dataObjectKeys[curr].filename;
@@ -650,7 +650,7 @@ class DocumentStorage extends React.Component {
               </Text>
               </View>
             ) : null}
-            {this.state.document.name ? (
+            {this.state.document.name && !this.state.document.downloadURL ? (
               <TouchableHighlight onPress={() => this._onPressSubmit()}>
                 <Text
                   style={{
@@ -817,8 +817,8 @@ class DocumentStorage extends React.Component {
                 </Text>
                 </TouchableHighlight>
                 {this.state.uploadDoc === true ? null : (
-                  <ScrollView style={{ height: "100%" }}>
-                    <View style={{ marginTop: "10%", alignItems: "center" }}>
+                  <ScrollView style={{ height: "75%"}}>
+                    <View style={{ marginTop: "5%", alignItems: "center" }}>
                       {this.state.uploadHistory ? (
                         <Text
                           style={{
