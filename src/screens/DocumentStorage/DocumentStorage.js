@@ -29,12 +29,12 @@ import QRCode from "react-qr-code";
 import styles from "../../../src/assets/styles";
 import { RNCamera } from "react-native-camera";
 import axios from "axios";
-import { WEB_SERVER_API_SHORTEN_URL } from "../../components/settings";
+// import { WEB_SERVER_API_SHORTEN_URL } from "../../components/settings";
 import store from "../../store";
 import BigNumber from "bignumber.js";
 // import { addDocStorage, sendTrans } from "../../actions/AssetActions";
-import { TOKEN_ADDRESS, WEB_SERVER_API_UPLOAD_DOCUMENT } from "../../components/settings";
-import { captureRef } from "react-native-view-shot";
+// import { TOKEN_ADDRESS, WEB_SERVER_API_UPLOAD_DOCUMENT } from "../../components/settings";
+// import { captureRef } from "react-native-view-shot";
 
 console.disableYellowBox = true;
 
@@ -239,7 +239,8 @@ class DocumentStorage extends React.Component {
 
     axios
       .post(
-        WEB_SERVER_API_UPLOAD_DOCUMENT,
+        // WEB_SERVER_API_UPLOAD_DOCUMENT,
+        'WEB_SERVER_API_UPLOAD_DOCUMENT',
         JSON.stringify(dataObject)
       )
       .then(response => {
@@ -262,7 +263,8 @@ class DocumentStorage extends React.Component {
       .then(downloadURL => {
         console.log(downloadURL, "download URL *** ")
         axios
-          .post(WEB_SERVER_API_SHORTEN_URL, {
+          // .post(WEB_SERVER_API_SHORTEN_URL, {
+          .post('WEB_SERVER_API_SHORTEN_URL', {
             longURL: downloadURL
           })
           .then(response => {
@@ -510,7 +512,8 @@ class DocumentStorage extends React.Component {
         },
         spendTargets: [
           {
-            publicAddress: TOKEN_ADDRESS,
+            // publicAddress: TOKEN_ADDRESS,
+            publicAddress: 'TOKEN_ADDRESS',
             nativeAmount: "32000000000000"
           }
         ]
@@ -817,7 +820,7 @@ class DocumentStorage extends React.Component {
                 </Text>
                 </TouchableHighlight>
                 {this.state.uploadDoc === true ? null : (
-                  <ScrollView style={{ height: "75%"}}>
+                  <ScrollView style={{ height: "75%" }}>
                     <View style={{ marginTop: "5%", alignItems: "center" }}>
                       {this.state.uploadHistory ? (
                         <Text

@@ -1,14 +1,14 @@
-import {
-  WEB_SERVER_API_IPFS_GET,
-  WEB_SERVER_API_IPFS_ADD,
-  WEB_SERVER_API_FACTOM_CHAIN_ADD,
-  WEB_SERVER_API_FACTOM_ENTRY_ADD,
-  WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
-  WEB_SERVER_API_UPLOAD_DOCUMENT,
-  WEB_SERVER_API_UPLOAD_IMAGE,
-  TOKEN_ADDRESS,
-  DEVELOPERS
-} from "../../../components/settings";
+// import {
+//   WEB_SERVER_API_IPFS_GET,
+//   WEB_SERVER_API_IPFS_ADD,
+//   WEB_SERVER_API_FACTOM_CHAIN_ADD,
+//   WEB_SERVER_API_FACTOM_ENTRY_ADD,
+//   WEB_SERVER_API_STORJ_UPLOAD_IMAGE,
+//   WEB_SERVER_API_UPLOAD_DOCUMENT,
+//   WEB_SERVER_API_UPLOAD_IMAGE,
+//   TOKEN_ADDRESS,
+//   DEVELOPERS
+// } from "../../../components/settings";
 
 const BigNumber = require("bignumber.js");
 import * as Trans from "./TransactionActionNames";
@@ -17,6 +17,9 @@ import store from "../../../store";
 import firebase from "../../../constants/Firebase";
 const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
+
+
+const DEVELOPERS = {};
 
 export function Error(error) {
   return {
@@ -265,7 +268,7 @@ getDynamicHercValue = async () => {
   }
 };
 
-async function getCurrrentGasPrice(){
+async function getCurrrentGasPrice() {
   try {
     let response = await fetch(
       "https://ethgasstation.info/json/ethgasAPI.json"
@@ -282,7 +285,7 @@ async function getCurrrentGasPrice(){
 
 
 
-export function GotDynamicHercValue(hercValue){
+export function GotDynamicHercValue(hercValue) {
   getNetworkFee(hercValue);
   getCurrrentGasPrice();
   return {
@@ -291,7 +294,7 @@ export function GotDynamicHercValue(hercValue){
   };
 };
 
-export function GotCurrentGasPrice(gasPrice){
+export function GotCurrentGasPrice(gasPrice) {
   return {
     type: Trans.Action.GotCurrentGasPrice,
     gasPrice
@@ -324,7 +327,8 @@ export function MakePayment(makePaymentObject) {
         },
         spendTargets: [
           {
-            publicAddress: TOKEN_ADDRESS,
+            // publicAddress: TOKEN_ADDRESS,
+            publicAddress: 'TOKEN_ADDRESS',
             nativeAmount: networkFeePrepped
           }
         ]
@@ -421,7 +425,7 @@ export function SendTransaction() {
     let price = 0;
     if (transObject.data.images.price) {
       console.log("this is the transObject data images price", transObject.data.images.price)
-      price =  new BigNumber(transObject.data.images.price).plus(price).toFixed(18);
+      price = new BigNumber(transObject.data.images.price).plus(price).toFixed(18);
     }
     if (transObject.data.documents.price) {
       console.log("this is the transObject data images price", transObject.data.documents.price)
@@ -480,7 +484,8 @@ export function SendTransaction() {
         console.log("jm check image dataObject", dataObject);
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_UPLOAD_IMAGE, JSON.stringify(dataObject))
+            .post('WEB_SERVER_API_UPLOAD_IMAGE', JSON.stringify(dataObject))
+            // .post(WEB_SERVER_API_UPLOAD_IMAGE, JSON.stringify(dataObject))
             .then(response => {
               console.log("this is the response from web server api upload*****", response)
               return response;
@@ -504,7 +509,8 @@ export function SendTransaction() {
         promiseArray.push(
           axios
             .post(
-              WEB_SERVER_API_UPLOAD_DOCUMENT,
+              // WEB_SERVER_API_UPLOAD_DOCUMENT,
+              'WEB_SERVER_API_UPLOAD_DOCUMENT',
               JSON.stringify(dataObject)
             )
             .then(response => {
@@ -522,7 +528,8 @@ export function SendTransaction() {
         var dataObject = Object.assign({}, { key: key }, { data: data[key] }); // {key: 'properties', data: data[key]}
         promiseArray.push(
           axios
-            .post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
+            .post('WEB_SERVER_API_IPFS_ADD', JSON.stringify(dataObject))
+            // .post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
             .then(response => {
               return response;
             }) // {key: 'properties', hash: 'QmU1D1eAeSLC5Dt4wVRR'}
@@ -550,7 +557,8 @@ export function SendTransaction() {
         var factomEntry = { hash: hashlist, chainId: chainId };
         console.log("1/2 factomEntry jm", factomEntry);
         axios
-          .post(WEB_SERVER_API_FACTOM_ENTRY_ADD, JSON.stringify(factomEntry))
+          .post('WEB_SERVER_API_FACTOM_ENTRY_ADD', JSON.stringify(factomEntry))
+          // .post(WEB_SERVER_API_FACTOM_ENTRY_ADD, JSON.stringify(factomEntry))
           .then(response => {
             store.dispatch(TransactionFactomEntryCompleted(response.data));
             //response.data = entryHash

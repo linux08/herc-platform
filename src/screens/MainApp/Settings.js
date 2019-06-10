@@ -12,7 +12,7 @@ import {
   Linking
 } from "react-native";
 import styles from "../../assets/styles";
-import { VERSION } from '../../components/settings.js'
+// import { VERSION } from '../../components/settings.js'
 import contributeIcon from "../../assets/icons/contributeIcon.png";
 import discordIcon from "../../assets/icons/discordIcon.png";
 import emailUsIcon from "../../assets/icons/emailUsIcon.png"; //todo: turn into vector
@@ -29,6 +29,8 @@ import { connect } from "react-redux";
 import firebase from '../../constants/Firebase';
 import store from '../../store';
 
+
+const VERSION = '1';
 
 export class Settings extends Component {
 

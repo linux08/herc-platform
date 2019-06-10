@@ -169,8 +169,23 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':edge-login-ui-rn')
-    implementation project(':@react-native-community_async-storage')
+    // compile project(':react-native-view-shot')
+    // compile project(':react-native-view-overflow')
+    // compile project(':react-native-vector-icons')
+    // compile project(':react-native-tcp')
+    // compile project(':react-native-screens')
+    // compile project(':react-native-randombytes')
+    // compile project(':react-native-linear-gradient')
+    // compile project(':react-native-image-picker')
+    // compile project(':react-native-fs')
+    // compile project(':react-native-fast-crypto')
+    // compile project(':react-native-document-picker')
+    // compile project(':react-native-device-info')
+    // compile project(':react-native-camera')
+    // compile project(':herc-edge-login-ui-rn')
+    compile project(':@react-native-community/async-storage')
+    // compile project(':edge-login-ui-rn')
+
     implementation project(':react-native-view-overflow')
     implementation project(':react-native-screens')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -179,7 +194,6 @@ dependencies {
     implementation project(':react-native-document-picker')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-camera')
-    implementation project(':react-native-view-shot')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-tcp')
     implementation project(':react-native-randombytes')

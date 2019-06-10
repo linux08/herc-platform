@@ -8,7 +8,7 @@ import {
     ScrollView,
     Linking
 } from "react-native";
-import { VERSION } from './settings.js'
+// import { VERSION } from './settings.js'
 import profileIcon from "../assets/icons/profileIcon.png";
 import { connect } from "react-redux";
 import firebase from '../constants/Firebase';
@@ -21,6 +21,8 @@ import {
     ClearMetrics
 } from '../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
+
+const VERSION = '1';
 class SideMenu extends Component {
 
     componentDidMount() {

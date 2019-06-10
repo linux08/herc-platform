@@ -3,7 +3,7 @@ import Swiper from 'react-native-deck-swiper'
 import { Button, StyleSheet, Text, View, Image, Dimensions, Share, TouchableHighlight, Clipboard, Alert } from 'react-native'
 import AssetCard from '../../.././../components/AssetCard';
 import { connect } from "react-redux";
-import { VERSION } from '../../.././../components/settings.js'
+// import { VERSION } from '../../.././../components/settings.js'
 import ColorConstants from '../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../assets/responsiveUI'
 const hercpngIcon = require('../../../../assets/icons/hercIcon.png');
@@ -15,6 +15,8 @@ import { Icon } from 'native-base';
 const swiperShareIcon = require("../../images/swiperShare.png");
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
+
+const VERSION = '1';
 class ExampleSwiper extends Component {
   constructor(props) {
     super(props)

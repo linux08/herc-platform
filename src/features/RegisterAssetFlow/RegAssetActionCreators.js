@@ -9,10 +9,10 @@ const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 import BigNumber from "bignumber.js";
 
-import {
-  WEB_SERVER_API_IPFS_ADD,
-  WEB_SERVER_API_FACTOM_CHAIN_ADD,
-} from '../../components/settings';
+// import {
+//   WEB_SERVER_API_IPFS_ADD,
+//   WEB_SERVER_API_FACTOM_CHAIN_ADD,
+// } from '../../components/settings';
 
 // One size fits all error handling
 export function Error(error) {
@@ -224,7 +224,8 @@ async function newAssetToIpfs(assetForIPFS) {
   let asset = assetForIPFS;
   var dataObject = { key: 'asset', data: asset }
   try {
-    let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
+    let response = await axios.post('WEB_SERVER_API_IPFS_ADD', JSON.stringify(dataObject))
+    // let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
     console.log("1/3 ipfsHash: ", response)
     let ipfsHash = response.data.hash;
     ipfsToFactom(ipfsHash);
@@ -257,7 +258,8 @@ async function ipfsToFactom(hash) {
   var dataObject = JSON.stringify({ ipfsHash: hash })
   /* This part creates a new factom chain */
   try {
-    const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
+    const response = await axios.post('WEB_SERVER_API_FACTOM_CHAIN_ADD', dataObject)
+    // const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
     console.log("2/3 web server factom response: ", response)
     var fctChainId = response.data;
     store.dispatch(RegAssetIpfsHashToFactomComplete(fctChainId));
