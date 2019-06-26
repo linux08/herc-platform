@@ -65,10 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFusedLocationPackage(),
             new RNFastCryptoPackage(),
             
-            
-            
-        
-            
+          
             new RNDeviceInfo(),
             new RNViewOverflowPackage(),
             new VectorIconsPackage(),
