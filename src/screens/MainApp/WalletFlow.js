@@ -55,7 +55,7 @@ class WalletFlow extends React.Component {
     console.log("kskkskk");
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log("kdsjjs", position);
+        // console.log("kdsjjs", position);
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
