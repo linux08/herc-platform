@@ -174,7 +174,7 @@ dependencies {
     implementation project(':react-native-document-picker')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-camera')
-    implementation project(':react-native-view-shot')
+    // implementation project(':react-native-view-shot')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-tcp')
     implementation project(':react-native-randombytes')

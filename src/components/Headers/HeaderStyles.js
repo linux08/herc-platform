@@ -1,6 +1,6 @@
 "use strict";
 import { StyleSheet, Platform } from "react-native";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 
 
 module.exports = StyleSheet.create({
@@ -36,8 +36,8 @@ module.exports = StyleSheet.create({
     },
     iconButton: {
         alignSelf: 'center',
-        height: 18,
-        width: 18,
+        height: 20,
+        width: 20,
     },
 
     headerText: {

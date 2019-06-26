@@ -21,7 +21,17 @@ class CameraSourceModal extends Component {
     }
     goToCamera = () => {
         this.props.toggleCamSourceModal(false);
+        console.log("this is the props of go to camera", this.props)
         let options = {}
+
+        if(this.props.routeName == "RegAsset1"){
+            options = {
+                maxWidth: 400,
+                maxHeight: 400
+            };
+        }
+
+        console.log(options)
 
         ImagePicker.launchCamera(options, (response) => {
 
@@ -213,7 +223,7 @@ const modalStyles = StyleSheet.create({
         width: '30%',
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         backgroundColor: ColorConstants.MainGray
     },
     camSourceIcon: {

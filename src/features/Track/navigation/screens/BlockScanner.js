@@ -301,7 +301,7 @@ class BlockScanner extends Component {
     const contentCopyIcon = (
       <TouchableHighlight
         onPress={() => {
-          this._writeToClipboard("0x6251583e7d997df3604bc73b9779196e94a090ce");
+          this._writeToClipboard(this.props.ethereumAddress);
         }}
       >
         <Icon name="content-copy" size={10} color="blue" />

@@ -3,6 +3,7 @@ import {
     View,
     StatusBar,
     Alert,
+    Share
 } from 'react-native';
 const loadingGif = require("../../assets/icons/liquid_preloader_by_volorf.gif");
 import React, { Component } from 'react';
@@ -16,8 +17,11 @@ import CameraSourceModal from "../../features/CamSourceModal/Modal/CameraSourceM
 import { AddPhotoButton, AddMetricButton, RegisterButton } from "../../components/RegisterAssetComponents/RegisterAssetInputs";
 import { BasePasswordInput, HercTextInput, HercTextInputWithLabel } from "../../components/SharedComponents";
 // import { toggleCamSourceModal } from "../../actions/ModalVisibilityActions";
+import firebase from "../../constants/Firebase";
+import BigNumber from "bignumber.js";
+const rootRef = firebase.database().ref();
 
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 class RegAsset1 extends Component {
 
     constructor(props) {
@@ -25,8 +29,9 @@ class RegAsset1 extends Component {
         super(props);
         console.log("In RegAsset1", props)
         this.state = {
-          showImageErrorModal: false,
-          metrics: {}
+            showImageErrorModal: false,
+            metrics: {},
+            content: ""
         }
         this.corePropChange = this.corePropChange.bind(this);
         this.pwChange = this.pwChange.bind(this);
@@ -39,6 +44,23 @@ class RegAsset1 extends Component {
         this.setState({
             newAsset
         })
+
+        if (this.props.canRegisterAsset === false) {
+            Alert.alert(
+                "Welcome to HERCULES",
+                "Registering an asset requires 1000 HERC. Click the button below to purchase additional HERC.",
+                [
+                    {
+                        text: "Already Have!",
+                        onPress: () => { console.log("clicked already have!") }
+                    },
+                    {
+                        text: "Purchase",
+                        onPress: () => { Linking.openURL("https://purchase.herc.one") }
+                    }
+                ]
+            );
+        }
     }
 
     // componentDidMount =() => {
@@ -128,37 +150,74 @@ class RegAsset1 extends Component {
                 Logo: img.imageString,
                 LogoUri: img.uri
             }
-        })
+        }, ()=> console.log(this.state.newAsset, " this is the newAsset"))
+        console.log(img, " this is img in setPic+++")
     }
     // the function for now to pass the newAsset to Redux State and navigate to confirm.
-    onPressTest = () => {
+
+    CheckIfUserIsCurrent = async (username) => {
+        const snapshot = await rootRef.child("users").child(username).once("value");
+        console.log('jm exists?', username, snapshot.exists())
+        if (snapshot.exists() == true) {
+            console.log('jm true')
+            return true
+        } else {
+            console.log('jm false')
+            return false
+        }
+    }
+
+    _sendInvite = async () => {
+        try {
+            const result = Share.share({
+                message: "Join Herc Today | A Leading Blockchain Supply Chain Protocol\nhttps://play.google.com/store/apps/details?id=com.HERC",
+                url: "https://play.google.com/store/apps/details?id=com.HERC",
+                title: "A Leading Supply Chain Protocol Tool"
+            },
+                {
+                    dialogTitle: "Send a Hercules Invitation"
+                }
+            );
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+
+    onPressTest = async () => {
         let newAsset = Object.assign({}, this.state)
-        console.log(newAsset, "hopefully shallow clone")
-        if (!newAsset.newAsset.Logo){
-          this.setState({ showImageErrorModal: true })
+        let userExists = await this.CheckIfUserIsCurrent(this.state.newAsset.Password)
+        let hercBalance = this.props.hercBalance;
+        let hercBalancePrepped = new BigNumber(hercBalance).times(1e-18);
+        let minimumPrice = new BigNumber(1000);
+        let results = hercBalancePrepped.minus(minimumPrice);
+        console.log(results.isPositive(), "line 192 ***")
+
+        if (userExists === true) {
+            if (newAsset.newAsset.Logo) {
+                if (results.isPositive()) {
+                    console.log("result is positive line 200 ***")
+                    this.props.AddAsset(this.state.newAsset);
+                    this.props.navigation.navigate("RegAsset2");
+                } else {
+                    this.setState({ content: "Your account does not meet the minimum amount to register an asset." })
+                    this.setState({ showImageErrorModal: true })
+                }
+            } else {
+                this.setState({ content: "Please include an image with your asset." })
+                this.setState({ showImageErrorModal: true })
+            }
+        } else {
+            Alert.alert(
+                'The user [' + this.state.newAsset.Password + '] is not a Hercules User.',
+                'Would you like to invite them?',
+                [
+                    { text: 'Later', onPress: () => console.log('OK Pressed'), style: 'later' },
+                    { text: 'Send Invite ', onPress: () => this._sendInvite() },
+                ],
+                { cancelable: false }
+            )
         }
 
-        // if (!newAsset.newAsset.Logo){
-        //   console.log('jm DO NOT PASS GO')
-        //   // insert Alert modal here
-        //   <CustomModal
-        //       heading={"Oops! This is incomplete."}
-        //       content={"Please include an image with your asset."}
-        //       modalCase="error"
-        //       isVisible={this.state.isVisible}
-        //       onBackdropPress={() => this.toggleModal()}
-        //       closeModal={this.allDone}
-        //       dismissRejectText={"All Done"}
-        //   />
-        // }
-        console.log('jm check canRegisterAsset flag', this.props.canRegisterAsset);
-        if (this.props.canRegisterAsset){
-          this.props.AddAsset(this.state.newAsset);
-          this.props.navigation.navigate("RegAsset2");
-        } else {
-          console.log('jm this.props.canRegisterAsset is undefined/false');
-          Alert.alert("Your account does not meet the minimum amount\nto register an asset.");
-        }
     }
 
     // function to add metric, am considering implementing the modal, but this
@@ -200,40 +259,45 @@ class RegAsset1 extends Component {
                     barStyle={'light-content'}
                     translucent={true}
                     backgroundColor='transparent'
-
                 />
                 <View style={styles.bodyContainer}>
-
-                    <HercTextInputWithLabel
-                        name='Asset Name'
-                        label='Asset Name'
-                        placeholder='Required'
-                        localOnChange={this.assetNameChange}
-                        placeholderTextColor="crimson"
-                    />
-                    <BasePasswordInput
-                        label='Asset Password'
+                    <ScrollView style={{ alignSelf: "center", width: "103%" }}>
+                        <HercTextInputWithLabel
+                            name='Asset Name'
+                            label='Asset Name'
+                            placeholder='Required'
+                            localOnChange={this.assetNameChange}
+                            placeholderTextColor="crimson"
+                        />
+                        <HercTextInputWithLabel
+                            name='Share Access With'
+                            label='Share Access With'
+                            placeholder='Required'
+                            localOnChange={this.pwChange}
+                            placeholderTextColor="crimson"
+                        />
+                        {/* password has been replaced by share access with */}
+                        {/* <BasePasswordInput
+                        label='Share Access With User'
                         placeholder='Required'
                         pwChange={this.pwChange}
                         placeholderTextColor="crimson"
-                    />
+                    /> */}
 
-                    <ScrollView style={{ alignSelf: "center", width: "103%", maxHeight: '30%' }}>
                         {metricInputs}
+                        <AddMetricButton onPress={() => this.addMetric()} />
+
+                        <AddPhotoButton onPress={() => this.props.ToggleCamSourceModal()} />
+
+                        <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
+                            <AssetCard asset={this.state.newAsset} />
+
+                            <RegisterButton onPress={this.onPressTest} />
+                        </View>
+
                     </ScrollView>
-                    <AddMetricButton onPress={() => this.addMetric()} />
-
-                    <AddPhotoButton onPress={() => this.props.ToggleCamSourceModal()} />
-
-                    <View style={[styles.pageBottom, { justifyContent: 'flex-end' }]}>
-                        <AssetCard asset={this.state.newAsset} />
-
-                        <RegisterButton onPress={this.onPressTest} />
-                    </View>
 
                     {/* Modal 1 */}
-
-
                 </View>
 
                 <CameraSourceModal
@@ -245,13 +309,13 @@ class RegAsset1 extends Component {
                 />
 
                 <CustomModal
-                    content={"Please include an image with your asset."}
+                    content={this.state.content}
                     modalCase="error"
                     isVisible={this.state.showImageErrorModal}
-                    onBackdropPress={() => {this.setState({showImageErrorModal: false}) }}
-                    closeModal={() => {this.setState({showImageErrorModal: false}) }}
+                    onBackdropPress={() => { this.setState({ showImageErrorModal: false }) }}
+                    closeModal={() => { this.setState({ showImageErrorModal: false }) }}
                     dismissRejectText={"OK"}
-                    />
+                />
 
                 {/* <CustomModal
                     heading={"Your thing is Happening"}
@@ -268,13 +332,15 @@ class RegAsset1 extends Component {
 const mapStateToProps = (state) => ({
     showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
     newAsset: state.RegAssetReducers.newAsset,
-    canRegisterAsset: state.RegAssetReducers.canRegisterAsset
+    canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
+    assetCreator: state.AccountReducers.edge_account,
+    hercBalance: state.WalletReducers.wallet.balances.HERC
 });
 
 const mapDispatchToProps = (dispatch) => ({
     AddAsset: (newAsset) => dispatch(AddAsset(newAsset)),
     // getHercId: () => dispatch(getHercId()),
     ToggleCamSourceModal: () =>
-        dispatch(ToggleCamSourceModal()),
+        dispatch(ToggleCamSourceModal())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegAsset1);

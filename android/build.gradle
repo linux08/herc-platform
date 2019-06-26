@@ -29,3 +29,12 @@ allprojects {
         }
     }
 }
+ext {
+buildToolsVersion = "26.0.3"
+minSdkVersion = 18
+compileSdkVersion = 26
+targetSdkVersion = 26
+supportLibVersion = "26.1.0"
+googlePlayServicesVersion = "16.+"
+firebaseVersion = "17.3.4"
+}

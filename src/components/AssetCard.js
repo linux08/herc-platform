@@ -5,7 +5,7 @@ import {
     Text,
     Image
 } from 'react-native';
-import ColorConstants from "../assets/ColorConstants";
+import ColorConstants from "../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../assets/responsiveUI';
 import Icon from "react-native-vector-icons/AntDesign";
 
@@ -20,6 +20,7 @@ export class AssetCard extends Component {
     componentWillMount = () => {
         // console.log("willmount in AssetCard", this.props);
         this.setState(this.props.asset);
+        console.log(this.props, " this is the assetCard props +++")
     }
 
     componentWillReceiveProps = (props) => {
@@ -39,19 +40,24 @@ export class AssetCard extends Component {
                 hercId: props.asset.hercId
             })
         }
+        if(props.asset.LogoUri != this.state.Logo) {
+            this.setState({
+                LogoUri: props.asset.LogoUri
+            })
+        }
     }
     render() {
-        // console.log(this.state, "this is state, looking for the deets passed in")
+        console.log(this.state, "this is state should have LOGO")
         let noImageIcon = <Icon name={'picture'} size={33} color={ColorConstants.MainBlue} />
         return (
             <View key={this.props.index} style={localStyles.assetCard}>
                 <View style={localStyles.assetImageContainer}>
                     {this.state.Logo ?
 
-                        <Image source={{ uri: this.state.Logo }} style={localStyles.assetImage} />
+                        <Image source={{ uri: this.state.LogoUri }} style={localStyles.assetImage} />
 
                         : noImageIcon
-                    } 
+                    }
                 </View>
 
                 <View style={localStyles.cardMain}>
@@ -136,6 +142,3 @@ const localStyles = StyleSheet.create({
 
 
 })
-
-
-

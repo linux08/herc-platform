@@ -12,7 +12,7 @@ import ColorConstants from "../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../assets/responsiveUI';
 import { connect } from 'react-redux';
 import { HercTextInputWithLabel } from '../SharedComponents'
-import { ShowAssetPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
+import { ToggleAssetPasswordModal } from '../../features/SupplyChainFlow/Assets/AssetActionCreators';
 
 
 class AssetPasswordModal extends Component {
@@ -21,7 +21,7 @@ class AssetPasswordModal extends Component {
         this.state = {
             pwTry: "",
             headerText: "Enter Asset Password",
-           
+
         }
     }
 
@@ -41,7 +41,7 @@ class AssetPasswordModal extends Component {
         return (
             <Modal
                 isVisible={this.props.showPasswordModal}
-                onBackdropPress={() => this.props.ShowAssetPasswordModal()}
+                onBackdropPress={() => this.props.ToggleAssetPasswordModal()}
             >
                 <View style={localStyles.baseModal}>
                     <View style={localStyles.modalBackground}>
@@ -55,7 +55,7 @@ class AssetPasswordModal extends Component {
                             <TouchableOpacity style={localStyles.button} onPress={() => this.checkPassword(this.state.pwTry)}>
                                 <Text style={localStyles.dismissAcceptText}>Submit</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={localStyles.button} onPress={() => this.props.ShowAssetPasswordModal(false)}>
+                            <TouchableOpacity style={localStyles.button} onPress={() => this.props.ToggleAssetPasswordModal(false)}>
                                 <Text style={localStyles.dismissRejectText}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
@@ -75,7 +75,7 @@ mapStateToProps = (state) => ({
 })
 
 mapDispatchToProps = (dispatch) => ({
-    ShowAssetPasswordModal: () => dispatch(ShowAssetPasswordModal()),
+    ToggleAssetPasswordModal: () => dispatch(ToggleAssetPasswordModal()),
 
 })
 
@@ -108,7 +108,7 @@ const localStyles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        
+
     },
     button: {
         height: 20,
@@ -116,8 +116,6 @@ const localStyles = StyleSheet.create({
         backgroundColor: ColorConstants.MainGray,
         marginHorizontal: 20,
         alignSelf: 'center',
-        
-
     },
 
     pad10: {

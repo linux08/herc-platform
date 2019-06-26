@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from "react-redux";
 import styles from "../../assets/styles";
-import ColorConstants from "../../assets/ColorConstants";
+import ColorConstants from "../../constants/ColorConstants";
 import React, { Component } from 'react';
 
 import CustomModal from '../../components/modals/CustomModal';

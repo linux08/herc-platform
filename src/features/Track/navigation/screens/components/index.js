@@ -9,18 +9,64 @@ import {
   TouchableHighlight,
   Dimensions
 } from "react-native";
-// import hiprLogo from "../assets/hiprLogo.png";
 const { height, width } = Dimensions.get('window');
 import ColorConstants from '../../../../../constants/ColorConstants';
 import { widthPercentageToDP, heightPercentageToDP } from '../../../../../assets/responsiveUI';
 
 import { assetCardStyles } from './trackComponentStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-
+const hercpngIcon = require('../../../../../assets/icons/hercIcon.png');
 
 
 export const SwiperTextFieldWithLabel = props => {
+
+  let myIcon = <View />;
+
+  let text = props.text;
+  if (text.length > 32) {
+    let beginning = text.substring(0, 7);
+    let middle = " ... ";
+    let end = text.substring(text.length - 9, text.length - 1);
+    text = beginning + middle + end;
+    console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
+  }
+  return (
+    <View key={text} style={localStyles.textFieldContainer}>
+      <Text style={localStyles.labelText}>{props.label}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%"}}>
+        <Text style={localStyles.textField}>{text || ''}</Text>
+      </View>
+    </View>
+  );
+};
+
+export const SwiperTextFieldWithLabelAndHercIcon = props => {
+
+  let myIcon = <View />;
+
+  let text = props.text;
+  if (text.length > 32) {
+    let beginning = text.substring(0, 7);
+    let middle = " ... ";
+    let end = text.substring(text.length - 9, text.length - 1);
+    text = beginning + middle + end;
+
+    myIcon = <Icon name="copy" size={12} color="black" />;
+
+    console.log(beginning, 'beginning', middle, 'middle', end, 'end', text);
+  }
+  return (
+    <View key={text} style={localStyles.textFieldContainer}>
+      <Text style={localStyles.labelText}>{props.label}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%"}}>
+        <Text style={localStyles.textField}>{text || ''}</Text>
+        <Image key={'imageIcon'} source={hercpngIcon} style={{ height: 20, width: 20, borderRadius: 20, resizeMode: 'contain', alignSelf: "center" }} />
+      </View>
+    </View>
+  );
+};
+
+export const SwiperTextFieldWithLabelAndCopy = props => {
 
   let myIcon = <View />;
 

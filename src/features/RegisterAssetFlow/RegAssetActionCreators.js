@@ -9,10 +9,10 @@ const rootRef = firebase.database().ref();
 const assetRef = rootRef.child("assets");
 import BigNumber from "bignumber.js";
 
-import {
-  WEB_SERVER_API_IPFS_ADD,
-  WEB_SERVER_API_FACTOM_CHAIN_ADD,
-} from '../../components/settings';
+// import {
+//   WEB_SERVER_API_IPFS_ADD,
+//   WEB_SERVER_API_FACTOM_CHAIN_ADD,
+// } from '../../components/settings';
 
 // One size fits all error handling
 export function Error(error) {
@@ -172,24 +172,31 @@ function createAndSendIpfsAsset(newAsset) {
 
 }
 
+function GotNewAssetFirebaseId(firebaseId){
+  return {
+    type: Reg.Action.GotNewAssetFirebaseId,
+    firebaseId: firebaseId
+  };
+}
+
 
 function makeAndSetHeader(logoUrl) {
   let newAsset = store.getState().RegAssetReducers.newAsset;
+  let createdBy = store.getState().AccountReducers.edge_account;
 
   const fbAsset = {
     hercId: newAsset.hercId,
     Name: newAsset.Name,
     Logo: logoUrl,
-    Password: newAsset.Password
+    Password: newAsset.Password,
+    CreatedBy: createdBy
   }
   console.log("making and setting header", newAsset)
 
   try {
 
-    assetRef.child(newAsset.Name).set(fbAsset,
-      function (error) {
-        store.dispatch(Error(error))
-      });
+    var newAssetFirebaseRef = assetRef.push(fbAsset)
+    store.dispatch(GotNewAssetFirebaseId(newAssetFirebaseRef.key))
     store.dispatch(SettingHeaderComplete());
     store.dispatch(IncreaseHercId());
   }
@@ -215,12 +222,10 @@ async function newAssetToIpfs(assetForIPFS) {
 
   store.dispatch(RegAssetToIpfsStarted());
   let asset = assetForIPFS;
-  console.log(asset, "trying to send to IPFS")
-  // let username = store.getState().WalletActReducers.edge_account
   var dataObject = { key: 'asset', data: asset }
-  console.log(dataObject, "this is whats going")
   try {
-    let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
+    let response = await axios.post('WEB_SERVER_API_IPFS_ADD', JSON.stringify(dataObject))
+    // let response = await axios.post(WEB_SERVER_API_IPFS_ADD, JSON.stringify(dataObject))
     console.log("1/3 ipfsHash: ", response)
     let ipfsHash = response.data.hash;
     ipfsToFactom(ipfsHash);
@@ -253,7 +258,8 @@ async function ipfsToFactom(hash) {
   var dataObject = JSON.stringify({ ipfsHash: hash })
   /* This part creates a new factom chain */
   try {
-    const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
+    const response = await axios.post('WEB_SERVER_API_FACTOM_CHAIN_ADD', dataObject)
+    // const response = await axios.post(WEB_SERVER_API_FACTOM_CHAIN_ADD, dataObject)
     console.log("2/3 web server factom response: ", response)
     var fctChainId = response.data;
     store.dispatch(RegAssetIpfsHashToFactomComplete(fctChainId));
@@ -273,6 +279,7 @@ async function ipfsToFactom(hash) {
 }
 
 export function hashesToFirebase(hashes) {
+  let firebaseId = store.getState().RegAssetReducers.firebaseId
   let newAssetName = store.getState().RegAssetReducers.newAsset.Name;
   let dataObject = Object.assign({}, {
     chainId: hashes.chainId,
@@ -284,7 +291,7 @@ export function hashesToFirebase(hashes) {
   console.log("3/3 going into firebase: ", dataObject, "name: ", newAssetName);
   try {
     rootRef.child('assets')
-      .child(newAssetName)
+      .child(firebaseId)
       .child('hashes')
       .set(dataObject)
       .then(() =>

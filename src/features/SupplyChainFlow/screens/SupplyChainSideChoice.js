@@ -10,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 const { height, width } = Dimensions.get("window");
 import styles from "../../../assets/styles";
-import ColorConstants from "../../../assets/ColorConstants";
+import ColorConstants from "../../../constants/ColorConstants";
 import React, { Component } from "react";
 import { BigYellowButton } from "../../../components/SharedComponents";
 import { connect } from "react-redux";
@@ -32,19 +32,13 @@ class SupplyChainSideChoice extends Component {
     this.state = {
       checkOrig: false,
       checkRecip: false,
-      place: "",
-      pwModalIsVisible: false
+      place: ""
+      // pwModalIsVisible: false
 
     };
     this.passwordHandled = this.passwordHandled.bind(this);
     // this.localOnChange = this.localOnChange.bind(this);
     // this.pwChange = this.pwChange.bind(this);
-  }
-
-  toggleModal = () => {
-      this.setState({
-          pwModalIsVisible: !this.state.pwModalIsVisible
-      })
   }
 
   onPressOrig = () => {
@@ -68,7 +62,7 @@ class SupplyChainSideChoice extends Component {
 
   passwordHandled = () => {
       this.props.StartTransaction(this.state.place);
-      this.props.ShowPasswordModal();
+      // this.props.ShowPasswordModal();
       this.props.navigation.navigate('SupplyChainTx');
   }
 
@@ -76,9 +70,7 @@ goToSupplyChainTX = () => {
 }
 
  handleSideChoice = () => {
-    console.log("handling side choice");
     this.props.ShowPasswordModal()
-    
   };
 
   render() {
@@ -150,7 +142,7 @@ goToSupplyChainTX = () => {
           <View style={localStyles.pageBottom}>
             <BigYellowButton
               buttonName={"Next"}
-              onPress={() => this.handleSideChoice()}
+              onPress={() => this.passwordHandled()}
             />
           </View>
         </View>
@@ -158,7 +150,7 @@ goToSupplyChainTX = () => {
             place={this.state.place}
             passwordHandled={this.passwordHandled}
             />
-        
+
       </View>
     );
   }
@@ -192,10 +184,9 @@ const localStyles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: ColorConstants.MainGray,
     // backgroundColor: 'blue',
-    padding: 10,
     // paddingTop: 30,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     width: "100%",
     height: heightPercentageToDP("30")
   },

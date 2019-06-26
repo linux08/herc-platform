@@ -10,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 const { height, width } = Dimensions.get("window");
 import styles from "../../../../assets/styles";
-import ColorConstants from "../../../../assets/ColorConstants";
+import ColorConstants from "../../../../constants/ColorConstants";
 import React, { Component } from "react";
 import { BigYellowButton } from "../../../../components/SharedComponents";
 import { connect } from "react-redux";
@@ -64,32 +64,34 @@ class TrackSideChoice extends Component {
 
   _transactionCheck = () => {
     if (this.props.transactions) {
-      return (<View>
-        <View
-          style={[
-            localStyles.choiceImageContainer,
-            {
-              backgroundColor: this.state.checkSwiper
-                ? ColorConstants.MainGold
-                : ColorConstants.ElementBG
-            }
-          ]}
-        >
-          {this.state.checkSwiper && (
-            <View style={localStyles.checkBoxContainer}>
-              <Icon name={"check"} size={18} color={"white"} />
-            </View>
-          )}
-          <TouchableWithoutFeedback onPress={this.onPressSwiper}>
-            <Image source={swiperImage} style={localStyles.choiceImage} />
-          </TouchableWithoutFeedback>
+      return (
+        <View>
+          <View
+            style={[
+              localStyles.choiceImageContainer,
+              {
+                backgroundColor: this.state.checkSwiper
+                  ? ColorConstants.MainGold
+                  : ColorConstants.ElementBG
+              }
+            ]}
+          >
+            {this.state.checkSwiper && (
+              <View style={localStyles.checkBoxContainer}>
+                <Icon name={"check"} size={18} color={"white"} />
+              </View>
+            )}
+            <TouchableWithoutFeedback onPress={this.onPressSwiper}>
+              <Image source={swiperImage} style={localStyles.choiceImage} />
+            </TouchableWithoutFeedback>
+          </View>
+          <Text style={[localStyles.labelTitle, { fontWeight: "normal" }]}>
+            Trasaction Swiper
+        </Text>
         </View>
-        <Text style={[localStyles.labelTitle, { fontWeight: "normal" }]}>
-          Trasaction Swiper
-      </Text>
-      </View>)
+      )
     } else {
-      return null;
+      return null
     }
   }
 
@@ -135,7 +137,7 @@ class TrackSideChoice extends Component {
               </View>
               <Text style={[localStyles.labelTitle, { fontWeight: "normal" }]}>
                 BlockScanner
-                </Text>
+              </Text>
             </View>
           </View>
           <View style={localStyles.pageBottom}>
@@ -145,9 +147,8 @@ class TrackSideChoice extends Component {
             />
           </View>
         </View>
-
       </View>
-    );
+    )
   }
 }
 
@@ -205,7 +206,6 @@ const localStyles = StyleSheet.create({
     margin: 15,
     marginTop: 0
   },
-
   checkBoxContainer: {
     alignSelf: "flex-end",
     justifyContent: "center",

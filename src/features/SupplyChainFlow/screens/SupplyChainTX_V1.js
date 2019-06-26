@@ -1,406 +1,493 @@
 import {
-    StyleSheet,
-    Text,
-    View,
-    StatusBar,
-    Image,
-    TouchableWithoutFeedback,
-    Dimensions,
-    TouchableHighlight,
-    Alert,
-    Linking
-} from 'react-native';
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  TouchableWithoutFeedback,
+  Dimensions,
+  TouchableHighlight,
+  Alert,
+  Linking
+} from "react-native";
 
-import MetricModal from '../modals/MetricModal';
-import CustomModal from '../../../components/modals/CustomModal';
-import CameraSourceModal from '../../CamSourceModal/Modal/CameraSourceModal';
-import { ToggleCamSourceModal } from '../../CamSourceModal/CamSourceModalActionCreators';
-import EditModal from '../modals/EDI_T_Modal';
-import Modal from 'react-native-modal';
+import MetricModal from "../modals/MetricModal";
+import CustomModal from "../../../components/modals/CustomModal";
+import CameraSourceModal from "../../CamSourceModal/Modal/CameraSourceModal";
+import { ToggleCamSourceModal } from "../../CamSourceModal/CamSourceModalActionCreators";
+import EditModal from "../modals/EDI_T_Modal";
+import Modal from "react-native-modal";
 import {
-    ShowEditModal,
-    ShowMetricModal,
-    SendTransaction,
-    AddDoc,
-    AddEdiT,
-    AddMetrics,
-    AddPhoto,
-    AddGeoLocation,
-} from '../Transactions/TransactionActionCreators';
+  ShowEditModal,
+  ShowMetricModal,
+  SendTransaction,
+  AddDoc,
+  AddEdiT,
+  AddMetrics,
+  AddPhoto,
+  ClearState,
+  ClearImages,
+  ClearDocuments,
+  ClearEdiT,
+  ClearMetrics
+} from "../Transactions/TransactionActionCreators";
 
 import styles from "../../../assets/styles";
-import ColorConstants from "../../../assets/ColorConstants";
-import React, { Component } from 'react';
-import { TransInfoCard, MetricTransactionComponent, DocTransactionComponent, EdiTransactionComponent, CameraTransactionComponent, GeoLocationTransactionComponent } from "./SupplyChainComponents";
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-var RNFS = require('react-native-fs')
+import ColorConstants from "../../../constants/ColorConstants";
+import React, { Component } from "react";
+import {
+  TransInfoCard,
+  MetricTransactionComponent,
+  DocTransactionComponent,
+  EdiTransactionComponent,
+  CameraTransactionComponent,
+  GeoLocationTransactionComponent
+} from "./SupplyChainComponents";
+import {
+  DocumentPicker,
+  DocumentPickerUtil
+} from "react-native-document-picker";
+var RNFS = require("react-native-fs");
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 // import assets from "../../components/TesterAssets";
 
 // var ImagePicker = require('react-native-image-picker');
-const { height, width } = Dimensions.get('window');
+const { height, width } = Dimensions.get("window");
 
 import {
-    BigYellowButton, ModalSubmitButton
+  BigYellowButton,
+  ModalSubmitButton
 } from "../../../components/SharedComponents";
 
-import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "../../../assets/responsiveUI";
 const BigNumber = require("bignumber.js");
 
-import Geolocation from 'react-native-geolocation-service';
-
+import Geolocation from "react-native-geolocation-service";
 
 const ORIGNAL_STATE = {
-    img: {},
-    doc: {},
-    edi: {},
-    metrics: {},
-    geoLocation: {},
-    isVisible: false,
-    displayConfirmationModal: false
-}
+  img: {},
+  doc: {},
+  edi: {},
+  metrics: {},
+  geoLocation: {},
+  isVisible: false,
+  displayConfirmationModal: false
+};
 
 componentWillUnmount = () => {
-    this.setState({
-        isVisible: false
-    })
-}
+  this.setState({
+    isVisible: false
+  });
+};
 
 componentDidMount = () => {
-    console.log("this is the trans", this.props.trans)
-}
-
+  console.log("this is the trans", this.props.trans);
+};
 
 class SupplyChainTX extends Component {
+  constructor(props) {
+    super(props);
+    this.state = ORIGNAL_STATE;
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = ORIGNAL_STATE;
-    }
+  toggleModal = () => {
+    this.setState({
+      isVisible: !this.state.isVisible
+    });
+  };
 
-    toggleModal = () => {
-        this.setState({
-            isVisible: !this.state.isVisible
-        })
-    }
+  allDone = () => {
+    this.setState({
+      isVisible: false
+    });
+    this._clearTransactionData();
+    this.props.navigation.navigate("WalletFlow");
+  };
 
-    allDone = () => {
-        this.setState({
-            isVisible: false,
-        })
-        this.props.navigation.navigate('WalletNavigator');
-        // this.props.clearState();
+  clearAll = () => {
+    this.setState(ORIGNAL_STATE);
+  };
 
-    }
+  //  see if this works, trying to clean up a little
+  clear = stateProp => {
+    this.setState({
+      stateProp: {}
+    });
+  };
 
-    clearAll = () => {
-        this.setState(ORIGNAL_STATE)
-    }
+  setEDI = item => {
+    this.props.addEdit(item);
+    this.props.showEditModal();
+  };
 
-    //  see if this works, trying to clean up a little
-    clear = (stateProp) => {
-        this.setState({
-            stateProp: {}
-        })
-    }
-
-
-    setEDI = (item) => {
-        this.props.addEdit(item);
-        this.props.showEditModal();
-    }
-
-    _pickDocument = () => {
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
-            //this if(res) allows user to use native android back button to exit docpicker
-            if (res) {
-                if (error) Alert.alert("Something Went Wrong! Error: " + error);
-                // Android
-                RNFS.readFile(res.uri, 'base64')
-                    .then(contents => {
-                        let doc = {
-                            uri: res.uri,
-                            name: res.fileName,
-                            size: res.fileSize,
-                            type: res.type,
-                            content: contents
-                        }
-                        this.props.addDocument(doc);
-                    })
-            }
-        });
-    }
-
-    setPic = (snappedImg) => {
-        console.log("setting a taken image, this is the data******", snappedImg);
-        this.props.addPhoto(snappedImg)
-    }
-
-
-    setMetrics = (metricName, value) => {
-        this.setState({
-            metrics: {
-                ...this.state.metrics,
-                [metricName]: value
-            }
-        })
-    }
-
-    _setLocation = () => {
-        console.log("setting geo location");
-        Geolocation.getCurrentPosition(
-            (position) => {
-              this.props.addGeoLocation(position)
-            },
-            (error) => {
-              console.log("jm Geolocation Error: ", error.code, error.message);
-            }
-          );
-
-          console.log("this is the props.trans", this.props.trans.data.geoLocation.coords);
-    }
-
-    submitTransaction = () => {
-        let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
-        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
-        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
-        let totalHercCost = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
-        let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
-        let totalEthCost = gasPrice;
-        let hercBalance = new BigNumber(this.props.wallet.balances.HERC).multipliedBy(.000000000000000001).toFixed(18);
-
-        if (isNaN(hercBalance) || hercBalance < totalHercCost) {
-            this.setState({
-                isVisible: false,
-                displayConfirmationModal: false
-            })
-            Alert.alert(
-                'Not enough funds',
-                'Please purchase more Hercs or add ETH to your wallet',
-                [
-                    {
-                        text: 'Top Up Hercs',
-                        onPress: () => { Linking.openURL("https://purchase.herc.one") }
-                    },
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ],
-                { cancelable: false },
-            );
+  _pickDocument = () => {
+    DocumentPicker.show(
+      {
+        filetype: [DocumentPickerUtil.allFiles()]
+      },
+      (error, res) => {
+        //this if(res) allows user to use native android back button to exit docpicker
+        if (res) {
+          if (error) Alert.alert("Something Went Wrong! Error: " + error);
+          // Android
+          RNFS.readFile(res.uri, "base64").then(contents => {
+            let doc = {
+              uri: res.uri,
+              name: res.fileName,
+              size: res.fileSize,
+              type: res.type,
+              content: contents
+            };
+            this.props.addDocument(doc);
+          });
         }
-        else if (hercBalance > totalHercCost) {
-            this.setState({
-                isVisible: true
-            })
-            this.props.sendTransaction()
-        }
+      }
+    );
+  };
+
+  setPic = snappedImg => {
+    console.log("setting a taken image, this is the data******", snappedImg);
+    this.props.addPhoto(snappedImg);
+  };
+
+  setMetrics = (metricName, value) => {
+    this.setState({
+      metrics: {
+        ...this.state.metrics,
+        [metricName]: value
+      }
+    });
+  };
+
+  _setLocation = () => {
+    console.log("setting geo location");
+    Geolocation.getCurrentPosition(
+      position => {
+        this.props.addGeoLocation(position);
+      },
+      error => {
+        console.log("jm Geolocation Error: ", error.code, error.message);
+      }
+    );
+
+    console.log(
+      "this is the props.trans",
+      this.props.trans.data.geoLocation.coords
+    );
+  };
+
+  submitTransaction = () => {
+    let docPrice = this.props.trans.data.documents.price
+      ? this.props.trans.data.documents.price
+      : 0;
+    let imgPrice = this.props.trans.data.images.price
+      ? this.props.trans.data.images.price
+      : 0;
+    let networkFee = this.props.networkFee
+      ? new BigNumber(this.props.networkFee).toFixed(18)
+      : 0;
+    let totalHercCost = new BigNumber(docPrice)
+      .plus(imgPrice)
+      .plus(networkFee)
+      .toFixed(18);
+    let gasPrice = this.props.gasPrice
+      ? new BigNumber(this.props.gasPrice).toFixed(0)
+      : 0;
+    let totalEthCost = gasPrice;
+    let hercBalance = new BigNumber(this.props.wallet.balances.HERC)
+      .multipliedBy(0.000000000000000001)
+      .toFixed(18);
+
+    if (isNaN(hercBalance) || hercBalance < totalHercCost) {
+      this.setState({
+        isVisible: false,
+        displayConfirmationModal: false
+      });
+      Alert.alert(
+        "Not enough funds",
+        "Please purchase more Hercs or add ETH to your wallet",
+        [
+          {
+            text: "Top Up Hercs",
+            onPress: () => {
+              Linking.openURL("https://purchase.herc.one");
+            }
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      );
+    } else if (hercBalance > totalHercCost) {
+      this.setState({
+        isVisible: true
+      });
+      this.props.sendTransaction();
     }
+  };
 
+  _onBackdropPress = () => {
+    // this.showCamSourceModal();
+  };
 
-    _onBackdropPress = () => {
-        // this.showCamSourceModal();
+  _displayConfirmationModal = () => {
+    this.setState({
+      displayConfirmationModal: true
+    });
+  };
 
-    }
+  _toggledisplayConfirmationModal = () => {
+    this.setState({
+      displayConfirmationModal: !this.state.displayConfirmationModal
+    });
+  };
 
-    _displayConfirmationModal = () => {
-        this.setState({
-            displayConfirmationModal: true
-        })
-    }
+  _clearTransactionData = () => {
+    //Bugfix Zube Card #722
+    //*MH* clear transaction data from redux store
+    this.props.ClearImages();
+    this.props.ClearDocuments();
+    this.props.ClearEdiT();
+    this.props.ClearMetrics();
+  };
 
-    _toggledisplayConfirmationModal = () => {
-        this.setState({
-            displayConfirmationModal: !this.state.displayConfirmationModal
-        })
-    }
+  render() {
+    let docPrice = this.props.trans.data.documents.price
+      ? this.props.trans.data.documents.price
+      : 0;
+    let imgPrice = this.props.trans.data.images.price
+      ? this.props.trans.data.images.price
+      : 0;
+    let networkFee = this.props.networkFee
+      ? new BigNumber(this.props.networkFee).toFixed(18)
+      : 0;
+    let total = new BigNumber(docPrice)
+      .plus(imgPrice)
+      .plus(networkFee)
+      .toFixed(18);
+    let gasPrice = this.props.gasPrice
+      ? new BigNumber(this.props.gasPrice).toFixed(0)
+      : 0;
 
-    
+    return (
+      <View style={styles.baseContainer}>
+        <StatusBar
+          barStyle={"light-content"}
+          translucent={true}
+          backgroundColor="transparent"
+        />
+        <View style={styles.bodyContainer}>
+          <TransInfoCard header={this.props.trans.header} />
+          <Text style={{ fontSize: 12 }}>
+            Enter the data and related pictures for your Supply Chain record.
+          </Text>
+          <Text style={{ fontSize: 10 }}>
+            {" "}
+            Note: Once submitted, this data is not editable and will remain on
+            the Blockchain.{" "}
+          </Text>
 
+          <View style={localStyles.transactionComponentListContainer}>
+            <CameraTransactionComponent
+              onPress={() => this.props.ToggleCamSourceModal()}
+              img={this.state.img}
+              image={this.props.trans.data.images}
+            />
 
-    render() {
+            <EdiTransactionComponent
+              onPress={() => this.props.showEditModal()}
+              componentName={"Choose EDI-T Sets"}
+              edi={this.props.trans.data.ediT}
+            />
 
-        let docPrice = this.props.trans.data.documents.price ? this.props.trans.data.documents.price : 0;
-        let imgPrice = this.props.trans.data.images.price ? this.props.trans.data.images.price : 0;
-        let networkFee = this.props.networkFee ? new BigNumber(this.props.networkFee).toFixed(18) : 0;
-        let total = new BigNumber(docPrice).plus(imgPrice).plus(networkFee).toFixed(18);
-        let gasPrice = this.props.gasPrice ? new BigNumber(this.props.gasPrice).toFixed(0) : 0;
+            <DocTransactionComponent
+              onPress={this._pickDocument}
+              doc={this.props.trans.data.documents}
+            />
 
-        return (
+            <MetricTransactionComponent
+              onPress={() => {
+                this.props.showMetricModal();
+                console.log(
+                  "MADE A CHANGE METRICS",
+                  this.props.trans.data.metrics
+                );
+              }}
+              iconName="clipboard"
+              metrics={this.props.trans.data.metrics}
+            />
 
-            <View style={styles.baseContainer}>
-                <StatusBar
-                    barStyle={'light-content'}
-                    translucent={true}
-                    backgroundColor='transparent'
-                />
-                <View style={styles.bodyContainer}>
-                    <TransInfoCard header={this.props.trans.header} />
+            <GeoLocationTransactionComponent
+              onPress={() => this._setLocation()}
+              geoLocation={this.props.trans.data.geoLocation.coords}
+            />
+          </View>
+          <View style={localStyles.pageBottom}>
+            <BigYellowButton
+              buttonName={"Submit"}
+              onPress={this._displayConfirmationModal}
+            />
+          </View>
+        </View>
 
-                    <View style={localStyles.transactionComponentListContainer}>
+        <CameraSourceModal
+          visibility={this.props.showCamSourceModal}
+          changeModal={this.props.ToggleCamSourceModal}
+          _pickImage={this._pickImage}
+          setPic={this.setPic}
+          navigation={this.props.navigation}
+          routeName={"SupplyChainTx"}
+          onBackdropPress={this.props.ToggleCamSourceModal}
+        />
 
-                        <CameraTransactionComponent
-                            onPress={() => this.props.ToggleCamSourceModal()}
-                            img={this.state.img}
-                            image={this.props.trans.data.images}
-                        />
+        <EditModal
+          visibility={this.props.modals.editModal}
+          changeModal={this.props.showEditModal}
+          setEDI={this.props.addEdit}
+          onBackdropPress={this.props.showEditModal}
+          clearEDI={this.props.clearEDI}
+        />
 
-                        <EdiTransactionComponent
-                            onPress={() => this.props.showEditModal()}
-                            componentName={"Choose EDI-T Sets"}
-                            edi={this.props.trans.data.ediT}
-                        />
+        {this.props.trans.data.metrics ? (
+          <MetricModal
+            visibility={this.props.modals.metricModal}
+            metrics={this.props.trans.data.metrics}
+            clearMetrics={this.clearMetrics}
+            localOnChange={this.setMetrics}
+            changeModal={this.showMetricModal}
+          />
+        ) : null}
 
-                        <DocTransactionComponent
-                            onPress={this._pickDocument}
-                            doc={this.props.trans.data.documents}
-                        />
+        <CustomModal
+          heading={"Your Transaction Is Being Written To The Blockchain"}
+          content={this.props.content}
+          modalCase="progress"
+          isVisible={this.state.isVisible}
+          onBackdropPress={() => this._toggleModal()}
+          percent={this.props.percent}
+          closeModal={this.allDone}
+          dismissRejectText={"All Done"}
+        />
 
-                        <MetricTransactionComponent
-                            onPress={() => this.props.showMetricModal()}
-                            iconName='clipboard'
-                            metrics={this.props.trans.data.metrics}
-                        />
+        <Modal
+          style={styles.baseModal}
+          backdropColor={"rgba(0,0,0,0.5)"}
+          animationIn={"slideInRight"}
+          animationOut={"slideOutRight"}
+          isVisible={this.state.displayConfirmationModal}
+          onRequestClose={() => {
+            this._toggledisplayConfirmationModal();
+          }}
+          onBackButtonPress={() => {
+            this._toggledisplayConfirmationModal();
+          }}
+        >
+          <View style={styles.bodyContainer}>
+            <Text style={{ color: "black", fontSize: 18, marginBottom: "10%" }}>
+              {" "}
+              Confirm Transaction
+            </Text>
+            <Text style={{ marginVertical: 10 }}>
+              Network Fee: {networkFee} HERC
+            </Text>
+            <Text style={{ marginVertical: 10 }}>
+              Document Fee: {docPrice} HERC
+            </Text>
+            <Text style={{ marginVertical: 10 }}>
+              Photo Fee: {imgPrice} HERC
+            </Text>
+            <Text style={{ marginBottom: "10%" }}>Total: {total} HERC</Text>
+            <Text style={{ marginVertical: 10 }}>
+              Gas Price (Average): {gasPrice} GWEI{" "}
+            </Text>
+            <Text style={{ marginVertical: 10 }}>Gas Supply: 80,000 </Text>
+            <Text style={{ marginVertical: 10 }}>
+              Total Est. TX Cost: {80000 * gasPrice * 0.000000001} ETH
+            </Text>
 
-                        <GeoLocationTransactionComponent
-                        onPress={() => this._setLocation()}
-                        geoLocation={this.props.trans.data.geoLocation.coords}
-                        />
-
-                    </View>
-                    <View style={localStyles.pageBottom}>
-                        <BigYellowButton buttonName={"Submit"} onPress={this._displayConfirmationModal} />
-                    </View>
-                </View>
-
-                <CameraSourceModal
-                    visibility={this.props.showCamSourceModal}
-                    changeModal={this.props.ToggleCamSourceModal}
-                    _pickImage={this._pickImage}
-                    setPic={this.setPic}
-                    navigation={this.props.navigation}
-                    routeName={'SupplyChainTx'}
-                    onBackdropPress={this.props.ToggleCamSourceModal}
-                />
-
-                <EditModal
-                    visibility={this.props.modals.editModal}
-                    changeModal={this.props.showEditModal}
-                    setEDI={this.props.addEdit}
-                    onBackdropPress={this.props.showEditModal}
-                    clearEDI={this.props.clearEDI}
-                />
-
-                <MetricModal
-                    visibility={this.props.modals.metricModal}
-                    metrics={this.props.trans.data.metrics}
-                    clearMetrics={this.clearMetrics}
-                    localOnChange={this.setMetrics}
-                    changeModal={this.showMetricModal}
-                />
-
-                <CustomModal
-                    heading={"Your Transaction Is Being Written To The Blockchain"}
-                    content={this.props.content}
-                    modalCase="progress"
-                    isVisible={this.state.isVisible}
-                    onBackdropPress={() => this._toggleModal()}
-                    percent={this.props.percent}
-                    closeModal={this.allDone}
-                    dismissRejectText={"All Done"}
-                />
-
-                <Modal
-                    style={styles.baseModal}
-                    backdropColor={'rgba(0,0,0,0.5)'}
-                    animationIn={'slideInRight'}
-                    animationOut={'slideOutRight'}
-                    isVisible={this.state.displayConfirmationModal}
-                    onRequestClose={() => { this._toggledisplayConfirmationModal() }}
-                    onBackButtonPress={() => { this._toggledisplayConfirmationModal() }}>
-
-                    <View style={styles.bodyContainer}>
-                        <Text style={{ color: "black", fontSize: 18, marginBottom: "10%" }}> Confirm Transaction</Text>
-                        <Text style={{ marginVertical: 10 }}>Network Fee: {networkFee} HERC</Text>
-                        <Text style={{ marginVertical: 10 }}>Document Fee: {docPrice} HERC</Text>
-                        <Text style={{ marginVertical: 10 }}>Photo Fee: {imgPrice} HERC</Text>
-                        <Text style={{ marginBottom: "10%" }}>Total: {total} HERC</Text>
-                        <Text style={{ marginVertical: 10 }}>Gas Price (Average): {gasPrice} GWEI </Text>
-                        <Text style={{ marginVertical: 10 }}>Gas Supply: 80,000 </Text>
-                        <Text style={{ marginVertical: 10 }}>Total Est. TX Cost:  {(80000 * gasPrice) * .000000001} ETH</Text>
-
-                        <ModalSubmitButton buttonName={"Submit"} onPress={() => this.submitTransaction()} />
-                    </View>
-                </Modal>
-            </View>
-        )
-    }
+            <ModalSubmitButton
+              buttonName={"Submit"}
+              onPress={() => this.submitTransaction()}
+            />
+          </View>
+        </Modal>
+      </View>
+    );
+  }
 }
-const mapStateToProps = (state) => ({
-    modals: state.TransactionReducers.modals,
-    showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
-    trans: state.TransactionReducers.trans,
-    content: state.TransactionReducers.content,
-    percent: state.TransactionReducers.percentage,
-    networkFee: state.TransactionReducers.networkFee,
-    gasPrice: state.TransactionReducers.gasPrice,
-    wallet: state.WalletReducers.wallet,
-    geoLocation: state.TransactionReducers.geoLocation
-})
+const mapStateToProps = state => ({
+  modals: state.TransactionReducers.modals,
+  showCamSourceModal: state.CamSourceModalReducer.showCamSourceModal,
+  trans: state.TransactionReducers.trans,
+  content: state.TransactionReducers.content,
+  percent: state.TransactionReducers.percentage,
+  networkFee: state.TransactionReducers.networkFee,
+  gasPrice: state.TransactionReducers.gasPrice,
+  wallet: state.WalletReducers.wallet,
+  geoLocation: state.TransactionReducers.geoLocation
+});
 
-const mapDispatchToProps = (dispatch) => ({
-    showMetricModal: () => dispatch(ShowMetricModal()),
-    addMetrics: (newMetrics) => dispatch(AddMetrics(newMetrics)),
+const mapDispatchToProps = dispatch => ({
+  showMetricModal: () => dispatch(ShowMetricModal()),
+  addMetrics: newMetrics => dispatch(AddMetrics(newMetrics)),
 
-    ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
-    addPhoto: (imgObject) => dispatch(AddPhoto(imgObject)),
+  ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
+  addPhoto: imgObject => dispatch(AddPhoto(imgObject)),
 
-    addDocument: (file) => dispatch(AddDoc(file)),
+  addDocument: file => dispatch(AddDoc(file)),
 
-    showEditModal: () => dispatch(ShowEditModal()),
-    addEdit: (ediItem) => dispatch(AddEdiT(editItem)),
+  showEditModal: () => dispatch(ShowEditModal()),
+  addEdit: ediItem => dispatch(AddEdiT(editItem)),
 
-    addGeoLocation: (location) => dispatch(AddGeoLocation(location)),
+  addGeoLocation: location => dispatch(AddGeoLocation(location)),
 
+  sendTransaction: () => dispatch(SendTransaction()),
 
-    sendTransaction: () => dispatch(SendTransaction()),
+  ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
 
-    ToggleCamSourceModal: () => dispatch(ToggleCamSourceModal()),
+  ClearImages: () => dispatch(ClearImages()),
+  ClearDocuments: () => dispatch(ClearDocuments()),
+  ClearEdiT: () => dispatch(ClearEdiT()),
+  ClearMetrics: () => dispatch(ClearMetrics())
+});
 
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SupplyChainTX);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SupplyChainTX);
 const localStyles = StyleSheet.create({
+  textBold: {
+    fontSize: 14,
+    color: ColorConstants.MainSubGray,
+    marginLeft: 3,
+    fontWeight: "bold"
+  },
 
-    textBold: {
-        fontSize: 14,
-        color: ColorConstants.MainSubGray,
-        marginLeft: 3,
-        fontWeight: 'bold',
-    },
+  textNormal: {
+    fontSize: 14,
+    color: ColorConstants.MainSubGray,
+    marginLeft: 3,
+    fontWeight: "normal"
+  },
+  transactionComponentListContainer: {
+    width: "100%",
+    height: heightPercentageToDP("60"),
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: ColorConstants.MainGray
+  },
 
-    textNormal: {
-        fontSize: 14,
-        color: ColorConstants.MainSubGray,
-        marginLeft: 3,
-        fontWeight: 'normal',
-    },
-    transactionComponentListContainer: {
-        width: '100%',
-        // height: heightPercentageToDP('50'),
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: ColorConstants.MainGray,
-    },
-
-    pageBottom: {
-        height: '20%',
-        backgroundColor: ColorConstants.MainGray,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        alignSelf: 'center',
-    },
-})
+  pageBottom: {
+    height: "20%",
+    backgroundColor: ColorConstants.MainGray,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    flex: 1
+  }
+});

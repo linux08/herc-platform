@@ -8,13 +8,21 @@ import {
     ScrollView,
     Linking
 } from "react-native";
-import { NavigationActions } from 'react-navigation';
-import { VERSION } from './settings.js'
+// import { VERSION } from './settings.js'
 import profileIcon from "../assets/icons/profileIcon.png";
 import { connect } from "react-redux";
 import firebase from '../constants/Firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { StackActions, NavigationActions } from 'react-navigation';
+import {
+    ClearImages,
+    ClearDocuments,
+    ClearEdiT,
+    ClearMetrics
+} from '../features/SupplyChainFlow/Transactions/TransactionActionCreators';
 
+
+const VERSION = '1';
 class SideMenu extends Component {
 
     componentDidMount() {
@@ -46,7 +54,77 @@ class SideMenu extends Component {
             console.log('hooray im out!')
         })
         this.props.navigation.navigate('Login');
+        this._clearTransactionData();
     };
+
+    _trackSelected = () => {
+        const resetAction = StackActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'TrackSplash' })
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
+
+    }
+
+    _regSelected = () => {
+        const resetAction = StackActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'RegAssetSplashTest' })
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
+    }
+
+    _supplyChainSelected = () => {
+        const resetAction = StackActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'WalletFlow' }),
+                NavigationActions.navigate({ routeName: 'SupplyChainSplash' })
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+        this._clearTransactionData();
+    }
+
+    _WalletSelected = () => {
+        // const resetAction = StackActions.reset({
+        //     index: 1,
+        //     actions: [
+        //     NavigationActions.navigate({routeName:'WalletFlow'})            ],
+        //   });
+        //   this.props.navigation.dispatch(resetAction);
+        this.props.navigation.navigate('WalletFlow');
+        this._clearTransactionData();
+    }
+
+    _clearTransactionData = () => {
+        //Bugfix Zube Card #722
+        //*MH* clear transaction data from redux store
+        this.props.ClearImages();
+        this.props.ClearDocuments();
+        this.props.ClearEdiT();
+        this.props.ClearMetrics();
+    }
+
+    _documentStorageSelected = () => {
+        console.log("document storage selected")
+        // const resetAction = StackActions.reset({
+        //     index: 1,
+        //     actions: [
+        //     NavigationActions.navigate({routeName:'WalletFlow'})            ],
+        //   });
+        //   this.props.navigation.dispatch(resetAction);
+        this.props.navigation.navigate('DocumentStorage');
+        this._clearTransactionData();
+    }
 
 
     render() {
@@ -73,7 +151,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={this.navigateToScreen('WalletNavigator')}>
+                                <TouchableHighlight onPress={this._WalletSelected}>
                                     <Text style={localStyles.title__Text}>Wallet</Text>
                                 </TouchableHighlight>
                             </View>
@@ -84,7 +162,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={this.navigateToScreen('RegAssetNavigator')}>
+                                <TouchableHighlight onPress={this._regSelected}>
                                     <Text style={localStyles.title__Text}>Register Asset</Text>
                                 </TouchableHighlight>
                             </View>
@@ -95,7 +173,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={this.navigateToScreen('SupplyChainNavigator')}>
+                                <TouchableHighlight onPress={this._supplyChainSelected}>
                                     <Text style={localStyles.title__Text}>Supply Chain</Text>
                                 </TouchableHighlight>
                             </View>
@@ -106,7 +184,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={ this.navigateToScreen('TrackNavigator')}>
+                                <TouchableHighlight onPress={this._trackSelected}>
                                     <Text style={localStyles.title__Text}>Track</Text>
                                 </TouchableHighlight>
                             </View>
@@ -157,6 +235,19 @@ class SideMenu extends Component {
                                 </TouchableHighlight>
                             </View>
                         </View> */}
+
+
+                        <View style={localStyles.block}>
+                            <View style={localStyles.block__bullet}>
+                                <Icon name='circle' color="#d7daeb" size={12} />
+                            </View>
+                            <View style={localStyles.block__textBlock}>
+                                <TouchableHighlight onPress={this._documentStorageSelected}>
+                                    <Text style={localStyles.title__Text}>Documents</Text>
+                                </TouchableHighlight>
+                            </View>
+                        </View>
+
 
                         <View style={localStyles.block}>
                             <View style={localStyles.block__bullet}>
@@ -253,7 +344,11 @@ const mapDispatchToProps = dispatch => ({
     fetchAssets: () => dispatch(fetchAssets()),
     getHercId: () => dispatch(getHercId()),
     signOut: () => dispatch(signOut()),
-    fetchData: () => dispatch(fetchData())
+    fetchData: () => dispatch(fetchData()),
+    ClearImages: () => dispatch(ClearImages()),
+    ClearDocuments: () => dispatch(ClearDocuments()),
+    ClearEdiT: () => dispatch(ClearEdiT()),
+    ClearMetrics: () => dispatch(ClearMetrics())
 });
 export default connect(
     mapStateToProps,

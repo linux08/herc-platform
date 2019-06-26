@@ -12,6 +12,7 @@ export const Action = {
     AddAsset: 'AddAsset',
     SettingHeaderInFirebase: 'SettingHeaderInFirebase',
     SettingHeaderComplete: 'SettingHeaderComplete',
+    GotNewAssetFirebaseId: 'GotNewAssetFirebaseId',
 
     ConfirmStarted: 'ConfirmStarted',
     ConfirmAssetComplete: 'ConfirmAssetComplete',
@@ -20,6 +21,6 @@ export const Action = {
     RegAssetToIpfsComplete: 'RegAssetToIpfsComplete',
 
     RegAssetIpfsHashToFactomStarted: 'RegAssetIpfsToFactomStarted',
-    RegAssetIpfsHashToFactomComplete: 'RegAssetFactomComplete',
+    RegAssetIpfsHashToFactomComplete: 'RegAssetFactomComplete'
 
 }

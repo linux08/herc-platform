@@ -23,8 +23,11 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
-import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
-import Geolocation from 'react-native-geolocation-service';
+import {
+  GetDestinationAddress,
+  ToggleDisplayQRScanner
+} from "../../features/WalletFlow/WalletActionCreators";
+import Geolocation from "react-native-geolocation-service";
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
@@ -48,96 +51,75 @@ class WalletFlow extends React.Component {
     };
   }
 
-  static navigationOptions = () => ({
-    headerTitle: (
-      <View style={localStyles.headerBox}>
-        <Text style={localStyles.headerText}>Wallet</Text>
-      </View>
-    )
-  });
-
-  _requestFineLocationPermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: "Herc Enable Location",
-            message:
-              "Herc needs access to your location " +
-              "to provide attestation of your supply chain data."
-          }
-        );
-        if (granted){
-          Geolocation.getCurrentPosition(
-            (position) => {
-              console.log("jm Geolocation Position:", position);
-            },
-            (error) => {
-              console.log("jm Geolocation Error: ", error.code, error.message);
-            }
-          );
-        }
-        return granted;
-      } catch (err) {
-        console.error("Failed to request permission: jm", err);
-        return null;
-      }
-    }
+  async componentDidMount() {
+    console.log("kskkskk");
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log("kdsjjs", position);
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null
+        });
+      },
+      error => {
+        console.log("error---", error.message);
+        this.setState({ error: error.message });
+      },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+    );
+  }
 
   componentWillUnmount = () => {
     this.setState({
       isVisible: false
-    })
-  }
+    });
+  };
 
   componentWillMount = async () => {
-    this._requestFineLocationPermission();
-    console.log("jm Geolocation:", Geolocation)
-        Geolocation.getCurrentPosition(
-          (position) => {
-            console.log("jm Geolocation Position:", position);
-          },
-          (error) => {
-            console.log("jm Geolocation Error: ", error.code, error.message);
-          }
-        );
+    // var item = await this.props.account.dataStore.getItem("one.herc", "hercUserID");
+    // console.log('jm is uuid in account datastore?',item);
 
-    Alert.alert(
-      "Welcome to HERCULES",
-      "Registering an asset requires 1000 HERC. Click the button below to purchase additional HERC.",
-      [
-        {
-          text: "Already Have!",
-          onPress: () => {console.log("clicked already have!")}
-        },
-        {
-          text: "Purchase",
-          onPress: () => { Linking.openURL("https://purchase.herc.one") }
-        }
-    ]
-    );
+    let userExists = this.props.navigation.getParam("userExists", "true");
+
+    if (userExists === "false") {
+      Alert.alert(
+        "Welcome! We detected that this is your first time.",
+        "To power our app, you need to have hercs!",
+        [
+          {
+            text: "Later",
+            onPress: () => console.log("OK Pressed"),
+            style: "later"
+          },
+          {
+            text: "Buy Now",
+            onPress: () => Linking.openURL("https://purchase.herc.one/")
+          }
+        ],
+        { cancelable: true }
+      );
+    }
 
     try {
       let light = await this.props.wallet.getEnabledTokens();
       let enabledTokens = light.reverse();
-      this.setState(
-        {
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        }
-      );
-    }
-    catch (e) {
-      let enabledTokens = ['HERC', 'ETH']
-      this.setState(
-        {
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        }
-      );
+      this.setState({
+        displayWallet: enabledTokens[0] // initiate with HERC wallet
+      });
+    } catch (e) {
+      let enabledTokens = ["HERC", "ETH"];
+      this.setState({
+        displayWallet: enabledTokens[0] // initiate with HERC wallet
+      });
     }
   };
 
   initiateWallet = () => {
-    console.log('jm this.props.ethereumAddress should be here', this.props.ethereumAddress);
+    console.log(
+      "jm this.props.ethereumAddress should be here",
+      this.props.ethereumAddress
+    );
     this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
@@ -151,18 +133,18 @@ class WalletFlow extends React.Component {
         )
           .times(1e-18)
           .toFixed(18);
-        this.setState({ tempBalance: tempBalance })
-        return tempBalance
+        this.setState({ tempBalance: tempBalance });
+        return tempBalance;
       }
     } else {
       let displayWallet = this.state.displayWallet;
       let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
         .times(1e-18)
         .toFixed(18);
-      this.setState({ tempBalance: tempBalance })
-      return tempBalance
+      this.setState({ tempBalance: tempBalance });
+      return tempBalance;
     }
-  }
+  };
 
   _updateWallet = () => {
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
@@ -219,7 +201,7 @@ class WalletFlow extends React.Component {
       this._closeAllModals();
       this.setState({
         transactionID: abcTransaction.txid,
-        displayModalComplete: true,
+        displayModalComplete: true
       });
 
       // Alert.alert(
@@ -268,8 +250,8 @@ class WalletFlow extends React.Component {
   };
 
   _closeAllModals = () => {
-    this.props.ToggleDisplayQRScanner(false)
-    this.props.GetDestinationAddress('')
+    this.props.ToggleDisplayQRScanner(false);
+    this.props.GetDestinationAddress("");
     this.setState({
       displayModalChooseToken: false,
       displayModalSendDetails: false,
@@ -315,7 +297,9 @@ class WalletFlow extends React.Component {
     let transactionAmount;
     if (this.state.displayWallet === "HERC") {
       //convert the HERC values to appropriate decimal places
-      transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
+      transactionAmount = new BigNumber(transaction.value)
+        .times(1e-18)
+        .toFixed(18);
     } else if (this.state.displayWallet === "ETH") {
       //ETH values are received at correct decimal places
       transactionAmount = new BigNumber(transaction.value).toFixed(18);
@@ -403,7 +387,7 @@ class WalletFlow extends React.Component {
         }
       })
       .catch(error => {
-        console.error(error);
+        console.log("jm fetch api error:", api, error);
       });
   };
 
@@ -420,12 +404,21 @@ class WalletFlow extends React.Component {
 
   render() {
     let currencyValue;
+    {
+      /*if(this.props.UserFirstTimeLogin === false){
+      return(
+        <View style={styles.bigScreenMessage}>
+          <OnboardingWithCTA />
+        </View>
+      )
+    }*/
+    }
     if (!this.props.ethereumAddress) {
       return (
         <View style={localStyles.modalBackground}>
           <ActivityIndicator animating={true} size="large" color="#000000" />
         </View>
-      )
+      );
     }
     if (this.state.tempBalance) {
       currencyValue = this._updateWallet();
@@ -451,8 +444,8 @@ class WalletFlow extends React.Component {
                   {this.state.displayWallet === "HERC" ? (
                     <Image style={localStyles.icon} source={hercCoin} />
                   ) : (
-                      <Icon name="ethereum" size={26} />
-                    )}
+                    <Icon name="ethereum" size={26} />
+                  )}
                 </View>
               </View>
               <View style={localStyles.balanceInnerRightContainer}>
@@ -481,8 +474,8 @@ class WalletFlow extends React.Component {
           <ScrollView>
             {typeof this.state.transactions !== "undefined"
               ? this.state.transactions.map((transaction, index) =>
-                this._displayActivity(transaction, index)
-              )
+                  this._displayActivity(transaction, index)
+                )
               : null}
           </ScrollView>
         </View>
@@ -589,7 +582,10 @@ class WalletFlow extends React.Component {
         <Modal
           isVisible={this.state.displayModalSendDetails}
           onBackButtonPress={() => {
-            this.setState({ displayModalSendDetails: false, displayModalChooseToken: true })
+            this.setState({
+              displayModalSendDetails: false,
+              displayModalChooseToken: true
+            });
           }}
           onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
@@ -597,9 +593,7 @@ class WalletFlow extends React.Component {
           <View style={modalStyles.modalLower}>
             <View style={modalStyles.sendCryptoContainer}>
               <Text style={modalStyles.menuTitle}>Send Cryptocurrency</Text>
-              <Text style={modalStyles.menuSubtitle}>
-                Send Details
-              </Text>
+              <Text style={modalStyles.menuSubtitle}>Send Details</Text>
 
               <View style={modalStyles.send2LowerContainer}>
                 <View style={localStyles.QRcontainer}>
@@ -613,20 +607,19 @@ class WalletFlow extends React.Component {
                     value={this.props.destinationAddress}
                   />
                   <Icon
-                      name="qrcode-scan" size={20}
-                      onPress={() => {
-                        this.props.ToggleDisplayQRScanner(true)
-                      }}
-                    />
+                    name="qrcode-scan"
+                    size={20}
+                    onPress={() => {
+                      this.props.ToggleDisplayQRScanner(true);
+                    }}
+                  />
                 </View>
 
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
                   placeholder="Amount"
-                  onChangeText={sendAmount =>
-                    this.setState({ sendAmount })
-                  }
+                  onChangeText={sendAmount => this.setState({ sendAmount })}
                   value={this.state.sendAmount}
                 />
               </View>
@@ -649,7 +642,10 @@ class WalletFlow extends React.Component {
         <Modal
           isVisible={this.state.displayModalConfirmation}
           onBackButtonPress={() => {
-            this.setState({ displayModalConfirmation: false, displayModalSendDetails: true })
+            this.setState({
+              displayModalConfirmation: false,
+              displayModalSendDetails: true
+            });
           }}
           onBackdropPress={this._closeAllModals}
           style={{ margin: 0 }}
@@ -713,14 +709,13 @@ class WalletFlow extends React.Component {
                       500
                     </Text>
                   </View> */}
-
                 </View>
               </View>
 
               <TouchableHighlight
                 onPress={() => {
                   this._closeAllModals();
-                  this._onPressSend()
+                  this._onPressSend();
                 }}
                 style={localStyles.confirmButton}
               >
@@ -767,7 +762,8 @@ class WalletFlow extends React.Component {
           isVisible={this.state.displayModalComplete}
           modalCase="complete"
           content={
-            this.state.selectedCrypto + "has been sent successfully." +
+            this.state.selectedCrypto +
+            "has been sent successfully." +
             " Transaction ID: " +
             this.state.transactionID
           }
@@ -779,25 +775,23 @@ class WalletFlow extends React.Component {
         <QRCameraModal
           isVisible={this.props.displayModalQR}
           closeModal={() => {
-            this.props.ToggleDisplayQRScanner(false)
-            this.props.GetDestinationAddress('')
-        }
-        }
+            this.props.ToggleDisplayQRScanner(false);
+            this.props.GetDestinationAddress("");
+          }}
           onBackButtonPress={() => {
-            this.props.ToggleDisplayQRScanner(false)
-            this.props.GetDestinationAddress('')
+            this.props.ToggleDisplayQRScanner(false);
+            this.props.GetDestinationAddress("");
             this.setState({
-            displayModalSendDetails: true
-          })
-        }
-        }
+              displayModalSendDetails: true
+            });
+          }}
         />
         <CustomModal
           isVisible={false}
           modalCase="error"
           content="Something went wrong."
           dismissRejectText="Try again"
-          closeModal={() => { }}
+          closeModal={() => {}}
         />
       </View>
     );
@@ -809,20 +803,22 @@ const mapStateToProps = state => ({
   // currencyCode: state.WalletReducers.wallet.currencyInfo.currencyCode,
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
+  UserFirstTimeLogin: state.AccountReducers.UserFirstTimeLogin,
   // balanceInWei:
   //     state.WalletReducers.wallet.balances[
   //     state.WalletReducers.wallet.currencyInfo.currencyCode
   //     ],
-  account: state.WalletReducers.account,
+  canRegisterAsset: state.RegAssetReducers.canRegisterAsset,
+  account: state.AccountReducers.account,
   watchBalance: state.WalletReducers.watchBalance,
   destinationAddress: state.WalletReducers.destinationAddress,
   displayModalQR: state.WalletReducers.ToggleDisplayQRScanner
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
-    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
-})
+const mapDispatchToProps = dispatch => ({
+  GetDestinationAddress: address => dispatch(GetDestinationAddress(address)),
+  ToggleDisplayQRScanner: value => dispatch(ToggleDisplayQRScanner(value))
+});
 
 export default connect(
   mapStateToProps,
@@ -832,17 +828,17 @@ export default connect(
 const localStyles = StyleSheet.create({
   QRcontainer: {
     width: "90%",
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "#f2f3fb"
   },
   modalBackground: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff"
   },
   walletContainer: {
     flex: 1,
@@ -1107,7 +1103,7 @@ const modalStyles = StyleSheet.create({
     width: "100%",
     height: "50%",
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopRightRadius: 10
   },
   addressContainer: {
     backgroundColor: "#f2f3fb",

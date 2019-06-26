@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    ScrollView,
     StyleSheet,
     View,
     TextInput,
@@ -13,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const hercpngIcon = require('../../../assets/icons/hercIcon.png');
 import { HercTextFieldWithLabel } from "../../../components/SharedComponents";
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import ColorConstants from "../../../assets/ColorConstants";
+import ColorConstants from "../../../constants/ColorConstants";
 import { widthPercentageToDP, heightPercentageToDP } from '../../../assets/responsiveUI';
 
 export function AddAssetButton(props) {
@@ -64,15 +65,16 @@ export function CameraTransactionComponent(props) {
                         source={{ uri: props.image.data }} />
                 </TouchableHighlight>
                 :
+                <TouchableHighlight onPress={props.onPress}>
+                    <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
+                        <Icon
+                            style={localStyles.componentIcon}
+                            name='camera'
+                        >
+                        </Icon>
+                    </View>
+                </TouchableHighlight>
 
-                <View style={[localStyles.iconSquare, { backgroundColor: ColorConstants.MainGray }]}>
-                    <Icon
-                        style={localStyles.componentIcon}
-                        name='camera'
-                        onPress={props.onPress}
-                    >
-                    </Icon>
-                </View>
             }
             {props.image.name ?
                 <View style={localStyles.transComponentInfo}>
@@ -104,14 +106,17 @@ export function EdiTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='pencil'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='pencil'
+                    // onPress={props.onPress}
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
+
             {props.edi.name ?
                 <View style={localStyles.transComponentInfo}>
                     <HercTextFieldWithLabel label={props.edi.value} text={props.edi.name} />
@@ -132,14 +137,16 @@ export function DocTransactionComponent(props) {
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='file-text'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='file-text'
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
+
             {props.doc.name ?
                 <View style={localStyles.transComponentInfo}>
                     <View>
@@ -167,24 +174,43 @@ export function MetricTransactionComponent(props) {
     let bgColor = Object.keys(props.metrics).length != 0 ? ColorConstants.ElementBG : ColorConstants.MainGray;
     let iconColor = Object.keys(props.metrics).length != 0 ? ColorConstants.MainGold : 'black';
     console.log(props, "metric transaction component")
+    let jsonifyMetrics = JSON.stringify(props.metrics);
+    let metrics = props.metrics;
+
+    console.log(Object.keys(metrics).length, " tis is the metrics.length")
+
+    let printMetrics = (metrics) => {
+        let metricsInJSX = [];
+        for (const [key, val] of Object.entries(metrics)) {
+            metricsInJSX.push(
+                <Text style={localStyles.textNormal}>{key}: {val}</Text>
+            )
+        }
+
+        return metricsInJSX;
+    }
+
     return (
 
         <View style={localStyles.transactionComponentContainer}>
-            <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
-                <Icon
-                    style={[localStyles.componentIcon, { color: iconColor }]}
-                    name='clipboard'
-                    onPress={props.onPress}
-                >
-                </Icon>
-            </View>
-            {props.metrics ?
-                <View style={localStyles.transComponentInfo}>
+            <TouchableHighlight onPress={props.onPress}>
+                <View style={[localStyles.iconSquare, { backgroundColor: bgColor }]}>
+                    <Icon
+                        style={[localStyles.componentIcon, { color: iconColor }]}
+                        name='clipboard'
+                    >
+                    </Icon>
+                </View>
+            </TouchableHighlight>
 
-                    <Text style={localStyles.textNormal}>Update Metrics</Text>
+            {Object.keys(metrics).length > 0 ?
+                <View style={localStyles.transComponentInfo}>
+                    <ScrollView>
+                        {printMetrics(metrics)}
+                    </ScrollView>
                 </View>
                 :
-                <Text style={localStyles.textNormal}>Add Metrics</Text>
+                <Text style={localStyles.textNormal}>Add Data Point Values</Text>
             }
         </View>
     )
@@ -302,7 +328,7 @@ const localStyles = StyleSheet.create({
 
     transactionComponentContainer: {
         // 20% = 159.42857142857142 on Galaxy S9
-        height: heightPercentageToDP('11.5'),
+        height: heightPercentageToDP('10.0'),
         width: '100%',
         backgroundColor: ColorConstants.ElementBG,
         borderRadius: 6,
@@ -344,6 +370,4 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-
-
 })

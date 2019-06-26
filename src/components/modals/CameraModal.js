@@ -1,8 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
-import { AppRegistry, Dimensions, StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Image } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import modalStyle from "../../components/modals/ModalStyles";
 import Modal from "react-native-modal";
 import { connect } from "react-redux";
 import { toggleCameraModal } from "../../actions/ModalVisibilityActions";
@@ -14,7 +13,6 @@ class CameraModal extends Component {
         super(props);
         const initial = null;
         this.state = {
-
             capturing: false
         };
     }
